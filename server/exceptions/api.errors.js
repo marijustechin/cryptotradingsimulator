@@ -9,11 +9,15 @@ module.exports = class ApiError extends Error {
   }
 
   static UnregisteredError() {
-    return new ApiError(401, "Neregistruotas naudotojas");
+    return new ApiError(401, 'Neregistruotas naudotojas');
   }
 
   static UnauthorizedError() {
-    return new ApiError(403, "Neautorizuotas naudotojas");
+    return new ApiError(403, 'Unauthorized user');
+  }
+
+  static ConflictError(message, errors = []) {
+    return new ApiError(409, message, errors);
   }
 
   static BadRequest(message, errors = []) {
