@@ -1,5 +1,5 @@
-const { Sequelize } = require("sequelize");
-const { modelRelations } = require("./models/relations");
+const { Sequelize } = require('sequelize');
+const { modelRelations } = require('../models/relations');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
   }
 );
 
-const modelDefiners = [require("./models/user.model")];
+const modelDefiners = [require('../models/user.model')];
 
 for (const modelDefiner of modelDefiners) {
   modelDefiner(sequelize);

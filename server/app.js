@@ -1,13 +1,16 @@
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
-// endpointai
-const userRouter = require("./routers/user.router");
+// endpointu importas
+const userRouter = require('./routers/user.router');
+
+// Importuojam klaidu midlvare
+const errorsMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
 
-// Midlvares visokios
+// o cia panaudojamos importuotos midlvares visokios
 app.use(express.json());
 app.use(
   cors({
@@ -17,6 +20,9 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use("/api/v1/users", userRouter);
+app.use('/api/v1/users', userRouter);
+
+// Svarbu!!! klaidos turi buti paskutines
+app.use(errorsMiddleware);
 
 module.exports = app;

@@ -1,13 +1,14 @@
-const { DataTypes } = require("sequelize");
+const bcrypt = require('bcryptjs');
+const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  sequelize.define("user", {
+  sequelize.define('user', {
     first_name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
-          msg: "First name is required",
+          msg: 'First name is required',
         },
       },
     },
@@ -15,18 +16,18 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       unique: {
         args: true,
-        msg: "This email already in use",
+        msg: 'This email already in use',
       },
       allowNull: false,
       validate: {
         notNull: {
-          msg: "Email required",
+          msg: 'Email required',
         },
         notEmpty: {
-          msg: "Email required",
+          msg: 'Email required',
         },
         isEmail: {
-          msg: "Invalid email format",
+          msg: 'Invalid email format',
         },
       },
     },
@@ -39,30 +40,47 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     role: {
-      type: DataTypes.ENUM("USER", "ADMIN"),
-      defaultValue: "USER",
+      type: DataTypes.ENUM('USER', 'ADMIN'),
+      defaultValue: 'USER',
     },
   }),
     sequelize.define(
-      "user_secret",
+      'user_secret',
       {
         password: {
           type: DataTypes.STRING,
           allowNull: false,
           validate: {
             notNull: {
-              msg: "Password required",
+              msg: 'Password required',
             },
             notEmpty: {
-              msg: "Password required",
+              msg: 'Password required',
             },
           },
         },
       },
-      // nereikia automatiniu updated_at, created_at
-      { timestamps: false }
+
+      {
+        // nereikia automatiniu updated_at, created_at
+        timestamps: false,
+        // sitas hookas "automatiskai" hashina slaptazodi
+        // pagal geros praktikos taisykles
+        // jis atskirtas nuo visos serviso logikos
+
+        hooks: {
+          beforeCreate: async (userSecret) => {
+            userSecret.password = await bcrypt.hash(userSecret.password, 10);
+          },
+        },
+      }
     ),
-    sequelize.define("token", {
+    sequelize.define('wallet', {
+      balance: {
+        type: DataTypes.DECIMAL,
+      },
+    }),
+    sequelize.define('token', {
       refreshToken: { type: DataTypes.TEXT, allowNull: false },
     });
 };

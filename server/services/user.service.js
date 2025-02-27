@@ -1,7 +1,7 @@
-const bcrypt = require("bcryptjs");
-const sequelize = require("../db");
-const { user, user_secret } = sequelize.models;
-const ApiError = require("../exceptions/api.errors");
+const bcrypt = require('bcryptjs');
+const sequelize = require('../config/db');
+const { user, user_secret, wallet } = sequelize.models;
+const ApiError = require('../exceptions/api.errors');
 
 class UserService {
   /**
@@ -9,7 +9,7 @@ class UserService {
    * @param {*} first_name
    * @param {*} email
    * @param {*} password
-   * @returns pranesima
+   * @returns pranesimas
    */
   async register(first_name, email, password) {
     // tikrinam ar el. pasto adresas neuzimtas
@@ -18,30 +18,32 @@ class UserService {
     });
 
     if (existingUser)
-      throw ApiError.BadRequest(`El. pašto adresas ${email} jau naudojamas`);
+      throw ApiError.ConflictError(`Email ${email} already in use`);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+    // cia naudojam tranzakcijas
+    // nes rasom duomenis i dvi lenteles
     const transaction = await sequelize.transaction();
+
     try {
-      // cia naudojam tranzakcijas
-      // nes rasom duomenis i dvi lenteles
       await user.create(
         {
           first_name,
           email,
-          user_secret: [{ password: hashedPassword }],
+          user_secret: [{ password }], // password hashinamas user_secret modelyje automatiskai
+          wallet: [{ balance: 10000 }],
         },
         {
-          include: [user_secret],
+          include: [user_secret, wallet],
           transaction,
         }
       );
+
       await transaction.commit();
-      return { message: "Registration successfull. Please login." };
+
+      return { message: 'Registration successfull. Please login.' };
     } catch (e) {
       await transaction.rollback();
-      throw ApiError.BadRequest("Registration failed.");
+      throw ApiError.BadRequest(`Registration failed: ${e.message}`);
     }
   }
 }
