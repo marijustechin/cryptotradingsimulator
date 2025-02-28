@@ -1,1 +1,131 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+/* =====================================
+   Šriftų importas (Inter ir Montserrat)
+   ===================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* =====================================
+   Custom Variables (for additional styling)
+   ===================================== */
+:root {
+  --bg-primary: #0b0b0d;
+  --bg-secondary: #16181e;
+  --bg-accent: #1b1e24;
+  --blue-primary: #2563eb;
+  --blue-hover: #1d4ed8;
+  --text-main: #f9fafb;
+  --text-gray: #9ca3af;
+  --text-muted: #6b7280;
+}
+
+/* Base styles */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Headings */
+h1, .heading-1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+h2, .heading-2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+h3, .heading-3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+h4, .heading-4 {
+    font-weight: 600;
+    font-size: 1.00rem;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+
+p, .paragraph {
+  font-size: 1rem;
+  color: var(--text-gray);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Components */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+}
+
+.navbar a {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  color: var(--blue-primary);
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-gray);
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.hero-cta {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--blue-primary);
+  color: var(--text-main);
+  font-weight: 600;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.hero-cta:hover {
+  background-color: var(--blue-hover);
+}
