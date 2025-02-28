@@ -1,1 +1,140 @@
-@import 'tailwindcss';
+/* =====================================
+   Šriftų importas (Inter ir Montserrat)
+   ===================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ========== Tailwind bazė ir komponentai ========== */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* =====================================
+   Globalūs stiliai ir tipografija
+   ===================================== */
+:root {
+  --bg-primary: #0b0b0d;
+  --bg-secondary: #16181e;
+  --bg-accent: #1b1e24;
+  --blue-primary: #2563eb;
+  --blue-hover: #1d4ed8;
+  --text-main: #f9fafb;
+  --text-gray: #9ca3af;
+  --text-muted: #6b7280;
+}
+
+html {
+  @apply text-base leading-relaxed;
+}
+
+body {
+  @apply bg-[var(--bg-primary)] text-[var(--text-main)] antialiased font-[Inter,sans-serif];
+}
+
+h1, .heading-1 {
+  @apply text-4xl md:text-5xl font-bold text-[var(--text-main)] font-[Montserrat,sans-serif];
+}
+
+h2, .heading-2 {
+  @apply text-3xl md:text-4xl font-bold text-[var(--text-main)] font-[Montserrat,sans-serif];
+}
+
+h3, .heading-3 {
+  @apply text-2xl font-semibold text-[var(--text-main)] font-[Montserrat,sans-serif];
+}
+
+p, .paragraph {
+  @apply text-base md:text-lg text-[var(--text-gray)] font-[Inter,sans-serif];
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* =====================================
+   Navigacijos (navbar) stilius
+   ===================================== */
+.navbar {
+  @apply flex items-center justify-between p-4 bg-[var(--bg-secondary)];
+}
+.navbar a {
+  @apply text-[var(--text-main)] font-semibold hover:text-[var(--blue-primary)];
+}
+
+/* =====================================
+   Hero sekcija
+   ===================================== */
+.hero {
+  @apply relative py-16 md:py-24 flex flex-col items-center text-center space-y-6;
+}
+.hero-title {
+  @apply heading-1;
+}
+.hero-subtitle {
+  @apply text-lg md:text-xl text-[var(--text-gray)] max-w-2xl mx-auto;
+}
+.hero-cta {
+  @apply inline-block mt-6 bg-[var(--blue-primary)] text-[var(--text-main)] font-semibold py-3 px-8 rounded-full transition;
+}
+.hero-cta:hover {
+  @apply bg-[var(--blue-hover)];
+}
+
+/* =====================================
+   Dashboard stiliai
+   ===================================== */
+.sidebar {
+  @apply bg-[var(--bg-secondary)] min-h-screen p-4 space-y-4;
+}
+.sidebar a {
+  @apply block text-[var(--text-main)] hover:text-[var(--blue-primary)];
+}
+.dashboard-card {
+  @apply bg-[var(--bg-secondary)] p-6 rounded-lg shadow-lg;
+}
+
+/* =====================================
+   Lentelės stilius
+   ===================================== */
+.table-container {
+  @apply overflow-x-auto;
+}
+.table {
+  @apply min-w-full text-left;
+}
+.table th {
+  @apply bg-[var(--bg-secondary)] text-[var(--text-gray)] font-semibold px-4 py-3 uppercase text-sm;
+}
+.table td {
+  @apply bg-[var(--bg-accent)] px-4 py-3 border-b border-gray-800;
+}
+.table tr:hover {
+  @apply bg-[#262a31];
+}
+
+/* =====================================
+   Formų stiliai
+   ===================================== */
+.form-container {
+  @apply bg-[var(--bg-secondary)] p-8 rounded-lg shadow-lg max-w-md mx-auto;
+}
+.form-container label {
+  @apply block text-[var(--text-gray)] mt-4 font-[Montserrat,sans-serif];
+}
+.form-container input,
+.form-container button,
+.form-container select {
+  @apply w-full p-3 rounded-md border border-gray-700 bg-[var(--bg-accent)] text-[var(--text-main)] mt-2;
+}
+.form-container button {
+  @apply bg-[var(--blue-primary)] hover:bg-[var(--blue-hover)] transition font-semibold;
+}
+
+/* =====================================
+   Footer
+   ===================================== */
+.footer {
+  @apply py-8 text-center text-[var(--text-muted)] text-sm;
+}
+.footer a {
+  @apply text-[var(--text-main)] hover:text-[var(--blue-primary)];
+}
