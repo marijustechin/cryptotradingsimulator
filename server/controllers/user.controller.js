@@ -59,6 +59,31 @@ class UserController {
       next(e);
     }
   }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns success: status 200 + message failure: status 204 no content
+   */
+  async logout(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+
+      // jei nėra refresh tokeno, tai saugumo sumetimais
+      // grąžiname 204 status, tipo kad nenutekėtų info
+      if (!refreshToken) throw ApiError.NoContent();
+
+      await userService.logout(refreshToken);
+
+      res.clearCookie('refreshToken');
+
+      return res.status(200).json({ message: 'Logout successfull.' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();

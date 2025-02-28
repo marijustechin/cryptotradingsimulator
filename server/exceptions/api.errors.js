@@ -8,8 +8,16 @@ module.exports = class ApiError extends Error {
     this.errors = errors;
   }
 
+  static NoContent() {
+    return new ApiError(204, 'No content');
+  }
+
+  static BadRequest(message, errors = []) {
+    return new ApiError(400, message, errors);
+  }
+
   static UnregisteredError() {
-    return new ApiError(401, 'Neregistruotas naudotojas');
+    return new ApiError(401, 'Reikia dar pagalvoti');
   }
 
   static UnauthorizedError() {
@@ -18,9 +26,5 @@ module.exports = class ApiError extends Error {
 
   static ConflictError(message, errors = []) {
     return new ApiError(409, message, errors);
-  }
-
-  static BadRequest(message, errors = []) {
-    return new ApiError(400, message, errors);
   }
 };

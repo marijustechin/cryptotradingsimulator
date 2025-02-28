@@ -71,7 +71,6 @@ class UserService {
       throw ApiError.BadRequest(`Incorrect email or password`);
     }
 
-    console.log('------------');
     const tokens = tokenService.generateTokens({
       id: activeUser.id,
       role: activeUser.role,
@@ -83,6 +82,22 @@ class UserService {
       ...tokens,
       user: { id: activeUser.id, role: activeUser.role },
     };
+  }
+
+  /**
+   * Naudotojo isregistravimas
+   * @param {*} refreshToken
+   * @returns skaicius, kiek irasu istrinta
+   */
+  async logout(refreshToken) {
+    // patikrinam, ar tokenas validus
+    const userData = tokenService.validateRefreshToken(refreshToken);
+
+    if (!userData) throw ApiError.BadRequest('Invalid request');
+
+    const token = await tokenService.removeToken(refreshToken);
+
+    return token;
   }
 }
 
