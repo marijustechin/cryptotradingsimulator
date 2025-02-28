@@ -1,1 +1,250 @@
-@import 'tailwindcss';
+/* =====================================
+   Šriftų importas (Inter ir Montserrat)
+   ===================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ==========
+   Tailwind bazė ir komponentai
+   ========== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================
+   Globalūs kintamieji (spalvos)
+   ===================================== */
+:root {
+  --bg-primary: #0b0b0d;      /* Pagrindinis tamsus fonas */
+  --bg-secondary: #16181e;    /* Antrinis fonas, skirtas elementų fonui */
+  --bg-accent: #1b1e24;       /* Akcentuojantis fonas (pvz., lentelės langai) */
+  --blue-primary: #2563eb;    /* Pagrindinė mėlyna */
+  --blue-hover: #1d4ed8;      /* Hover būsena mėlynos */
+  --text-main: #f9fafb;       /* Pagrindinis šviesus tekstas */
+  --text-gray: #9ca3af;       /* Pilkas tekstas */
+  --text-muted: #6b7280;      /* Prastesnis akcentas */
+}
+
+/* =====================================
+   Globalūs stiliai ir tipografija
+   ===================================== */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  @apply bg-[var(--bg-primary)] text-[var(--text-main)] antialiased;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Pagrindinės antraštės ir paragrafų stiliai */
+/* Pvz., naudojame Montserrat antraštėms, o Inter – paragrafams */
+h1, .heading-1 {
+  @apply text-4xl md:text-5xl font-bold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+h2, .heading-2 {
+  @apply text-3xl md:text-4xl font-bold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+h3, .heading-3 {
+  @apply text-2xl font-semibold;
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+p, .paragraph {
+  @apply text-base md:text-lg;
+  color: var(--text-gray);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Konteineris visiems puslapiams */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* =====================================
+   Navigacijos (navbar) stilius
+   ===================================== */
+.navbar {
+  @apply flex items-center justify-between p-4 bg-[var(--bg-secondary)];
+}
+.navbar a {
+  @apply text-[var(--text-main)] font-semibold hover:text-[var(--blue-primary)];
+}
+.navbar-brand {
+  @apply text-2xl font-bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* =====================================
+   Landing Page (Hero sekcija)
+   ===================================== */
+.hero {
+  @apply relative py-16 md:py-24 flex flex-col items-center text-center space-y-6;
+}
+.hero-title {
+  @apply heading-1;
+}
+.hero-subtitle {
+  @apply text-lg md:text-xl text-[var(--text-gray)] max-w-2xl mx-auto;
+}
+.hero-cta {
+  @apply inline-block mt-6 bg-[var(--blue-primary)] text-[var(--text-main)] font-semibold py-3 px-8 rounded-full transition-colors;
+}
+.hero-cta:hover {
+  background-color: var(--blue-hover);
+}
+
+/* =====================================
+   Dashboard puslapio stiliai
+   ===================================== */
+/* Sidebar navigacija (jei naudojama) */
+.sidebar {
+  @apply bg-[var(--bg-secondary)] min-h-screen p-4 space-y-4;
+}
+.sidebar a {
+  @apply block text-[var(--text-main)] hover:text-[var(--blue-primary)];
+}
+
+/* Dashboard kortelės */
+.dashboard-card {
+  @apply bg-[var(--bg-secondary)] p-6 rounded-lg shadow-lg;
+}
+.dashboard-card h3 {
+  @apply text-xl font-semibold;
+  font-family: 'Montserrat', sans-serif;
+}
+.dashboard-card p {
+  @apply text-2xl font-bold mt-2;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Lentelės stilius (pvz., turto ar tokenų rodymas) */
+.table-container {
+  @apply overflow-x-auto;
+}
+.table {
+  @apply min-w-full text-left;
+}
+.table th {
+  @apply bg-[var(--bg-secondary)] text-[var(--text-gray)] font-semibold px-4 py-3 uppercase text-sm;
+}
+.table td {
+  @apply bg-[var(--bg-accent)] px-4 py-3 border-b border-gray-800;
+}
+.table tr:hover {
+  @apply bg-[#262a31];
+}
+
+/* =====================================
+   Formų puslapiai (Signup, Login, Profile)
+   ===================================== */
+.form-container {
+  @apply bg-[var(--bg-secondary)] p-8 rounded-lg shadow-lg max-w-md mx-auto;
+}
+.form-container label {
+  @apply block text-[var(--text-gray)] mt-4;
+  font-family: 'Montserrat', sans-serif;
+}
+.form-container input,
+.form-container button,
+.form-container select {
+  @apply w-full p-3 rounded-md border border-gray-700 bg-[var(--bg-accent)] text-[var(--text-main)] mt-2;
+  font-family: 'Inter', sans-serif;
+}
+.form-container button {
+  @apply bg-[var(--blue-primary)] hover:bg-[var(--blue-hover)] transition-colors font-semibold;
+}
+
+/* =====================================
+   Deposits puslapio stiliai
+   ===================================== */
+.deposits-header {
+  @apply text-2xl font-bold mb-4;
+  font-family: 'Montserrat', sans-serif;
+}
+.deposits-info {
+  @apply text-[var(--text-gray)] mb-2;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =====================================
+   WithDraw puslapio stiliai
+   ===================================== */
+.withdraw-section {
+  @apply p-6 bg-[var(--bg-secondary)] rounded-lg shadow-lg;
+}
+.withdraw-section h2 {
+  @apply heading-2;
+}
+.withdraw-details {
+  @apply mt-4 text-[var(--text-gray)];
+}
+
+/* =====================================
+   Profile puslapio stiliai
+   ===================================== */
+.profile-container {
+  @apply bg-[var(--bg-secondary)] p-8 rounded-lg shadow-lg max-w-lg mx-auto;
+}
+.profile-field {
+  @apply mt-4;
+}
+.profile-field label {
+  @apply block text-[var(--text-gray)] font-medium;
+  font-family: 'Montserrat', sans-serif;
+}
+.profile-field input {
+  @apply w-full p-3 rounded-md border border-gray-700 bg-[var(--bg-accent)] text-[var(--text-main)] mt-2;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =====================================
+   Buy Miner sekcija
+   ===================================== */
+.buy-miner {
+  @apply bg-[var(--bg-secondary)] p-6 rounded-lg shadow-lg text-center;
+}
+.buy-miner h3 {
+  @apply text-xl font-semibold;
+  font-family: 'Montserrat', sans-serif;
+}
+.buy-miner .miner-details {
+  @apply mt-2 text-[var(--text-gray)];
+  font-family: 'Inter', sans-serif;
+}
+.buy-miner .btn {
+  @apply inline-block mt-4 bg-[var(--blue-primary)] text-[var(--text-main)] font-semibold py-2 px-6 rounded-full transition-colors;
+}
+.buy-miner .btn:hover {
+  background-color: var(--blue-hover);
+}
+
+/* =====================================
+   Footer stilius
+   ===================================== */
+.footer {
+  @apply py-8 text-center text-[var(--text-muted)] text-sm;
+}
+.footer a {
+  @apply text-[var(--text-main)] hover:text-[var(--blue-primary)];
+}
+
+/* =====================================
+   Dekoratyviniai elementai
+   ===================================== */
+/* Pvz., foniniai elementai, žvaigždžių efektai ar iliustracijos */
+.star-bg {
+  background: url('/path/to/stars.png') repeat;
+  background-size: cover;
+  @apply absolute inset-0 opacity-50;
+}
+.planet {
+  @apply absolute;
+}
