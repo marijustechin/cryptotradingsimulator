@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const sequelize = require("../db");
+const jwt = require('jsonwebtoken');
+const sequelize = require('../config/db');
 const { token } = sequelize.models;
 
 class TokenService {
