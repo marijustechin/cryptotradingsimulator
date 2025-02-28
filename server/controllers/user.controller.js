@@ -84,6 +84,22 @@ class UserController {
       next(e);
     }
   }
+
+  async getUserInfo(req, res, next) {
+    try {
+      // patikrinam, ar yra access tokenas
+      const authorizationHeader = req.headers.authorization;
+
+      // jei nera, klaida 401
+      if (!authorizationHeader) throw ApiError.UnauthorizedError();
+
+      const userInfo = await userService.getUserInfo(authorizationHeader);
+
+      return res.status(200).json(userInfo);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();
