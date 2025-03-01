@@ -40,7 +40,7 @@ class AuthMiddleware {
       // Admin role?
       if (userData.role !== 'ADMIN') throw new ApiError.UnauthorizedError();
 
-      req.user = userData; // ✅ Store user data in request
+      req.user = userData; // irasom user duomenis i requesta
       next();
     } catch (e) {
       return next(ApiError.UnauthorizedError(e));

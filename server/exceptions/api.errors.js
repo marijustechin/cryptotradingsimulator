@@ -16,12 +16,16 @@ module.exports = class ApiError extends Error {
     return new ApiError(400, message, errors);
   }
 
-  static UnregisteredError() {
-    return new ApiError(401, 'Reikia dar pagalvoti');
+  // 401 - kai nėra arba neteisingi
+  // autorizavimo/autentifikavimo duomenys
+  static UnauthorizedError() {
+    return new ApiError(401, 'Unauthorized user');
   }
 
-  static UnauthorizedError() {
-    return new ApiError(403, 'Unauthorized user');
+  // 403 - kai autorizavimo/autentifikavimo duomenys yra,
+  // bet nėra leidimo
+  static Forbidden() {
+    return new ApiError(403, 'No permission');
   }
 
   static ConflictError(message, errors = []) {

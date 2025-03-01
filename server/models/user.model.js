@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
         },
       },
     },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     email: {
       type: DataTypes.STRING,
       unique: {
@@ -75,11 +79,17 @@ module.exports = (sequelize) => {
         },
       }
     ),
-    sequelize.define('wallet', {
-      balance: {
-        type: DataTypes.DECIMAL,
+    sequelize.define(
+      'wallet',
+      {
+        balance: {
+          type: DataTypes.DECIMAL,
+        },
       },
-    }),
+      {
+        timestamps: false,
+      }
+    ),
     sequelize.define('token', {
       refreshToken: { type: DataTypes.TEXT, allowNull: false },
     });

@@ -3,6 +3,7 @@ const sequelize = require('../config/db');
 const { user, user_secret, wallet } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
+const { UserInfoDto } = require('../dtos/user.dto');
 
 class UserService {
   /**
@@ -98,6 +99,27 @@ class UserService {
     const token = await tokenService.removeToken(refreshToken);
 
     return token;
+  }
+
+  async getUserInfo(authorizationHeader) {
+    const accessToken = authorizationHeader.split(' ')[1];
+
+    if (!accessToken) throw ApiError.UnauthorizedError();
+
+    // Tokenas geras?
+    const payload = tokenService.validateAccessToken(accessToken);
+
+    if (!payload) throw ApiError.UnauthorizedError();
+
+    const userInfo = await user.findOne({
+      where: {
+        id: payload.id,
+      },
+    });
+
+    if (!userInfo) throw ApiError.UnauthorizedError();
+
+    return new UserInfoDto(userInfo);
   }
 }
 
