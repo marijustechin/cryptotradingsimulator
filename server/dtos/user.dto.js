@@ -5,6 +5,7 @@ class UserInfoDto {
   email;
   phone_number;
   address;
+  role;
 
   constructor(model) {
     this.id = model.id;
@@ -13,6 +14,7 @@ class UserInfoDto {
     this.email = model.email;
     this.phone_number = model.phone_number;
     this.address = model.address;
+    this.role = model.role;
   }
 }
 
