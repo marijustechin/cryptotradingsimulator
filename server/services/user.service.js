@@ -121,6 +121,64 @@ class UserService {
 
     return new UserInfoDto(userInfo);
   }
+
+  /**
+   *
+   * @param {*} page
+   * @param {*} limit
+   * @param {*} sort
+   * @returns totalUsers, totalPages, currentPage, users {}
+   */
+  async getAllUsers(page = 1, limit = 10, sort = 'first_name:asc') {
+    const sortOptions = sort.split(':');
+
+    // su postgres nebutina,
+    // o su mariaDB/mysql sitie parametrai
+    // PRIVALO buti skaiciaus tipo, nes mes sintakses klaida
+    const { count, rows } = await user.findAndCountAll({
+      limit: Number(limit),
+      offset: (Number(page) - 1) * Number(limit),
+      order: [sortOptions],
+    });
+
+    if (rows.length < 1) throw ApiError.NoContent();
+
+    let allUsers = [];
+
+    for (const item of rows) {
+      let singleUser = new UserInfoDto(item);
+      allUsers.push(singleUser);
+    }
+
+    const totalPages =
+      count % limit === 0
+        ? Math.floor(count / limit)
+        : Math.floor(count / limit) + 1;
+
+    return {
+      totalUsers: count,
+      totalPages: totalPages,
+      currentPage: +page,
+      users: allUsers,
+    };
+  }
+
+  async refresh(refreshToken) {
+    // patikrinam ar geras
+    const userData = tokenService.validateRefreshToken(refreshToken);
+
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDb) throw ApiError.UnauthorizedError();
+
+    const activeUser = await user.findOne({ where: { id: userData.id } });
+
+    const tokens = tokenService.generateTokens({
+      id: activeUser.id,
+      role: activeUser.role,
+    });
+
+    return { ...tokens, user: { id: activeUser.id, role: activeUser.role } };
+  }
 }
 
 module.exports = new UserService();

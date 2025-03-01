@@ -85,6 +85,13 @@ class UserController {
     }
   }
 
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns user info objektas (id, first_name, last_name, address, phone_number)
+   */
   async getUserInfo(req, res, next) {
     try {
       // patikrinam, ar yra access tokenas
@@ -97,6 +104,65 @@ class UserController {
 
       return res.status(200).json(userInfo);
     } catch (e) {
+      next(e);
+    }
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns status(200) totals + users
+   */
+  async getAllUsers(req, res, next) {
+    try {
+      const { page, limit, sort, filter } = req.query;
+
+      const allUsers = await userService.getAllUsers(page, limit, sort, filter);
+
+      return res.status(200).json(allUsers);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   */
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+
+      if (!refreshToken) {
+        res.clearCookie('refreshToken'); // sena tikrai ismetam
+        throw ApiError.UnauthorizedError();
+      }
+
+      const userData = await userService.refresh(refreshToken);
+
+      if (!userData) {
+        res.clearCookie('refreshToken'); // Ismetam netinkama tokena
+        throw ApiError.UnauthorizedError();
+      }
+
+      //
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 24 * 60 * 60 * 1000, // 1 diena
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Produksine apsaugom
+        sameSite: 'Strict',
+      });
+
+      return res
+        .status(200)
+        .json({ accessToken: userData.accessToken, user: userData.user });
+    } catch (e) {
+      res.clearCookie('refreshToken'); // Visada istrinam nereikalinga tokena
       next(e);
     }
   }

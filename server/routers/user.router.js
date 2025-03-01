@@ -25,4 +25,11 @@ userRouter.post('/logout', userController.logout);
 // konkretaus naudotojo info
 userRouter.get('/me', userController.getUserInfo);
 
+// visu naudotoju info
+// gali gauti tik adminas
+userRouter.get('/', userController.getAllUsers);
+
+// refresh accessToken
+userRouter.post('/refresh', userController.refresh);
+
 module.exports = userRouter;
