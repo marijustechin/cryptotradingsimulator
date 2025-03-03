@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="109" height="110" fill="none" viewBox="0 0 109 110">
+  <g filter="url(#a)">
+    <path fill="url(#b)" d="M2.027 66.99c6.643 29.358 35.608 47.821 64.696 41.24 29.088-6.582 47.284-35.716 40.642-65.074C100.722 13.8 71.757-4.664 42.669 1.917 13.58 8.499-4.615 37.633 2.027 66.99Z"/>
+  </g>
+  <path stroke="url(#c)" stroke-linecap="round" stroke-width=".066" d="M2.06 66.983c6.638 29.34 35.586 47.792 64.656 41.215 29.07-6.578 47.255-35.694 40.617-65.034-6.639-29.34-35.587-47.792-64.657-41.215C13.606 8.527-4.58 37.643 2.059 66.983Z"/>
+  <defs>
+    <linearGradient id="b" x1="96.5" x2="-1.5" y1="29" y2="84" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFC56F"/>
+      <stop offset="1" stop-color="#6D1400"/>
+    </linearGradient>
+    <linearGradient id="c" x1="446.027" x2="470.082" y1="-68.062" y2="38.251" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BDBDBD"/>
+      <stop offset="1" stop-color="#BDBDBD" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="a" width="125.593" height="113.255" x="-1.84" y="-2.694" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dx="15.02" dy="-3.28"/>
+      <feGaussianBlur stdDeviation="12.513"/>
+      <feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic"/>
+      <feColorMatrix values="0 0 0 0 0.625 0 0 0 0 0.0338542 0 0 0 0 0.0338542 0 0 0 0.76 0"/>
+      <feBlend in2="shape" result="effect1_innerShadow_0_1379"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dx="-2.5" dy="1"/>
+      <feGaussianBlur stdDeviation="3.754"/>
+      <feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic"/>
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 0.829417 0 0 0 0 0.629167 0 0 0 1 0"/>
+      <feBlend in2="effect1_innerShadow_0_1379" result="effect2_innerShadow_0_1379"/>
+    </filter>
+  </defs>
+</svg>
