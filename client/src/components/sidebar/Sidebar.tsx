@@ -1,11 +1,13 @@
 import { ISSidebar } from './sidebarNavLinks';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 
 interface SidebarProps {
   navLinks: ISSidebar[];
 }
 
 export const Sidebar = ({ navLinks }: SidebarProps) => {
+  const location = useLocation();
+
   return (
     <div className="flex flex-col h-screen bg-black text-white p-4 w-60">
       <div className="flex items-center mb-6">
@@ -18,7 +20,14 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
       <ul className="space-y-2">
         {navLinks.map((link, index) => (
           <li key={index}>
-            <NavLink to={link.href} className="flex items-center p-3 rounded-lg hover:bg-gray-800 focus:bg-gradient-to-r from-blue-500 to-purple-600">
+            <NavLink
+              to={link.href}
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg hover:bg-gray-800 ${
+                  location.pathname === link.href ? 'bg-gradient-to-r from-blue-500 to-purple-600' : ''
+                }`
+              }
+            >
               {link.icon}
               <span className="ml-3">{link.title}</span>
             </NavLink>
