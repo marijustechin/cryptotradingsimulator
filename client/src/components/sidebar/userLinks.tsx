@@ -1,12 +1,14 @@
 import { MdOutlineSpaceDashboard } from 'react-icons/md';
-import { FaRegUser } from 'react-icons/fa';
-import { FaMoneyBillWave, FaCog, FaShoppingCart } from 'react-icons/fa';
+import { ISSidebar } from '../../types/sidebar';
+import {
+  FaCog,
+  FaMoneyBillWave,
+  FaRegUser,
+  FaShoppingCart,
+} from 'react-icons/fa';
 import { RiBankFill } from 'react-icons/ri';
 
-import { Sidebar } from './Sidebar';
-import { ISSidebar } from './sidebarNavLinks';
-
-const sidebarNavLinks: ISSidebar[] = [
+export const userLinks: ISSidebar[] = [
   {
     title: 'Dashboard',
     href: '/my-dashboard',
@@ -18,7 +20,3 @@ const sidebarNavLinks: ISSidebar[] = [
   { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
   { title: 'Profile', href: '/my-dashboard/profile', icon: <FaRegUser /> },
 ];
-
-export const UserSidebar = () => {
-  return <Sidebar navLinks={sidebarNavLinks} />;
-};

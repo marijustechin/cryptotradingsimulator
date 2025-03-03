@@ -2,13 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUserInfo } from '../../../types/user';
 import HelperService from '../../../services/HelperService';
 import UserService from '../../../services/UserService';
+import { RootState } from '../../store';
 
 interface IUserData {
   userData: IUserInfo | undefined;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
 }
 
 const initialState: IUserData = {
   userData: undefined,
+  status: 'idle',
+  error: null,
 };
 
 export const getInfo = createAsyncThunk(
@@ -16,7 +21,7 @@ export const getInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await UserService.getUserInfo();
-      console.log(response);
+      return response;
     } catch (e) {
       return rejectWithValue(HelperService.errorToString(e));
     }
@@ -29,14 +34,21 @@ export const userInfoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getInfo.pending, (state, action) => {
-        console.log(state);
+      .addCase(getInfo.pending, (state) => {
+        state.status = 'loading';
       })
       .addCase(getInfo.fulfilled, (state, action) => {
-        console.log(state);
+        state.status = 'succeeded';
+        state.userData = { ...action.payload };
       })
       .addCase(getInfo.rejected, (state, action) => {
-        console.log(state);
+        state.status = 'failed';
+        state.error = action.payload as string;
+        state.status = 'idle';
       });
   },
 });
+
+export const selectUserInfo = (state: RootState) => state.user.userData;
+
+export default userInfoSlice.reducer;
