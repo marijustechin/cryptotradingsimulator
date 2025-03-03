@@ -27,17 +27,18 @@ export const HomePageTextures = () => {
                                         right 250px top 900px,
                                         right 430px top 650px,
                                         left 300px top 550px,
-                                        left 180px top 350px,
-                                        left 270px top 100px,
+                                        left 230px top 350px,
+                                        left 370px top 100px,
                                         left 350px top 290px`,
                 }}
             ></div>
-
+            <div className="texture-oval z-9"></div>
+            <div className="texture-oval2 z-9"></div>
+            <div className="texture-oval3 z-9"></div>
             <div className="relative z-20 flex items-center justify-center text-center mt-[-90px]">
                 <WelcomeMessageHome />
             </div>
 
-            <div className="texture-oval"></div>
             <div className="texture-green"></div>
             <div className="texture-orange"></div>
             <div className="texture-purple"></div>
