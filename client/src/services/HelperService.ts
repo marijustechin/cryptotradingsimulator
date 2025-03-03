@@ -8,4 +8,11 @@ export default class HelperService {
 
     return 'Įvyko nežinoma klaida.';
   }
+
+  static formatCurrency(amount: number) {
+    return new Intl.NumberFormat('lt-LT', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(amount);
+  }
 }

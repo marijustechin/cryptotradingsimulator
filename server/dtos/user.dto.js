@@ -6,7 +6,6 @@ class UserInfoDto {
   phone_number;
   address;
   role;
-  balance;
 
   constructor(model) {
     this.id = model.id;
@@ -16,7 +15,6 @@ class UserInfoDto {
     this.phone_number = model.phone_number;
     this.address = model.address;
     this.role = model.role;
-    this.balance = model.wallet.balance;
   }
 }
 

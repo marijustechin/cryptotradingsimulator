@@ -5,7 +5,7 @@ const USER_URL = API_URL + '/users';
 interface LoginResponse {
   accessToken: string;
   refreshToken: string;
-  user: { id: string; role: string };
+  user: { id: string; role: string; balance: number };
 }
 
 interface AuthResponse {

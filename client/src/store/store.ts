@@ -1,17 +1,19 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 
-import authReducer from "./features/user/authSlice"
+import authReducer from './features/user/authSlice';
+import userInfoReducer from './features/user/userInfoSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userInfoReducer,
   },
 });
 
 // isvestiniai `RootState`,  `AppDispatch` ir `AppStore` is pacios stores
 export type RootState = ReturnType<typeof store.getState>;
-// isvesti tipai, pavyzdys is dokumentacijos: 
+// isvesti tipai, pavyzdys is dokumentacijos:
 // {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 export type AppStore = typeof store;
