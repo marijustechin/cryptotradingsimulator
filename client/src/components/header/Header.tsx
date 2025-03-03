@@ -35,10 +35,10 @@ const logout = () => {
         </div>
 
         {/* Sign Buttons */}
-        {user ? (
+        {user && user.id ?(
         <button
         onClick={logout}
-        className="text-[30px] pointer"><BiLogOut /></button> 
+        className="text-[30px] cursor-pointer"><BiLogOut /></button> 
         )
         : (
           <div className="flex justify-end items-center gap-3">
