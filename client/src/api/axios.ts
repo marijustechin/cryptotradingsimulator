@@ -36,7 +36,7 @@ $api.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error(
-          'Refresh tokenas negautas, naudotojas atjungiamas....',
+          'No refresh token, logging out...',
           refreshError
         );
         localStorage.removeItem('accessToken');
