@@ -4,7 +4,7 @@ import { BiLogOut } from "react-icons/bi";
 import { FaMoneyBillWave, FaCog, FaShoppingCart } from "react-icons/fa";
 import { RiBankFill } from "react-icons/ri";
 import { NavLink } from "react-router";
-import SevenDuck from "../assets/images/seven-duck-alliance.png";
+import SevenDuck from "../../public/logo.png";
 
 export const Navbar = () => {
   return (

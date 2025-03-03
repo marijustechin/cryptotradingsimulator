@@ -24,6 +24,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
 
 /* Headings */
