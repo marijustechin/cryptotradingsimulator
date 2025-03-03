@@ -15,6 +15,8 @@ import { LoginPage } from './pages/LoginPage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { CreditsPage } from './pages/CreditsPage';
 import { UserLayout } from './layouts/UserLayout';
+import { UserStatsPage } from './pages/user/UserStatsPage';
+import { UserPortfolioPage } from './pages/user/UserPortfolioPage';
 
 // Demesio, sitame puslapyje gali buti tik provaideriai
 // arba globalaus lygio elementai - t.y. jokiu zemesnio lygmens elementu
@@ -36,7 +38,12 @@ function App() {
         </Route>
         <Route path="/my-dashboard" element={<UserLayout />}>
           <Route index element={<UserDashboardPage />} />
-          <Route path="my-dashboard/profile" element={<UserProfilePage />} />
+          <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
+          <Route path="/my-dashboard/stats" element={<UserStatsPage />} />
+          <Route
+            path="/my-dashboard/portfolio"
+            element={<UserPortfolioPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

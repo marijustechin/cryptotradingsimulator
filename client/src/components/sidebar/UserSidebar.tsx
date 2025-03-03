@@ -7,12 +7,16 @@ import { Sidebar } from './Sidebar';
 import { ISSidebar } from './sidebarNavLinks';
 
 const sidebarNavLinks: ISSidebar[] = [
-  { title: 'Dashboard', href: '/dashboard', icon: <MdOutlineSpaceDashboard /> },
-  { title: 'WithDraw', href: '/withdraw', icon: <FaMoneyBillWave /> },
-  { title: 'Deposits', href: '/deposits', icon: <RiBankFill /> },
-  { title: 'Buy Miner', href: '/buy-miner', icon: <FaShoppingCart /> },
-  { title: 'Settings', href: '/settings', icon: <FaCog /> },
-  { title: 'Profile', href: '/profile', icon: <FaRegUser /> },
+  {
+    title: 'Dashboard',
+    href: '/my-dashboard',
+    icon: <MdOutlineSpaceDashboard />,
+  },
+  { title: 'Stats', href: '/my-dashboard/stats', icon: <FaMoneyBillWave /> },
+  { title: 'Portfolio', href: '/my-dashboard/portfolio', icon: <RiBankFill /> },
+  { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },
+  { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
+  { title: 'Profile', href: '/my-dashboard/profile', icon: <FaRegUser /> },
 ];
 
 export const UserSidebar = () => {
