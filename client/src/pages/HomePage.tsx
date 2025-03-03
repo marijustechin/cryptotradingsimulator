@@ -1,3 +1,10 @@
+import {HomePageTextures} from "./HomePageTextures"
+import "../Textures.css";
+
 export const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+  <HomePageTextures />
+  </>
+  )
 };
