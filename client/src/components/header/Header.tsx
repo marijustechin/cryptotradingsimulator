@@ -22,7 +22,7 @@ return (
 
     {/* Logo */}
     <div className="flex-1 flex justify-start">
-      <Link to="/"><img className="w-[90px] h-[90px] mt-[15px] relative z-10" src={logo} alt="Seven Ducks Alliance Logo" />
+      <Link to="/"><img className="h-18 relative z-10" src={logo} alt="Seven Ducks Alliance Logo" />
       </Link>
     </div>
 
