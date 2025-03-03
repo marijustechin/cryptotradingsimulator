@@ -115,8 +115,13 @@ class UserService {
       where: {
         id: payload.id,
       },
+      include: [
+        {
+          model: wallet,
+          attributes: ['balance'],
+        },
+      ],
     });
-
     if (!userInfo) throw ApiError.UnauthorizedError();
 
     return new UserInfoDto(userInfo);
