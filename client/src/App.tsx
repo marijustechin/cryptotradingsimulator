@@ -1,4 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
+import { useEffect } from 'react';
+import { useAppDispatch } from './store/store';
+import { restoreSession } from './store/features/user/authSlice';
 
 // layouts
 import { MainLayout } from './layouts/MainLayout';
@@ -18,10 +21,17 @@ import { UserLayout } from './layouts/UserLayout';
 import { UserStatsPage } from './pages/user/UserStatsPage';
 import { UserPortfolioPage } from './pages/user/UserPortfolioPage';
 
-// Demesio, sitame puslapyje gali buti tik provaideriai
-// arba globalaus lygio elementai - t.y. jokiu zemesnio lygmens elementu
-
 function App() {
+  // pasileidziant programai automatiskai atnaujinam
+  // refreshTokena - atstatom sesija is localStorage
+  // arba jei pasibaiges accessTokeno galiojimas
+  // darom refresh
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(restoreSession());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>

@@ -58,7 +58,7 @@ class UserService {
   async login(email, password) {
     const activeUser = await user.findOne({
       where: { email },
-      include: user_secret,
+      include: [user_secret, wallet],
     });
 
     if (!activeUser) throw ApiError.BadRequest(`Incorrect email or password`);
@@ -75,13 +75,18 @@ class UserService {
     const tokens = tokenService.generateTokens({
       id: activeUser.id,
       role: activeUser.role,
+      balance: activeUser.wallet.balance,
     });
 
     await tokenService.saveRefreshToken(activeUser.id, tokens.refreshToken);
 
     return {
       ...tokens,
-      user: { id: activeUser.id, role: activeUser.role },
+      user: {
+        id: activeUser.id,
+        role: activeUser.role,
+        balance: activeUser.wallet.balance,
+      },
     };
   }
 
@@ -115,12 +120,6 @@ class UserService {
       where: {
         id: payload.id,
       },
-      include: [
-        {
-          model: wallet,
-          attributes: ['balance'],
-        },
-      ],
     });
     if (!userInfo) throw ApiError.UnauthorizedError();
 

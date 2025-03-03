@@ -5,7 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 import { IUser } from '../../../types/user';
 import HelperService from '../../../services/HelperService';
 
-
 interface AuthState {
   user: IUser;
   accessToken: string | null;
@@ -26,12 +25,16 @@ const isTokenValid = (token: string): boolean => {
 
 // Atstatom useri is local storage **with accessToken**
 const storedToken = localStorage.getItem('accessToken');
-let restoredUser: IUser = { id: null, role: null };
+let restoredUser: IUser = { id: null, role: null, balance: null };
 let restoredAccessToken: string | null = null;
 
 if (storedToken && isTokenValid(storedToken)) {
-  const { id, role } = jwtDecode<{ id: string; role: string }>(storedToken);
-  restoredUser = { id, role };
+  const { id, role, balance } = jwtDecode<{
+    id: string;
+    role: string;
+    balance: number;
+  }>(storedToken);
+  restoredUser = { id, role, balance };
   restoredAccessToken = storedToken;
 }
 
@@ -51,21 +54,29 @@ export const restoreSession = createAsyncThunk(
       const oldToken = localStorage.getItem('accessToken');
 
       if (oldToken && isTokenValid(oldToken)) {
-        const { id, role } = jwtDecode<{ id: string; role: string }>(oldToken);
-        return { accessToken: oldToken, user: { id, role } };
+        const { id, role, balance } = jwtDecode<{
+          id: string;
+          role: string;
+          balance: number;
+        }>(oldToken);
+        return { accessToken: oldToken, user: { id, role, balance } };
       } else if (oldToken) {
         const newToken = await AuthService.refresh();
         if (!newToken) throw new Error('Sesija baigėsi...');
 
         localStorage.setItem('accessToken', newToken);
-        const { id, role } = jwtDecode<{ id: string; role: string }>(newToken);
-        return { accessToken: newToken, user: { id, role } };
+        const { id, role, balance } = jwtDecode<{
+          id: string;
+          role: string;
+          balance: number;
+        }>(newToken);
+        return { accessToken: newToken, user: { id, role, balance } };
       } else {
-        throw new Error('Sesija baigėsi. Prašome prisijungti.');
+        throw new Error('Session expired. Please login.');
       }
     } catch (error: unknown) {
       if (error instanceof Error) return rejectWithValue(error.message);
-      return rejectWithValue('Sesija baigėsi. Prašome prisijungti.');
+      return rejectWithValue('Session expired. Please login.');
     }
   }
 );
@@ -105,7 +116,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     resetAuthState: (state) => {
-      state.user = { id: null, role: null };
+      state.user = { id: null, role: null, balance: null };
       state.accessToken = null; // Pasalinam tokena
       state.status = 'idle';
       state.error = null;
@@ -119,8 +130,9 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.accessToken = action.payload.accessToken; // dedam tokena i reduksa
+        state.accessToken = action.payload.accessToken; // dedam tokena i ridaksa
         state.user = action.payload.user;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -128,15 +140,16 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = 'idle';
-        state.user = { id: null, role: null };
+        state.user = { id: null, role: null, balance: null };
         state.accessToken = null; // pasalinam tokena
+        state.error = null;
       })
       .addCase(restoreSession.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken; // Issaugom atstatyta tokena
         state.user = action.payload.user;
       })
       .addCase(restoreSession.rejected, (state) => {
-        state.user = { id: null, role: null };
+        state.user = { id: null, role: null, balance: null };
         state.accessToken = null;
         localStorage.removeItem('accessToken');
       });
