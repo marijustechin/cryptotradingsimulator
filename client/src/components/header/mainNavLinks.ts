@@ -7,5 +7,5 @@ export const mainNavLinks = [
 
 export const registerLinks = [
   { title: "Login", href: '/login' },
-  { title: "Register", href: '/register' }
+  { title: "Register", href: '/registration' }
 ]
