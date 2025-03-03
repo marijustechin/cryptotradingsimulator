@@ -1,5 +1,4 @@
-import {HomePageTextures} from "./HomePageTextures"
-import "../Textures.css";
+import {HomePageTextures} from "./../components/home/HomePageTextures"
 
 export const HomePage = () => {
   return (
