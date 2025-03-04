@@ -2,12 +2,13 @@ const Router = require('express').Router;
 const rateLimit = require('express-rate-limit');
 const userController = require('../controllers/user.controller');
 const validator = require('../validators/user.validator');
+const authMiddleware = require('../middlewares/auth.middleware');
 
 const userRouter = new Router();
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minuciu
-  max: 5, // blokuojam po 5 nesekmingu bandymu
+  max: 3, // blokuojam po 5 nesekmingu bandymu
   message: 'Too many login attempts. Please try again later.',
 });
 
@@ -27,7 +28,7 @@ userRouter.get('/me', userController.getUserInfo);
 
 // visu naudotoju info
 // gali gauti tik adminas
-userRouter.get('/', userController.getAllUsers);
+userRouter.get('/', authMiddleware.isAdmin, userController.getAllUsers);
 
 // refresh accessToken
 userRouter.post('/refresh', userController.refresh);
