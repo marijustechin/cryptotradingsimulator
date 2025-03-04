@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 const { user, user_secret, wallet } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
-const { UserInfoDto } = require('../dtos/user.dto');
+const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
 
 class UserService {
   /**
@@ -143,6 +143,7 @@ class UserService {
       limit: Number(limit),
       offset: (Number(page) - 1) * Number(limit),
       order: [sortOptions],
+      include: [wallet],
     });
 
     if (rows.length < 1) throw ApiError.NoContent();
@@ -150,7 +151,7 @@ class UserService {
     let allUsers = [];
 
     for (const item of rows) {
-      let singleUser = new UserInfoDto(item);
+      let singleUser = new AllUsersDto(item);
       allUsers.push(singleUser);
     }
 

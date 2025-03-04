@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import authReducer from './features/user/authSlice';
 import userInfoReducer from './features/user/userInfoSlice';
+import allUsersReducer from './features/user/allUsersSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userInfoReducer,
+    allUsers: allUsersReducer,
   },
 });
 

@@ -1,6 +1,6 @@
-import $api, { API_URL } from '../api/axios';
+import $api from '../api/axios';
 
-const USER_URL = API_URL + '/users';
+const USER_URL = '/users';
 
 interface LoginResponse {
   accessToken: string;
