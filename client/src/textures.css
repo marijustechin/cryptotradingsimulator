@@ -86,9 +86,32 @@
     }
 
     .texture-oval {
-      width:400px;
-      height:500px;
+      width:1400px;
+      position:absolute;
+      border: 1px solid;
+      height:600px;
       border-radius:50%;
-      color:rgb(64, 99, 9);
+      color:#636363;
+      transform: rotate(9deg);
+    }
+
+    .texture-oval2 {
+      width:1900px;
+      position:absolute;
+      border: 1px solid;
+      height:850px;
+      border-radius:50%;
+      color:#636363;
+      transform: rotate(9deg);
+    }
+
+    .texture-oval3 {
+      width:2300px;
+      position:absolute;
+      border: 1px solid;
+      height:1100px;
+      border-radius:50%;
+      color:#636363;
+      transform: rotate(9deg);
     }
   }
