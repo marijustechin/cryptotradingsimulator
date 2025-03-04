@@ -38,12 +38,12 @@ class AuthMiddleware {
       if (!userData) throw new ApiError.UnauthorizedError();
 
       // Admin role?
-      if (userData.role !== 'ADMIN') throw new ApiError.UnauthorizedError();
+      if (userData.role !== 'ADMIN') throw new ApiError.Forbidden();
 
       req.user = userData; // irasom user duomenis i requesta
       next();
     } catch (e) {
-      return next(ApiError.UnauthorizedError(e));
+      return next(ApiError.Forbidden(e));
     }
   }
 }
