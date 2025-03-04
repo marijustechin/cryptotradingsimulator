@@ -39,8 +39,10 @@ return (
      {/* Sign Buttons */}
     <div className="flex-1 flex justify-end items-center gap-3">
       {user && user.id ? (
-        <button onClick={logout} className="text-[30px] cursor-pointer">
-          <BiLogOut />
+        <button
+         onClick={logout}
+         className="px-4 py-2 rounded-[10px] border bg-gradient-to-r from-blue-500 to-purple-600  border-white/47 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 cursor-pointer">
+          Logout
         </button> 
       ) : (
         registerLinks.map((link, index) => (
