@@ -8,7 +8,7 @@ const userRouter = new Router();
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minuciu
-  max: 3, // blokuojam po 5 nesekmingu bandymu
+  max: 5, // blokuojam po 5 nesekmingu bandymu
   message: 'Too many login attempts. Please try again later.',
 });
 
