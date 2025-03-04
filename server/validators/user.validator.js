@@ -7,7 +7,12 @@ exports.register = [
     .withMessage(
       'First name should be at least 3 characters lenght, and max 30 characters'
     ),
-  body('email').trim().isEmail().withMessage('Invalid email format'),
+  body('email')
+    .trim()
+    .isEmail()
+    .withMessage('Invalid email format')
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    .withMessage('Invalid email characters'),
   body('password')
     .trim()
     .isStrongPassword({
