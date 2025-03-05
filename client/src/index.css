@@ -22,12 +22,20 @@
   --text-muted: #6b7280;
 }
 
-/* Base styles */
+/* Pataisytas stilius pagal tailwind spalvu klases */
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-main);
   font-family: 'Inter', sans-serif;
+  @apply bg-zinc-900 text-gray-200
 }
+
+.form-basic{
+  @apply bg-gradient-to-br from-violet-900 via-gray-900 to-gray-900 rounded-2xl p-6 w-80 mx-auto
+}
+
+.form-input {
+  @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none
+}
+
 
 /* Headings */
 h1,
