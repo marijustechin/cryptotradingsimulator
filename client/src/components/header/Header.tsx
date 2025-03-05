@@ -9,14 +9,13 @@ const user = useAppSelector(selectUser);
 const dispatch = useAppDispatch()
 const location = useLocation()
 
-const logout = () => {
-  try {
-    dispatch(logoutUser())
-  } catch (error) {
-    console.log("Error to logout", error)
-  }
-}
-
+  const logout = () => {
+    try {
+      dispatch(logoutUser());
+    } catch (error) {
+      console.log('Error to logout', error);
+    }
+  };
 
 return (
   <div className="flex items-center justify-between w-[80vw] mx-auto h-[8vh]">
