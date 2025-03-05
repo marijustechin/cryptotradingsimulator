@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { mainNavLinks, registerLinks } from "./mainNavLinks";
 import logo from "/logo.png"
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -7,8 +7,7 @@ import { logoutUser, selectUser } from "../../store/features/user/authSlice"
 export const Header = () => {
 const user = useAppSelector(selectUser);
 const dispatch = useAppDispatch()
-
-console.log(user);
+const location = useLocation()
 
 const logout = () => {
   try {
@@ -32,11 +31,15 @@ return (
     <div className="flex-1 flex justify-center text-white gap-6 inter text-[14px] font-semibold">
       {/* Navigation Links */}
       {mainNavLinks
-      .filter((link) => user && user.id || link.title !== "My Dashboard" )
+      .filter((link) => user.id || link.title !== "My Dashboard" )
       .map((link) => (   
         <div key={link.title}>
           <Link to={link.href}
-          className="hover:shadow-lg hover:shadow-purple-500/90 transition-all duration-300 cursor-pointer"
+          className={`hover:shadow-lg hover:shadow-purple-500/90 transition-all duration-300 cursor-pointer ${
+            location.pathname === link.href
+            ? "border-b p-[2px] pb-2 border-violet-600"
+            : ""
+          }`}
           >{link.title}</Link>
         </div>
       ))}
