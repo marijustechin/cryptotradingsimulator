@@ -1,9 +1,12 @@
 /* =====================================
    Šriftų importas (Inter ir Montserrat)
    ===================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --color-dark-gray: #16161e;
+}
 
 /* =====================================
    Custom Variables (for additional styling)
@@ -27,31 +30,37 @@ body {
 }
 
 /* Headings */
-h1, .heading-1 {
+h1,
+.heading-1 {
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--text-main);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-h2, .heading-2 {
-  font-size: 2rem;
-  font-weight: bold;
+h2,
+.heading-2 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  font-style: normal;
+  line-height: normal;
   color: var(--text-main);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-h3, .heading-3 {
+h3,
+.heading-3 {
   font-size: 1.75rem;
   font-weight: 600;
   color: var(--text-main);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-p, .paragraph {
+p,
+.paragraph {
   font-size: 1rem;
   color: var(--text-gray);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* Components */
@@ -93,7 +102,7 @@ p, .paragraph {
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--text-main);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .hero-subtitle {
@@ -101,7 +110,7 @@ p, .paragraph {
   color: var(--text-gray);
   max-width: 600px;
   margin: 0 auto;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .hero-cta {
@@ -114,10 +123,9 @@ p, .paragraph {
   border-radius: 9999px;
   text-decoration: none;
   transition: background-color 0.3s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .hero-cta:hover {
   background-color: var(--blue-hover);
 }
-
