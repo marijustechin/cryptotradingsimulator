@@ -8,6 +8,7 @@ import {
 } from '../../store/features/user/allUsersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pagination } from '../../components/Pagination';
+import { FaLongArrowAltDown } from 'react-icons/fa';
 
 export const AllUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,8 @@ export const AllUsersPage = () => {
     dispatch(getAllUsersInfo());
   };
 
+  const handleSorting = () => {};
+
   return (
     <main>
       <div></div>
@@ -33,10 +36,14 @@ export const AllUsersPage = () => {
         <thead>
           <tr>
             <th
+              onClick={() => handleSorting()}
               scope="col"
-              className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase flex cursor-pointer"
             >
-              First name
+              First name{' '}
+              <span className="text-violet-200">
+                <FaLongArrowAltDown />
+              </span>
             </th>
             <th
               scope="col"

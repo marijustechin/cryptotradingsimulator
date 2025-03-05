@@ -6,6 +6,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../store/store';
 import { useNavigate } from 'react-router';
 import { loginUser, selectUser } from '../../store/features/user/authSlice';
 import { useEffect } from 'react';
+import logo from '/logo.png';
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -53,50 +54,59 @@ export const LoginForm = () => {
   }, [status, user, navigate]);
 
   return (
-    <form
-      className="max-w-sm mx-auto"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="form-basic" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <h2>🪙 Please login</h2>
-        <div className="h-10">
-          {error && <span className="text-sm text-rose-500">{error}</span>}
+        <h2 className="flex gap-2 items-center justify-center">
+          <img className="h-8" src={logo} alt="logo" />
+          Crypto Hills
+        </h2>
+        <div className="h-10 flex items-center justify-center">
+          {error && <span className="text-xs text-rose-500">{error}</span>}
         </div>
-        <div className="flex flex-col gap-2 my-2">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            className="w-full border border-violet-400 p-2 rounded-lg focus:outline-none"
-            type="email"
-            autoComplete="on"
-            {...register('email')}
-          />
-          {errors.email && (
-            <span className="text-xs text-red-500">{errors.email.message}</span>
-          )}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1 my-2">
+            <label className="text-xs" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              className="form-input autofill:transition-colors autofill:duration-[999999999s]"
+              type="email"
+              autoComplete="on"
+              {...register('email')}
+            />
+            {errors.email && (
+              <span className="text-xs text-red-500">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1 my-2">
+            <label className="text-xs" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              className="form-input"
+              type="password"
+              autoComplete="off"
+              {...register('password')}
+            />
+            {errors.password && (
+              <span className="text-xs text-red-500">
+                {errors.password.message}
+              </span>
+            )}
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="w-20 text-white bg-gradient-to-tr from-blue-600 via-purple-700 to-violet-900 hover:bg-gradient-to-bl focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm p-2 text-center cursor-pointer"
+            >
+              Login
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 my-2">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            className="w-full border border-violet-400 p-2 rounded-lg focus:outline-none"
-            type="password"
-            autoComplete="off"
-            {...register('password')}
-          />
-          {errors.password && (
-            <span className="text-xs text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="w-full text-white bg-gradient-to-r from-blue-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-        >
-          Login
-        </button>
       </div>
     </form>
   );
