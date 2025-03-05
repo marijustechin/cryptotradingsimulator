@@ -1,7 +1,7 @@
 export const mainNavLinks = [
+  { title: 'Home', href: '/' },
   { title: 'How To Trade', href: '/how-to-trade' },
-  { title: 'User', href: '/my-dashboard' },
-  { title: 'Admin', href: '/dashboard' },
+  { title: 'My Dashboard', href: '/my-dashboard' }, 
   { title: 'Credits', href: '/credits' },
 ];
 

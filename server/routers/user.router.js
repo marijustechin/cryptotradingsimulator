@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const rateLimit = require('express-rate-limit');
 const userController = require('../controllers/user.controller');
 const validator = require('../validators/user.validator');
+const authMiddleware = require('../middlewares/auth.middleware');
 
 const userRouter = new Router();
 
@@ -27,7 +28,7 @@ userRouter.get('/me', userController.getUserInfo);
 
 // visu naudotoju info
 // gali gauti tik adminas
-userRouter.get('/', userController.getAllUsers);
+userRouter.get('/', authMiddleware.isAdmin, userController.getAllUsers);
 
 // refresh accessToken
 userRouter.post('/refresh', userController.refresh);
