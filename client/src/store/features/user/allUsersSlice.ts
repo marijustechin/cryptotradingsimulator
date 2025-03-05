@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IUserExtended } from '../../../types/user';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IAllUsersInfo, IUserExtended } from '../../../types/user';
 import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
 import UserService from '../../../services/UserService';
@@ -9,7 +9,7 @@ interface IAllUsers {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   currentPage: number;
-  sort: 'asc' | 'desc';
+  sort: string;
   limit: number;
   totalUsers: number;
   totalPages: number;
@@ -20,27 +20,38 @@ const initialState: IAllUsers = {
   status: 'idle',
   error: null,
   currentPage: 1,
-  sort: 'asc',
+  sort: 'first_name:asc',
   limit: 10,
   totalUsers: 0,
   totalPages: 0,
 };
 
-export const getAllUsersInfo = createAsyncThunk(
-  'allUsers/getAllUsersInfo',
-  async (_, { rejectWithValue }) => {
-    try {
-      return await UserService.getAllUsers();
-    } catch (e) {
-      return rejectWithValue(HelperService.errorToString(e));
-    }
+export const getAllUsersInfo = createAsyncThunk<
+  IAllUsersInfo,
+  void,
+  { state: RootState }
+>('allUsers/getAllUsersInfo', async (_, { getState, rejectWithValue }) => {
+  try {
+    const state = getState();
+    const currentPage = state.allUsers.currentPage;
+    const sort = state.allUsers.sort;
+    const limit = state.allUsers.limit;
+    const query = '?page=' + currentPage + '&limit=' + limit + '&sort=' + sort;
+
+    return await UserService.getAllUsers(query);
+  } catch (e) {
+    return rejectWithValue(HelperService.errorToString(e));
   }
-);
+});
 
 export const allUsersSlice = createSlice({
   name: 'allUsers',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action: PayloadAction<{ current: number }>) => {
+      state.currentPage = action.payload.current;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllUsersInfo.pending, (state) => {
@@ -53,11 +64,15 @@ export const allUsersSlice = createSlice({
         state.currentPage = action.payload.currentPage;
       })
       .addCase(getAllUsersInfo.rejected, (state, action) => {
-        console.log(action.payload);
+        state.error = action.payload as string;
       });
   },
 });
 
+export const { setCurrentPage } = allUsersSlice.actions;
+
 export const selectAllUsers = (state: RootState) => state.allUsers.allUsersData;
+export const getTotalPages = (state: RootState) => state.allUsers.totalPages;
+export const getCurrentPage = (state: RootState) => state.allUsers.currentPage;
 
 export default allUsersSlice.reducer;

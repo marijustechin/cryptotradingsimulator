@@ -1,19 +1,30 @@
 import { useEffect } from 'react';
 import {
   getAllUsersInfo,
+  getCurrentPage,
+  getTotalPages,
   selectAllUsers,
+  setCurrentPage,
 } from '../../store/features/user/allUsersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { Pagination } from '../../components/Pagination';
 
 export const AllUsersPage = () => {
   const dispatch = useAppDispatch();
   const allUsers = useAppSelector(selectAllUsers);
+  const totalPages = useAppSelector(getTotalPages);
+  const currentPage = useAppSelector(getCurrentPage);
 
   useEffect(() => {
     if (!allUsers) {
       dispatch(getAllUsersInfo());
     }
   }, [allUsers]);
+
+  const handlePageChange = (current: number) => {
+    dispatch(setCurrentPage({ current: current }));
+    dispatch(getAllUsersInfo());
+  };
 
   return (
     <main>
@@ -72,6 +83,11 @@ export const AllUsersPage = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        onChange={(current) => handlePageChange(current)}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </main>
   );
 };
