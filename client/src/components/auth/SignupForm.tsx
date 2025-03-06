@@ -8,7 +8,8 @@ import AuthService from "../../services/AuthService";
 import HelperService from "../../services/HelperService";
 import toast from "react-hot-toast";
 import Logo from "../../../public/logo.png";
-import SignupImg from "../../../public/textures/SignupImg.svg";
+
+import FormImg from "../../../public/textures/forms-background.png"
 
 export const SignupForm = () => {
   const [error, setError] = useState("");
@@ -44,22 +45,22 @@ export const SignupForm = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative ">
-        <div className="absolute md:relative bottom-0 left-0 w-full z-0">
+    
+      <div className="flex relative pt-[5.62rem] pb-[10rem]">
+        <div className="absolute bottom-[-16rem] left-[-6rem] sm:right-[10rem] lg:bottom-[-18.5rem] w-2xl lg:w-3xl z-0">
           <img
-            src={SignupImg}
+            src={FormImg}
             alt="signup"
-            className="absolute bottom-0 left-0 md:bottom-13 md:left-12 md:scale-125"
+            className="absolute bottom-0 left-0 "
           />
         </div>
-        <div className="relative flex items-center justify-center w-full min-h-screen z-10">
+        <div className="relative flex items-center justify-center w-full min-h-screen z-10 sm:left-32 md:left-50 lg:left-70">
           <form
-            className="sm:max-w-sm mx-auto relative z-20 min-h-screen"
+            className="sm:max-w-sm mx-auto bg-[#1c1c1c] rounded-[1rem] opacity-60 backdrop-blur-[10px] p-5 "
             noValidate
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="pt-[5.62rem] pb-[8.56rem]">
+            <div className="">
               <div className="flex">
                 <img
                   src={Logo}
@@ -78,7 +79,7 @@ export const SignupForm = () => {
                 <label htmlFor="first_name">First name</label>
                 <input
                   id="first_name"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="w-full p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
                   type="text"
                   autoComplete="on"
                   {...register("first_name")}
@@ -93,7 +94,7 @@ export const SignupForm = () => {
                 <label htmlFor="email">Email</label>
                 <input
                   id="email"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="w-full p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
                   type="email"
                   autoComplete="on"
                   {...register("email")}
@@ -108,7 +109,7 @@ export const SignupForm = () => {
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="w-full p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
                   type="password"
                   autoComplete="off"
                   {...register("password")}
@@ -124,7 +125,7 @@ export const SignupForm = () => {
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   id="confirmPassword"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="w-full p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
                   type="password"
                   autoComplete="off"
                   {...register("confirmPassword")}
@@ -146,6 +147,6 @@ export const SignupForm = () => {
           </form>
         </div>
       </div>
-    </div>
+    
   );
 };
