@@ -3,11 +3,15 @@ import * as z from "zod";
 export const SignupSchema = z
   .object({
     first_name: z
-      .string()
+      .string({
+        required_error: "First name is required", 
+      })
       .trim()
       .min(2, { message: "First name must be at least 2 characters long" })
       .max(30, { message: "First name must be at most 30 characters long" })
-      .nonempty({ message: "First name is required" }),
+      .regex(/^[\p{L}'-]+(?: [\p{L}'-]+)*$/u, {
+        message: "First name contains excessive stacked characters",
+      }),
     email: z
       .string()
       .trim()
