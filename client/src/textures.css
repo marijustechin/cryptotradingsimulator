@@ -9,111 +9,197 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 }
 
- @layer base {
-  
- }
+@layer base {
+
+}
 
 
-  @layer components {
-
-    .texture-orange {
-      position: absolute;
-      top: 900px;
-      left:-180px;
-      z-index: 0;
-      width: 500px;
-      height: 500px;
-      filter: blur(40px);
-      background: 
-      radial-gradient(circle at center, 
-          rgba(170, 85, 45, 0.6) 5%,
-          rgba(110, 50, 20, 0.5) 30%,
-          rgba(0, 25, 30, 0.3) 55%,
-          rgba(0, 15, 15, 0.2) 75%,
-          rgba(11, 11, 15, 0.05) 90%,
-          rgba(11, 11, 15, 0) 100%  
-      ),
+@layer components {
+  .texture-orange {
+    position: absolute;
+    z-index: 0;
+    filter: blur(40px);
+    background:
+      radial-gradient(circle at center,
+        rgba(170, 85, 45, 0.6) 5%,
+        rgba(110, 50, 20, 0.5) 30%,
+        rgba(0, 25, 30, 0.3) 55%,
+        rgba(0, 15, 15, 0.2) 75%,
+        rgba(11, 11, 15, 0.05) 90%,
+        rgba(11, 11, 15, 0) 100%),
       linear-gradient(to right, rgba(11, 11, 15, 0.95), rgba(11, 11, 15, 1)),
       linear-gradient(to bottom, rgba(11, 11, 15, 0.95), rgba(11, 11, 15, 1));
-    }
+  }
 
-    .texture-green {
-      position: absolute;
-      top: 10px; 
-      left: -90px;
-      z-index: 0;
-      width: 500px;
-      height: 500px;
-      filter: blur(40px);
-    
-      background: radial-gradient(circle at center,
-          rgba(0, 173, 125, 0.5) 15%,
-          rgba(0, 139, 139, 0.4) 30%,
-          rgba(0, 25, 30, 0.3) 55%,
-          rgba(0, 15, 15, 0.2) 75%,
-          rgba(11, 11, 15, 0.05) 90%,
-          rgba(11, 11, 15, 0) 100%
-        ),
-        linear-gradient(to right, rgba(11, 11, 15, 0.95), rgba(11, 11, 15, 1));
-    }
-    
-
-    .texture-purple {
-      position: absolute;
-      top: 250px;
-      right: -150px;
-      z-index: 0;
-      width: 500px;
+  @media (min-width: 320px) {
+    .texture-orange {
+      top: 700px;
+      left: -100px;
+      width: 300px;
       height: 600px;
-      background: radial-gradient(
-        circle at center,
-        rgba(120, 81, 169, 0.8) 25%,
-        rgba(80, 50, 160, 0.7) 40%,
-        rgba(40, 30, 120, 0.6) 50%, 
-        rgba(20, 25, 90, 0.5) 53%,
-        rgba(5, 5, 40, 0.9) 60%,
-        rgba(11, 11, 15, 0.9) 63%,
-        rgba(11, 11, 15, 0.9) 85%,
-        rgba(11, 11, 15, 0.9) 95%,
-        rgba(11, 11, 1, 0.9) 100%
-      ),
-      linear-gradient(to left, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1)),
-      linear-gradient(to bottom, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1));
-    }
-
-    .texture-oval {
-      width:1400px;
-      position:absolute;
-      border: 1px solid;
-      height:600px;
-      border-radius:50%;
-      color:#636363;
-      transform: rotate(9deg);
-    }
-
-    .texture-oval2 {
-      width:1900px;
-      position:absolute;
-      border: 1px solid;
-      height:850px;
-      border-radius:50%;
-      color:#636363;
-      transform: rotate(9deg);
-    }
-
-    .texture-oval3 {
-      width:2300px;
-      position:absolute;
-      border: 1px solid;
-      height:1100px;
-      border-radius:50%;
-      color:#636363;
-      transform: rotate(9deg);
     }
   }
+
+  @media (min-width: 768px) {
+    .texture-orange {
+      top: 830px;
+      left: -250px;
+      width: 800px;
+      height: 400px;
+    }
+  }
+
+
+  .texture-green {
+    position: absolute;
+    z-index: 0;
+    filter: blur(40px);
+
+    background: radial-gradient(circle at center,
+        rgba(0, 173, 125, 0.5) 15%,
+        rgba(0, 139, 139, 0.4) 30%,
+        rgba(0, 25, 30, 0.3) 55%,
+        rgba(0, 15, 15, 0.2) 75%,
+        rgba(11, 11, 15, 0.05) 90%,
+        rgba(11, 11, 15, 0) 100%),
+      linear-gradient(to right, rgba(11, 11, 15, 0.95), rgba(11, 11, 15, 1));
+  }
+
+  @media (min-width: 320px) {
+    .texture-green {
+      top: 10px;
+      left: -50px;
+      width: 300px;
+      height: 600px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-green {
+      top: 30px;
+      right: 10px;
+      width: 900px;
+      height: 400px;
+    }
+  }
+
+  .texture-purple {
+    position: absolute;
+    z-index: 0;
+    filter: blur(60px);
+    background: radial-gradient(
+  circle at 50% 50%, 
+  rgba(120, 81, 169, 0.6) 5%, 
+  rgba(80, 50, 160, 0.5) 25%, 
+  rgba(40, 30, 120, 0.4) 50%, 
+  rgba(20, 25, 90, 0.3) 70%, 
+  rgba(11, 11, 15, 0.1) 90%, 
+  rgba(11, 11, 15, 0) 120%
+),
+      linear-gradient(to left, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1)),
+      linear-gradient(to bottom, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1));
+  }
+
+  @media (min-width: 320px) {
+    .texture-purple {
+      top: 350px;
+      right: -90px;
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-purple {
+      top: 290px;
+      right: -450px;
+      width: 900px;
+      height: 500px;
+    }
+  }
+
+  .texture-oval {
+    position: absolute;
+    border: 1px solid;
+    border-radius: 50%;
+    color: #636363;
+    transform: rotate(2deg);
+  }
+
+  @media (min-width: 320px) {
+    .texture-oval {
+      top: 330px;
+      right: -240px;
+      width: 1200px;
+      height: 530px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-oval {
+      top: -40px;
+      right: -300px;
+      width: 3150px;
+      height: 1500px;
+    }
+  }
+
+  .texture-oval2 {
+    position: absolute;
+    border: 1px solid;
+    border-radius: 50%;
+    color: #636363;
+    transform: rotate(9deg);
+  }
+
+  @media (min-width: 320px) {
+    .texture-oval2 {
+      top: 130px;
+      right: -500px;
+      width: 1600px;
+      height: 950px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-oval2 {
+      top: 280px;
+      right: 10px;
+      width: 2260px;
+      height:850px;
+    }
+  }
+
+  .texture-oval3 {
+    position: absolute;
+    border: 1px solid;
+    border-radius: 50%;
+    color: #636363;
+    transform: rotate(9deg);
+  }
+  @media (min-width: 320px) {
+    .texture-oval3 {
+      top: 230px;
+      right: -500px;
+      width: 1600px;
+      height: 750px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-oval3 {
+      top: 150px;
+      right: -300px;
+      width: 3000px;
+      height: 1200px;
+    }
+  }
+
+}
