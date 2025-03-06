@@ -14,7 +14,7 @@ export const LoginPage = () => {
   }, [navigate, user]);
 
   return (
-    <main className="relative max-w-3xl mx-auto">
+    <main className="relative max-w-3xl mx-auto h-screen">
       <img
         className="absolute -left-60 md:top-30 z-10"
         src={bg}
