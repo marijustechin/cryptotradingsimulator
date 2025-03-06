@@ -3,7 +3,7 @@ import "../../textures.css";
 
 export const HomePageTextures = () => {
     return (
-        <div className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+        <div className="sm:block relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
 
             <div
                 className="absolute inset-0 z-10"
@@ -20,7 +20,7 @@ export const HomePageTextures = () => {
                                       url('/textures/star-img3.svg')`,
                     backgroundSize: '7%, 10%, 3%, 2%, 2%, 8%, 7%, 5%, 7%, 2%',
                     backgroundRepeat: 'no-repeat',
-                    backgroundPosition: `right 0px top 450px,
+                    backgroundPosition: `right 0px top 550px,
                                         right 130px top 220px,
                                         right 300px top 110px,
                                         right 200px top 200px,
@@ -32,6 +32,23 @@ export const HomePageTextures = () => {
                                         left 350px top 290px`,
                 }}
             ></div>
+
+                {/* Mobile version needs to edited */ }
+            <div
+                className="absolute inset-0 z-10 sm:hidden"
+                style={{
+                    backgroundImage: `url('/textures/sphere.svg'),
+                                      url('/textures/Monero.svg'),
+                                      url('/textures/star-img.svg')`,
+                    backgroundSize: '12%, 15%, 5%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: `right 50% top 60%,
+                                        right 20% top 30%,
+                                        left 30% top 40%`,
+                }}
+            ></div>
+
+
             <div className="texture-oval z-9"></div>
             <div className="texture-oval2 z-9"></div>
             <div className="texture-oval3 z-9"></div>
