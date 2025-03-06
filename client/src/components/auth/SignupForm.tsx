@@ -7,8 +7,9 @@ import { useState } from "react";
 import AuthService from "../../services/AuthService";
 import HelperService from "../../services/HelperService";
 import toast from "react-hot-toast";
-import Logo from "../../../public/logo.png";
-import SignupImg from "../../../public/textures/SignupImg.svg";
+import Logo from "/logo.png";
+
+
 
 export const SignupForm = () => {
   const [error, setError] = useState("");
@@ -44,22 +45,17 @@ export const SignupForm = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative ">
-        <div className="absolute md:relative bottom-0 left-0 w-full z-0">
-          <img
-            src={SignupImg}
-            alt="signup"
-            className="absolute bottom-0 left-0 md:bottom-13 md:left-12 md:scale-125"
-          />
-        </div>
-        <div className="relative flex items-center justify-center w-full min-h-screen z-10">
+    
+    
+        
+        
           <form
-            className="sm:max-w-sm mx-auto relative z-20 min-h-screen"
+            className="sm:max-w-sm mx-auto form-basic shadow-violet-400 shadow-md"
             noValidate
             onSubmit={handleSubmit(onSubmit)}
+            
           >
-            <div className="pt-[5.62rem] pb-[8.56rem]">
+            <div className="">
               <div className="flex">
                 <img
                   src={Logo}
@@ -78,7 +74,7 @@ export const SignupForm = () => {
                 <label htmlFor="first_name">First name</label>
                 <input
                   id="first_name"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="form-input"
                   type="text"
                   autoComplete="on"
                   {...register("first_name")}
@@ -93,7 +89,7 @@ export const SignupForm = () => {
                 <label htmlFor="email">Email</label>
                 <input
                   id="email"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="form-input"
                   type="email"
                   autoComplete="on"
                   {...register("email")}
@@ -108,7 +104,7 @@ export const SignupForm = () => {
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="form-input"
                   type="password"
                   autoComplete="off"
                   {...register("password")}
@@ -124,7 +120,7 @@ export const SignupForm = () => {
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   id="confirmPassword"
-                  className="w-full h-[3.125rem] rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s] bg-dark-gray"
+                  className="form-input"
                   type="password"
                   autoComplete="off"
                   {...register("confirmPassword")}
@@ -144,8 +140,8 @@ export const SignupForm = () => {
               </button>
             </div>
           </form>
-        </div>
-      </div>
-    </div>
+       
+        
+    
   );
 };
