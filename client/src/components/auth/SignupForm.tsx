@@ -71,7 +71,7 @@ export const SignupForm = () => {
                 )}
               </div>
               <div className="flex flex-col gap-2 my-2">
-                <label htmlFor="first_name">First name</label>
+                <label htmlFor="first_name">First Name</label>
                 <input
                   id="first_name"
                   className="form-input"
