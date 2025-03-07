@@ -80,7 +80,7 @@ export const SignupForm = () => {
                   {...register("first_name")}
                 />
                 {errors.first_name && (
-                  <span className="text-xs text-red-500">
+                  <span className="text-xs text-red-500 whitespace-nowrap">
                     {errors.first_name.message}
                   </span>
                 )}
