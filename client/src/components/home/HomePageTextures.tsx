@@ -5,8 +5,9 @@ export const HomePageTextures = () => {
     return (
         <div className="sm:block relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
 
+            {/* Desktop version */ }
             <div
-                className="absolute inset-0 z-10"
+                className="absolute inset-0 z-10 hidden lg:block"
                 style={{
                     backgroundImage: `url('/textures/sphere.svg'),
                                       url('/textures/Monero.svg'),
@@ -27,24 +28,74 @@ export const HomePageTextures = () => {
                                         right 250px top 900px,
                                         right 430px top 650px,
                                         left 300px top 550px,
-                                        left 230px top 350px,
+                                        left 130px top 410px,
                                         left 370px top 100px,
                                         left 350px top 290px`,
                 }}
             ></div>
 
-                {/* Mobile version needs to edited */ }
+
+                {/* Mobile version */ }
             <div
-                className="absolute inset-0 z-10 sm:hidden"
+                className="absolute inset-0 z-10 block md:hidden"
                 style={{
                     backgroundImage: `url('/textures/sphere.svg'),
                                       url('/textures/Monero.svg'),
-                                      url('/textures/star-img.svg')`,
-                    backgroundSize: '12%, 15%, 5%',
+                                      url('/textures/star-img.svg'),
+                                      url('/textures/star-img2.svg'),
+                                      url('/textures/star-img3.svg'),
+                                      url('/textures/Etherium-2.svg'),
+                                      url('/textures/LiteCoin-1.svg'),
+                                      url('/textures/sphere-y.svg'),
+                                      url('/textures/Bitcoin-1.svg'),
+                                      url('/textures/star-img3.svg')
+                                      `,
+                    backgroundSize: '18%, 25%, 9%, 6%, 5%, 25%, 23%, 14%, 17%, 8%',
                     backgroundRepeat: 'no-repeat',
-                    backgroundPosition: `right 50% top 60%,
-                                        right 20% top 30%,
-                                        left 30% top 40%`,
+                    backgroundPosition: `right 0px top 450px,
+                                        right 20px top 295px,
+                                        right 150px top 205px,
+                                        right 120px top 270px,
+                                        right 80px top 850px,
+                                        right 80px top 720px,
+                                        left 30px top 660px,
+                                        left -10px top 420px,
+                                        left 120px top 200px,
+                                        left 120px top 330px
+                                        `
+                                        ,
+                }}
+            ></div>
+
+                            {/* Tablet version */ }
+                            <div
+                className="absolute inset-0 z-10 hidden md:block lg:hidden"
+                style={{
+                    backgroundImage: `url('/textures/sphere.svg'),
+                                      url('/textures/Monero.svg'),
+                                      url('/textures/star-img.svg'),
+                                      url('/textures/star-img2.svg'),
+                                      url('/textures/star-img3.svg'),
+                                      url('/textures/Etherium-2.svg'),
+                                      url('/textures/LiteCoin-1.svg'),
+                                      url('/textures/sphere-y.svg'),
+                                      url('/textures/Bitcoin-1.svg'),
+                                      url('/textures/star-img3.svg')
+                                      `,
+                    backgroundSize: '14%, 18%, 6%, 5%, 5%, 18%, 20%, 12%, 15%, 6%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: `right 0px top 450px,
+                                        right 20px top 295px,
+                                        right 150px top 205px,
+                                        right 120px top 270px,
+                                        right 80px top 850px,
+                                        right 80px top 720px,
+                                        left 30px top 660px,
+                                        left -10px top 420px,
+                                        left 120px top 200px,
+                                        left 120px top 330px
+                                        `
+                                        ,
                 }}
             ></div>
 

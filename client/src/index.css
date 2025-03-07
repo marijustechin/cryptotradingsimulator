@@ -66,8 +66,6 @@ h3,
 
 p,
 .paragraph {
-  font-size: 1rem;
-  color: var(--text-gray);
   font-family: "Inter", sans-serif;
 }
 
