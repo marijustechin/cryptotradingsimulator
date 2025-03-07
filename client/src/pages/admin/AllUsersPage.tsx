@@ -2,22 +2,26 @@ import { useEffect, useState } from 'react';
 import {
   getAllUsersInfo,
   getCurrentPage,
-  getSorting,
+  getFilter,
   getTotalPages,
   selectAllUsers,
   setCurrentPage,
+  setFilter,
   setSorting,
 } from '../../store/features/user/allUsersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pagination } from '../../components/Pagination';
 import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa';
+import { Search } from '../../components/Search';
 
 export const AllUsersPage = () => {
   const dispatch = useAppDispatch();
   const allUsers = useAppSelector(selectAllUsers);
   const totalPages = useAppSelector(getTotalPages);
   const currentPage = useAppSelector(getCurrentPage);
+  const filter = useAppSelector(getFilter);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [sortField, setSortField] = useState('first_name');
 
   useEffect(() => {
     if (!allUsers) {
@@ -37,15 +41,36 @@ export const AllUsersPage = () => {
     // 2. taip uztikrinam, kad pries dispatch butu naujausia busena
     setSortOrder((prevOrder) => {
       const newOrder = prevOrder === 'asc' ? 'desc' : 'asc';
+      setSortField(newOptions);
       dispatch(setSorting({ sort: newOptions + ':' + newOrder }));
       dispatch(getAllUsersInfo());
       return newOrder;
     });
   };
 
+  const handleFilter = (text: string, field_name: string) => {
+    const newFilter = text ? `${field_name}:${text}` : '';
+    dispatch(setFilter({ filter: newFilter }));
+  };
+
+  // einam duomenu visada,
+  // kai atnaujinamas `filter`
+  useEffect(() => {
+    dispatch(getAllUsersInfo());
+  }, [filter, dispatch]);
+
   return (
     <main>
-      <div></div>
+      <div className="flex gap-4 py-3 items-center">
+        <Search
+          placeholderText="Search by First Name"
+          onSearch={(searchText) => handleFilter(searchText, 'first_name')}
+        />
+        <Search
+          placeholderText="Search by Email"
+          onSearch={(searchText) => handleFilter(searchText, 'email')}
+        />
+      </div>
       <table className="min-w-full">
         <thead>
           <tr>
@@ -56,11 +81,12 @@ export const AllUsersPage = () => {
             >
               First Name{' '}
               <span className="ml-2 text-violet-200">
-                {sortOrder === 'asc' ? (
-                  <FaLongArrowAltDown />
-                ) : (
-                  <FaLongArrowAltUp />
-                )}
+                {sortField === 'first_name' &&
+                  (sortOrder === 'asc' ? (
+                    <FaLongArrowAltDown />
+                  ) : (
+                    <FaLongArrowAltUp />
+                  ))}
               </span>
             </th>
             <th
@@ -69,13 +95,14 @@ export const AllUsersPage = () => {
               className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase cursor-pointer"
             >
               <span className="flex gap-1">
-                Email
+                <span>Email</span>
                 <span className="ml-2 text-violet-200">
-                  {sortOrder === 'asc' ? (
-                    <FaLongArrowAltDown />
-                  ) : (
-                    <FaLongArrowAltUp />
-                  )}
+                  {sortField === 'email' &&
+                    (sortOrder === 'asc' ? (
+                      <FaLongArrowAltDown />
+                    ) : (
+                      <FaLongArrowAltUp />
+                    ))}
                 </span>
               </span>
             </th>
@@ -113,6 +140,11 @@ export const AllUsersPage = () => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
                 {user.role}
+              </td>
+              <td>
+                <button className="cursor-pointer text-violet-600 hover:text-violet-400">
+                  ❌ Delete
+                </button>
               </td>
             </tr>
           ))}
