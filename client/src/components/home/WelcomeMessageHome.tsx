@@ -9,7 +9,7 @@ export const WelcomeMessageHome = () => {
         </div>
 
         <div className="mt-6">
-          <Link to="/login">
+          <Link to="/registration">
           <button className="
         px-4 py-2 rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300">
             Get Started
