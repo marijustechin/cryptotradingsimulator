@@ -35,7 +35,9 @@ body {
 .form-input {
   @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s]
 }
-
+input.hidden-password {
+  -webkit-text-security: disc;
+}
 
 /* Headings */
 h1,

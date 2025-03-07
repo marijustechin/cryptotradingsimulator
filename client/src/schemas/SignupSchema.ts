@@ -26,10 +26,10 @@ export const SignupSchema = z
       .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, {
         message: "Password must contain at least one letter and one number",
       }),
-    confirmPassword: z
+      confirmPassword: z
       .string()
-      .nonempty({ message: "Please confirm your password" })
-      .min(6, { message: "Password must be at least 6 characters long" }),
+      .trim()
+      .nonempty({ message: "Please confirm your password" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
