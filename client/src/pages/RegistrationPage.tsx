@@ -1,16 +1,17 @@
 import { SignupForm } from "../components/auth/SignupForm";
-import bg from '/forms-background.png';
+import bg from "/forms-background.png";
 
 export const RegistrationPage = () => {
   return (
-    <main className="relative max-w-3xl mx-auto h-screen flex flex-col justify-center items-center">
-      <img
-        className="absolute -left-60 md:top-30 z-10"
-        src={bg}
-        alt="background"
-      />
-      <div className="absolute sm:top-10 md:top-20 lg:top-32 md:right-10 z-20 ">
-        <SignupForm />
+    <main className="min-h-screen flex flex-col justify-center items-center px-4 relative">
+      <div className="absolute -z-10 flex justify-start max-w-4xl">
+        <img className="w-full object-cover " src={bg} alt="background" />
+      </div>
+
+      <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start justify-center sm:justify-end gap-8 md:gap-12">
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+          <SignupForm />
+        </div>
       </div>
     </main>
   );
