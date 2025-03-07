@@ -60,7 +60,7 @@ export const SignupForm = () => {
                 <img
                   src={Logo}
                   alt="logo"
-                  className="w-[3.375rem] h-[3.32175rem] "
+                  className="w-[3rem] h-[3rem] "
                 />
                 <h2 className="pl-[0.5rem]">Crypto Hills</h2>
               </div>
