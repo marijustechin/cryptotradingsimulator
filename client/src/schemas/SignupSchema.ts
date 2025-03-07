@@ -5,9 +5,9 @@ export const SignupSchema = z
     first_name: z
       .string()
       .trim()
-      .nonempty({ message: "First Name is required" })
-      .min(2, { message: "First Name must be at least 2 characters long" })
-      .max(30, { message: "First Name must be at most 30 characters long" })
+      .nonempty({ message: "First name is required" })
+      .min(2, { message: "First name must be at least 2 characters long" })
+      .max(30, { message: "First name must be at most 30 characters long" })
       .regex(/^[\p{L}'-]+(?: [\p{L}'-]+)*$/u, {
         message: "First name contains excessive stacked characters",
       }),
@@ -26,8 +26,8 @@ export const SignupSchema = z
       }),
     confirmPassword: z
       .string()
-      .nonempty({ message: "Confirm Password is required" })
-      .min(6, { message: "Password must be at least 6 characters" }),
+      .nonempty({ message: "Please confirm your password" })
+      .min(6, { message: "Password must be at least 6 characters long" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
