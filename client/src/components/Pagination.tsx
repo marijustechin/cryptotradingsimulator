@@ -18,7 +18,6 @@ export const Pagination = ({
       <p className="text-center py-2">
         Page:{' '}
         <span className="text-violet-200">
-          {' '}
           {currentPage}/{totalPages}{' '}
         </span>
       </p>

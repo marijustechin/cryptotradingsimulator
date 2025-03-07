@@ -21,6 +21,7 @@ import { UserLayout } from './layouts/UserLayout';
 import { UserStatsPage } from './pages/user/UserStatsPage';
 import { UserPortfolioPage } from './pages/user/UserPortfolioPage';
 import { AllUsersPage } from './pages/admin/AllUsersPage';
+import { SystemLogsPage } from './pages/admin/SystemLogsPage';
 
 function App() {
   // pasileidziant programai automatiskai atnaujinam
@@ -47,6 +48,7 @@ function App() {
           <Route index element={<AdminDashboardPage />} />
           <Route path="/dashboard/settings" element={<SystemSettingsPage />} />
           <Route path="/dashboard/users" element={<AllUsersPage />} />
+          <Route path="/dashboard/system-logs" element={<SystemLogsPage />} />
         </Route>
         <Route path="/my-dashboard" element={<UserLayout />}>
           <Route index element={<UserDashboardPage />} />

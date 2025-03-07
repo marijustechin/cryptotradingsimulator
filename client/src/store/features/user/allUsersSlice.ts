@@ -10,6 +10,7 @@ interface IAllUsers {
   error: string | null;
   currentPage: number;
   sort: string;
+  filter: string;
   limit: number;
   totalUsers: number;
   totalPages: number;
@@ -21,6 +22,7 @@ const initialState: IAllUsers = {
   error: null,
   currentPage: 1,
   sort: 'first_name:asc',
+  filter: '',
   limit: 10,
   totalUsers: 0,
   totalPages: 0,
@@ -36,7 +38,16 @@ export const getAllUsersInfo = createAsyncThunk<
     const currentPage = state.allUsers.currentPage;
     const sort = state.allUsers.sort;
     const limit = state.allUsers.limit;
-    const query = '?page=' + currentPage + '&limit=' + limit + '&sort=' + sort;
+    const filter = state.allUsers.filter;
+    const query =
+      '?page=' +
+      currentPage +
+      '&limit=' +
+      limit +
+      '&sort=' +
+      sort +
+      '&filter=' +
+      filter;
 
     return await UserService.getAllUsers(query);
   } catch (e) {
@@ -50,6 +61,9 @@ export const allUsersSlice = createSlice({
   reducers: {
     setCurrentPage: (state, action: PayloadAction<{ current: number }>) => {
       state.currentPage = action.payload.current;
+    },
+    setFilter: (state, action: PayloadAction<{ filter: string }>) => {
+      state.filter = action.payload.filter;
     },
   },
   extraReducers: (builder) => {
@@ -69,7 +83,7 @@ export const allUsersSlice = createSlice({
   },
 });
 
-export const { setCurrentPage } = allUsersSlice.actions;
+export const { setCurrentPage, setFilter } = allUsersSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.allUsers.allUsersData;
 export const getTotalPages = (state: RootState) => state.allUsers.totalPages;

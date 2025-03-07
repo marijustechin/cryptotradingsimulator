@@ -5,10 +5,13 @@ import {
   getTotalPages,
   selectAllUsers,
   setCurrentPage,
+  setFilter,
 } from '../../store/features/user/allUsersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pagination } from '../../components/Pagination';
 import { FaLongArrowAltDown } from 'react-icons/fa';
+import HelperService from '../../services/HelperService';
+import { Search } from '../../components/Search';
 
 export const AllUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -27,11 +30,22 @@ export const AllUsersPage = () => {
     dispatch(getAllUsersInfo());
   };
 
+  const handleSearch = (search: string) => {
+    dispatch(setFilter({ filter: `first_name:${search}` }));
+    dispatch(getAllUsersInfo());
+  };
+
   const handleSorting = () => {};
 
   return (
     <main>
-      <div></div>
+      <div className="border-b border-violet-900">
+        <Search
+          placeHolderText="Search by name"
+          onSearch={(search) => handleSearch(search)}
+          onClear={handleSorting}
+        />
+      </div>
       <table className="min-w-full">
         <thead>
           <tr>
@@ -81,10 +95,15 @@ export const AllUsersPage = () => {
                 {user.email}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                {user.balance}
+                {HelperService.formatCurrency(user.balance)}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
                 {user.role}
+              </td>
+              <td>
+                <button className="text-purple-400" type="button">
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

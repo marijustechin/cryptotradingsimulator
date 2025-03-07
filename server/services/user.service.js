@@ -4,6 +4,7 @@ const { user, user_secret, wallet } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
 const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
+const Op = require('sequelize').Op;
 
 class UserService {
   /**
@@ -133,18 +134,35 @@ class UserService {
    * @param {*} sort
    * @returns totalUsers, totalPages, currentPage, users {}
    */
-  async getAllUsers(page = 1, limit = 10, sort = 'first_name:asc') {
+  async getAllUsers(
+    page = 1,
+    limit = 10,
+    sort = 'first_name:asc',
+    filter = ''
+  ) {
     const sortOptions = sort.split(':');
+    const filterOptions = filter.split(':');
+    let whereCondition = '';
 
+    if (filter) {
+      whereCondition = {
+        [filterOptions[0]]: { [Op.like]: `%${filterOptions[1]}%` },
+      };
+    }
+
+    console.log(whereCondition);
     // su postgres nebutina,
     // o su mariaDB/mysql sitie parametrai
     // PRIVALO buti skaiciaus tipo, nes mes sintakses klaida
     const { count, rows } = await user.findAndCountAll({
+      where: whereCondition,
       limit: Number(limit),
       offset: (Number(page) - 1) * Number(limit),
       order: [sortOptions],
       include: [wallet],
     });
+
+    console.log(count);
 
     if (rows.length < 1) throw ApiError.NoContent();
 
