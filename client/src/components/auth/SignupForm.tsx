@@ -50,7 +50,7 @@ export const SignupForm = () => {
         
         
           <form
-            className="sm:max-w-sm mx-auto form-basic shadow-violet-400 shadow-md"
+            className="sm:max-w-sm mx-auto form-basic shadow-violet-400 shadow-md mb-5 mt-5"
             noValidate
             onSubmit={handleSubmit(onSubmit)}
             
@@ -70,7 +70,7 @@ export const SignupForm = () => {
                   <span className="text-sm text-rose-500">{error}</span>
                 )}
               </div>
-              <div className="flex flex-col gap-2 my-2">
+              <div className="flex flex-col gap-2 my-3">
                 <label htmlFor="first_name">First Name</label>
                 <input
                   id="first_name"
@@ -79,13 +79,15 @@ export const SignupForm = () => {
                   autoComplete="on"
                   {...register("first_name")}
                 />
+                <div className="relative">
                 {errors.first_name && (
-                  <span className="text-xs text-red-500 whitespace-nowrap">
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500 whitespace-nowrap">
                     {errors.first_name.message}
                   </span>
                 )}
+                </div>
               </div>
-              <div className="flex flex-col gap-2 my-2">
+              <div className="flex flex-col gap-2 my-3">
                 <label htmlFor="email">Email</label>
                 <input
                   id="email"
@@ -94,13 +96,15 @@ export const SignupForm = () => {
                   autoComplete="on"
                   {...register("email")}
                 />
+                <div className="relative">
                 {errors.email && (
-                  <span className="text-xs text-red-500">
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
                     {errors.email.message}
                   </span>
                 )}
+                </div>
               </div>
-              <div className="flex flex-col gap-2 my-2">
+              <div className="flex flex-col gap-2 my-3">
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
@@ -109,14 +113,16 @@ export const SignupForm = () => {
                   autoComplete="off"
                   {...register("password")}
                 />
+                <div className="relative">
                 {errors.password && (
-                  <span className="text-xs text-red-500">
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
                     {errors.password.message}
                   </span>
                 )}
+                </div>
               </div>
 
-              <div className="flex flex-col gap-2 my-2">
+              <div className="flex flex-col gap-2 my-3">
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   id="confirmPassword"
@@ -125,11 +131,13 @@ export const SignupForm = () => {
                   autoComplete="off"
                   {...register("confirmPassword")}
                 />
+                <div className="relative">
                 {errors.confirmPassword && (
-                  <span className="text-xs text-red-500">
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
                     {errors.confirmPassword.message}
                   </span>
                 )}
+                </div>
               </div>
 
               <button
@@ -140,6 +148,7 @@ export const SignupForm = () => {
               </button>
             </div>
           </form>
+          
        
         
     
