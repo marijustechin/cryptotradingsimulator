@@ -14,8 +14,19 @@ class UserController {
     try {
       const errors = validationResult(req);
 
-      if (!errors.isEmpty())
-        throw ApiError.BadRequest('Validation error', errors.array());
+      if (!errors.isEmpty()) {
+        // galimas ir toks variantas
+        // grazinam ne masyva, o perdarom ir string pranesimus
+        const err = errors.array();
+        let errString = '';
+
+        for (let i = 0; i < err.length; ++i) {
+          errString += err[i].msg + '; ';
+        }
+
+        console.log(errString);
+        throw ApiError.BadRequest(errString);
+      }
 
       const { first_name, email, password } = req.body;
 
@@ -170,13 +181,14 @@ class UserController {
   async updateUser(req, res, next) {
     try {
       const errors = validationResult(req);
-      if (!errors.isEmpty()) throw ApiError.BadRequest('Validation error', errors.array());
-  
+      if (!errors.isEmpty())
+        throw ApiError.BadRequest('Validation error', errors.array());
+
       const userId = req.params.id; // Get ID from request params
       if (!userId) throw ApiError.BadRequest('User ID is required');
-  
+
       const { first_name, last_name, email, address, phone_number } = req.body;
-  
+
       const updatedUser = await userService.updateUser(userId, {
         first_name,
         last_name,
@@ -184,12 +196,12 @@ class UserController {
         address,
         phone_number,
       });
-  
+
       return res.status(200).json(updatedUser);
     } catch (e) {
       next(e);
     }
-  }  
+  }
 }
 
 module.exports = new UserController();

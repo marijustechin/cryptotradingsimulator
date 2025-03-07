@@ -26,7 +26,7 @@ $api.interceptors.request.use((config) => {
 $api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 || error.response.status === 403) {
       try {
         const newToken = await AuthService.refresh();
         if (newToken) {
@@ -35,10 +35,7 @@ $api.interceptors.response.use(
           return $api(error.config); // bandom dar karta
         }
       } catch (refreshError) {
-        console.error(
-          'No refresh token, logging out...',
-          refreshError
-        );
+        console.error('No refresh token, logging out...', refreshError);
         localStorage.removeItem('accessToken');
         window.location.href = '/login'; // ar geriau naudojam navigate ???
       }
