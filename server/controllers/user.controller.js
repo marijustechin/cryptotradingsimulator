@@ -20,8 +20,8 @@ class UserController {
         const err = errors.array();
         let errString = '';
 
-        for (let i = 0; i < err.length; ++i) {
-          errString += err[i].msg + '; ';
+        for (const element of err) {
+          errString += element.msg + '; ';
         }
 
         console.log(errString);

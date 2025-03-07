@@ -10,6 +10,7 @@ interface IAllUsers {
   error: string | null;
   currentPage: number;
   sort: string;
+  filter: string;
   limit: number;
   totalUsers: number;
   totalPages: number;
@@ -21,6 +22,7 @@ const initialState: IAllUsers = {
   error: null,
   currentPage: 1,
   sort: 'first_name:asc',
+  filter: '',
   limit: 10,
   totalUsers: 0,
   totalPages: 0,
@@ -36,7 +38,16 @@ export const getAllUsersInfo = createAsyncThunk<
     const currentPage = state.allUsers.currentPage;
     const sort = state.allUsers.sort;
     const limit = state.allUsers.limit;
-    const query = '?page=' + currentPage + '&limit=' + limit + '&sort=' + sort;
+    const filter = state.allUsers.filter;
+    const query =
+      '?page=' +
+      currentPage +
+      '&limit=' +
+      limit +
+      '&sort=' +
+      sort +
+      '&filter=' +
+      filter;
 
     return await UserService.getAllUsers(query);
   } catch (e) {
@@ -54,6 +65,9 @@ export const allUsersSlice = createSlice({
     setSorting: (state, action: PayloadAction<{ sort: string }>) => {
       state.sort = action.payload.sort;
     },
+    setFilter: (state, action: PayloadAction<{ filter: string }>) => {
+      state.filter = action.payload.filter;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,10 +75,17 @@ export const allUsersSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getAllUsersInfo.fulfilled, (state, action) => {
-        state.allUsersData = [...action.payload.users];
-        state.totalPages = action.payload.totalPages;
-        state.totalUsers = action.payload.totalUsers;
-        state.currentPage = action.payload.currentPage;
+        if (action.payload.users) {
+          state.allUsersData = [...action.payload.users];
+          state.totalPages = action.payload.totalPages;
+          state.totalUsers = action.payload.totalUsers;
+          state.currentPage = action.payload.currentPage;
+        } else {
+          state.allUsersData = [];
+          state.totalPages = 0;
+          state.totalUsers = 0;
+          state.currentPage = 1;
+        }
       })
       .addCase(getAllUsersInfo.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -72,10 +93,11 @@ export const allUsersSlice = createSlice({
   },
 });
 
-export const { setCurrentPage, setSorting } = allUsersSlice.actions;
+export const { setCurrentPage, setSorting, setFilter } = allUsersSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.allUsers.allUsersData;
 export const getTotalPages = (state: RootState) => state.allUsers.totalPages;
 export const getCurrentPage = (state: RootState) => state.allUsers.currentPage;
+export const getFilter = (state: RootState) => state.allUsers.filter;
 
 export default allUsersSlice.reducer;

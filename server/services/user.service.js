@@ -4,6 +4,7 @@ const { user, user_secret, wallet } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
 const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
+const Op = require('sequelize').Op;
 
 class UserService {
   /**
@@ -42,7 +43,7 @@ class UserService {
 
       await transaction.commit();
 
-      return { message: 'Registration successfull. Please login.' };
+      return { message: 'Registration successful. Please login.' };
     } catch (e) {
       await transaction.rollback();
       throw ApiError.BadRequest(`Registration failed: ${e.message}`);
@@ -133,13 +134,35 @@ class UserService {
    * @param {*} sort
    * @returns totalUsers, totalPages, currentPage, users {}
    */
-  async getAllUsers(page = 1, limit = 10, sort = 'first_name:asc') {
+  async getAllUsers(
+    page = 1,
+    limit = 10,
+    sort = 'first_name:asc',
+    filter = ''
+  ) {
     const sortOptions = sort.split(':');
+
+    let whereCondition = '';
+
+    if (filter) {
+      const filterOptions = filter.split(':');
+      // postgres iesko pagal didziasias ir mazasias raides
+      // o mysql/mariadb tas pats
+      // todel verciam stulpelius i LOWER tam, kad abejose
+      // db nekreiptu demesio i raidziu registra
+      whereCondition = {
+        [filterOptions[0]]: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col(filterOptions[0])), // stulpelis mazisios
+          { [Op.like]: `%${filterOptions[1].toLowerCase()}%` } // paieskos tekstas mazosios
+        ),
+      };
+    }
 
     // su postgres nebutina,
     // o su mariaDB/mysql sitie parametrai
     // PRIVALO buti skaiciaus tipo, nes mes sintakses klaida
     const { count, rows } = await user.findAndCountAll({
+      where: whereCondition,
       limit: Number(limit),
       offset: (Number(page) - 1) * Number(limit),
       order: [sortOptions],
@@ -188,7 +211,7 @@ class UserService {
   async updateUser(userId, updateData) {
     const userToUpdate = await user.findByPk(userId);
     if (!userToUpdate) throw ApiError.NotFound('User not found');
-  
+
     await userToUpdate.update(updateData);
     return new UserInfoDto(userToUpdate);
   }
