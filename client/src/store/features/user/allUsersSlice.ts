@@ -51,6 +51,9 @@ export const allUsersSlice = createSlice({
     setCurrentPage: (state, action: PayloadAction<{ current: number }>) => {
       state.currentPage = action.payload.current;
     },
+    setSorting: (state, action: PayloadAction<{ sort: string }>) => {
+      state.sort = action.payload.sort;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,7 +72,7 @@ export const allUsersSlice = createSlice({
   },
 });
 
-export const { setCurrentPage } = allUsersSlice.actions;
+export const { setCurrentPage, setSorting } = allUsersSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.allUsers.allUsersData;
 export const getTotalPages = (state: RootState) => state.allUsers.totalPages;
