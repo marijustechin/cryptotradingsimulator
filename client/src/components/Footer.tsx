@@ -3,8 +3,8 @@
 export const Footer = () => {
   return (
     <>
-      <footer className="flex mx-auto text-white gap-3 h-[17vh] mb-30 pt-10 justify-center">
-        <div className="grid grid-cols-2 mx-auto justify-between w-[50.45vw]">
+      <footer className="flex mx-auto text-white text-center gap-3 h-[17vh] mb-30 pt-10 justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2  md:w-[50.45vw] mx-auto md:justify-between">
 
           <div className="flex flex-col gap-5 ">
 
@@ -15,14 +15,16 @@ export const Footer = () => {
             </div>
 
             { /* Input Email Address */}
-            <div className="relative w-[13vw] p-[1px] bg-gradient-to-r from-blue-500 to-purple-600 rounded-[5px]">
+            <div className="flex justify-center">
+            <div className="relative w-[80%] md:w-[39vw] lg:w-[20vw] p-[1px] bg-gradient-to-r from-blue-500 to-purple-600 rounded-[5px]">
               <div className=" bg-[#222] text-white p-3 rounded-[5px] flex items-center">
                 <input
                   type="text"
-                  className="bg-transparent w-[13vw] text-white placeholder-gray-400 focus:outline-none"
+                  className="bg-transparent text-white placeholder-gray-400 focus:outline-none"
                   placeholder="Email address"
                 />
               </div>
+            </div>
             </div>
 
             {/* Copyright */ }
@@ -36,14 +38,8 @@ export const Footer = () => {
 
           {/* Second row */}
 
-          <div>
+          <div className="flex items-center justify-center">
             <div className="text-center p-3">
-              <p>• Seven Duck Alliance </p>
-              <p>• Seven Duck Alliance </p>
-              <p>• Seven Duck Alliance </p>
-              <p>• Seven Duck Alliance </p>
-              <p>• Seven Duck Alliance </p>
-              <p>• Seven Duck Alliance </p>
               <p>• Seven Duck Alliance </p>
             </div>
           </div>
