@@ -184,6 +184,14 @@ class UserService {
 
     return { ...tokens, user: { id: activeUser.id, role: activeUser.role } };
   }
+
+  async updateUser(userId, updateData) {
+    const userToUpdate = await user.findByPk(userId);
+    if (!userToUpdate) throw ApiError.NotFound('User not found');
+  
+    await userToUpdate.update(updateData);
+    return new UserInfoDto(userToUpdate);
+  }
 }
 
 module.exports = new UserService();
