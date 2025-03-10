@@ -122,6 +122,9 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem('accessToken');
     },
+    setStatusError: (state, action) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -156,7 +159,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetAuthState } = authSlice.actions;
+export const { resetAuthState, setStatusError } = authSlice.actions;
 export const selectUser = (state: RootState) => state.auth.user;
 
 export default authSlice.reducer;
