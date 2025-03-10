@@ -14,7 +14,7 @@ export const LoginPage = () => {
   }, [navigate, user]);
 
   return (
-    <main className="flex flex-col justify-center items-center px-4 relative pt-5 pb-5 md:pt-[9.9rem] md:pb-[9.9rem]">
+    <main className="flex flex-col justify-center items-center px-4 relative pt-5 pb-5 md:pt-[9.9rem] md:pb-[9.9rem] ">
       <div className="absolute -z-10 flex justify-start max-w-4xl">
       <img
         className="w-full object-cover"
