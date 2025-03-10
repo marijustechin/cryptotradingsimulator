@@ -4,6 +4,10 @@ import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
 import UserService from '../../../services/UserService';
 
+interface IUserId {
+  id: string;
+}
+
 interface IAllUsers {
   allUsersData: IUserExtended[] | undefined;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -55,6 +59,17 @@ export const getAllUsersInfo = createAsyncThunk<
   }
 });
 
+export const deleteUser = createAsyncThunk<string, IUserId>(
+  'allUsers/deleteUser',
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      return await UserService.deleteUser(id);
+    } catch (e) {
+      return rejectWithValue(HelperService.errorToString(e));
+    }
+  }
+);
+
 export const allUsersSlice = createSlice({
   name: 'allUsers',
   initialState,
@@ -88,6 +103,19 @@ export const allUsersSlice = createSlice({
         }
       })
       .addCase(getAllUsersInfo.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        if (state.allUsersData) {
+          state.allUsersData = [
+            ...state.allUsersData.filter((user) => user.id !== action.payload),
+          ];
+        }
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

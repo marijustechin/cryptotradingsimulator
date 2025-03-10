@@ -191,6 +191,16 @@ class UserService {
     };
   }
 
+  async deleteUser(id) {
+    const foundUser = await user.findOne({ where: { id } });
+
+    if (!foundUser) throw ApiError.BadRequest('No such user');
+
+    await foundUser.destroy();
+
+    return 'User deteted';
+  }
+
   async refresh(refreshToken) {
     // patikrinam ar geras
     const userData = tokenService.validateRefreshToken(refreshToken);
