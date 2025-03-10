@@ -22,11 +22,11 @@ export const Header = () => {
  
   return (
     <>
-<div className="grid grid-cols-3 items-center justify-between w-[80vw] mx-auto h-[8vh]">
+<div className="flex md:grid md:grid-cols-3 items-center w-full px-2 md:w-[80vw] mx-auto h-[8vh]">
   {/* Logo */}
   <div className="flex justify-start">
     <Link to="/">
-      <img className="h-14 md:h-18 block" src={logo} alt="Seven Ducks Alliance Logo" />
+      <img className="h-12 md:h-17 block" src={logo} alt="Seven Ducks Alliance Logo" />
     </Link>
   </div>
  
@@ -50,7 +50,7 @@ export const Header = () => {
   </div>
  
           {/* Mobile Version Sign Buttons */}
-          <div className="md:hidden flex justify-center items-center text-white gap-2 w-full">
+          <div className="md:hidden flex justify-center items-center gap-2 text-white w-full">
           {user.id ? (
             <Logout />
           ) : (
@@ -72,7 +72,7 @@ export const Header = () => {
         </div>
  
         {/* Mobile Navigation */}
-        <div className="flex justify-end md:justify-between text-white gap-6 inter text-[14px] font-semibold">
+        <div className="flex justify-end items-center w-auto ml-auto">
           <div className="md:hidden">
             <button className="text-[25px] cursor-pointer" onClick={() => menuOpenOrClose()}>
               <RxHamburgerMenu />
