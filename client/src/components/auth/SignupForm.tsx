@@ -127,7 +127,10 @@ export const SignupForm = () => {
           </div>
         </div>
 
-        <button type="submit" className="btn-generic">
+        <button
+          type="submit"
+          className="px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
+        >
           Register
         </button>
       </div>
