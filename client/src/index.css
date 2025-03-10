@@ -27,14 +27,20 @@ body {
   font-family: 'Inter', sans-serif;
   @apply bg-zinc-900 text-gray-200
 }
-
+/* Naudojamas, netrinti */
 .form-basic{
-  @apply bg-gradient-to-br from-violet-900 via-gray-900 to-gray-900 rounded-2xl p-6 w-80 mx-auto
+  @apply bg-gradient-to-br from-violet-900 via-gray-900 to-gray-900 rounded-2xl p-6 w-80 mx-auto shadow-violet-400 shadow-md mb-5 mt-5
 }
-
+/* Naudojamas, netrinti */
 .form-input {
   @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s]
 }
+/* Naudojamas, netrinti */
+.btn-generic{
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
+}
+
+
 input.hidden-password {
   -webkit-text-security: disc;
 }
@@ -136,4 +142,13 @@ p,
 
 .hero-cta:hover {
   background-color: var(--blue-hover);
+}
+
+/* Naudojami generic buttonai - prasome neistrinti */
+.btn-generic{
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
+}
+
+.btn-danger{
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
 }

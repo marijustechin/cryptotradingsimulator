@@ -33,6 +33,10 @@ userRouter.patch('/me/:id', validator.updateUser, userController.updateUser);
 // gali gauti tik adminas
 userRouter.get('/', authMiddleware.isAdmin, userController.getAllUsers);
 
+// naudotojo pasalinimas
+// gali tik adminas
+userRouter.delete('/:id', authMiddleware.isAdmin, userController.deleteUser);
+
 // refresh accessToken
 userRouter.post('/refresh', userController.refresh);
 
