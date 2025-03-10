@@ -9,11 +9,16 @@ export default class UserService {
 
   /**
    *
-   * @param query stringas: page = 1, limit = 10, sort = 'first_name:asc'
+   * @param query stringas: page = 1, limit = 10, sort = 'first_name:asc', filter='first_name:string'
    * @returns totalUsers, totalPages, currentPage, users[]
    */
   static async getAllUsers(query: string): Promise<IAllUsersInfo> {
     const response = await $api.get(`/users${query}`);
+    return response.data;
+  }
+
+  static async deleteUser(id: string): Promise<string> {
+    const response = await $api.delete(`/users/${id}`);
     return response.data;
   }
 }

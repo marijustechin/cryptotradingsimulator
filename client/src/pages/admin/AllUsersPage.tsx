@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  deleteUser,
   getAllUsersInfo,
   getCurrentPage,
   getFilter,
@@ -13,6 +14,8 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pagination } from '../../components/Pagination';
 import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa';
 import { Search } from '../../components/Search';
+import { ConfirmationModal } from '../../components/ConfirmationModal';
+import toast from 'react-hot-toast';
 
 export const AllUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -22,12 +25,15 @@ export const AllUsersPage = () => {
   const filter = useAppSelector(getFilter);
   const [sortOrder, setSortOrder] = useState('asc');
   const [sortField, setSortField] = useState('first_name');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [delUser, setDelUser] = useState<{ id: string; name: string }>();
 
   useEffect(() => {
     if (!allUsers) {
       dispatch(getAllUsersInfo());
     }
-  }, [allUsers]);
+  }, [allUsers, dispatch]);
 
   const handlePageChange = (current: number) => {
     dispatch(setCurrentPage({ current: current }));
@@ -58,6 +64,20 @@ export const AllUsersPage = () => {
   useEffect(() => {
     dispatch(getAllUsersInfo());
   }, [filter, dispatch]);
+
+  const handleModalOpen = (id: string, name: string) => {
+    setModalMessage(`Do you want to delete user "${name}"?`);
+    setDelUser({ id: id, name: name });
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    setIsModalOpen(false);
+    delUser.id && dispatch(deleteUser({ id: delUser.id }));
+    setDelUser({ id: '', name: '' });
+    setModalMessage('');
+    toast.success('User deleted');
+  };
 
   return (
     <main>
@@ -142,7 +162,10 @@ export const AllUsersPage = () => {
                 {user.role}
               </td>
               <td>
-                <button className="cursor-pointer text-violet-600 hover:text-violet-400">
+                <button
+                  onClick={() => handleModalOpen(user.id, user.first_name)}
+                  className="cursor-pointer text-violet-600 hover:text-violet-400"
+                >
                   ❌ Delete
                 </button>
               </td>
@@ -154,6 +177,13 @@ export const AllUsersPage = () => {
         onChange={(current) => handlePageChange(current)}
         totalPages={totalPages}
         currentPage={currentPage}
+      />
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        title="Delete user"
+        message={modalMessage}
+        onConfirm={confirmDelete}
+        onCancel={() => setIsModalOpen(false)}
       />
     </main>
   );
