@@ -57,15 +57,15 @@ export const LoginForm = () => {
     <form className="form-basic" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div>
         <h2 className="flex gap-2 items-center justify-center">
-          <img className="h-8" src={logo} alt="logo" />
+          <img className="w-[3rem] h-[3rem]" src={logo} alt="logo" />
           Crypto Hills
         </h2>
         <div className="h-10 flex items-center justify-center">
           {error && <span className="text-xs text-rose-500">{error}</span>}
         </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1 my-2">
-            <label className="text-xs" htmlFor="email">
+        
+          <div className="flex flex-col gap-2 my-3">
+            <label htmlFor="email">
               Email
             </label>
             <input
@@ -75,14 +75,16 @@ export const LoginForm = () => {
               autoComplete="on"
               {...register('email')}
             />
-            {errors.email && (
-              <span className="text-xs text-red-500">
-                {errors.email.message}
-              </span>
-            )}
+             <div className="relative">
+                {errors.email && (
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
+                    {errors.email.message}
+                  </span>
+                )}
+                </div>
           </div>
-          <div className="flex flex-col gap-1 my-2">
-            <label className="text-xs" htmlFor="password">
+          <div className="flex flex-col gap-2 my-3">
+            <label htmlFor="password">
               Password
             </label>
             <input
@@ -92,22 +94,24 @@ export const LoginForm = () => {
               autoComplete="off"
               {...register('password')}
             />
-            {errors.password && (
-              <span className="text-xs text-red-500">
-                {errors.password.message}
-              </span>
-            )}
+            <div className="relative">
+                {errors.password && (
+                  <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
+                    {errors.password.message}
+                  </span>
+                )}
+                </div>
           </div>
           <div>
             <button
               type="submit"
-              className="w-20 text-white bg-gradient-to-tr from-blue-600 via-purple-700 to-violet-900 hover:bg-gradient-to-bl focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm p-2 text-center cursor-pointer"
+              className="btn-generic"
             >
               Login
             </button>
           </div>
         </div>
-      </div>
+      
     </form>
   );
 };
