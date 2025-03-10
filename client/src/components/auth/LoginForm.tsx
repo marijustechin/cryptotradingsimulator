@@ -77,14 +77,12 @@ export const LoginForm = () => {
         <div className="flex flex-col gap-2 my-3">
           <label htmlFor="email">Email</label>
           <input
-            onKeyUp={() => setError('root', { message: '' })}
+            onKeyUp={() => clearError()}
             id="email"
             className="form-input autofill:transition-colors autofill:duration-[999999999s]"
             type="email"
             autoComplete="on"
-            {...register('email', {
-              // onChange: () => setError('root', { message: '' }),
-            })}
+            {...register('email',)}
           />
           <div className="relative">
             {errors.email && (
