@@ -14,14 +14,18 @@ export const LoginPage = () => {
   }, [navigate, user]);
 
   return (
-    <main className="relative max-w-3xl mx-auto h-screen">
+    <main className="flex flex-col justify-center items-center px-4 relative pt-5 pb-5 md:pt-[9.9rem] md:pb-[9.9rem]">
+      <div className="absolute -z-10 flex justify-start max-w-4xl">
       <img
-        className="absolute -left-60 md:top-30 z-10"
+        className="w-full object-cover"
         src={bg}
         alt="background"
       />
-      <div className="absolute sm:top-10 md:top-20 lg:top-32 md:right-10 z-20">
+      </div>
+      <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start justify-center sm:justify-end gap-8 md:gap-12">
+      <div className="w-full md:w-1/2 flex justify-center md:justify-end">
         <LoginForm />
+      </div>
       </div>
     </main>
   );
