@@ -71,9 +71,11 @@ export const AllUsersPage = () => {
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     setIsModalOpen(false);
-    delUser.id && dispatch(deleteUser({ id: delUser.id }));
+    if (delUser?.id) {
+      await dispatch(deleteUser({ id: delUser.id }));
+    }
     setDelUser({ id: '', name: '' });
     setModalMessage('');
     toast.success('User deleted');
