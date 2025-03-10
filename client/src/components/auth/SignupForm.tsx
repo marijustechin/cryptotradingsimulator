@@ -50,7 +50,7 @@ export const SignupForm = () => {
         
         
           <form
-            className="sm:max-w-sm mx-auto form-basic shadow-violet-400 shadow-md mb-5 mt-5"
+            className="sm:max-w-sm mx-auto form-basic"
             noValidate
             onSubmit={handleSubmit(onSubmit)}
             
