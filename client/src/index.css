@@ -1,8 +1,8 @@
 /* =====================================
    Šriftų importas (Inter ir Montserrat)
    ===================================== */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
 
 @theme {
   --color-dark-gray: #16161e;
@@ -25,21 +25,23 @@
 /* Pataisytas stilius pagal tailwind spalvu klases */
 body {
   font-family: 'Inter', sans-serif;
-  @apply bg-zinc-900 text-gray-200
+  @apply text-gray-200 bg-gradient-to-br from-gray-900 to-zinc-950;
 }
 /* Naudojamas, netrinti */
-.form-basic{
-  @apply bg-gradient-to-br from-violet-900 via-gray-900 to-gray-900 rounded-2xl p-6 w-80 mx-auto shadow-violet-400 shadow-md mb-5 mt-5
+.form-basic {
+  @apply bg-gradient-to-br from-violet-900 via-gray-900 to-gray-900 rounded-2xl p-6 w-80 mx-auto shadow-violet-400 shadow-md mb-5 mt-5;
 }
 /* Naudojamas, netrinti */
 .form-input {
-  @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s]
+  @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s];
+}
+.form-error-span {
+  @apply text-sm text-rose-500;
 }
 /* Naudojamas, netrinti */
-.btn-generic{
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
+.btn-generic {
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
-
 
 input.hidden-password {
   -webkit-text-security: disc;
@@ -48,10 +50,10 @@ input.hidden-password {
 /* Headings */
 h1,
 .heading-1 {
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: normal;
   color: var(--text-main);
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 h2,
@@ -61,7 +63,7 @@ h2,
   font-style: normal;
   line-height: normal;
   color: var(--text-main);
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 h3,
@@ -69,12 +71,12 @@ h3,
   font-size: 1.75rem;
   font-weight: 600;
   color: var(--text-main);
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 p,
 .paragraph {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Components */
@@ -84,71 +86,11 @@ p,
   padding: 0 1rem;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: var(--bg-secondary);
-}
-
-.navbar a {
-  color: var(--text-main);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.navbar a:hover {
-  color: var(--blue-primary);
-}
-
-/* Hero Section */
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 4rem 1rem;
-}
-
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--text-main);
-  font-family: "Montserrat", sans-serif;
-}
-
-.hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-gray);
-  max-width: 600px;
-  margin: 0 auto;
-  font-family: "Inter", sans-serif;
-}
-
-.hero-cta {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.75rem 2rem;
-  background-color: var(--blue-primary);
-  color: var(--text-main);
-  font-weight: 600;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  font-family: "Inter", sans-serif;
-}
-
-.hero-cta:hover {
-  background-color: var(--blue-hover);
-}
-
 /* Naudojami generic buttonai - prasome neistrinti */
-.btn-generic{
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
+.btn-generic {
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
 
-.btn-danger{
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300
+.btn-danger {
+  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
