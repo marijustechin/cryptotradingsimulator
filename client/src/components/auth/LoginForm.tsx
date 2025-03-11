@@ -11,6 +11,7 @@ import {
 } from '../../store/features/user/authSlice';
 import { useEffect } from 'react';
 import logo from '/logo.png';
+import { getInfo } from '../../store/features/user/userInfoSlice';
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +45,7 @@ export const LoginForm = () => {
   // jei viskas ok, redirectinam
   useEffect(() => {
     if (status === 'succeeded') {
+      dispatch(getInfo());
       // ar useris, ar adminas
       if (user.role === 'ADMIN') {
         navigate('/dashboard');
@@ -55,7 +57,7 @@ export const LoginForm = () => {
         return;
       }
     }
-  }, [status, user, navigate]);
+  }, [status, user, navigate, dispatch]);
 
   const clearError = () => {
     if (errors.root) {
@@ -82,7 +84,7 @@ export const LoginForm = () => {
             className="form-input autofill:transition-colors autofill:duration-[999999999s]"
             type="email"
             autoComplete="on"
-            {...register('email',)}
+            {...register('email')}
           />
           <div className="relative">
             {errors.email && (

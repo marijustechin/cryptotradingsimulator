@@ -16,7 +16,7 @@ export const userLinks: ISSidebar[] = [
   },
   { title: 'Stats', href: '/my-dashboard/stats', icon: <FaMoneyBillWave /> },
   { title: 'Portfolio', href: '/my-dashboard/portfolio', icon: <RiBankFill /> },
-  { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },
-  { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
+  // { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },
+  // { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
   { title: 'Profile', href: '/my-dashboard/profile', icon: <FaRegUser /> },
 ];

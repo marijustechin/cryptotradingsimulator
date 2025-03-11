@@ -15,7 +15,6 @@ export const SignupForm = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm<z.infer<typeof SignupSchema>>({
     resolver: zodResolver(SignupSchema),
