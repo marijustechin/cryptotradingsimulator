@@ -27,7 +27,13 @@ userRouter.post('/logout', userController.logout);
 userRouter.get('/me', userController.getUserInfo);
 
 // konkretaus naudotojo info atnaujinimas
-userRouter.patch('/me/:id', validator.updateUser, userController.updateUser);
+// isAuthenticatedUser permetam naudotojo duomenis i requesta
+userRouter.patch(
+  '/me/update',
+  authMiddleware.isAuthenticatedUser,
+  validator.updateUser,
+  userController.updateUser
+);
 
 // visu naudotoju info
 // gali gauti tik adminas

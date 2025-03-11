@@ -3,7 +3,7 @@ const tokenService = require('../services/token.service');
 
 class AuthMiddleware {
   // Bendras auteentifikavimas visiem naudotojam
-  async authenticateUser(req, res, next) {
+  async isAuthenticatedUser(req, res, next) {
     try {
       const authorizationHeader = req.headers.authorization;
 

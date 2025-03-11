@@ -219,6 +219,20 @@ class UserService {
   }
 
   async updateUser(userId, updateData) {
+    // 1. jei naudotojas atnaujina el. pasta
+    //    patikrinam ar toks pastas nenaudojamas
+    if (updateData.email) {
+      const existingUser = await user.findOne({
+        where: { email: updateData.email },
+      });
+
+      if (existingUser && existingUser.id !== userId) {
+        throw ApiError.ConflictError(
+          `Email ${updateData.email} already in use`
+        );
+      }
+    }
+
     const userToUpdate = await user.findByPk(userId);
     if (!userToUpdate) throw ApiError.NotFound('User not found');
 
