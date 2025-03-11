@@ -67,7 +67,7 @@ exports.updateUser = [
     .optional()
     .trim()
     .isMobilePhone('any')
-    .withMessage('Invalid phone number format. Example: +37012345678')
-    .isLength({ min: 12, max: 12 })
-    .withMessage('Phone number should be 12 characters length'),
+    .withMessage('Invalid phone number format. Example: 37012345678')
+    .isLength({ min: 11, max: 11 })
+    .withMessage('Phone number should be 11 characters length'),
 ];
