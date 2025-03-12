@@ -3,7 +3,7 @@
 export const Footer = () => {
   return (
     <>
-      <footer className="flex mx-auto text-white text-center gap-3 h-[17vh] mb-30 pt-10 justify-center">
+      <footer className="flex relative z-10s mx-auto text-white text-center gap-3 h-[17vh] mb-30 pt-10 justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2  md:w-[50.45vw] mx-auto md:justify-between">
 
           <div className="flex flex-col gap-5 ">
