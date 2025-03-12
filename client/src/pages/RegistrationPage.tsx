@@ -1,7 +1,18 @@
+import { useEffect } from 'react';
 import { SignupForm } from '../components/auth/SignupForm';
 import bg from '/forms-background.png';
+import { useNavigate } from 'react-router';
+import { useAppSelector } from '../store/store';
+import { selectUser } from '../store/features/user/authSlice';
 
 export const RegistrationPage = () => {
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.role === 'USER') navigate('/my-dashboard');
+  }, [navigate, user]);
+
   return (
     <main className="flex flex-col justify-center items-center px-4 relative pt-5 pb-5 md:pt-16 md:pb-16">
       <div className="absolute z-0 flex justify-start max-w-4xl">
