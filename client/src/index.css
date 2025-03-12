@@ -35,6 +35,9 @@ body {
 .form-input {
   @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s];
 }
+.form-label {
+  @apply text-sm text-violet-300
+}
 .form-error-span {
   @apply text-sm text-rose-500;
 }
