@@ -68,16 +68,18 @@ export const LoginForm = () => {
   return (
     <form className="form-basic" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <h2 className="flex gap-2 items-center justify-center">
-          <img className="w-[3rem] h-[3rem]" src={logo} alt="logo" />
-          Crypto Hills
-        </h2>
+        <div className="flex gap-2 items-center justify-center">
+          <img src={logo} alt="logo" className="w-[2rem] h-[2rem]" />
+          <h2>Crypto Hills</h2>
+        </div>
         <div className="h-10 flex items-center justify-center">
           {error && <span className="text-xs text-rose-500">{error}</span>}
         </div>
 
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="email">Email</label>
+          <label className="form-label" htmlFor="email">
+            Email
+          </label>
           <input
             onKeyUp={() => clearError()}
             id="email"
@@ -95,7 +97,9 @@ export const LoginForm = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="password">Password</label>
+          <label className="form-label" htmlFor="password">
+            Password
+          </label>
           <input
             onKeyUp={() => clearError()}
             id="password"

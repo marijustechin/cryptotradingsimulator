@@ -18,7 +18,7 @@ userRouter.post('/registration', validator.register, userController.register);
 // naudotoju prisijungimas
 // apsauga nuo brute force ataku
 // ribojam nesekmingus prisijungimus
-userRouter.post('/login', loginLimiter, validator.login, userController.login);
+userRouter.post('/login', validator.login, userController.login);
 
 // naudotoju atsijungimas
 userRouter.post('/logout', userController.logout);
