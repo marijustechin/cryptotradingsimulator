@@ -1,8 +1,18 @@
 const { validationResult } = require('express-validator');
 const userService = require('../services/user.service');
 const ApiError = require('../exceptions/api.errors');
+const helperService = require('../services/helper.service');
 
 class UserController {
+  errorToString(errorsArray) {
+    let errString = '';
+
+    for (const element of errorsArray) {
+      errString += element.msg + '; ';
+    }
+
+    return errString;
+  }
   /**
    * Naudotojo registracija
    * @param {*} req
@@ -24,7 +34,6 @@ class UserController {
           errString += element.msg + '; ';
         }
 
-        console.log(errString);
         throw ApiError.BadRequest(errString);
       }
 
@@ -180,13 +189,18 @@ class UserController {
 
   async updateUser(req, res, next) {
     try {
+      // 1. ziurim, ar nera validacijos klaidu ***************************
       const errors = validationResult(req);
-      if (!errors.isEmpty())
-        throw ApiError.BadRequest('Validation error', errors.array());
 
-      const userId = req.params.id; // Get ID from request params
-      if (!userId) throw ApiError.BadRequest('User ID is required');
+      if (!errors.isEmpty()) {
+        const errorMessage = helperService.errorsToString(errors.array());
+        throw ApiError.BadRequest(errorMessage);
+      }
 
+      // 2. jei viskas ok, userId ateina is authmiddleware->isAuthenticatedUser
+      const userId = req.user.id;
+
+      // 3. visus duomenis perduodam i update servisa
       const { first_name, last_name, email, address, phone_number } = req.body;
 
       const updatedUser = await userService.updateUser(userId, {

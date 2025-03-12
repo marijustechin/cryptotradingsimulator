@@ -21,4 +21,21 @@ export default class UserService {
     const response = await $api.delete(`/users/${id}`);
     return response.data;
   }
+
+  static async updateUser(
+    first_name: string,
+    last_name: string,
+    email: string,
+    address: string,
+    phone_number: string
+  ): Promise<IUserInfo> {
+    const response = await $api.patch('/users/me/update', {
+      first_name,
+      last_name,
+      email,
+      address,
+      phone_number,
+    });
+    return response.data;
+  }
 }
