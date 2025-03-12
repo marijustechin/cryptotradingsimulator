@@ -93,88 +93,74 @@ export const AllUsersPage = () => {
           onSearch={(searchText) => handleFilter(searchText, 'email')}
         />
       </div>
-      <table className="min-w-full">
-        <thead>
-          <tr>
-            <th
-              onClick={() => handleSorting('first_name')}
-              scope="col"
-              className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase flex cursor-pointer"
-            >
-              First Name{' '}
-              <span className="ml-2 text-violet-200">
-                {sortField === 'first_name' &&
-                  (sortOrder === 'asc' ? (
-                    <FaLongArrowAltDown />
-                  ) : (
-                    <FaLongArrowAltUp />
-                  ))}
-              </span>
-            </th>
-            <th
-              onClick={() => handleSorting('email')}
-              scope="col"
-              className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase cursor-pointer"
-            >
-              <span className="flex gap-1">
-                <span>Email</span>
-                <span className="ml-2 text-violet-200">
-                  {sortField === 'email' &&
-                    (sortOrder === 'asc' ? (
-                      <FaLongArrowAltDown />
-                    ) : (
-                      <FaLongArrowAltUp />
-                    ))}
+      {/* nauja lentele ========================================= */}
+      <div className="overflow-x-auto">
+        <table className="table table-zebra">
+          <thead>
+            <tr>
+              <th></th>
+              <th
+                className="cursor-pointer"
+                onClick={() => handleSorting('first_name')}
+                scope="col"
+              >
+                <span className="flex gap-1 items-center">
+                  <span>First name</span>
+                  <span className="ml-2 text-violet-300">
+                    {sortField === 'first_name' &&
+                      (sortOrder === 'asc' ? (
+                        <FaLongArrowAltDown />
+                      ) : (
+                        <FaLongArrowAltUp />
+                      ))}
+                  </span>
                 </span>
-              </span>
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-start text-xs font-medium text-gray-400 uppercase"
-            >
-              Balance
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-end text-xs font-medium text-gray-400 uppercase"
-            >
-              Role
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-end text-xs font-medium text-gray-400 uppercase"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {allUsers?.map((user) => (
-            <tr key={user.email}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                {user.first_name}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                {user.email}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                {user.balance}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-300">
-                {user.role}
-              </td>
-              <td>
-                <button
-                  onClick={() => handleModalOpen(user.id, user.first_name)}
-                  className="cursor-pointer text-violet-600 hover:text-violet-400"
-                >
-                  ❌ Delete
-                </button>
-              </td>
+              </th>
+              <th
+                className="cursor-pointer"
+                onClick={() => handleSorting('email')}
+                scope="col"
+              >
+                <span className="flex gap-1 items-center">
+                  <span>Email</span>
+                  <span className="ml-2 text-violet-300">
+                    {sortField === 'email' &&
+                      (sortOrder === 'asc' ? (
+                        <FaLongArrowAltDown />
+                      ) : (
+                        <FaLongArrowAltUp />
+                      ))}
+                  </span>
+                </span>
+              </th>
+              <th>Balance</th>
+              <th>Role</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {allUsers?.map((user) => (
+              <tr key={user.email}>
+                <th>{user.id}</th>
+                <td>{user.first_name}</td>
+                <td>{user.email}</td>
+                <td>{user.balance}</td>
+                <td>{user.role}</td>
+                <td>
+                  <button
+                    onClick={() => handleModalOpen(user.id, user.first_name)}
+                    className="cursor-pointer text-violet-500 hover:text-violet-400"
+                  >
+                    ❌ Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* naujos lenteles pagaiga ========================================= */}
+
       <Pagination
         onChange={(current) => handlePageChange(current)}
         totalPages={totalPages}
