@@ -25,7 +25,7 @@ export const Header = () => {
   return (
     <>
       <div
-        className={`container flex z-20 md:grid md:grid-cols-3 items-center justify-between  w-[80vw] mx-auto h-[8vh] ${
+        className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh] ${
           isDashboard ? "hidden md:flex" : ""
         }`}
       >
