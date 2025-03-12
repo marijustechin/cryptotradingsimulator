@@ -1,9 +1,9 @@
 /* =====================================
    Šriftų importas (Inter ir Montserrat)
    ===================================== */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
-@plugin "daisyui";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@plugin 'daisyui';
 
 @theme {
   --color-dark-gray: #16161e;
@@ -35,6 +35,9 @@ body {
 /* Naudojamas, netrinti */
 .form-input {
   @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s];
+}
+.form-label {
+  @apply text-sm text-violet-300
 }
 .form-error-span {
   @apply text-sm text-rose-500;

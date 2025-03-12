@@ -42,22 +42,20 @@ export const SignupForm = () => {
   };
 
   return (
-    <form
-      className="sm:max-w-sm mx-auto form-basic shadow-violet-400 shadow-md mb-5 mt-5"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="">
-        <div className="flex">
-          <img src={Logo} alt="logo" className="w-[3rem] h-[3rem] " />
-          <h2 className="pl-[0.5rem]">Crypto Hills</h2>
+    <form className="form-basic" noValidate onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <div className="flex gap-2 items-center justify-center">
+          <img src={Logo} alt="logo" className="w-[2rem] h-[2rem]" />
+          <h2>Crypto Hills</h2>
         </div>
 
         <div className="h-10">
           {error && <span className="text-sm text-rose-500">{error}</span>}
         </div>
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="first_name">First Name</label>
+          <label className="form-label" htmlFor="first_name">
+            First Name
+          </label>
           <input
             id="first_name"
             className="form-input"
@@ -74,7 +72,9 @@ export const SignupForm = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="email">Email</label>
+          <label className="form-label" htmlFor="email">
+            Email
+          </label>
           <input
             id="email"
             className="form-input"
@@ -91,7 +91,9 @@ export const SignupForm = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="password">Password</label>
+          <label className="form-label" htmlFor="password">
+            Password
+          </label>
           <input
             id="password"
             className="form-input"
@@ -109,7 +111,9 @@ export const SignupForm = () => {
         </div>
 
         <div className="flex flex-col gap-2 my-3">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label className="form-label" htmlFor="confirmPassword">
+            Confirm Password
+          </label>
           <input
             id="confirmPassword"
             className="form-input"
