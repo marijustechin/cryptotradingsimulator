@@ -24,7 +24,7 @@ export const Header = () => {
 
   return (
     <>
-      <div className={`flex md:grid md:grid-cols-3 items-center justify-between w-[80vw] mx-auto h-[8vh] ${isDashboard ? "hidden md:flex" : ""
+      <div className={`flex z-20 md:grid md:grid-cols-3 items-center justify-between  w-[80vw] mx-auto h-[8vh] ${isDashboard ? "hidden md:flex" : ""
         }`}>
         {/* Logo */}
         <div className="flex justify-start">
