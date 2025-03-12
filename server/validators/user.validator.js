@@ -38,16 +38,16 @@ exports.updateUser = [
   body('first_name')
     .optional()
     .trim()
-    .isLength({ min: 3, max: 30 })
+    .isLength({ min: 2, max: 30 })
     .withMessage(
-      'First name should be at least 3 characters length, and max 30 characters'
+      'First name should be at least 2 characters long and a maximum of 30 characters.'
     ),
   body('last_name')
     .optional()
     .trim()
-    .isLength({ min: 3, max: 30 })
+    .isLength({ min: 2, max: 30 })
     .withMessage(
-      'Last name should be at least 3 characters length, and max 30 characters'
+      'First name should be at least 2 characters long and a maximum of 30 characters.'
     ),
   body('email')
     .optional()
