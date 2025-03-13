@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { LoginSchema } from '../../schemas/LoginSchema';
 import { RootState, useAppDispatch, useAppSelector } from '../../store/store';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import {
   loginUser,
   selectUser,
@@ -12,6 +12,8 @@ import {
 import { useEffect } from 'react';
 import logo from '/logo.png';
 import { getInfo } from '../../store/features/user/userInfoSlice';
+
+
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -103,7 +105,7 @@ export const LoginForm = () => {
           <input
             onKeyUp={() => clearError()}
             id="password"
-            className="form-input"
+            className="input.hidden-password form-input"
             type="password"
             autoComplete="off"
             {...register('password')}
@@ -116,6 +118,11 @@ export const LoginForm = () => {
             )}
           </div>
         </div>
+        <p className="text-right">
+          <Link className="text-sm text-violet-300" to={'/restore-password'}>
+            Forgot password?
+          </Link>
+        </p>
         <div>
           <button type="submit" className="btn-generic">
             Login

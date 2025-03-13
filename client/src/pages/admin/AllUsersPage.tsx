@@ -98,7 +98,7 @@ export const AllUsersPage = () => {
         <table className="table table-zebra">
           <thead>
             <tr>
-              <th></th>
+              <th>ID</th>
               <th
                 className="cursor-pointer"
                 onClick={() => handleSorting('first_name')}
