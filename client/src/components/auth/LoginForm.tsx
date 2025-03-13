@@ -13,6 +13,8 @@ import { useEffect } from 'react';
 import logo from '/logo.png';
 import { getInfo } from '../../store/features/user/userInfoSlice';
 
+
+
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
@@ -103,7 +105,7 @@ export const LoginForm = () => {
           <input
             onKeyUp={() => clearError()}
             id="password"
-            className="form-input"
+            className="input.hidden-password form-input"
             type="password"
             autoComplete="off"
             {...register('password')}

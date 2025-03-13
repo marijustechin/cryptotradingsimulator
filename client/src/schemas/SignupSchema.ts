@@ -22,7 +22,7 @@ export const SignupSchema = z
       .string()
       .trim()
       .nonempty({ message: 'Password is required' })
-      .min(6, { message: 'Password must be at least 6 characters long' })
+      .min(6, { message: 'Password must be at least 6 characters' })
       .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, {
         message: 'Password should contain only letters and digits',
       }),
