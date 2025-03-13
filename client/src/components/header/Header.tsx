@@ -20,7 +20,16 @@ export const Header = () => {
     }
   };
 
-  const isDashboard = location.pathname === "/my-dashboard";
+  const links = {
+    Dashboard: "/my-dashboard",
+    Stats: "/my-dashboard/stats",
+    Portfolio: "/my-dashboard/portfolio",
+    Profile: "/my-dashboard/profile",
+  }
+
+  const allLinks = Object.values(links);
+
+  const isDashboard = allLinks.includes(location.pathname);
 
   return (
     <>
