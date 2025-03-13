@@ -1,16 +1,10 @@
 const Router = require('express').Router;
-// const rateLimit = require('express-rate-limit');
+const loginLimiter = require('../middlewares/rate.limit.middleware');
 const userController = require('../controllers/user.controller');
 const validator = require('../validators/user.validator');
 const authMiddleware = require('../middlewares/auth.middleware');
 
 const userRouter = new Router();
-
-// const loginLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minuciu
-//   max: 5, // blokuojam po 5 nesekmingu bandymu
-//   message: 'Too many login attempts. Please try again later.',
-// });
 
 // naudotoju registracija
 userRouter.post('/registration', validator.register, userController.register);
@@ -18,7 +12,7 @@ userRouter.post('/registration', validator.register, userController.register);
 // naudotoju prisijungimas
 // apsauga nuo brute force ataku
 // ribojam nesekmingus prisijungimus
-userRouter.post('/login', validator.login, userController.login);
+userRouter.post('/login', validator.login, loginLimiter, userController.login);
 
 // naudotoju atsijungimas
 userRouter.post('/logout', userController.logout);

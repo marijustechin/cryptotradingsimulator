@@ -16,7 +16,7 @@ export const UserLayout = () => {
   }, [user, navigate]);
 
   return (
-    <div>
+    <div className="container">
       <Header />
       <div className="flex">
         <Sidebar navLinks={userLinks} />
