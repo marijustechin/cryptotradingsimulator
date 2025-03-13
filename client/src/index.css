@@ -44,7 +44,11 @@ body {
 }
 /* Naudojamas, netrinti */
 .btn-generic {
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
+  @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
+}
+
+.btn-danger {
+  @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-rose-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
 
 input.hidden-password {
@@ -90,11 +94,7 @@ p,
   padding: 0 1rem;
 }
 
-/* Naudojami generic buttonai - prasome neistrinti */
-.btn-generic {
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
-}
 
-.btn-danger {
-  @apply px-4 py-2 mt-[2rem] rounded-[10px] border border-white/47 cursor-pointer bg-gradient-to-r from-red-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
-}
+
+
+

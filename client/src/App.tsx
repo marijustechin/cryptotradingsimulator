@@ -21,6 +21,7 @@ import { UserLayout } from './layouts/UserLayout';
 import { UserStatsPage } from './pages/user/UserStatsPage';
 import { UserPortfolioPage } from './pages/user/UserPortfolioPage';
 import { AllUsersPage } from './pages/admin/AllUsersPage';
+import { RestorePasswordPage } from './pages/RestorePasswordPage';
 
 function App() {
   // pasileidziant programai automatiskai atnaujinam
@@ -42,6 +43,7 @@ function App() {
           <Route path="registration" element={<RegistrationPage />} />
           <Route path="how-to-trade" element={<HowToTradePage />} />
           <Route path="credits" element={<CreditsPage />} />
+          <Route path="restore-password" element={<RestorePasswordPage />} />
         </Route>
         <Route path="/dashboard" element={<AdminLayout />}>
           <Route index element={<AdminDashboardPage />} />

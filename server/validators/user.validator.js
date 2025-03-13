@@ -5,7 +5,7 @@ exports.register = [
     .trim()
     .isLength({ min: 2, max: 30 })
     .withMessage(
-      'First name should be at least 3 characters lenght, and max 30 characters'
+      'First name should be at least 2 characters long and a maximum of 30 characters.'
     ),
   body('email')
     .trim()

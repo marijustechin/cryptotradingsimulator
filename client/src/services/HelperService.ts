@@ -10,9 +10,9 @@ export default class HelperService {
   }
 
   static formatCurrency(amount: number) {
-    return new Intl.NumberFormat('lt-LT', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR',
+      currency: 'USD',
     }).format(amount);
   }
 }
