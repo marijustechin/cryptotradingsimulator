@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 
 exports.register = [
   body('first_name')
@@ -6,7 +6,8 @@ exports.register = [
     .isLength({ min: 2, max: 30 })
     .withMessage(
       'First name should be at least 2 characters long and a maximum of 30 characters.'
-    ),
+    )
+    .escape(),
   body('email')
     .trim()
     .isEmail()
@@ -26,12 +27,13 @@ exports.register = [
     })
     .withMessage(
       'Password must contain numbers, letters and must be minimum 6 characters length'
-    ),
+    )
+    .escape(),
 ];
 
 exports.login = [
-  body('email').trim().isEmail().withMessage('Invalid email format'),
-  body('password').trim(),
+  body('email').trim().isEmail().withMessage('Invalid email format').escape(),
+  body('password').trim().escape(),
 ];
 
 exports.updateUser = [
@@ -70,4 +72,9 @@ exports.updateUser = [
     .withMessage('Invalid phone number format. Example: 37012345678')
     .isLength({ min: 11, max: 11 })
     .withMessage('Phone number should be 11 characters length'),
+];
+
+exports.escapeQuery = [
+  query('sort').trim().escape(),
+  query('filter').trim().escape(),
 ];
