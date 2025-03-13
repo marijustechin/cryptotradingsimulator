@@ -1,4 +1,4 @@
-// import { Background } from "./Background";
+import ".././textures.css";
 
 export const HowToTradePage = () => {
   const faqs = [
@@ -25,11 +25,14 @@ export const HowToTradePage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center ml-5 mr-5">
-      {/* <Background /> */}
-
+    <div className="min-h-screen flex flex-col items-center mx-5 mb-10">
+      {/* Background */}
+      <div className="texture-green"></div>
+      <div className="texture-orange"></div>
+      <div className="texture-purple"></div>
       <div className="z-10">
-        <div className="text-4xl md:text-4xl lg:text-6xl pt-[8rem] pb-[4rem] flex justify-center">
+        {/* Steps for trading */}
+        <div className="text-4xl md:text-4xl lg:text-6xl pt-[4rem] pb-[3rem] flex justify-center">
           Steps For Trading on CryptoHill
         </div>
 
@@ -55,35 +58,57 @@ export const HowToTradePage = () => {
           </p>
         </div>
 
-        {/* <div>
-          How Crypto Trade Works
-        </div> */}
-
-        <div className="flex flex-row gap-10 md:gap-10 lg:gap-40">
-          <div className="text-lg md:text-4xl lg:text-4xl">
-            Frequently Asked Questions
+        <div className="md:mx-10 lg:mx-50">
+          {/* What is Crypto Trading */}
+          <div className="pb-10">
+            <div className="text-lg md:text-4xl lg:text-4xl pb-5">
+              What is Crypto Trading
+            </div>
+            <p className="pb-5">
+              Crypto trading is all about buying and selling digital currencies,
+              such as Bitcoin(BTC) or Ethereum (ETH), to make a profit. Unlike
+              traditional finance markets, the crypto market is open 24 hours.
+              To get started, you need a wallet and an exchange to trade on.
+            </p>
+            <p>
+              If you want to trade crypto, you will have to speculate on the
+              price of a digital currency to make a profit. The goal is to buy
+              low and sell high, or vice versa, by taking advantage of price
+              movements in the cryptocurrency market. Understanding the market's
+              dynamics can help minimize losses and maximize profits.{" "}
+            </p>
           </div>
 
-          <div className="flex flex-col text-sm md:text-xl lg:text-2xl">
-            {faqs.map((faq, index) => (
-              <div key={index} className="pb-4">
-                <div className="dropdown">
-                  <div
-                    tabIndex={0}
-                    role="button"
-                    className="cursor-pointer p-1 hover:shadow-md hover:shadow-purple-500/90 duration-300"
-                  >
-                    {faq.question}
-                  </div>
-                  <div
-                    tabIndex={0}
-                    className="menu dropdown-content border border-white/47 bg-base-100 bg-gradient-to-r from-blue-500 to-purple-600 rounded-box z-1 w-50 md:w-70 lg:w-90 p-2 shadow-lg shadow-black"
-                  >
-                    <p>{faq.answer}</p>
+          {/* FAQ */}
+          <div className="flex flex-row gap-10 md:gap-10 lg:gap-40 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
+            <div className="flex flex-col justify-between">
+              <div className="text-lg md:text-4xl lg:text-4xl">
+                Frequently Asked Questions
+              </div>
+              <img src="/textures/star-img3.svg" alt="star" className="w-18" />
+            </div>
+
+            <div className="flex flex-col text-sm md:text-xl lg:text-2xl">
+              {faqs.map((faq, index) => (
+                <div key={index} className="pb-4">
+                  <div className="dropdown">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="cursor-pointer p-1 hover:shadow-md hover:shadow-purple-500/90 duration-300 rounded-2xl"
+                    >
+                      {faq.question}
+                    </div>
+                    <div
+                      tabIndex={0}
+                      className="menu dropdown-content border border-white/47 bg-base-100 bg-gradient-to-r from-blue-500 to-purple-600 rounded-box z-1 w-38 md:w-70 lg:w-90 p-2 shadow-lg shadow-black"
+                    >
+                      <p>{faq.answer}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
