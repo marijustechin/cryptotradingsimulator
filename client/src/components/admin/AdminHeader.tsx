@@ -5,13 +5,10 @@ export const AdminHeader = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <header>
-      <div
-        className="p-2 cursor-pointer"
-        onClick={() => dispatch(logoutUser())}
-      >
+    <header className="flex justify-end">
+      <button onClick={() => dispatch(logoutUser())} className="btn-generic">
         Logout
-      </div>
+      </button>
     </header>
   );
 };

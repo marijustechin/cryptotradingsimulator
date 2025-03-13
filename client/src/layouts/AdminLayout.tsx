@@ -15,7 +15,7 @@ export const AdminLayout = () => {
   }, [user, navigate]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen container">
       <Sidebar navLinks={adminLinks} />
       <main className="flex-1 p-4">
         <AdminHeader />
