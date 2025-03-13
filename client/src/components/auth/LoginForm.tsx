@@ -105,7 +105,7 @@ export const LoginForm = () => {
           <input
             onKeyUp={() => clearError()}
             id="password"
-            className="input.hidden-password form-input"
+            className="form-input"
             type="password"
             autoComplete="off"
             {...register('password')}
