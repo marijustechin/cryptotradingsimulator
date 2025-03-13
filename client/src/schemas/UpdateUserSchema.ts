@@ -3,7 +3,7 @@ import * as z from 'zod';
 export const UpdateUserSchema = z.object({
   first_name: z
     .string({
-      required_error: 'First name is required',
+      message: 'First name is required',
     })
     .trim()
     .nonempty({ message: 'First name is required' })
@@ -23,9 +23,12 @@ export const UpdateUserSchema = z.object({
     .regex(/^[\p{L}'-]+(?: [\p{L}'-]+)*$/u, {
       message: 'Last name contains excessive stacked characters',
     }),
-  address: z.string().trim(),
+  address: z
+    .string({ message: 'Address is required' })
+    .trim()
+    .min(3, { message: 'Address is required' }),
   phone_number: z
-    .string()
+    .string({ message: 'Phone number is required' })
     .trim()
     .nonempty({ message: 'Phone number is required' })
     .min(11, {
@@ -36,7 +39,7 @@ export const UpdateUserSchema = z.object({
     })
     .regex(/^\d+$/, { message: 'Only digits allowed' }),
   email: z
-    .string()
+    .string({ message: 'Email is required' })
     .trim()
     .nonempty({ message: 'Email is required' })
     .email({ message: 'Invalid email format' }),

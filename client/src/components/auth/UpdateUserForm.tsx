@@ -41,11 +41,11 @@ export const UpdateUserForm = () => {
     defaultValues: initialValues.current,
   });
 
-  // When the user logs in/out, reset the form
+  // atstatom reiksmes
   useEffect(() => {
     if (userData) {
       reset(userData);
-      initialValues.current = userData; // Update initial values
+      initialValues.current = userData;
     }
   }, [userData, reset]);
 
@@ -174,7 +174,7 @@ export const UpdateUserForm = () => {
 
       {/* Taip mes rodome mygtuka tik tada, kai kurio nors lauko duomenys keiciasi */}
       {isFormChanged && (
-        <button type="submit" className="btn-generic">
+        <button type="submit" className="btn-generic mt-6">
           Update
         </button>
       )}
