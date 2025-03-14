@@ -3,11 +3,14 @@ import { useEffect } from 'react';
 import { useAppDispatch } from './store/store';
 import { restoreSession } from './store/features/user/authSlice';
 
-// layouts
+// Components
+
+// Layouts
 import { MainLayout } from './layouts/MainLayout';
 import { AdminLayout } from './layouts/AdminLayout';
+import { UserLayout } from './layouts/UserLayout';
 
-// pages
+// Pages
 import { HomePage } from './pages/HomePage';
 import { UserDashboardPage } from './pages/user/UserDashboardPage';
 import { UserProfilePage } from './pages/user/UserProfilePage';
@@ -17,18 +20,13 @@ import { HowToTradePage } from './pages/HowToTradePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { CreditsPage } from './pages/CreditsPage';
-import { UserLayout } from './layouts/UserLayout';
-import { UserStatsPage } from './pages/user/UserStatsPage';
 import { UserPortfolioPage } from './pages/user/UserPortfolioPage';
 import { AllUsersPage } from './pages/admin/AllUsersPage';
 import { RestorePasswordPage } from './pages/RestorePasswordPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { UserTradingPage } from './pages/user/UserTradingPage';
 
 function App() {
-  // pasileidziant programai automatiskai atnaujinam
-  // refreshTokena - atstatom sesija is localStorage
-  // arba jei pasibaiges accessTokeno galiojimas
-  // darom refresh
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -53,13 +51,15 @@ function App() {
         </Route>
         <Route path="/my-dashboard" element={<UserLayout />}>
           <Route index element={<UserDashboardPage />} />
-          <Route path="/my-dashboard/stats" element={<UserStatsPage />} />
+          <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
           <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
           <Route
             path="/my-dashboard/portfolio"
             element={<UserPortfolioPage />}
           />
         </Route>
+        <Route path="/404" element={<NotFoundPage />} />{' '}
+        {/* Define explicit 404 page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
