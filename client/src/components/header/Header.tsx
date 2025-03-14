@@ -26,16 +26,13 @@ export const Header = () => {
     Portfolio: '/my-dashboard/portfolio',
     Profile: '/my-dashboard/profile',
   };
-
   const allLinks = Object.values(links);
-
-  const isDashboard = allLinks.includes(location.pathname);
-
+  const isDashboardPage = allLinks.includes(location.pathname);
   return (
     <>
       <div
         className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh] ${
-          isDashboard ? 'hidden md:flex' : ''
+          isDashboardPage ? 'hidden md:flex' : ''
         }`}
       >
         {/* Logo */}
@@ -51,7 +48,7 @@ export const Header = () => {
 
         <div className="hidden md:flex text-center justify-center text-white gap-5 text-[14px] font-semibold">
           {mainNavLinks
-            .filter((link) => user.id || link.title !== 'My Dashboard')
+            .filter((link) => !isDashboardPage && user.id || link.title !== 'My Dashboard')
             .map((link) => (
               <div className="" key={link.title}>
                 <Link
@@ -138,7 +135,7 @@ export const Header = () => {
           </div>
         </div>
       </div>
-      {isDashboard && (
+      {isDashboardPage && (
         <div className="block md:hidden p-4 text-white text-center">
           <Logout />
         </div>
