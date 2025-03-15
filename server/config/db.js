@@ -1,7 +1,5 @@
 const { Sequelize } = require('sequelize');
 const { modelRelations } = require('../models/relations');
-const userDefiner = require('../models/user.model');
-const cryptoDefiner = require('../models/crypto.model');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -14,7 +12,11 @@ const sequelize = new Sequelize(
   }
 );
 
-const allModels = [userDefiner, cryptoDefiner];
+const allModels = [
+  require('../models/user.model'),
+  require('../models/crypto.model'),
+  require('../models/asset.model'),
+];
 
 for (const modelDefiner of allModels) {
   modelDefiner(sequelize);

@@ -1,12 +1,13 @@
-const { clients } = require('./crypto.service');
+const cryptoWSService = require('./crypto.ws.service');
 
 function setupWebSocket(app) {
   app.ws('/ws/crypto', (ws, req) => {
-    clients.push(ws);
+    // websocket kliento registracija
+    console.log(req);
+    cryptoWSService.addClient(ws);
     console.log('New WebSocket connection established');
 
     ws.on('close', () => {
-      clients.splice(clients.indexOf(ws), 1);
       console.log('WebSocket connection closed');
     });
   });
