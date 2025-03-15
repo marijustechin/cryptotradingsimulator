@@ -2,9 +2,9 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
     sequelize.define(
-        'crypto_coins',
-        {
-            coin_name: {
+        'cryptocurrencies',
+         {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -20,40 +20,53 @@ module.exports = (sequelize) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             }
-        },
+        }
+    );
         sequelize.define(
-            'user_coins',
+            'purchases',
             {
-                coin_name: {
+                name: {
                     type: DataTypes.STRING,
                     allowNull:false,
                 },
-                value: {
+                amount: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                },
+                price_at_purchase: {
                     type: DataTypes.INTEGER,
                     allowNull: false,
                 }
             }
-        ),
+        );
         sequelize.define(
-            'transactions',
+            'sales',
             {
-                order_type: {
-                    type: DataTypes.STRING(10),
-                    allowNull: true,
-                    validate: {
-                        isIn: [['BUY', 'SELL']]
-                    }
+                name: {
+                    type: DataTypes.STRING,
+                    allowNull:false,
                 },
                 amount: {
                     type: DataTypes.INTEGER,
-                    allowNull: false
+                    allowNull: false,
                 },
-                price: {
+                price_at_sale: {
                     type: DataTypes.INTEGER,
-                    allowNull: false
+                    allowNull: false,
                 }
             }
-        )
-    )
-
+        );
+        sequelize.define(
+            'portfolio',
+            {
+                amount: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                },
+                total_value: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                }
+            }
+        );
 } 
