@@ -1,7 +1,5 @@
 const axios = require('axios');
 const $api = require('../config/axios');
-const sequelize = require('../config/db');
-const { asset } = sequelize.models;
 const cryptoWSService = require('./crypto.ws.service');
 const assetService = require('./asset.service');
 
@@ -41,7 +39,31 @@ const fetchCryptoData = async () => {
   }
 };
 
-// Schedule periodic updates
-setInterval(fetchCryptoData, 2 * 60 * 1000);
+const fetchAssetsHistoryData = async () => {
+  try {
+    for (const asset of POPULAR_CRYPTOS) {
+      // api.coincap.io/v2/assets/bitcoin/history?interval=d1
+      const response = await $api.get(
+        `${API_URL}/${asset}/history?interval=d1`
+      );
+      await assetService.saveHistoricalData(asset, response.data.data);
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response.data);
+    } else if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.log('Unexpected error: ', error);
+    }
+  }
+};
 
-module.exports = { fetchCryptoData };
+// Periodiniai atnaujinimai
+// ************************
+// kainos
+setInterval(fetchCryptoData, 1 * 60 * 1000);
+// istoriniai duomenys
+setInterval(fetchAssetsHistoryData, 60 * 60 * 1000);
+
+module.exports = { fetchCryptoData, fetchAssetsHistoryData };

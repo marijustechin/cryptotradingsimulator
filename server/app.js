@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
 // endpointu importas
 const userRouter = require('./routers/user.router');
@@ -24,6 +25,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(helmet());
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/crypto', cryptoRouter);

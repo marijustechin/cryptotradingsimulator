@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  sequelize.define(
+  sequelize.models.asset = sequelize.define(
     'asset',
     {
       id: {
@@ -44,6 +44,42 @@ module.exports = (sequelize) => {
     {
       // nereikia automatiniu updated_at, created_at
       timestamps: false,
+    }
+  );
+  sequelize.models.asset_hist = sequelize.define(
+    'asset_hist',
+    {
+      asset_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        references: {
+          model: 'assets',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
+      priceUsd: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      time: {
+        type: DataTypes.TIME,
+        allowNull: false,
+      },
+      date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+    },
+    {
+      // nereikia automatiniu updated_at, created_at
+      timestamps: false,
+      indexes: [
+        { unique: true, fields: ['asset_id', 'date'] }, // apsaugo nuo dvigubu irasu pagal data
+        { fields: ['priceUsd'] }, // optimizuotos kainos uzklausos
+      ],
     }
   );
 };

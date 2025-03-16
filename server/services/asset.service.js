@@ -1,5 +1,5 @@
 const sequelize = require('../config/db');
-const { asset } = sequelize.models;
+const { asset, asset_hist } = sequelize.models;
 
 class AssetService {
   async getAssets() {
@@ -47,6 +47,32 @@ class AssetService {
           Math.round(parseFloat(item.changePercent24Hr) * 1000) / 1000,
         vwap24Hr: parseFloat(item.vwap24Hr),
       });
+    }
+  }
+
+  async saveHistoricalData(asset_id, histData) {
+    if (!Array.isArray(histData) || histData.length === 0) {
+      console.log('No data to insert.');
+      return;
+    }
+
+    const formattedData = histData.map((data) => ({
+      asset_id: asset_id,
+      priceUsd: parseFloat(data.priceUsd),
+      time: new Date(data.time).toISOString().split('T')[1].split('.')[0],
+      date: new Date(data.date),
+    }));
+
+    const transaction = await sequelize.transaction();
+    try {
+      await asset_hist.bulkCreate(formattedData, {
+        updateOnDuplicate: ['priceUsd', 'time'],
+        transaction,
+      });
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      console.error('Error:', error);
     }
   }
 }

@@ -26,11 +26,11 @@ export const SingleAssetTest = ({ asset }: IAsset) => {
         </p>
         {showOptions ? (
           <p className="text-violet-300">
-            <IoIosArrowUp size={30} />
+            <IoIosArrowUp size={20} />
           </p>
         ) : (
           <p className="text-violet-300">
-            <IoIosArrowDown size={30} />
+            <IoIosArrowDown size={20} />
           </p>
         )}
       </button>
