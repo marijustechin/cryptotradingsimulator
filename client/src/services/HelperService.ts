@@ -6,7 +6,7 @@ export default class HelperService {
 
     if (e instanceof Error) return e.message;
 
-    return 'Įvyko nežinoma klaida.';
+    return 'Unexpected error.';
   }
 
   static formatCurrency(amount: number) {

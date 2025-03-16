@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 // endpointu importas
 const userRouter = require('./routers/user.router');
 const cryptoRouter = require('./routers/crypto.router');
+
+// websocket routeris
 const setupWebSocketRoutes = require('./routers/crypto.ws.router');
 
 // Importuojam klaidu midlvare

@@ -46,7 +46,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             <Button onClick={onCancel} className="btn-generic">
               {cancelText}
             </Button>
-            <Button onClick={onConfirm} className="btn-danger">
+            <Button onClick={onConfirm} className="btn-red">
               {confirmText}
             </Button>
           </div>

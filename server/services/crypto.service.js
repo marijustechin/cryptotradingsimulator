@@ -1,41 +1,47 @@
-//const axios = require('axios');
-//const { Crypto } = require('../models/crypto.model');
-const { broadcastData } = require('./crypto.ws.service');
+const axios = require('axios');
+const $api = require('../config/axios');
+const sequelize = require('../config/db');
+const { asset } = sequelize.models;
+const cryptoWSService = require('./crypto.ws.service');
+const assetService = require('./asset.service');
 
-const API_URL = 'https://api.coincap.io/v2/assets';
-const API_KEY = process.env.COINCAP_API_KEY;
+const API_URL = '/assets';
+const POPULAR_CRYPTOS = [
+  'bitcoin',
+  'ethereum',
+  'tether',
+  'xrp',
+  'binance-coin',
+  'solana',
+  'usd-coin',
+  'cardano',
+  'dogecoin',
+  'tron',
+];
 
 const fetchCryptoData = async () => {
   try {
-    // const response = await axios.get(API_URL, {
-    //   headers: { Authorization: `Bearer ${API_KEY}` },
-    // });
+    const cryptoIds = POPULAR_CRYPTOS.join(',');
+    const response = await $api.get(`${API_URL}?ids=${cryptoIds}`);
 
-    // const topCurrencies = response.data.data
-    //   .filter((crypto) =>
-    //     ['bitcoin', 'ethereum', 'cardano'].includes(crypto.id)
-    //   ) // Example top 10 filtering
-    //   .map(({ id, name, priceUsd, marketCapUsd }) => ({
-    //     id,
-    //     name,
-    //     price: parseFloat(priceUsd),
-    //     marketCap: parseFloat(marketCapUsd),
-    //   }));
+    // bandom irasyti duomenis i db
+    await assetService.updateAssets(response.data.data);
 
-    // // Store in DB (upsert logic)
-    // for (const crypto of topCurrencies) {
-    //   await Crypto.upsert(crypto);
-    // }
-
-    // Broadcast new data
-    broadcastData(`Nauji duomenys: ${new Date()}`);
-    console.log(`Cia turi buti perduodami duomenys: ${new Date()}`);
+    // Transliuojam duomenis visiem klientams
+    console.log('gavau duomenis...');
+    cryptoWSService.broadcastData(response.data.data);
   } catch (error) {
-    console.error('Error fetching crypto data:', error.message);
+    if (axios.isAxiosError(error)) {
+      console.log(error.response.data);
+    } else if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.log('Unexpected error: ', error);
+    }
   }
 };
 
 // Schedule periodic updates
-setInterval(fetchCryptoData, 1 * 60 * 1000);
+setInterval(fetchCryptoData, 2 * 60 * 1000);
 
 module.exports = { fetchCryptoData };

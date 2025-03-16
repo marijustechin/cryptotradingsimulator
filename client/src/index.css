@@ -37,7 +37,7 @@ body {
   @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s];
 }
 .form-label {
-  @apply text-sm text-violet-300
+  @apply text-sm text-violet-300;
 }
 .form-error-span {
   @apply text-sm text-rose-500;
@@ -47,8 +47,12 @@ body {
   @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
 
-.btn-danger {
+.btn-red {
   @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-rose-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
+}
+
+.btn-green {
+  @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-emerald-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
 
 input.hidden-password {
@@ -93,8 +97,3 @@ p,
   margin: 0 auto;
   padding: 0 1rem;
 }
-
-
-
-
-
