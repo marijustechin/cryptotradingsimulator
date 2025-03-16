@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICryptoAsset } from '../../../types/crypto';
 import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
-import AssetService from '../../../services/assetService';
+import AssetService from '../../../services/AssetService';
 
 interface IAssets {
   assets: ICryptoAsset[] | null;
