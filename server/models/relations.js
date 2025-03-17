@@ -28,7 +28,7 @@ function modelRelations(sequelize) {
   });
   asset.belongsToMany(user, {
     through: portfolio,
-    foreignKey: "crypto_id",
+    foreignKey: "asset_id",
     onDelete: "CASCADE",
   });
 

@@ -16,11 +16,11 @@ module.exports = (sequelize) => {
     },
     closeprice: {
       type: DataTypes.DECIMAL(8, 2),
-      allowNull: false,
+      allowNull: true,
     },
     profit: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
   });
   sequelize.models.portfolio = sequelize.define(
