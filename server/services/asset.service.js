@@ -39,7 +39,7 @@ class AssetService {
         rank: Number(item.rank),
         symbol: item.symbol,
         name: item.name,
-        supply: Number(item.supply),
+        supply: Math.round(item.supply),
         marketCapUsd: parseFloat(item.marketCapUsd),
         volumeUsd24Hr: Number(item.volumeUsd24Hr),
         priceUsd: parseFloat(item.priceUsd),
