@@ -1,72 +1,42 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-    sequelize.define(
-        'cryptocurrencies',
-         {
-            name: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            price: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            market_cap: {
-                type: DataTypes.INTEGER,
-                allowNull:false
-            },
-            price_change: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            }
-        }
-    );
-        sequelize.define(
-            'purchases',
-            {
-                name: {
-                    type: DataTypes.STRING,
-                    allowNull:false,
-                },
-                amount: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                },
-                price_at_purchase: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                }
-            }
-        );
-        sequelize.define(
-            'sales',
-            {
-                name: {
-                    type: DataTypes.STRING,
-                    allowNull:false,
-                },
-                amount: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                },
-                price_at_sale: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                }
-            }
-        );
-        sequelize.define(
-            'portfolio',
-            {
-                amount: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                },
-                total_value: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false,
-                }
-            }
-        );
-} 
+  sequelize.models.transactions = sequelize.define("transactions", {
+    type: {
+      type: DataTypes.ENUM("buy", "sell"),
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    openprice: {
+      type: DataTypes.DECIMAL(8, 2),
+      allowNull: false,
+    },
+    closeprice: {
+      type: DataTypes.DECIMAL(8, 2),
+      allowNull: false,
+    },
+    profit: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+  });
+  sequelize.models.portfolio = sequelize.define(
+    "portfolio",
+    {
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      value: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+    },
+    {
+      timestamps: false,
+    }
+  );
+};
