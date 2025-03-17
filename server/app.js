@@ -1,14 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
 // endpointu importas
 const userRouter = require('./routers/user.router');
+const cryptoRouter = require('./routers/crypto.router');
+
+// websocket routeris
+const setupWebSocketRoutes = require('./routers/crypto.ws.router');
 
 // Importuojam klaidu midlvare
 const errorsMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
+setupWebSocketRoutes(app);
 
 // o cia panaudojamos importuotos midlvares visokios
 app.use(express.json());
@@ -19,8 +25,10 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(helmet());
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/crypto', cryptoRouter);
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);

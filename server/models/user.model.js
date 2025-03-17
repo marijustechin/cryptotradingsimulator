@@ -2,7 +2,8 @@ const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  sequelize.define('user', {
+  // user model
+  sequelize.models.user = sequelize.define('user', {
     first_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -47,50 +48,53 @@ module.exports = (sequelize) => {
       type: DataTypes.ENUM('USER', 'ADMIN'),
       defaultValue: 'USER',
     },
-  }),
-    sequelize.define(
-      'user_secret',
-      {
-        password: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            notNull: {
-              msg: 'Password required',
-            },
-            notEmpty: {
-              msg: 'Password required',
-            },
+  });
+  sequelize.models.user_secret = sequelize.define(
+    'user_secret',
+    {
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: 'Password required',
+          },
+          notEmpty: {
+            msg: 'Password required',
           },
         },
       },
+    },
+    {
+      // nereikia automatiniu updated_at, created_at
+      timestamps: false,
+      // sitas hookas "automatiskai" hashina slaptazodi
+      // pagal geros praktikos taisykles
+      // jis atskirtas nuo visos serviso logikos
 
-      {
-        // nereikia automatiniu updated_at, created_at
-        timestamps: false,
-        // sitas hookas "automatiskai" hashina slaptazodi
-        // pagal geros praktikos taisykles
-        // jis atskirtas nuo visos serviso logikos
-
-        hooks: {
-          beforeCreate: async (userSecret) => {
-            userSecret.password = await bcrypt.hash(userSecret.password, 10);
-          },
-        },
-      }
-    ),
-    sequelize.define(
-      'wallet',
-      {
-        balance: {
-          type: DataTypes.DECIMAL,
+      hooks: {
+        beforeCreate: async (userSecret) => {
+          userSecret.password = await bcrypt.hash(userSecret.password, 10);
         },
       },
-      {
-        timestamps: false,
-      }
-    ),
-    sequelize.define('token', {
-      refreshToken: { type: DataTypes.TEXT, allowNull: false },
-    });
+    }
+  );
+
+  // wallet model
+  sequelize.models.wallet = sequelize.define(
+    'wallet',
+    {
+      balance: {
+        type: DataTypes.DECIMAL,
+      },
+    },
+    {
+      timestamps: false,
+    }
+  );
+
+  // token model
+  sequelize.models.token = sequelize.define('token', {
+    refreshToken: { type: DataTypes.TEXT, allowNull: false },
+  });
 };
