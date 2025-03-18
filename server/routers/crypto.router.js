@@ -3,7 +3,10 @@ const assetController = require('../controllers/asset.controller');
 
 const cryptoRouter = new Router();
 
-// Koks nors komentaras
+// kainos, gali gauti tik prisijunges naudotojas
 cryptoRouter.get('/assets', assetController.getAssets);
+
+// kainu istorija, gali gauti tik prisijunges naudotojas
+cryptoRouter.get('/assets/history/:id', assetController.getAssetsHistory);
 
 module.exports = cryptoRouter;

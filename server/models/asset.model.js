@@ -46,13 +46,14 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
+
+  // prekybos istorija
   sequelize.models.asset_hist = sequelize.define(
     'asset_hist',
     {
       asset_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(30),
         allowNull: false,
-        unique: true,
         references: {
           model: 'assets',
           key: 'id',
@@ -64,21 +65,16 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      time: {
-        type: DataTypes.TIME,
-        allowNull: false,
-      },
       date: {
         type: DataTypes.DATE,
         allowNull: false,
       },
     },
     {
-      // nereikia automatiniu updated_at, created_at
-      timestamps: false,
+      timestamps: false, // be created_at, updated_at
       indexes: [
-        { unique: true, fields: ['asset_id', 'date'] }, // apsaugo nuo dvigubu irasu pagal data
-        { fields: ['priceUsd'] }, // optimizuotos kainos uzklausos
+        { unique: true, fields: ['asset_id', 'date'] }, // apsaugo nuo asset_id ir date poru duplikavimo
+        { fields: ['priceUsd'] }, // kainos uzklausu optimizavimas
       ],
     }
   );

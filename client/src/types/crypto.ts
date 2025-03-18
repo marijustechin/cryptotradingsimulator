@@ -10,3 +10,8 @@ export interface ICryptoAsset {
   changePercent24Hr: number;
   vwap24Hr: number;
 }
+
+export interface IAssetHistory {
+  priceUsd: string;
+  date: string;
+}
