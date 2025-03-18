@@ -18,21 +18,17 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL(8, 2),
       allowNull: true,
     },
-    profit: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
-    },
   });
   sequelize.models.portfolio = sequelize.define(
     "portfolio",
     {
       amount: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       value: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
