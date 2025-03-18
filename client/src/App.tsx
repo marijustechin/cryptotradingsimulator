@@ -14,7 +14,7 @@ import { UserLayout } from './layouts/UserLayout';
 import { HomePage } from './pages/HomePage';
 import { UserDashboardPage } from './pages/user/UserDashboardPage';
 import { UserProfilePage } from './pages/user/UserProfilePage';
-import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import { SystemSettingsPage } from './pages/admin/SystemSettingsPage';
 import { HowToTradePage } from './pages/HowToTradePage';
 import { LoginPage } from './pages/LoginPage';
