@@ -1,4 +1,5 @@
 const sequelize = require('../config/db');
+const ApiError = require('../exceptions/api.errors');
 const { asset, asset_hist } = sequelize.models;
 
 class AssetService {
@@ -83,6 +84,9 @@ class AssetService {
       order: [['date', 'DESC']],
       limit: limit,
     });
+
+    // jei nieko nera
+    if (!historyPrices) throw ApiError.NotFound();
 
     return historyPrices;
   }
