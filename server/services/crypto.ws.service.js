@@ -1,5 +1,3 @@
-const pako = require('pako');
-
 class CryptoWSService {
   constructor() {
     this.clients = new Set();
@@ -17,11 +15,10 @@ class CryptoWSService {
     }
 
     const jsonString = JSON.stringify(data);
-    const compressed = pako.deflate(jsonString);
 
     this.clients.forEach((ws) => {
       if (ws.readyState === ws.OPEN) {
-        ws.send(compressed);
+        ws.send(jsonString);
       }
     });
   }
