@@ -1,11 +1,11 @@
-require('dotenv').config();
+require("dotenv").config();
 const port = process.env.PORT || 3003;
-const sequelize = require('./config/db');
+const sequelize = require("./config/db");
 
 // sita reikes turbut realizuoti kaip klase
-const { fetchCryptoData } = require('./services/crypto.service');
+const { fetchCryptoData } = require("./services/crypto.service");
 
-const app = require('./app');
+const app = require("./app");
 
 const startServer = async () => {
   try {

@@ -10,17 +10,9 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    openprice: {
-      type: DataTypes.DECIMAL(8, 2),
+    price: {
+      type: DataTypes.STRING(20),
       allowNull: false,
-    },
-    closeprice: {
-      type: DataTypes.DECIMAL(8, 2),
-      allowNull: true,
-    },
-    profit: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
     },
   });
   sequelize.models.portfolio = sequelize.define(
@@ -29,11 +21,7 @@ module.exports = (sequelize) => {
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      value: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      }
     },
     {
       timestamps: false,
