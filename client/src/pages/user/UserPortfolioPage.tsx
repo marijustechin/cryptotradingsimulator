@@ -6,6 +6,7 @@ import {
   updateAssets,
 } from '../../store/features/crypto/assetsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { TestChart } from '../../components/home/SmallHistoryChart';
 
 const WS_URL = 'ws://localhost:3003/ws/crypto';
 
@@ -54,9 +55,7 @@ export const UserPortfolioPage = () => {
       is tikruju sitoj vietoj reiketu perduoti assets 
       pagrindiniam komponentui tip: 
       <TradingPrices assets={assets} /> */}
-      {assets &&
-        assets.length > 0 &&
-        assets.map((asset) => <p key={asset.id}>{asset.priceUsd}</p>)}
+      <TestChart asset_id="bitcoin" limit={30} />
     </main>
   );
 };

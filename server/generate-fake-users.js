@@ -7,7 +7,7 @@ const axios = require('axios');
 const { faker } = require('@faker-js/faker');
 
 const API_URL = 'http://localhost:3003/api/v1/users/registration';
-const NUM_USERS = 100;
+const NUM_USERS = 1234;
 
 async function registerUser(firstName, email, password) {
   try {

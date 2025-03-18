@@ -9,6 +9,7 @@ const $api = axios.create({
 // prie kiekvienos uzklausos pridedamas tokenas
 $api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${process.env.COINCAP_API_KEY}`;
+  config.headers['Accept-Encoding'] = 'gzip';
 
   return config;
 });

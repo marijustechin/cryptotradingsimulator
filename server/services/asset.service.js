@@ -59,14 +59,13 @@ class AssetService {
     const formattedData = histData.map((data) => ({
       asset_id: asset_id,
       priceUsd: parseFloat(data.priceUsd),
-      time: new Date(data.time).toISOString().split('T')[1].split('.')[0],
-      date: new Date(data.date),
+      date: data.date,
     }));
 
     const transaction = await sequelize.transaction();
     try {
       await asset_hist.bulkCreate(formattedData, {
-        updateOnDuplicate: ['priceUsd', 'time'],
+        updateOnDuplicate: ['priceUsd', 'date'],
         transaction,
       });
       await transaction.commit();
@@ -74,6 +73,18 @@ class AssetService {
       await transaction.rollback();
       console.error('Error:', error);
     }
+  }
+
+  async getAssetsHistory(asset_id, limit = 30) {
+    // paskutines trisdesimt dienu
+    const historyPrices = await asset_hist.findAll({
+      where: { asset_id },
+      attributes: ['priceUsd', 'date'],
+      order: [['date', 'DESC']],
+      limit: limit,
+    });
+
+    return historyPrices;
   }
 }
 

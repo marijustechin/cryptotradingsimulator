@@ -110,7 +110,6 @@ export const allUsersSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
-        console.log('Delete user payload:', action.payload); // Debugging
         if (state.allUsersData) {
           state.allUsersData = state.allUsersData.filter(
             (user) => user.id !== action.payload
