@@ -1,3 +1,9 @@
+import { HowToTradeTextures } from "../components/HowToTrade/HowToTradeTextures";
+
 export const HowToTradePage = () => {
-  return <div>HowToTradePage</div>;
+  return (
+    <>
+      <HowToTradeTextures />
+    </>
+  );
 };
