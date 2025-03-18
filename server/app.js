@@ -6,6 +6,7 @@ const helmet = require('helmet');
 // endpointu importas
 const userRouter = require('./routers/user.router');
 const cryptoRouter = require('./routers/crypto.router');
+const tradeRouter = require('./routers/trader.router');
 
 // websocket routeris
 const setupWebSocketRoutes = require('./routers/crypto.ws.router');
@@ -29,6 +30,7 @@ app.use(helmet());
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/crypto', cryptoRouter);
+app.use('/api/v1/trade', tradeRouter)
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);

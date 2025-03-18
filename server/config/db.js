@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
 
 const allModels = [
   require('../models/user.model'),
-  require('../models/crypto.model'),
+  require('../models/portfolio.model'),
   require('../models/asset.model'),
 ];
 
