@@ -89,6 +89,9 @@ h3,
 p,
 .paragraph {
   font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  font-style: normal;
 }
 
 /* Components */
@@ -96,4 +99,12 @@ p,
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+.title-first{
+  font-weight: 900;
+  font-style: normal;
+  line-height: normal;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  @apply text-4xl md:text-5xl;
 }
