@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   getAssetId,
   getHistoryInterval,
-  setAssetId,
   setHistoryInterval,
 } from '../../store/features/trading/tradeOptionsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -17,23 +16,23 @@ import {
   YAxis,
 } from 'recharts';
 
-export const TradeChartTest = () => {
+export const TradeChart = () => {
   const dispatch = useAppDispatch();
   const historyInterval = useAppSelector(getHistoryInterval);
   const assetId = useAppSelector(getAssetId);
   const [historyData, setHistoryData] = useState<TAssetHistory[]>([]);
 
-  dispatch(setAssetId('bitcoin'));
-
   const getHistory = useCallback(async () => {
-    try {
-      const response = await AssetService.getAssetHistory(
-        assetId,
-        historyInterval
-      );
-      setHistoryData(response);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    if (assetId.length > 1) {
+      try {
+        const response = await AssetService.getAssetHistory(
+          assetId,
+          historyInterval
+        );
+        setHistoryData(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
   }, [historyInterval, assetId]);
 
@@ -44,8 +43,8 @@ export const TradeChartTest = () => {
   }, [getHistory]);
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex gap-2'>
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-2">
         <button
           onClick={() => dispatch(setHistoryInterval('m1'))}
           className={`${
@@ -98,9 +97,9 @@ export const TradeChartTest = () => {
         </button>
       </div>
       <div>
-        <ResponsiveContainer width='100%' height={300}>
+        <ResponsiveContainer width="100%" height={300}>
           <LineChart data={historyData}>
-            <XAxis dataKey='time' tick={{ fill: '#fff', fontSize: 7 }} />
+            <XAxis dataKey="time" tick={{ fill: '#fff', fontSize: 7 }} />
             <YAxis
               tick={{ fill: '#fff', fontSize: 7 }}
               domain={['auto', 'auto']}
@@ -109,9 +108,9 @@ export const TradeChartTest = () => {
               contentStyle={{ backgroundColor: '#333', borderColor: '#555' }}
             />
             <Line
-              type='monotone'
-              dataKey='priceUsd'
-              stroke='#319c06'
+              type="monotone"
+              dataKey={'priceUsd'}
+              stroke="#319c06"
               strokeWidth={1.5}
               dot={false}
             />
