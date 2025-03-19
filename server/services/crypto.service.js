@@ -11,10 +11,10 @@ const POPULAR_CRYPTOS = [
   'xrp',
   'binance-coin',
   'solana',
-  'usd-coin',
   'cardano',
   'dogecoin',
   'tron',
+  'toncoin',
 ];
 
 const fetchCryptoData = async () => {
@@ -64,6 +64,6 @@ const fetchAssetsHistoryData = async () => {
 // kainos
 setInterval(fetchCryptoData, 5 * 60 * 1000);
 // istoriniai duomenys
-setInterval(fetchAssetsHistoryData, 60 * 60 * 1000);
+setInterval(fetchAssetsHistoryData, 5 * 60 * 60 * 1000);
 
 module.exports = { fetchCryptoData, fetchAssetsHistoryData };

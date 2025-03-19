@@ -1,10 +1,10 @@
-import { SelectOptions } from '../../components/trading/TradeOptions';
 import { TopCryptos } from '../../components/trading/TopCryptos';
+import { TradeOptions } from '../../components/trading/TradeOptions';
 
 export const UserTradingPage = () => {
   return (
     <main>
-      <SelectOptions />
+      <TradeOptions />
       <TopCryptos />
     </main>
   );

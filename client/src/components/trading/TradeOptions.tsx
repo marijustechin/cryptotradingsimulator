@@ -5,19 +5,19 @@ import {
   setOrderType,
 } from '../../store/features/trading/tradeOptionsSlice';
 
-export const SelectOptions = () => {
+export const TradeOptions = () => {
   const dispatch = useAppDispatch();
   const tradeOptions = useAppSelector(selectTradeOptions);
 
   return (
-    <div className='flex gap-4 items-center'>
-      <p className='text-2xl text-violet-300'>Spot</p>
+    <div className="flex gap-4 items-center">
+      <p className="text-2xl text-violet-300">Spot</p>
       <div>
-        <div className='flex flex-col'></div>
+        <div className="flex flex-col"></div>
         <div>
-          <p className='text-sm text-violet-400'>
+          <p className="text-sm text-violet-400">
             Selected order type:{' '}
-            <span className='text-violet-50'>
+            <span className="text-violet-50">
               {tradeOptions.orderType.toLocaleUpperCase()}
             </span>{' '}
             , order dircection:{' '}
@@ -33,7 +33,7 @@ export const SelectOptions = () => {
           </p>
         </div>
         {/* sandorio tipo mygtukai */}
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           <button
             onClick={() => dispatch(setOrderType('limit'))}
             className={`${
@@ -55,7 +55,7 @@ export const SelectOptions = () => {
             Market
           </button>
           {/* sandorio kryptis */}
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <button
               onClick={() => dispatch(setOrderDirection('buy'))}
               className={`${
