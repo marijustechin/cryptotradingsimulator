@@ -10,4 +10,7 @@ cryptoRouter.get('/assets', assetController.getAssets);
 // kainu istorija, gali gauti tik prisijunges naudotojas
 cryptoRouter.get('/assets/history/:id', assetController.getAssetsHistory);
 
+// vienos valiutos istorija
+cryptoRouter.get('/assets/assethistory/:id', assetController.getAssetHistory);
+
 module.exports = cryptoRouter;

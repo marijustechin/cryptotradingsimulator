@@ -29,6 +29,22 @@ class AssetController {
       next(e);
     }
   }
+
+  async getAssetHistory(req, res, next) {
+    try {
+      const asset_id = req.params.id;
+      const { interval } = req.query;
+
+      const assetsHistory = await assetService.getAssetHistory(
+        asset_id,
+        interval
+      );
+
+      return res.status(200).json(assetsHistory);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new AssetController();
