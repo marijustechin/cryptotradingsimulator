@@ -7,7 +7,7 @@ export const HomePageTextures = () => {
 
             {/* Desktop version */ }
             <div
-                className="absolute inset-0 z-10 hidden lg:block"
+                className="absolute inset-0 z-20 hidden lg:block"
                 style={{
                     backgroundImage: `url('/textures/sphere.svg'),
                                       url('/textures/Monero.svg'),
@@ -103,7 +103,7 @@ export const HomePageTextures = () => {
             <div className="texture-oval z-9"></div>
             <div className="texture-oval2 z-9"></div>
             <div className="texture-oval3 z-9"></div>
-            <div className="relative z-20 flex items-center justify-center text-center mt-[-90px]">
+            <div className="relative z-20 flex items-center justify-center text-center">
                 <WelcomeMessageHome />
             </div>
 
