@@ -4,11 +4,17 @@ import { RootState } from '../../store';
 interface ITradeOptions {
   orderType: 'limit' | 'market';
   orderDirection: 'buy' | 'sell';
+  currency: string;
+  amount: number;
+  triggerPrice: number;
 }
 
 const initialState: ITradeOptions = {
   orderType: 'limit',
   orderDirection: 'buy',
+  currency: '',
+  amount: 0.01,
+  triggerPrice: 0,
 };
 
 export const tradeOptionsSlice = createSlice({
@@ -21,10 +27,25 @@ export const tradeOptionsSlice = createSlice({
     setOrderDirection: (state, action: PayloadAction<'buy' | 'sell'>) => {
       state.orderDirection = action.payload;
     },
+    setCurrency: (state, action) => {
+      state.currency = action.payload;
+    },
+    setAmount: (state, action) => {
+      state.amount = action.payload;
+    },
+    setTriggerPrice: (state, action) => {
+      state.triggerPrice = action.payload;
+    },
   },
 });
 
-export const { setOrderType, setOrderDirection } = tradeOptionsSlice.actions;
+export const {
+  setOrderType,
+  setOrderDirection,
+  setAmount,
+  setCurrency,
+  setTriggerPrice,
+} = tradeOptionsSlice.actions;
 
 export const selectTradeOptions = (state: RootState) => state.tradeOptions;
 
