@@ -29,6 +29,14 @@ export const TradeChart = () => {
           assetId,
           historyInterval
         );
+
+        // const formattedData = response.map((item) => ({
+        //   priceUsd: parseFloat(item.priceUsd).toFixed(2),
+        //   date: item.date.split('T')[1].slice(0, 5),
+        //   circulatingSupply: item.circulatingSupply,
+        //   time: item.time,
+        // }));
+
         setHistoryData(response);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -99,7 +107,7 @@ export const TradeChart = () => {
       <div>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={historyData}>
-            <XAxis dataKey="time" tick={{ fill: '#fff', fontSize: 7 }} />
+            <XAxis dataKey="date" tick={{ fill: '#fff', fontSize: 7 }} />
             <YAxis
               tick={{ fill: '#fff', fontSize: 7 }}
               domain={['auto', 'auto']}
