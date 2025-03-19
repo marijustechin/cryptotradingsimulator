@@ -15,3 +15,10 @@ export interface IAssetHistory {
   priceUsd: string;
   date: string;
 }
+
+export interface TAssetHistory {
+  priceUsd: string;
+  time: string;
+  circulatingSupply: string;
+  date: string;
+}

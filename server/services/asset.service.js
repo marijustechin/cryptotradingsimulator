@@ -1,6 +1,8 @@
 const sequelize = require('../config/db');
 const ApiError = require('../exceptions/api.errors');
 const { asset, asset_hist } = sequelize.models;
+const axios = require('axios');
+const $api = require('../config/axios');
 
 class AssetService {
   async getAssets() {
@@ -76,19 +78,30 @@ class AssetService {
     }
   }
 
-  async getAssetsHistory(asset_id, limit = 30) {
+  async getAssetsHistory(asset_id, limit = null, interval = 'm30') {
     // paskutines trisdesimt dienu
     const historyPrices = await asset_hist.findAll({
       where: { asset_id },
       attributes: ['priceUsd', 'date'],
       order: [['date', 'DESC']],
-      limit: limit,
+      ...(limit ? { limit } : {}),
     });
 
     // jei nieko nera
     if (!historyPrices) throw ApiError.NotFound();
 
     return historyPrices;
+  }
+
+  async getAssetHistory(asset_id, interval = 'm30') {
+    try {
+      const response = await $api.get(
+        `/assets/${asset_id}/history?interval=${interval}`
+      );
+      return response.data.data;
+    } catch (e) {
+      next(e);
+    }
   }
 }
 

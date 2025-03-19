@@ -4,17 +4,28 @@ import { RootState } from '../../store';
 interface ITradeOptions {
   orderType: 'limit' | 'market';
   orderDirection: 'buy' | 'sell';
-  currency: string;
+  assetId: string;
   amount: number;
   triggerPrice: number;
+  historyInterval:
+    | 'm1'
+    | 'm5'
+    | 'm15'
+    | 'm30'
+    | 'h1'
+    | 'h2'
+    | 'h6'
+    | 'h12'
+    | 'd1';
 }
 
 const initialState: ITradeOptions = {
   orderType: 'limit',
   orderDirection: 'buy',
-  currency: '',
+  assetId: '',
   amount: 0.01,
   triggerPrice: 0,
+  historyInterval: 'm30',
 };
 
 export const tradeOptionsSlice = createSlice({
@@ -27,14 +38,17 @@ export const tradeOptionsSlice = createSlice({
     setOrderDirection: (state, action: PayloadAction<'buy' | 'sell'>) => {
       state.orderDirection = action.payload;
     },
-    setCurrency: (state, action) => {
-      state.currency = action.payload;
+    setAssetId: (state, action) => {
+      state.assetId = action.payload;
     },
     setAmount: (state, action) => {
       state.amount = action.payload;
     },
     setTriggerPrice: (state, action) => {
       state.triggerPrice = action.payload;
+    },
+    setHistoryInterval: (state, action) => {
+      state.historyInterval = action.payload;
     },
   },
 });
@@ -43,10 +57,15 @@ export const {
   setOrderType,
   setOrderDirection,
   setAmount,
-  setCurrency,
+  setAssetId,
   setTriggerPrice,
+  setHistoryInterval,
 } = tradeOptionsSlice.actions;
 
 export const selectTradeOptions = (state: RootState) => state.tradeOptions;
+
+export const getHistoryInterval = (state: RootState) =>
+  state.tradeOptions.historyInterval;
+export const getAssetId = (state: RootState) => state.tradeOptions.assetId;
 
 export default tradeOptionsSlice.reducer;
