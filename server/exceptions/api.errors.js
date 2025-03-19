@@ -28,6 +28,12 @@ module.exports = class ApiError extends Error {
     return new ApiError(403, 'No permission');
   }
 
+  // 403 - kai autorizavimo/autentifikavimo duomenys yra,
+  // bet nėra leidimo
+  static NotFound() {
+    return new ApiError(404, 'Not found');
+  }
+
   static ConflictError(message, errors = []) {
     return new ApiError(409, message, errors);
   }

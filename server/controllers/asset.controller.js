@@ -1,3 +1,4 @@
+const ApiError = require('../exceptions/api.errors');
 const assetService = require('../services/asset.service');
 
 class AssetController {
@@ -15,6 +16,9 @@ class AssetController {
     try {
       const asset_id = req.params.id;
       const { limit } = req.query;
+
+      if (limit < 1) throw ApiError.BadRequest('Invalid limit value');
+
       const assetsHistory = await assetService.getAssetsHistory(
         asset_id,
         limit
