@@ -18,13 +18,27 @@ class TraderController {
         throw new Error(errString);
       }
 
-      const { userId, assetId, amount } = req.body;
+      const {
+        userId,
+        assetId,
+        amount,
+        ord_direct,
+        ord_type,
+        ord_status,
+        limitPrice,
+      } = req.body;
 
       const getTransaction = await TradeService.BuyCrypto(
         userId,
         assetId,
-        amount
+        amount,
+        ord_direct,
+        ord_type,
+        ord_status,
+        limitPrice
       );
+
+      
 
       return res.status(201).json(getTransaction);
     } catch (error) {
