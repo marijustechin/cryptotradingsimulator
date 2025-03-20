@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.0.8",
     "axios": "^1.7.9",
     "jwt-decode": "^4.0.0",
+    "lightweight-charts": "^5.0.3",
     "motion": "^12.4.10",
     "pako": "^2.1.0",
     "react": "^19.0.0",
