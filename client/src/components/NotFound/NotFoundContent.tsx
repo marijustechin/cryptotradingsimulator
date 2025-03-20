@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 export const NotFoundContent = () => {
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ export const NotFoundContent = () => {
         <div className="row">
           <div className="col-sm-12 ">
             <div className="col-sm-10 col-sm-offset-1 text-center">
-    <DotLottieReact
-      src="https://lottie.host/a03dea08-1e1c-4a37-8282-f7194d12616a/O5YmTu5Jeh.lottie"
+            <Player
+      src="/404.json"
       loop
       autoplay
     />
