@@ -52,7 +52,7 @@ export const HowToTradeContent = () => {
           </p>
         </div>
 
-        <div className="md:mx-10 lg:mx-50">
+        <div className="md:mx-10 lg:mx-50 max-w-6xl">
           {/* What is Crypto Trading */}
           <section className="pb-10">
             <div className="text-lg md:text-4xl lg:text-4xl pb-5">
