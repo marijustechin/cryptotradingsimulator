@@ -6,17 +6,18 @@ const TradeService = require("./trade.service");
 
 const API_URL = "/assets";
 const POPULAR_CRYPTOS = [
-  "bitcoin",
-  "ethereum",
-  "tether",
-  "xrp",
-  "binance-coin",
-  "solana",
-  "usd-coin",
-  "cardano",
-  "dogecoin",
-  "tron",
+  'bitcoin',
+  'ethereum',
+  'chainlink',
+  'xrp',
+  'binance-coin',
+  'solana',
+  'cardano',
+  'dogecoin',
+  'tron',
+  'toncoin',
 ];
+
 const fetchCryptoData = async () => {
   try {
     const cryptoIds = POPULAR_CRYPTOS.join(",");
@@ -34,7 +35,6 @@ const fetchCryptoData = async () => {
       await TradeService.limitOrder(crypto.id);
     }
     console.log("gavau duomenis...");
-    console.log(response.data.data[0]);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response.data);
