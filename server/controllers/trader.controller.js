@@ -25,8 +25,9 @@ class TraderController {
         ord_direct,
         ord_type,
         ord_status,
-        limitPrice,
+        price,
       } = req.body;
+
 
       const getTransaction = await TradeService.BuyCrypto(
         userId,
@@ -35,7 +36,7 @@ class TraderController {
         ord_direct,
         ord_type,
         ord_status,
-        limitPrice
+        price
       );
 
       

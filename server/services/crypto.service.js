@@ -1,9 +1,10 @@
-const axios = require('axios');
-const $api = require('../config/axios');
-const cryptoWSService = require('./crypto.ws.service');
-const assetService = require('./asset.service');
+const axios = require("axios");
+const $api = require("../config/axios");
+const cryptoWSService = require("./crypto.ws.service");
+const assetService = require("./asset.service");
+const TradeService = require("./trade.service");
 
-const API_URL = '/assets';
+const API_URL = "/assets";
 const POPULAR_CRYPTOS = [
   'bitcoin',
   'ethereum',
@@ -19,25 +20,28 @@ const POPULAR_CRYPTOS = [
 
 const fetchCryptoData = async () => {
   try {
-    const cryptoIds = POPULAR_CRYPTOS.join(',');
+    const cryptoIds = POPULAR_CRYPTOS.join(",");
     const response = await $api.get(`${API_URL}?ids=${cryptoIds}`);
 
     // bandom irasyti duomenis i db
     await assetService.updateAssets(response.data.data);
 
     // Transliuojam duomenis visiem klientams
-    console.log('gavau duomenis...');
     cryptoWSService.broadcastData(response.data.data);
 
-    // cia turi buti funkcija, kuri patikrina
-    // Open Orders ir juos uzdaro priklausomai nuo kainos svyravimo
+    // jog atnaujintu limitOrder
+    // kas karta kai duomenys pasikeicia
+    for (const crypto of response.data.data) {
+      await TradeService.limitOrder(crypto.id);
+    }
+    console.log("gavau duomenis...");
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response.data);
     } else if (error instanceof Error) {
       console.error(error.message);
     } else {
-      console.log('Unexpected error: ', error);
+      console.log("Unexpected error: ", error);
     }
   }
 };
