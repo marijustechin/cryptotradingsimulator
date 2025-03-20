@@ -31,7 +31,7 @@ export const Header = () => {
   return (
     <>
       <div
-        className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh] ${
+        className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh]  z-50${
           isDashboardPage ? 'hidden md:flex' : ''
         }`}
       >
@@ -99,7 +99,7 @@ export const Header = () => {
           </div>
 
           {isOpen && (
-            <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 z-30 p-4 text-center rounded-[7px]">
+            <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
                 .filter((link) => user.id || link.title !== 'My Dashboard')
                 .map((link) => (
