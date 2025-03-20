@@ -78,11 +78,10 @@ class AssetService {
     }
   }
 
-  async getAssetsHistory(asset_id, limit = null, interval = 'm30') {
+  async getAssetsHistory(asset_id, limit = null) {
     // paskutines trisdesimt dienu
     const historyPrices = await asset_hist.findAll({
       where: { asset_id },
-      attributes: ['priceUsd', 'date'],
       order: [['date', 'DESC']],
       ...(limit ? { limit } : {}),
     });
@@ -98,9 +97,23 @@ class AssetService {
       const response = await $api.get(
         `/assets/${asset_id}/history?interval=${interval}`
       );
+
+      // jei negavom duomenu is api, imam is db
+      if (
+        !Array.isArray(response.data.data) ||
+        response.data.data.length === 0
+      ) {
+        const historyData = await this.getAssetsHistory(asset_id);
+        if (Array.isArray(historyData) || historyData.length === 0) {
+          return historyData;
+        } else {
+          return 'Failed to get historical data';
+        }
+      }
+      this.saveHistoricalData(asset_id, response.data.data);
       return response.data.data;
     } catch (e) {
-      next(e);
+      return await this.getAssetsHistory(asset_id);
     }
   }
 }

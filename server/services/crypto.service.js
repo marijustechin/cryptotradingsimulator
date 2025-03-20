@@ -39,31 +39,9 @@ const fetchCryptoData = async () => {
   }
 };
 
-const fetchAssetsHistoryData = async () => {
-  try {
-    for (const asset of POPULAR_CRYPTOS) {
-      // api.coincap.io/v2/assets/bitcoin/history?interval=d1
-      const response = await $api.get(
-        `${API_URL}/${asset}/history?interval=d1`
-      );
-      await assetService.saveHistoricalData(asset, response.data.data);
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.response.data);
-    } else if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.log('Unexpected error: ', error);
-    }
-  }
-};
-
 // Periodiniai atnaujinimai
 // ************************
 // kainos
 setInterval(fetchCryptoData, 5 * 60 * 1000);
-// istoriniai duomenys
-setInterval(fetchAssetsHistoryData, 5 * 60 * 60 * 1000);
 
-module.exports = { fetchCryptoData, fetchAssetsHistoryData };
+module.exports = { fetchCryptoData };

@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
-import { IAssetHistory } from "../../types/crypto";
-import AssetService from "../../services/AssetService";
-import { Line, LineChart, ResponsiveContainer } from "recharts";
+import { useEffect, useState } from 'react';
+import { TAssetHistory } from '../../types/crypto';
+import AssetService from '../../services/AssetService';
+import { Line, LineChart, ResponsiveContainer } from 'recharts';
 
 interface TestChartProps {
-  limit: number;
   asset_id: string;
 }
 
-export const TestChart = ({ asset_id, limit }: TestChartProps) => {
-  const [history, setHistory] = useState<IAssetHistory[]>([]);
+export const TestChart = ({ asset_id }: TestChartProps) => {
+  const [history, setHistory] = useState<TAssetHistory[]>([]);
 
   useEffect(() => {
     const getHistory = async () => {
       try {
-        const assetHistory = await AssetService.getAssetsHistory(
-          asset_id,
-          limit
-        );
+        const assetHistory = await AssetService.getAssetHistory(asset_id, 'd1');
         setHistory(assetHistory);
       } catch (error) {
-        console.error("Failed to fetch asset history:", error);
+        console.error('Failed to fetch asset history:', error);
       }
     };
 
     getHistory();
-  }, [asset_id, limit]);
+  }, [asset_id]);
 
   return (
     <ResponsiveContainer width="100%" height={30}>

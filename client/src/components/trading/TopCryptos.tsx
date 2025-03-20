@@ -55,7 +55,7 @@ export const TopCryptos = () => {
     onMessage: (event: WebSocketEventMap['message']) => {
       const parsedData = JSON.parse(event.data);
       if (Array.isArray(parsedData)) {
-        dispatch(updateAssets(parsedData.sort((a, b) => a.rank - b.rank)));
+        dispatch(updateAssets([...parsedData].sort((a, b) => a.rank - b.rank)));
       } else {
         console.error('Received data is not an array:', parsedData);
       }
@@ -94,7 +94,16 @@ export const TopCryptos = () => {
       </div>
 
       {/* Table */}
-      <table className="w-full">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Crypto currency</th>
+            <th>Price (USD)</th>
+            <th>MarketCap</th>
+            <th>24h Change (%)</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {sortedAssets.map((asset) => (
             <CryptoAsset key={asset.id} asset={asset} />
