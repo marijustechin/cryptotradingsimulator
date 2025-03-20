@@ -1,8 +1,10 @@
 const sequelize = require("../config/db");
 const ApiError = require("../exceptions/api.errors");
 const { asset, asset_hist } = sequelize.models;
-const axios = require("axios");
-const $api = require("../config/axios");
+const axios = require('axios');
+const $api = require('../config/axios');
+const helperService = require('./helper.service');
+
 
 class AssetService {
   async getAssets() {
@@ -98,9 +100,23 @@ class AssetService {
       const response = await $api.get(
         `/assets/${asset_id}/history?interval=${interval}`
       );
-      return response.data.data;
+
+      // jei negavom duomenu is api, imam is db
+      if (
+        !Array.isArray(response.data.data) ||
+        response.data.data.length === 0
+      ) {
+        const historyData = await this.getAssetsHistoryFromDb(asset_id);
+        if (Array.isArray(historyData) || historyData.length === 0) {
+          return helperService.correctDatePrice(historyData);
+        } else {
+          return 'Failed to get historical data';
+        }
+      }
+      this.saveHistoricalData(asset_id, response.data.data);
+      return helperService.correctDatePrice(response.data.data);
     } catch (e) {
-      next(e);
+      return await this.getAssetsHistoryFromDb(asset_id);
     }
   }
 }

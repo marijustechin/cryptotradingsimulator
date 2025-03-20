@@ -5,7 +5,7 @@ import {
   setOrderType,
 } from '../../store/features/trading/tradeOptionsSlice';
 
-export const SelectOptions = () => {
+export const TradeOptions = () => {
   const dispatch = useAppDispatch();
   const tradeOptions = useAppSelector(selectTradeOptions);
 
@@ -59,7 +59,9 @@ export const SelectOptions = () => {
             <button
               onClick={() => dispatch(setOrderDirection('buy'))}
               className={`${
-                tradeOptions.orderDirection === 'buy' ? 'bg-emerald-500 ' : ''
+                tradeOptions.orderDirection === 'buy'
+                  ? 'bg-emerald-500 text-violet-950'
+                  : ''
               } min-w-20 px-2 py-1 border border-emerald-500 rounded-lg cursor-pointer`}
             >
               Buy
@@ -67,7 +69,9 @@ export const SelectOptions = () => {
             <button
               onClick={() => dispatch(setOrderDirection('sell'))}
               className={`${
-                tradeOptions.orderDirection === 'sell' ? 'bg-rose-500 ' : ''
+                tradeOptions.orderDirection === 'sell'
+                  ? 'bg-rose-500 text-violet-950'
+                  : ''
               } min-w-20 px-2 py-1 border border-rose-500 rounded-lg cursor-pointer`}
             >
               Sell

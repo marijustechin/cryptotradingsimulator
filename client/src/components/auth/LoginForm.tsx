@@ -85,7 +85,7 @@ export const LoginForm = () => {
           <input
             onKeyUp={() => clearError()}
             id="email"
-            className="form-input autofill:transition-colors autofill:duration-[999999999s]"
+            className="form-input"
             type="email"
             autoComplete="on"
             {...register('email')}
