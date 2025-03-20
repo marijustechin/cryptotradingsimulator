@@ -16,8 +16,8 @@ export const userLinks: ISSidebar[] = [
   },
   { title: 'Trading', href: '/my-dashboard/trading', icon: <RiBankFill /> },
   {
-    title: 'Portfolio',
-    href: '/my-dashboard/portfolio',
+    title: 'Orders',
+    href: '/my-dashboard/orders',
     icon: <FaMoneyBillWave />,
   },
   // { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },

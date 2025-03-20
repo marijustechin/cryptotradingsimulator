@@ -7,7 +7,7 @@ const API_URL = '/assets';
 const POPULAR_CRYPTOS = [
   'bitcoin',
   'ethereum',
-  'tether',
+  'chainlink',
   'xrp',
   'binance-coin',
   'solana',
@@ -28,6 +28,9 @@ const fetchCryptoData = async () => {
     // Transliuojam duomenis visiem klientams
     console.log('gavau duomenis...');
     cryptoWSService.broadcastData(response.data.data);
+
+    // cia turi buti funkcija, kuri patikrina
+    // Open Orders ir juos uzdaro priklausomai nuo kainos svyravimo
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response.data);

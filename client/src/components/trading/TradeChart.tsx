@@ -21,6 +21,7 @@ export const TradeChart = () => {
   const historyInterval = useAppSelector(getHistoryInterval);
   const assetId = useAppSelector(getAssetId);
   const [historyData, setHistoryData] = useState<TAssetHistory[]>([]);
+  //const [highest, setHighest] = useState();
 
   const getHistory = useCallback(async () => {
     if (assetId.length > 1) {
@@ -38,6 +39,10 @@ export const TradeChart = () => {
         // }));
 
         setHistoryData(response);
+        // const hiprice = Math.max(
+        //   ...response.map((item) => Number(item.priceUsd))
+        // );
+        // console.log(hiprice);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -51,8 +56,8 @@ export const TradeChart = () => {
   }, [getHistory]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-2">
+    <div className='flex flex-col gap-4'>
+      <div className='flex gap-2'>
         <button
           onClick={() => dispatch(setHistoryInterval('m1'))}
           className={`${
@@ -105,9 +110,9 @@ export const TradeChart = () => {
         </button>
       </div>
       <div>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width='100%' height={300}>
           <LineChart data={historyData}>
-            <XAxis dataKey="date" tick={{ fill: '#fff', fontSize: 7 }} />
+            <XAxis dataKey='date' tick={{ fill: '#fff', fontSize: 7 }} />
             <YAxis
               tick={{ fill: '#fff', fontSize: 7 }}
               domain={['auto', 'auto']}
@@ -116,9 +121,9 @@ export const TradeChart = () => {
               contentStyle={{ backgroundColor: '#333', borderColor: '#555' }}
             />
             <Line
-              type="monotone"
+              type='monotone'
               dataKey={'priceUsd'}
-              stroke="#319c06"
+              stroke='#319c06'
               strokeWidth={1.5}
               dot={false}
             />

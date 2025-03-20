@@ -3,6 +3,7 @@ const ApiError = require('../exceptions/api.errors');
 const { asset, asset_hist } = sequelize.models;
 const axios = require('axios');
 const $api = require('../config/axios');
+const helperService = require('./helper.service');
 
 class AssetService {
   async getAssets() {
@@ -78,7 +79,7 @@ class AssetService {
     }
   }
 
-  async getAssetsHistory(asset_id, limit = null) {
+  async getAssetsHistoryFromDb(asset_id, limit = null) {
     // paskutines trisdesimt dienu
     const historyPrices = await asset_hist.findAll({
       where: { asset_id },
@@ -103,17 +104,17 @@ class AssetService {
         !Array.isArray(response.data.data) ||
         response.data.data.length === 0
       ) {
-        const historyData = await this.getAssetsHistory(asset_id);
+        const historyData = await this.getAssetsHistoryFromDb(asset_id);
         if (Array.isArray(historyData) || historyData.length === 0) {
-          return historyData;
+          return helperService.correctDatePrice(historyData);
         } else {
           return 'Failed to get historical data';
         }
       }
       this.saveHistoricalData(asset_id, response.data.data);
-      return response.data.data;
+      return helperService.correctDatePrice(response.data.data);
     } catch (e) {
-      return await this.getAssetsHistory(asset_id);
+      return await this.getAssetsHistoryFromDb(asset_id);
     }
   }
 }
