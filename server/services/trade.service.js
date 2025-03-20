@@ -28,7 +28,7 @@ class TradeService {
       const userPortfolio = await portfolio.findOne({
         where: { user_id: userId, asset_id: assetId },
       });
-  
+
       if (!userPortfolio || userPortfolio.amount < amount) {
         throw ApiError.BadRequest("You must have asset to sell");
       }
@@ -164,9 +164,7 @@ class TradeService {
         ) {
           const transaction = await sequelize.transaction();
           try {
-
             await order.update({ ord_status: "filled" }, { transaction });
-
 
             // pridedam balansa po ord_status filled
             if (order.ord_direct === "sell") {
@@ -208,10 +206,7 @@ class TradeService {
       where: { user_id: userId, asset_id: assetId },
     });
 
-    console.log(
-      "Useris rastas:",
-      userPortfolio ? userPortfolio.toJSON() : "Neatsirado"
-    );
+    console.log("Useris rastas:", userPortfolio);
 
     if (ordDirect === "buy") {
       if (userPortfolio) {
@@ -250,7 +245,7 @@ class TradeService {
       throw new Error(`Insufficient balance to place ${ord_direct} order`);
     }
 
-    const balance = parseFloat(userWallet.balance)
+    const balance = parseFloat(userWallet.balance);
     const convertedPrice = parseFloat(price);
 
     if (ord_direct === "buy") {

@@ -70,7 +70,7 @@ const fetchAssetsHistoryData = async () => {
 // Periodiniai atnaujinimai
 // ************************
 // kainos
-setInterval(fetchCryptoData, 1 * 30 * 1000);
+setInterval(fetchCryptoData, 5 * 60 * 1000);
 // istoriniai duomenys
 setInterval(fetchAssetsHistoryData, 60 * 60 * 1000);
 
