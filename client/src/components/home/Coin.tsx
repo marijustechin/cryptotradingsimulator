@@ -23,7 +23,7 @@ export const Coin = ({ asset }: IAsset) => {
       </div>
       <TestChart asset_id={asset.id} />
       <div className="place-content-center">
-        <Link to="/registration">Trade now -{'>'}</Link>
+        <Link to="/registration" className="text-white hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500">Trade now -{'>'}</Link>
       </div>
     </div>
   );

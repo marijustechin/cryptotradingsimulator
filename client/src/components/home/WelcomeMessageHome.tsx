@@ -28,13 +28,8 @@ export const WelcomeMessageHome = () => {
         <h1 className="title-first">We make crypto clear and simple</h1>
       </div>
       <CoinTable />
-      <div className="mt-6">
-        <Link to="/registration" className="btn-generic">
-          Get Started
-        </Link>
-      </div>
       <div className="grid md:grid-cols-[0.7fr_1.3fr] text-white gap-3 relative mt-20 md:mt-40">
-        <div className="text-white text-center md:text-left">
+        <div className="text-white text-center md:text-left p-2">
           <h1 className="title-first">
             Take your first step into safe, secure crypto investing
           </h1>
