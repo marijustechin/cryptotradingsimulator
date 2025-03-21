@@ -26,17 +26,17 @@ export const HowToTradeContent = () => {
     <div className="min-h-screen flex flex-col items-center mx-5 mb-10">
       <div className="z-10">
         {/* Steps for trading */}
-        <div className="text-4xl md:text-5xl lg:text-6xl pt-[4rem] pb-[3rem] flex justify-center">
+        <div className="text-4xl md:text-5xl lg:text-6xl pt-[4rem] pb-[3rem] flex justify-center text-center">
           Steps For Trading on CryptoHill
         </div>
 
-        <div className="flex flex-col gap-3 items-center text-base md:text-lg lg:text-xl pb-16">
+        <div className="flex flex-col gap-3 items-center text-center text-base md:text-lg lg:text-xl pb-16">
           <p className="p-4 border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
             Sign up for a cryptocurrency exchange
           </p>
           <span>↓</span>
           <p className="p-4 border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
-            Fund your account
+            Have fake money to trade
           </p>
           <span>↓</span>
           <p className="p-4 border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
@@ -248,32 +248,29 @@ export const HowToTradeContent = () => {
           </section>
 
           {/* FAQ */}
-          <section className="flex flex-row gap-10 md:gap-10 lg:gap-40 justify-between border border-white/47 bg-black/50 rounded-2xl p-5 ">
+          <section className="flex flex-row gap-10 md:gap-10 lg:gap-40 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
             <div className="flex flex-col justify-between">
-              <div className="text-lg md:text-4xl lg:text-4xl">
+              <p className="text-lg md:text-4xl lg:text-4xl">
                 Frequently Asked Questions
-              </div>
-              <img src="/textures/star-img3.svg" alt="star" className="w-18" />
+              </p>
+              <img
+                src="/textures/bitcoin-tag.svg"
+                alt="star"
+                className="w-18"
+              />
             </div>
 
-            <div className="flex flex-col text-sm md:text-xl lg:text-2xl">
+            <div className="flex flex-col text-sm md:text-xl lg:text-2xl w-full md:w-3/4 lg:w-1/2">
               {faqs.map((faq, index) => (
                 <div key={index} className="pb-4">
-                  <div className="dropdown">
-                    <div
-                      tabIndex={0}
-                      role="button"
-                      className="cursor-pointer p-1 hover:shadow-md hover:shadow-purple-500/90 duration-300 rounded-2xl"
-                    >
+                  <details className="collapse">
+                    <summary className="collapse-title p-1 rounded-2xl hover:underline">
                       {faq.question}
-                    </div>
-                    <div
-                      tabIndex={0}
-                      className="menu dropdown-content border border-white/47 bg-base-100 bg-gradient-to-r from-blue-500 to-purple-600 rounded-box z-1 w-38 md:w-70 lg:w-90 p-2 shadow-lg shadow-black"
-                    >
+                    </summary>
+                    <div className="collapse-content border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 text-sm rounded-box z-1 p-2 shadow-lg shadow-black">
                       <p>{faq.answer}</p>
                     </div>
-                  </div>
+                  </details>
                 </div>
               ))}
             </div>

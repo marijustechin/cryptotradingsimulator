@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
     <>
-      <footer className="flex mx-5 gap-15 text-white mb-10 pt-10 justify-between">
+      <footer className="flex mx-5 gap-10 text-white mb-10 pt-10 justify-between flex-col md:flex-row lg:flex-row">
         <div className="flex flex-col gap-4">
           {/* Introduction */}
           <div>
