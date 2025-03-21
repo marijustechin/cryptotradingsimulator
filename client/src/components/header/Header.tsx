@@ -13,11 +13,7 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuOpenOrClose = (closeMenu: boolean = false) => {
-    if (closeMenu) {
-      setIsOpen(false);
-    } else {
-      setIsOpen((prev) => !prev);
-    }
+    setIsOpen((prev) => (closeMenu ? false : !prev));
   };
 
   const links = {
@@ -99,19 +95,19 @@ export const Header = () => {
           </div>
 
           {isOpen && (
-            <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
+            <button className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
-                .filter((link) => user.id || link.title !== 'My Dashboard')
+                .filter((link) => user.id ?? link.title !== 'My Dashboard')
                 .map((link) => (
-                  <div
-                    className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer"
+                  <button
+                    className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer block"
                     onClick={() => menuOpenOrClose()}
                     key={link.href}
                   >
                     <Link to={link.href}>{link.title}</Link>
-                  </div>
+                  </button>
                 ))}
-            </div>
+            </button>
           )}
 
           {/* Sign Buttons */}
