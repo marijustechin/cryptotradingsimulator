@@ -21,7 +21,9 @@ export const CreditsContent = () => {
     },
     {
       name: "Airida Grašytė",
-      profilepic: <img src="" alt="Airida profile picture" />,
+      profilepic: (
+        <img src="ProfilePictures\airida.jpg" alt="Airida profile picture" />
+      ),
       description: "QA tester",
       github: "https://github.com/airidaG",
     },
@@ -68,36 +70,37 @@ export const CreditsContent = () => {
       description: "Full Stack Developer",
       github: "https://github.com/nineteee",
     },
-    {
-      name: "Kernius Pauliukėnas",
-      profilepic: <img src="" alt="Kernius profile picture" />,
-      description: "QA tester",
-      github: "idk",
-    },
   ];
+
   return (
-    <div className="min-h-screen mx-5 mb-10">
+    <main className="min-h-screen container mb-10">
       {/* page title */}
-      <div className="flex flex-col items-center text-3xl md:text-5xl lg:text-6xl pt-120 lg:pt-100 pb-130">
-        <span>(っ◔◡◔)っ</span>
-        <span>♥ 𝑴𝒆𝒆𝒕 𝑻𝒉𝒆 𝑻𝒆𝒂𝒎 ♥</span>
-        <span>↓</span>
-      </div>
+      <section className="flex flex-col items-center text-3xl md:text-5xl lg:text-6xl pt-120 lg:pt-100 pb-126">
+        <span aria-hidden="true">(っ◔◡◔)っ</span>
+        <h1 className="text-center credits-title">♥ Meet The Team ♥</h1>
+        <span className="animate-bounce pt-4" aria-hidden="true">
+          ↓
+        </span>
+      </section>
 
       {/* card */}
-      <div>
+      <section>
         {contributors.map((contributor, index) => (
-          <div
+          <article
             key={index}
             className="card card-side bg-gradient-to-r from-black to-gray-800 rounded-2xl mx-10 mb-10 hover:bg-gradient-to-r hover:from-gray-950 hover:to-violet-950 transition duration-300 shadow-lg hover:shadow-[0_0_20px_10px_rgba(138,43,226,0.7)]"
           >
-            <figure className=" md:w-[200px] md:h-[300px] lg:w-[200px] lg:h-[300px]">
+            <figure className="md:w-[200px] md:h-[300px] lg:w-[200px] lg:h-[300px]">
               {contributor.profilepic}
             </figure>
             <div className="card-body">
-              <h3 className="card-title">{contributor.name}</h3>
-              <p>{contributor.description}</p>
-              <div className="card-actions justify-start">
+              <h2 className="card-title credits-card-name">
+                {contributor.name}
+              </h2>
+              <p className="credits-card-description">
+                {contributor.description}
+              </p>
+              <div className="card-actions justify-start credits-card-description">
                 <button>
                   <a
                     href={contributor.github}
@@ -110,16 +113,16 @@ export const CreditsContent = () => {
                       alt="bitcoin trading svg"
                       className="w-5 mr-2"
                     />
-                    <span>Github profile</span>
+                    Github profile
                   </a>
                 </button>
               </div>
             </div>
-          </div>
+          </article>
         ))}
-      </div>
+      </section>
 
-      <div className="mx-10">
+      <section className="mx-10 mb-10">
         <p>
           This website is the result of collaboration, creativity, and
           determination. It serves as a reminder that great things happen when
@@ -129,7 +132,7 @@ export const CreditsContent = () => {
           Built with love, coffee, and countless lines of code. Thank you for
           visiting ♡
         </p>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };

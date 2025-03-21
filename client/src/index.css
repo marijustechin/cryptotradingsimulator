@@ -108,3 +108,41 @@ p,
   font-family: 'Inter', sans-serif;
   @apply text-4xl md:text-5xl;
 }
+
+/* credits page */
+.credits-title{
+  font-family: cursive;
+  @apply text-xl md:text-5xl lg:text-6xl;
+}
+.credits-card-name{
+  @apply text-base md:text-3xl lg:text-4xl;
+}
+.credits-card-description{
+  @apply text-sm md:text-xl lg:text-2xl;
+}
+
+/* How To Trade page */
+.how-to-trade-title{
+  font-weight: 500;
+  font-family: sans-serif;
+  @apply text-4xl md:text-5xl lg:text-6xl;
+}
+.faq-title{
+  font-weight: 100;
+  @apply text-lg md:text-4xl lg:text-4xl;
+}
+.h2-title{
+  @apply text-2xl md:text-4xl lg:text-4xl;
+}
+.h3-title{
+  @apply text-lg md:text-2xl lg:text-2xl;
+}
+.h4-title{
+  font-weight: bold;
+  @apply text-base md:text-lg lg:text-lg;
+}
+.ol-steps {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
