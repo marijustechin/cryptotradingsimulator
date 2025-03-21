@@ -31,7 +31,7 @@ export const Header = () => {
   return (
     <>
       <div
-        className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh]  z-50${
+        className={`container flex md:grid md:grid-cols-3 items-center justify-between z-50 h-[10vh]${
           isDashboardPage ? 'hidden md:flex' : ''
         }`}
       >
@@ -66,7 +66,7 @@ export const Header = () => {
         </div>
 
         {/* Mobile Version Sign Buttons */}
-        <div className="md:hidden flex justify-center items-center text-white gap-2 w-full p-3">
+        <div className="md:hidden flex justify-center items-center text-white gap-4 w-full p-3">
           {user.id ? (
             <Logout />
           ) : (
