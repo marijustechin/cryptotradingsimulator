@@ -7,7 +7,7 @@ export const NotFoundContent = () => {
   return (
     <main>
       <h1 className="text-center text-lg md:text-3xl p-5">
-        Oops...The page you are looking for not found{" "}
+        Oops...The page you are looking for is not found
       </h1>
       <section className="">
         <div className="row">
