@@ -24,7 +24,6 @@ class TraderController {
         amount,
         ord_direct,
         ord_type,
-        ord_status,
         price,
       } = req.body;
 
@@ -35,7 +34,6 @@ class TraderController {
         amount,
         ord_direct,
         ord_type,
-        ord_status,
         price
       );
 
