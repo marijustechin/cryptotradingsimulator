@@ -250,9 +250,9 @@ export const HowToTradeContent = () => {
           {/* FAQ */}
           <section className="flex flex-row gap-10 md:gap-10 lg:gap-40 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
             <div className="flex flex-col justify-between">
-              <p className="text-lg md:text-4xl lg:text-4xl">
+              <span className="text-lg md:text-4xl lg:text-4xl">
                 Frequently Asked Questions
-              </p>
+              </span>
               <img
                 src="/textures/bitcoin-tag.svg"
                 alt="star"
@@ -268,7 +268,7 @@ export const HowToTradeContent = () => {
                       {faq.question}
                     </summary>
                     <div className="collapse-content border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 text-sm rounded-box z-1 p-2 shadow-lg shadow-black">
-                      <p>{faq.answer}</p>
+                      {faq.answer}
                     </div>
                   </details>
                 </div>
