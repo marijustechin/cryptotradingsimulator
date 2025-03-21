@@ -31,7 +31,7 @@ export const HowToTradeContent = () => {
         </div>
 
         <div className="flex flex-col gap-3 items-center text-center text-base md:text-lg lg:text-xl pb-16">
-          <p className="p-4 border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
+          <p className="p-4 mx-2 border border-white/47 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
             Sign up for a cryptocurrency exchange
           </p>
           <span>↓</span>
