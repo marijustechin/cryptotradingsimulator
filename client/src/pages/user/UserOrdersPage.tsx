@@ -1,4 +1,4 @@
-import { AreaSeries, ColorType, createChart } from 'lightweight-charts';
+import { CandlestickSeries, ColorType, createChart } from 'lightweight-charts';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
@@ -7,43 +7,45 @@ import {
   setAssetId,
 } from '../../store/features/trading/tradeOptionsSlice';
 import AssetService from '../../services/AssetService';
+import { SelectInstrument } from '../../components/trading/SelectInstrument';
+import { getInstrument } from '../../store/features/trading/tradingOptionsSlice';
+import { IInstrument } from '../../types/crypto';
 
 interface IHistoryData {
   time: string;
-  value: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
 }
 
 export const UserOrdersPage = () => {
   const dispatch = useAppDispatch();
-  const historyInterval = useAppSelector(getHistoryInterval);
-  const assetId = useAppSelector(getAssetId);
+  const instrument = useAppSelector(getInstrument);
+
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [historyData, setHistoryData] = useState<IHistoryData[]>([]);
 
   const getHistory = useCallback(async () => {
-    dispatch(setAssetId('bitcoin'));
-    if (assetId.length > 1) {
-      try {
-        const response = await AssetService.getAssetHistory(
-          assetId,
-          historyInterval
-        );
+    try {
+      const candles = await AssetService.getCandles('hours', instrument);
+      const formatedCandles = candles.map((item) => ({
+        time: item.TIMESTAMP,
+        open: item.OPEN,
+        high: item.HIGH,
+        low: item.LOW,
+        close: item.CLOSE,
+      }));
 
-        const formattedData = response.map((item) => ({
-          time: item.time, // Already Unix timestamp (seconds)
-          value: parseFloat(item.priceUsd),
-        }));
-
-        setHistoryData(formattedData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      setHistoryData(formatedCandles);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  }, [historyInterval, assetId, dispatch]);
+  }, [instrument]);
 
   useEffect(() => {
     getHistory();
-    const interval = setInterval(getHistory, 30000);
+    const interval = setInterval(getHistory, 50000);
     return () => clearInterval(interval);
   }, [getHistory]);
 
@@ -53,16 +55,22 @@ export const UserOrdersPage = () => {
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: '#111827' },
-        textColor: 'white',
+        textColor: '#A78BFA',
+      },
+      grid: {
+        vertLines: { color: '#4C1D95' }, // Dark vertical grid lines
+        horzLines: { color: '#4C1D95' }, // Dark horizontal grid lines
       },
       width: chartContainerRef.current.clientWidth,
       height: 500,
     });
 
-    const newSeries = chart.addSeries(AreaSeries, {
-      lineColor: '#34D399',
-      topColor: 'rgba(91, 33, 182, 0.4)',
-      bottomColor: 'rgba(17, 24, 39, 0)',
+    const newSeries = chart.addSeries(CandlestickSeries, {
+      upColor: '#10B981',
+      downColor: '#F43F5E',
+      borderVisible: false,
+      wickUpColor: '#10B981',
+      wickDownColor: '#F43F5E',
     });
 
     newSeries.setData(historyData);
@@ -74,6 +82,10 @@ export const UserOrdersPage = () => {
 
   return (
     <main>
+      <div className='flex gap-3'>
+        <SelectInstrument />
+      </div>
+      <div>{}</div>
       <div className='rounded-xl overflow-hidden'>
         <div ref={chartContainerRef}></div>
       </div>

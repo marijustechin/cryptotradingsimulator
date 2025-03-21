@@ -1,14 +1,14 @@
-const sequelize = require("../config/db");
-const ApiError = require("../exceptions/api.errors");
-const { asset, asset_hist } = sequelize.models;
+const sequelize = require('../config/db');
+const ApiError = require('../exceptions/api.errors');
+const { asset, asset_hist, instrument } = sequelize.models;
 const axios = require('axios');
+const $axios = require('../config/api');
 const $api = require('../config/axios');
 const helperService = require('./helper.service');
 
-
 class AssetService {
   async getAssets() {
-    const assets = await asset.findAll({ order: [["rank", "asc"]] });
+    const assets = await asset.findAll({ order: [['rank', 'asc']] });
     return assets;
   }
 
@@ -21,7 +21,7 @@ class AssetService {
     const assetIds = assets.map((item) => item.id);
     const existingAssets = await asset.findAll({
       where: { id: assetIds },
-      attributes: ["id", "priceUsd"],
+      attributes: ['id', 'priceUsd'],
       raw: true,
     });
 
@@ -57,7 +57,7 @@ class AssetService {
 
   async saveHistoricalData(asset_id, histData) {
     if (!Array.isArray(histData) || histData.length === 0) {
-      console.log("No data to insert.");
+      console.log('No data to insert.');
       return;
     }
 
@@ -70,22 +70,22 @@ class AssetService {
     const transaction = await sequelize.transaction();
     try {
       await asset_hist.bulkCreate(formattedData, {
-        updateOnDuplicate: ["priceUsd", "date"],
+        updateOnDuplicate: ['priceUsd', 'date'],
         transaction,
       });
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   }
 
-  async getAssetsHistory(asset_id, limit = null, interval = "m30") {
+  async getAssetsHistory(asset_id, limit = null, interval = 'm30') {
     // paskutines trisdesimt dienu
     const historyPrices = await asset_hist.findAll({
       where: { asset_id },
-      attributes: ["priceUsd", "date"],
-      order: [["date", "DESC"]],
+      attributes: ['priceUsd', 'date'],
+      order: [['date', 'DESC']],
       ...(limit ? { limit } : {}),
     });
 
@@ -95,7 +95,7 @@ class AssetService {
     return historyPrices;
   }
 
-  async getAssetHistory(asset_id, interval = "m30") {
+  async getAssetHistory(asset_id, interval = 'm30') {
     try {
       const response = await $api.get(
         `/assets/${asset_id}/history?interval=${interval}`
@@ -118,6 +118,21 @@ class AssetService {
     } catch (e) {
       return await this.getAssetsHistoryFromDb(asset_id);
     }
+  }
+
+  async getCandles(instrument = 'BTC-USD', interval = 'minutes') {
+    const queryParams = `/${interval}?market=kraken&instrument=${instrument}&limit=200&aggregate=1&fill=true&apply_mapping=true&response_format=JSON`;
+    try {
+      const response = await $axios.get(queryParams);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getInstruments() {
+    const instruments = await instrument.findAll();
+    return instruments;
   }
 }
 

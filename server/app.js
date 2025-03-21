@@ -3,6 +3,12 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
+//////// paservinsim public aplanka
+const path = require('path');
+const imageDir = path.join(__dirname, 'public');
+console.log('/////////////////////////////////////// ', imageDir);
+/////////////////////////////////////////////////
+
 // endpointu importas
 const userRouter = require('./routers/user.router');
 const cryptoRouter = require('./routers/crypto.router');
@@ -28,9 +34,13 @@ app.use(
 app.use(cookieParser());
 app.use(helmet());
 
+///////// servinam public aplanka
+app.use('/public', express.static(imageDir));
+/////////////////////////////////////////////
+
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/crypto', cryptoRouter);
-app.use('/api/v1/trade', tradeRouter)
+app.use('/api/v1/trade', tradeRouter);
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);
