@@ -23,29 +23,29 @@ export const WelcomeMessageHome = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen max-w-4xl p-1">
+    <main className="flex flex-col items-center min-h-screen max-w-4xl p-1">
       <div className="text-white text-center md:mt-32 mt-12">
         <h1 className="title-first">We make crypto clear and simple</h1>
       </div>
       <CoinTable />
       <div className="grid md:grid-cols-[0.7fr_1.3fr] text-white gap-3 relative mt-20 md:mt-40">
         <div className="text-white text-center md:text-left p-2">
-          <h1 className="title-first">
+          <p className="title-first">
             Take your first step into safe, secure crypto investing
-          </h1>
+          </p>
           <div className="mt-6">
             <Link to="/registration" className="btn-generic">
               Get Started
             </Link>
           </div>
         </div>
-        <div className="texture-purple absolute top-60 right-10 md:-top-15 lg:-right-50 md:-right-80"></div>
+        <div className="texture-purple absolute top-60 right-10 md:-top-15 lg:-right-60 md:-right-80"></div>
         <img
-          className="z-10 object-cover w-full"
+          className="z-10 object-cover max-w-[25rem] w-full place-self-center"
           src={portfolio}
           alt="portfolio"
         />
       </div>
-    </div>
+    </main>
   );
 };
