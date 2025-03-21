@@ -6,7 +6,6 @@ const helmet = require('helmet');
 //////// paservinsim public aplanka
 const path = require('path');
 const imageDir = path.join(__dirname, 'public');
-console.log('/////////////////////////////////////// ', imageDir);
 /////////////////////////////////////////////////
 
 // endpointu importas
@@ -32,10 +31,17 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
 ///////// servinam public aplanka
-app.use('/public', express.static(imageDir));
+app.use(
+  '/public/assets',
+  express.static(path.join(__dirname, 'public/assets'))
+);
 /////////////////////////////////////////////
 
 app.use('/api/v1/users', userRouter);

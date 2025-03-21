@@ -1,74 +1,109 @@
-import { AreaSeries, createChart, ColorType } from 'lightweight-charts';
-import React, { useEffect, useRef } from 'react';
+import { createChart, ColorType, CandlestickSeries } from 'lightweight-charts';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { SelectInstrument } from './SelectInstrument';
+import { useAppSelector } from '../../store/store';
+import {
+  getChartInterval,
+  getInstrument,
+} from '../../store/features/trading/tradingOptionsSlice';
+import AssetService from '../../services/AssetService';
+import { TradingOptions } from './TradingOptions';
+import { SelectInterval } from './SelectInterval';
+import { PlaceOrderButton } from './PlaceOrderButton';
 
-export const ChartComponent = (props) => {
-  const {
-    data,
-    colors: {
-      backgroundColor = 'white',
-      lineColor = '#2962FF',
-      textColor = 'black',
-      areaTopColor = '#2962FF',
-      areaBottomColor = 'rgba(41, 98, 255, 0.28)',
-    } = {},
-  } = props;
+interface IHistoryData {
+  time: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
 
-  const chartContainerRef = useRef();
+interface IInfo {
+  last_trade_price: number;
+}
+
+export const TradingViewChart = () => {
+  const instrument = useAppSelector(getInstrument);
+  const chartInterval = useAppSelector(getChartInterval);
+
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const [historyData, setHistoryData] = useState<IHistoryData[]>([]);
+  const [info, setInfo] = useState<IInfo>();
+
+  const getHistory = useCallback(async () => {
+    try {
+      const candles = await AssetService.getCandles(chartInterval, instrument);
+      // last_trade_price
+      const formatedCandles = candles.map((item) => ({
+        time: item.TIMESTAMP,
+        open: item.OPEN,
+        high: item.HIGH,
+        low: item.LOW,
+        close: item.CLOSE,
+      }));
+
+      setHistoryData(formatedCandles);
+
+      setInfo({
+        ...info,
+        last_trade_price: candles[candles.length - 1].LAST_TRADE_PRICE,
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [instrument, chartInterval, info]);
 
   useEffect(() => {
-    const handleResize = () => {
-      chart.applyOptions({ width: chartContainerRef.current.clientWidth });
-    };
+    getHistory();
+    const interval = setInterval(getHistory, 50000);
+    return () => clearInterval(interval);
+  }, [getHistory]);
+
+  useEffect(() => {
+    if (!chartContainerRef.current || historyData.length === 0) return;
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: backgroundColor },
-        textColor,
+        background: { type: ColorType.Solid, color: '#111827' },
+        textColor: '#A78BFA',
+      },
+      grid: {
+        vertLines: { color: '#4C1D95' }, // Dark vertical grid lines
+        horzLines: { color: '#4C1D95' }, // Dark horizontal grid lines
       },
       width: chartContainerRef.current.clientWidth,
-      height: 300,
+      height: 400,
     });
-    chart.timeScale().fitContent();
 
-    const newSeries = chart.addSeries(AreaSeries, {
-      lineColor,
-      topColor: areaTopColor,
-      bottomColor: areaBottomColor,
+    const newSeries = chart.addSeries(CandlestickSeries, {
+      upColor: '#10B981',
+      downColor: '#F43F5E',
+      borderVisible: false,
+      wickUpColor: '#10B981',
+      wickDownColor: '#F43F5E',
     });
-    newSeries.setData(data);
 
-    window.addEventListener('resize', handleResize);
+    newSeries.setData(historyData);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-
       chart.remove();
     };
-  }, [
-    data,
-    backgroundColor,
-    lineColor,
-    textColor,
-    areaTopColor,
-    areaBottomColor,
-  ]);
+  }, [historyData]);
 
-  return <div ref={chartContainerRef} />;
+  return (
+    <main className="flex flex-col gap-3">
+      <TradingOptions />
+      <div className="flex gap-3 items-center justify-around">
+        <SelectInstrument />
+        <SelectInterval />
+        <div>{info && <div>{info.last_trade_price}</div>}</div>
+      </div>
+
+      <div className="rounded-xl overflow-hidden">
+        <div ref={chartContainerRef}></div>
+      </div>
+      <PlaceOrderButton />
+    </main>
+  );
 };
-
-const initialData = [
-  { time: '2018-12-22', value: 32.51 },
-  { time: '2018-12-23', value: 31.11 },
-  { time: '2018-12-24', value: 27.02 },
-  { time: '2018-12-25', value: 27.32 },
-  { time: '2018-12-26', value: 25.17 },
-  { time: '2018-12-27', value: 28.89 },
-  { time: '2018-12-28', value: 25.46 },
-  { time: '2018-12-29', value: 23.92 },
-  { time: '2018-12-30', value: 22.68 },
-  { time: '2018-12-31', value: 22.67 },
-];
-
-export function App(props) {
-  return <ChartComponent {...props} data={initialData}></ChartComponent>;
-}

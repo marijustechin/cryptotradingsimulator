@@ -132,6 +132,10 @@ class AssetService {
 
   async getInstruments() {
     const instruments = await instrument.findAll();
+    if (instruments.length === 0) {
+      await helperService.initInstruments();
+      return await instrument.findAll();
+    }
     return instruments;
   }
 }
