@@ -11,6 +11,7 @@ interface ITradingOptions {
   triggerPrice: number;
   chartInterval: 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
   instrument: string;
+  singleInstrument: IInstrument | null;
   allInstruments: IInstrument[] | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
@@ -23,6 +24,7 @@ const initialState: ITradingOptions = {
   triggerPrice: 0,
   chartInterval: 'hours',
   instrument: 'BTC-USD',
+  singleInstrument: null,
   allInstruments: null,
   status: 'idle',
   error: '',
@@ -49,6 +51,12 @@ export const tradingOptionsSlice = createSlice({
     },
     setInstrument: (state, action: PayloadAction<string>) => {
       state.instrument = action.payload;
+      const single = state.allInstruments?.find(
+        (item) => item.id === action.payload
+      );
+      if (single) {
+        state.singleInstrument = single;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -59,8 +67,14 @@ export const tradingOptionsSlice = createSlice({
       .addCase(getInstruments.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.allInstruments = action.payload;
-        console.log(action.payload);
+
         state.error = '';
+        const single = action.payload.find(
+          (item) => item.id === state.instrument
+        );
+        if (single) {
+          state.singleInstrument = single;
+        }
       })
       .addCase(getInstruments.rejected, (state, action) => {
         state.status = 'failed';
@@ -78,5 +92,7 @@ export const getInstrument = (state: RootState) =>
   state.tradingOptions.instrument;
 export const getAllInstruments = (state: RootState) =>
   state.tradingOptions.allInstruments;
+export const getSingleInstrument = (state: RootState) =>
+  state.tradingOptions.singleInstrument;
 
 export default tradingOptionsSlice.reducer;

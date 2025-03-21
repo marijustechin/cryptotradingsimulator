@@ -1,4 +1,4 @@
-import { SelectInstrument } from '../../components/trading/SelectInstrument';
+import { TradingViewChart } from '../../components/trading/TradingViewChart';
 
 export const UserDashboardPage = () => {
   return (
@@ -6,7 +6,7 @@ export const UserDashboardPage = () => {
       <h1>User Dashboard</h1>
       <p>Čia turi būti naudotojo informacijos suvestinė</p>
       <div></div>
-      <SelectInstrument />
+      <TradingViewChart />
     </main>
   );
 };
