@@ -28,7 +28,7 @@ export const WelcomeMessageHome = () => {
         <h1 className="title-first">We make crypto clear and simple</h1>
       </div>
       <CoinTable />
-      <div className="grid md:grid-cols-[0.7fr_1.3fr] text-white gap-3 relative mt-20 md:mt-40">
+      <div className="grid md:grid-cols-[1fr_1fr] text-white gap-3 relative mt-20 md:mt-40">
         <div className="text-white text-center md:text-left p-2">
           <p className="title-first">
             Take your first step into safe, secure crypto investing
@@ -39,9 +39,9 @@ export const WelcomeMessageHome = () => {
             </Link>
           </div>
         </div>
-        <div className="texture-purple absolute top-60 right-10 md:-top-15 lg:-right-60 md:-right-80"></div>
+        <div className="texture-case absolute md:-top-35 lg:-top-35 lg:-right-30 md:-right-60"></div>
         <img
-          className="z-10 object-cover max-w-[25rem] w-full place-self-center"
+          className="z-10 object-cover max-w-[15rem] md:max-w-[20rem] w-full place-self-center md:place-self-end"
           src={portfolio}
           alt="portfolio"
         />
