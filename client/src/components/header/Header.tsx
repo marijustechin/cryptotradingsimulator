@@ -87,6 +87,7 @@ export const Header = () => {
         <div className="flex justify-end md:justify-between text-white gap-6 inter text-[14px] font-semibold">
           <div className="md:hidden">
             <button
+            aria-label='Open Navigation'
               className="text-[25px] cursor-pointer shrink-0"
               onClick={() => menuOpenOrClose()}
             >
@@ -100,7 +101,6 @@ export const Header = () => {
                 .filter((link) => user.id ?? link.title !== 'My Dashboard')
                 .map((link) => (
                   <button
-                  aria-label='Open Navigation'
                     className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer block"
                     onClick={() => menuOpenOrClose()}
                     key={link.href}
