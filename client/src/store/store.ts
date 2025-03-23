@@ -5,6 +5,7 @@ import authReducer from './features/user/authSlice';
 import userInfoReducer from './features/user/userInfoSlice';
 import allUsersReducer from './features/user/allUsersSlice';
 import assetsReducer from './features/crypto/assetsSlice';
+import tradingOptionsReducer from './features/trading/tradingOptionsSlice';
 import tradeOptionsReducer from './features/trading/tradeOptionsSlice';
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     allUsers: allUsersReducer,
     assets: assetsReducer,
     tradeOptions: tradeOptionsReducer,
+    tradingOptions: tradingOptionsReducer,
   },
 });
 

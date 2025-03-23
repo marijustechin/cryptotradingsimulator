@@ -3,6 +3,11 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
+//////// paservinsim public aplanka
+const path = require('path');
+const imageDir = path.join(__dirname, 'public');
+/////////////////////////////////////////////////
+
 // endpointu importas
 const userRouter = require('./routers/user.router');
 const cryptoRouter = require('./routers/crypto.router');
@@ -26,11 +31,22 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+
+///////// servinam public aplanka
+app.use(
+  '/public/assets',
+  express.static(path.join(__dirname, 'public/assets'))
+);
+/////////////////////////////////////////////
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/crypto', cryptoRouter);
-app.use('/api/v1/trade', tradeRouter)
+app.use('/api/v1/trade', tradeRouter);
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);

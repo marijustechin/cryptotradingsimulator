@@ -45,6 +45,21 @@ class AssetController {
       next(e);
     }
   }
+
+  async getCandles(req, res, next) {
+    const { interval, instrument } = req.query;
+    const histData = await assetService.getCandles(instrument, interval);
+    return res.status(200).json(histData);
+  }
+
+  async getInstruments(req, res, next) {
+    try {
+      const instruments = await assetService.getInstruments();
+      return res.status(200).json(instruments);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new AssetController();
