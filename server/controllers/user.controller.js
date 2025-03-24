@@ -1,14 +1,14 @@
-const { validationResult } = require('express-validator');
-const userService = require('../services/user.service');
-const ApiError = require('../exceptions/api.errors');
-const helperService = require('../services/helper.service');
+const { validationResult } = require("express-validator");
+const userService = require("../services/user.service");
+const ApiError = require("../exceptions/api.errors");
+const helperService = require("../services/helper.service");
 
 class UserController {
   errorToString(errorsArray) {
-    let errString = '';
+    let errString = "";
 
     for (const element of errorsArray) {
-      errString += element.msg + '; ';
+      errString += element.msg + "; ";
     }
 
     return errString;
@@ -28,10 +28,10 @@ class UserController {
         // galimas ir toks variantas
         // grazinam ne masyva, o perdarom ir string pranesimus
         const err = errors.array();
-        let errString = '';
+        let errString = "";
 
         for (const element of err) {
-          errString += element.msg + '; ';
+          errString += element.msg + "; ";
         }
 
         throw ApiError.BadRequest(errString);
@@ -59,7 +59,7 @@ class UserController {
       const errors = validationResult(req);
 
       if (!errors.isEmpty())
-        throw ApiError.BadRequest('Validation error', errors.array());
+        throw ApiError.BadRequest("Validation error", errors.array());
 
       // jei nera validacijos klaidu, tesiam
       const { email, password } = req.body;
@@ -67,7 +67,7 @@ class UserController {
       const loggedUser = await userService.login(email, password);
 
       // refreshToken dedam i cookies
-      res.cookie('refreshToken', loggedUser.refreshToken, {
+      res.cookie("refreshToken", loggedUser.refreshToken, {
         maxAge: 24 * 60 * 60 * 1000, // 1 diena
         httpOnly: true,
       });
@@ -97,9 +97,9 @@ class UserController {
 
       await userService.logout(refreshToken);
 
-      res.clearCookie('refreshToken');
+      res.clearCookie("refreshToken");
 
-      return res.status(200).json({ message: 'Logout successfull.' });
+      return res.status(200).json({ message: "Logout successfull." });
     } catch (e) {
       next(e);
     }
@@ -159,30 +159,30 @@ class UserController {
       const { refreshToken } = req.cookies;
 
       if (!refreshToken) {
-        res.clearCookie('refreshToken'); // sena tikrai ismetam
+        res.clearCookie("refreshToken"); // sena tikrai ismetam
         throw ApiError.UnauthorizedError();
       }
 
       const userData = await userService.refresh(refreshToken);
 
       if (!userData) {
-        res.clearCookie('refreshToken'); // Ismetam netinkama tokena
+        res.clearCookie("refreshToken"); // Ismetam netinkama tokena
         throw ApiError.UnauthorizedError();
       }
 
       //
-      res.cookie('refreshToken', userData.refreshToken, {
+      res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 24 * 60 * 60 * 1000, // 1 diena
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Produksine apsaugom
-        sameSite: 'Strict',
+        secure: process.env.NODE_ENV === "production", // Produksine apsaugom
+        sameSite: "Strict",
       });
 
       return res
         .status(200)
         .json({ accessToken: userData.accessToken, user: userData.user });
     } catch (e) {
-      res.clearCookie('refreshToken'); // Visada istrinam nereikalinga tokena
+      res.clearCookie("refreshToken"); // Visada istrinam nereikalinga tokena
       next(e);
     }
   }
@@ -224,6 +224,18 @@ class UserController {
       return res.status(200).json(userId);
     } catch (e) {
       next(e);
+    }
+  }
+
+  async getUserPortfolio(req, res, next) {
+    try {
+      const userId = req.user.id;
+  
+      const getUserPortfolio = await userService.getUserPortfolioById(userId);
+  
+      return res.status(200).json(getUserPortfolio);
+    } catch (error) {
+      next(error); // siunciam i middlewear;
     }
   }
 }

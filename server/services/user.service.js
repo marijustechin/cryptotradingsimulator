@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const sequelize = require('../config/db');
-const { user, user_secret, wallet } = sequelize.models;
+const { user, user_secret, wallet, transactions, portfolio } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
 const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
@@ -238,6 +238,32 @@ class UserService {
 
     await userToUpdate.update(updateData);
     return new UserInfoDto(userToUpdate);
+  }
+
+  async getUserPortfolioById(userId, transaction) {
+    try {
+      const getUserTransaction = await transactions.findAll({
+        where: { user_id: userId },
+        transaction
+      });
+    
+      const getUserById = await portfolio.findAll({
+        where: { user_id: userId },
+        transaction
+      });
+    
+      if(!getUserById && getUserTransaction.length === 0) {
+        console.log("Transakciju nerasta");
+      }
+    
+      return {
+        transactions: getUserTransaction,
+        portfolio: getUserById
+      }
+    } catch (error) {
+      console.error("There was error with getUserById", error);
+      throw new Error;
+    }
   }
 }
 

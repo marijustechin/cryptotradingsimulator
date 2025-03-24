@@ -11,6 +11,7 @@ class AuthMiddleware {
 
       const accessToken = authorizationHeader.split(' ')[1];
 
+
       if (!accessToken) throw new ApiError.UnauthorizedError();
 
       // Tokenas ok?
