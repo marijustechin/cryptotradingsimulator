@@ -28,7 +28,7 @@ export const TestChart = ({ asset_id }: TestChartProps) => {
       <LineChart data={history}>
         <defs>
           <linearGradient id="purpleToBlue" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#A78BFA" /> {/* Purple */}
+            <stop offset="0%" stopColor="#8B5CF6" /> {/* Purple */}
             <stop offset="100%" stopColor="#60A5FA" /> {/* Blue */}
           </linearGradient>
         </defs>

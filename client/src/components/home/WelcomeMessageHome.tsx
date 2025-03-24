@@ -10,7 +10,7 @@ export const WelcomeMessageHome = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsContentReady(true);
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
