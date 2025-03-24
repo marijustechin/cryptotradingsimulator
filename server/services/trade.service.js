@@ -9,67 +9,60 @@ class TradeService {
   // jei limit orderis jis laukia kol pasieks reikiama kaina
 
   async BuyCrypto(userId, assetId, amount, ord_direct, ord_type, price = null) {
-    
     const transaction = await sequelize.transaction();
 
     try {
-        const newOrder = await this.createTransaction(userId, assetId, amount, ord_direct, ord_type, price, transaction);
-
-        if (ord_type === "market") {
-            await this.marketOrder(userId, assetId, amount, ord_direct, transaction, newOrder);
-        }
-        await transaction.commit();
-        return { message: `Your entire order has been filled \n Bought ${amount} ${assetId} contracts at market price` };
-    } catch (err) {
-        await transaction.rollback();
-        throw new Error(`Transaction failed: ${err.message}`);
-    }
-}
-  async marketOrder(userId, assetId, amount, ord_direct, transaction, newOrder) {
-  
-    const assetData = await asset.findOne({ where: { id: assetId } });
-    if (!assetData) {
-      throw new Error(`Asset not found ${assetId}`);
-    }
-  
-    const marketPrice = parseFloat(assetData.priceUsd);
-    const totalCost = marketPrice * amount;
-  
-    const userWallet = await wallet.findOne({ where: { user_id: userId } });
-    if (!userWallet) {
-      throw new Error(`Wallet not found for user ${userId}`);
-    }
-  
-    await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
-
-    if (ord_direct === "buy") {
-      await this.updateUserPortfolio(userId, assetId, amount, ord_direct, transaction);
-  }
-
-    if (ord_direct === "sell") {
-      const existingOrder = await transactions.findOne({ 
-        where: { id: newOrder.id }, 
-        transaction 
-      });
-      if (!existingOrder) {
-        throw new Error(`Order with ID ${newOrder.id} not found.`);
-      }
-  
-      const userPortfolio = await portfolio.findOne({
-        where: { user_id: userId, asset_id: assetId },
-        transaction,
-      });
-  
-      if (!userPortfolio || userPortfolio.amount < amount) {
-        throw new Error("You don't have assets to sell");
-      }
-  
-      await userPortfolio.update(
-        { amount: userPortfolio.amount - amount },
-        { transaction }
+      const newOrder = await this.createTransaction(
+        userId,
+        assetId,
+        amount,
+        ord_direct,
+        ord_type,
+        price,
+        transaction
       );
+
+      if (ord_type === "market") {
+        await this.marketOrder(
+          userId,
+          assetId,
+          amount,
+          ord_direct,
+          transaction,
+          newOrder
+        );
+      }
+      await transaction.commit();
+      return {
+        message: `Your entire order has been filled \n Bought ${amount} ${assetId} contracts at market price`,
+      };
+    } catch (err) {
+      await transaction.rollback();
+      throw new Error(`Transaction failed: ${err.message}`);
     }
-  
+  }
+  async marketOrder(userId, assetId, amount, ord_direct, transaction) {
+    try {
+      const assetData = await asset.findOne({ where: { id: assetId } });
+      if (!assetData) {
+        throw new Error(`Asset not found ${assetId}`);
+      }
+
+      const marketPrice = parseFloat(assetData.priceUsd);
+      const totalCost = marketPrice * amount;
+
+      await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
+      await this.updateUserPortfolio(
+        userId,
+        assetId,
+        amount,
+        ord_direct,
+        transaction
+      );
+    } catch (error) {
+      console.error("There was a error with marketOrder", error);
+      throw error;
+    }
   }
 
   // tikrina limit orderius
@@ -118,8 +111,6 @@ class TradeService {
               );
             }
 
-            await transaction.commit();
-
             // updatinam user portfolio
             await this.updateUserPortfolio(
               order.user_id,
@@ -129,7 +120,6 @@ class TradeService {
               transaction
             );
 
-            await transaction.commit();
           } catch (err) {
             await transaction.rollback();
             throw new Error(
@@ -147,15 +137,15 @@ class TradeService {
   async updateUserPortfolio(userId, assetId, amount, ordDirect, transaction) {
     const userPortfolio = await portfolio.findOne({
       where: { user_id: userId, asset_id: assetId },
+      transaction,
     });
 
     if (ordDirect === "buy") {
+      const newAmount = userPortfolio
+        ? parseFloat(userPortfolio.amount) + parseFloat(amount)
+        : amount;
       if (userPortfolio) {
-        console.log("Updating existing portfolio");
-        await userPortfolio.update(
-          { amount: userPortfolio.amount + amount },
-          { transaction }
-        );
+        await userPortfolio.update({ amount: newAmount }, { transaction });
       } else {
         await portfolio.create(
           { user_id: userId, asset_id: assetId, amount },
@@ -163,13 +153,16 @@ class TradeService {
         );
       }
     } else if (ordDirect === "sell") {
-      if (userPortfolio && userPortfolio.amount >= amount) {
-        await userPortfolio.update(
-          { amount: userPortfolio.amount - amount },
-          { transaction }
-        );
+      if (!userPortfolio || parseFloat(userPortfolio.amount) < amount) {
+        throw ApiError.BadRequest("Insufficient assets to sell");
+      }
+
+      const newAmount = parseFloat(userPortfolio.amount) - parseFloat(amount);
+
+      if (newAmount === 0) {
+        await userPortfolio.destroy({ transaction });
       } else {
-        throw new Error("You don't have assets to sell");
+        await userPortfolio.update({ amount: newAmount }, { transaction });
       }
     }
   }
@@ -205,8 +198,16 @@ class TradeService {
     }
   }
 
-  async createTransaction(userId, assetId, amount, ord_direct, ord_type, price, transaction) {
-
+  async createTransaction(
+    userId,
+    assetId,
+    amount,
+    ord_direct,
+    ord_type,
+    price,
+    transaction
+  ) {
+  try {
     const assetData = await asset.findOne({ where: { id: assetId } });
     if (!assetData) {
       throw new Error(`Asset not found: ${assetId}`);
@@ -216,12 +217,16 @@ class TradeService {
 
     const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
 
-    let ord_status = "open"; 
+    let ord_status = "open";
 
     if (ord_type === "market") {
       ord_status = ord_direct === "buy" ? "open" : "closed";
     }
-  
+
+    if(amount <= 0) {
+      throw new Error("Please enter amount");
+    }  
+
     const newOrder = await transactions.create(
       {
         user_id: userId,
@@ -233,15 +238,20 @@ class TradeService {
         price: ord_direct === "buy" ? -finalPrice : +finalPrice,
         order_value: ord_type === "market" ? marketPrice : price,
         open_date: ord_direct === "buy" ? new Date() : null,
-        closed_date: ord_direct === "sell" && ord_type === "market" ? new Date() : null,
+        closed_date:
+          ord_direct === "sell" && ord_type === "market" ? new Date() : null,
       },
       { transaction }
     );
-  
+
     if (!newOrder || !newOrder.id) {
       throw new Error("Transaction creation failed");
     }
     return newOrder;
+  } catch (error) {
+    console.error("There was error with createTransaction", error.message);
+    throw error;
+  }
   }
 }
 

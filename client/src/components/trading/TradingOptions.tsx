@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
+  selectTradeOptions,
   setOrderDirection,
   setOrderType,
 } from '../../store/features/trading/tradeOptionsSlice';
-import { selectTradingOptions } from '../../store/features/trading/tradingOptionsSlice';
 
-export const TradeOptions = () => {
+export const TradingOptions = () => {
   const dispatch = useAppDispatch();
-  const tradingOptions = useAppSelector(selectTradingOptions);
+  const tradeOptions = useAppSelector(selectTradeOptions);
 
   return (
     <div className="flex gap-4 items-center">
@@ -18,17 +18,17 @@ export const TradeOptions = () => {
           <p className="text-sm text-violet-400">
             Selected order type:{' '}
             <span className="text-violet-50">
-              {tradingOptions.orderType.toLocaleUpperCase()}
+              {tradeOptions.orderType.toLocaleUpperCase()}
             </span>{' '}
             , order dircection:{' '}
             <span
               className={`${
-                tradingOptions.orderDirection === 'buy'
+                tradeOptions.orderDirection === 'buy'
                   ? 'text-emerald-500'
                   : 'text-rose-500'
               }`}
             >
-              {tradingOptions.orderDirection.toLocaleUpperCase()}
+              {tradeOptions.orderDirection.toLocaleUpperCase()}
             </span>
           </p>
         </div>
@@ -37,7 +37,7 @@ export const TradeOptions = () => {
           <button
             onClick={() => dispatch(setOrderType('limit'))}
             className={`${
-              tradingOptions.orderType === 'limit'
+              tradeOptions.orderType === 'limit'
                 ? 'border-violet-700 bg-violet-800/40'
                 : 'bg-transparent border-violet-900'
             } border px-2 py-1 cursor-pointer rounded-lg hover:bg-violet-800/20`}
@@ -47,7 +47,7 @@ export const TradeOptions = () => {
           <button
             onClick={() => dispatch(setOrderType('market'))}
             className={`${
-              tradingOptions.orderType === 'market'
+              tradeOptions.orderType === 'market'
                 ? 'border-violet-700 bg-violet-800/40'
                 : 'bg-transparent border-violet-900'
             } border px-2 py-1 cursor-pointer rounded-lg hover:bg-violet-800/20`}
@@ -59,7 +59,7 @@ export const TradeOptions = () => {
             <button
               onClick={() => dispatch(setOrderDirection('buy'))}
               className={`${
-                tradingOptions.orderDirection === 'buy'
+                tradeOptions.orderDirection === 'buy'
                   ? 'bg-emerald-500 text-violet-950'
                   : ''
               } min-w-20 px-2 py-1 border border-emerald-500 rounded-lg cursor-pointer`}
@@ -69,7 +69,7 @@ export const TradeOptions = () => {
             <button
               onClick={() => dispatch(setOrderDirection('sell'))}
               className={`${
-                tradingOptions.orderDirection === 'sell'
+                tradeOptions.orderDirection === 'sell'
                   ? 'bg-rose-500 text-violet-950'
                   : ''
               } min-w-20 px-2 py-1 border border-rose-500 rounded-lg cursor-pointer`}
