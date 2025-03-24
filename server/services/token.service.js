@@ -74,7 +74,7 @@ class TokenService {
     return res;
   }
   async removeTokenByUserId(userId) {
-    return token.destroy({ where: { user_id: userId } }); // ✅ keep it an integer
+    return token.destroy({ where: { user_id: userId } });
   }
 }
 
