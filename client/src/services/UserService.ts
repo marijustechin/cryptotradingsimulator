@@ -1,6 +1,5 @@
 import $api from '../api/axios';
 import { IAllUsersInfo, IUserInfo } from '../types/user';
-import { IPortfolioInfo } from '../types/portfolio';
 
 export default class UserService {
   static async getUserInfo(): Promise<IUserInfo> {
@@ -37,11 +36,6 @@ export default class UserService {
       address,
       phone_number,
     });
-    return response.data;
-  }
-
-  static async getUserPortfolio(): Promise<IPortfolioInfo> {
-    const response = await $api.get(`/users/transactions`);
     return response.data;
   }
 }

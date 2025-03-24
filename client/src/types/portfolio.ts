@@ -6,3 +6,8 @@ export interface IPortfolioInfo {
     amount: number;
     order_value: number;
 }
+
+export interface IUserPortfolioItem {
+    amount: number;
+    asset_id: string;
+}
