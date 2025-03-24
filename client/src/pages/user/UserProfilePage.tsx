@@ -1,4 +1,5 @@
-import { UpdateUserForm } from '../../components/auth/UpdateUserForm';
+import { UpdateUserForm } from "../../components/auth/UpdateUserForm";
+import { ChangePasswordForm } from "../../components/auth/ChangePassword";
 
 export const UserProfilePage = () => {
   return (
@@ -12,6 +13,9 @@ export const UserProfilePage = () => {
       <p>Dar reikia pasikrapstyti su validatoriais, bet jau tingejau...</p>
       <div>
         <UpdateUserForm />
+      </div>
+      <div>
+        <ChangePasswordForm />
       </div>
     </main>
   );

@@ -47,6 +47,7 @@ body {
   @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-blue-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
 
+
 .btn-red {
   @apply px-4 py-2 rounded-xl border border-white/47 cursor-pointer bg-gradient-to-tr hover:bg-gradient-to-bl from-rose-500 to-purple-600 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300;
 }
