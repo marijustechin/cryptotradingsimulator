@@ -78,3 +78,29 @@ exports.escapeQuery = [
   query('sort').trim().escape(),
   query('filter').trim().escape(),
 ];
+
+exports.changePassword = [
+  body("currentPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("Current password is required.")
+    .escape(),
+
+  body("newPassword")
+    .trim()
+    .isStrongPassword({
+      minLength: 6,
+      minLowercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+      minUppercase: 0,
+    })
+    .withMessage("New password must contain numbers, letters and must be at least 6 characters long.")
+    .escape(),
+
+  body("repeatPassword")
+    .trim()
+    .custom((value, { req }) => value === req.body.newPassword)
+    .withMessage("Repeat password does not match the new password.")
+    .escape(),
+];

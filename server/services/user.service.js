@@ -1,10 +1,10 @@
-const bcrypt = require('bcryptjs');
-const sequelize = require('../config/db');
+const bcrypt = require("bcryptjs");
+const sequelize = require("../config/db");
 const { user, user_secret, wallet } = sequelize.models;
-const ApiError = require('../exceptions/api.errors');
-const tokenService = require('../services/token.service');
-const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
-const Op = require('sequelize').Op;
+const ApiError = require("../exceptions/api.errors");
+const tokenService = require("../services/token.service");
+const { UserInfoDto, AllUsersDto } = require("../dtos/user.dto");
+const Op = require("sequelize").Op;
 
 class UserService {
   /**
@@ -43,7 +43,7 @@ class UserService {
 
       await transaction.commit();
 
-      return { message: 'Registration successful. Please login.' };
+      return { message: "Registration successful. Please login." };
     } catch (e) {
       await transaction.rollback();
       throw ApiError.BadRequest(`Registration failed: ${e.message}`);
@@ -100,7 +100,7 @@ class UserService {
     // patikrinam, ar tokenas validus
     const userData = tokenService.validateRefreshToken(refreshToken);
 
-    if (!userData) throw ApiError.BadRequest('Invalid request');
+    if (!userData) throw ApiError.BadRequest("Invalid request");
 
     const token = await tokenService.removeToken(refreshToken);
 
@@ -108,7 +108,7 @@ class UserService {
   }
 
   async getUserInfo(authorizationHeader) {
-    const accessToken = authorizationHeader.split(' ')[1];
+    const accessToken = authorizationHeader.split(" ")[1];
 
     if (!accessToken) throw ApiError.UnauthorizedError();
 
@@ -137,22 +137,22 @@ class UserService {
   async getAllUsers(
     page = 1,
     limit = 10,
-    sort = 'first_name:asc',
-    filter = ''
+    sort = "first_name:asc",
+    filter = ""
   ) {
-    const sortOptions = sort.split(':');
+    const sortOptions = sort.split(":");
 
-    let whereCondition = '';
+    let whereCondition = "";
 
     if (filter) {
-      const filterOptions = filter.split(':');
+      const filterOptions = filter.split(":");
       // postgres iesko pagal didziasias ir mazasias raides
       // o mysql/mariadb tas pats
       // todel verciam stulpelius i LOWER tam, kad abejose
       // db nekreiptu demesio i raidziu registra
       whereCondition = {
         [filterOptions[0]]: sequelize.where(
-          sequelize.fn('LOWER', sequelize.col(filterOptions[0])), // stulpelis mazisios
+          sequelize.fn("LOWER", sequelize.col(filterOptions[0])), // stulpelis mazisios
           { [Op.like]: `%${filterOptions[1].toLowerCase()}%` } // paieskos tekstas mazosios
         ),
       };
@@ -194,11 +194,11 @@ class UserService {
   async deleteUser(id) {
     const foundUser = await user.findOne({ where: { id } });
 
-    if (!foundUser) throw ApiError.BadRequest('No such user');
+    if (!foundUser) throw ApiError.BadRequest("No such user");
 
     await foundUser.destroy();
 
-    return 'User deteted';
+    return "User deteted";
   }
 
   async refresh(refreshToken) {
@@ -234,10 +234,50 @@ class UserService {
     }
 
     const userToUpdate = await user.findByPk(userId);
-    if (!userToUpdate) throw ApiError.NotFound('User not found');
+    if (!userToUpdate) throw ApiError.NotFound("User not found");
 
     await userToUpdate.update(updateData);
     return new UserInfoDto(userToUpdate);
+  }
+
+  async changePassword(userId, currentPassword, newPassword, repeatPassword) {
+    if (!currentPassword || !newPassword || !repeatPassword) {
+      throw ApiError.BadRequest("All fields are required");
+    }
+    if (newPassword !== repeatPassword) {
+      throw ApiError.BadRequest("New passwords do not match");
+    }
+
+    const userSecret = await user_secret.findOne({
+      where: { user_id: userId },
+    });
+
+    if (!userSecret) {
+      throw ApiError.NotFound("User not found");
+    }
+
+    //patikrina dabartini slaptazodi
+    const isMatch = await bcrypt.compare(currentPassword, userSecret.password);
+    if (!isMatch) throw ApiError.BadRequest("Incorrect current password");
+
+    //patikrina ar naujas slaptazodis skiriasi nuo senojo
+    const isSamePassword = await bcrypt.compare(
+      newPassword,
+      userSecret.password
+    );
+    if (isSamePassword) {
+      throw ApiError.ConflictError(
+        "The new password must be different from the old password"
+      );
+    }
+
+    userSecret.password = newPassword;
+    await userSecret.save();
+
+    // istrina sena tokena (force logout)
+    await tokenService.removeTokenByUserId(userId);
+
+    return "Password updated successfully.";
   }
 }
 

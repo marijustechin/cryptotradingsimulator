@@ -10,7 +10,8 @@ module.exports = function (err, req, res, next) {
   }
 
   // jei ne, tai nenumatyta klaida - 500
-  return res
-    .status(500)
-    .json({ message: 'Unexpected server error' }, { error: err });
+  return res.status(500).json({
+    message: 'Unexpected server error',
+    error: err.message || err,
+  });
 };
