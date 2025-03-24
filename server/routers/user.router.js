@@ -20,6 +20,8 @@ userRouter.post('/logout', userController.logout);
 // konkretaus naudotojo info
 userRouter.get('/me', userController.getUserInfo);
 
+userRouter.get('/transactions', authMiddleware.isAuthenticatedUser, userController.getUserPortfolio);
+
 // konkretaus naudotojo info atnaujinimas
 // isAuthenticatedUser permetam naudotojo duomenis i requesta
 userRouter.patch(
