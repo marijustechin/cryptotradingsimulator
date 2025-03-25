@@ -1,4 +1,5 @@
 const sequelize = require("../config/db");
+const { Op } = require("sequelize");
 const { asset, transactions, portfolio, wallet } = sequelize.models;
 const ApiError = require("../exceptions/api.errors");
 
@@ -7,99 +8,78 @@ class TradeService {
   // jei market orderis jis iskart vykdomas
   // jei limit orderis jis laukia kol pasieks reikiama kaina
 
-  async BuyCrypto(
-    userId,
-    assetId,
-    amount,
-    ord_direct,
-    ord_type,
-    ord_status,
-    limitPrice = null
-  ) {
-    const existingAsset = await asset.findOne({ where: { id: assetId } });
-
-    // tikriname ar egzistuoja tokia valiuta
-    if (!existingAsset) {
-      throw ApiError.ConflictError("Asset not found");
-    }
-    // gauname dabartine kaina
-    const marketPrice = parseFloat(existingAsset.priceUsd);
-
-    let priceChecker;
-    // jei order market naudojame dabartine kaina uzsakymui
-    if (ord_type === "market") {
-      priceChecker = marketPrice * amount;
-      // jei limit orderis naudojame vartotojo pasirinkta kaina
-    } else if (ord_type === "limit") {
-      if (!limitPrice || limitPrice <= 0) {
-        throw ApiError.BadRequest("Limit order must have a valid price");
-      }
-      priceChecker = parseFloat(limitPrice) * amount;
-    }
-
-    // tikrina jog reiksme butu tik buy or sell
-    if(!["buy", "sell"].includes(ord_direct)){
-      throw ApiError.BadRequest("Order must be buy or sell");
-    }
-
-    // transakcija
+  async BuyCrypto(userId, assetId, amount, ord_direct, ord_type, price = null) {
     const transaction = await sequelize.transaction();
 
     try {
-      const newOrder = await transactions.create(
-        {
-          user_id: userId,
-          asset_id: assetId,
-          ord_direct,
-          ord_status,
-          ord_type,
-          amount,
-          price: ord_direct === "buy" ? -priceChecker : "+" + priceChecker,
-        },
-        { transaction }
+      const newOrder = await this.createTransaction(
+        userId,
+        assetId,
+        amount,
+        ord_direct,
+        ord_type,
+        price,
+        transaction
       );
 
-      // jei uzsakymas market vykdome ji iskarto
       if (ord_type === "market") {
-        await this.marketOrder(newOrder, transaction);
-      } else {
-        // jei uzsakymas order pridedame ji i laukianciuju sarasa
-        await this.limitOrder(assetId);
+        await this.marketOrder(
+          userId,
+          assetId,
+          amount,
+          ord_direct,
+          transaction,
+          newOrder
+        );
       }
-
-      // uzbaigiame transakcija
       await transaction.commit();
-
-      return { message: `Succesfully buyed ${amount} amount of ${assetId}` };
+      return {
+        message: `Your entire order has been filled \n Bought ${amount} ${assetId} contracts at market price`,
+      };
     } catch (err) {
       await transaction.rollback();
-      throw ApiError.BadRequest(`Transaction failed: ${err.message}`);
+      throw new Error(`Transaction failed: ${err.message}`);
+    }
+  }
+  async marketOrder(userId, assetId, amount, ord_direct, transaction) {
+    try {
+      const assetData = await asset.findOne({ where: { id: assetId } });
+      if (!assetData) {
+        throw new Error(`Asset not found ${assetId}`);
+      }
+
+      const marketPrice = parseFloat(assetData.priceUsd);
+      const totalCost = marketPrice * amount;
+
+      await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
+      await this.updateUserPortfolio(
+        userId,
+        assetId,
+        amount,
+        ord_direct,
+        transaction
+      );
+    } catch (error) {
+      console.error("There was a error with marketOrder", error);
+      throw error;
     }
   }
 
-  async marketOrder(order, transaction) {
-    // jei parduoda uzdaro statusa closed
-    if (order.ord_direct === "sell") {
-      await order.update({ ord_status: "closed" }, { transaction });
-    }
-    await this.updateUserPortfolio(
-      order.user_id,
-      order.asset_id,
-      order.amount,
-      order.ord_direct,
-      transaction
-    );
-  }
-
-  // tikrina limit orderius 
+  // tikrina limit orderius
   // prides i laukiamuju sarasa ir ivykdys kurie pasieke kainos riba.
   async limitOrder(assetId) {
     try {
       // isgauname visus laukiancius limit orderius
       const pendingOrders = await transactions.findAll({
-        where: { ord_status: "open", ord_type: "limit", asset_id: assetId },
+        where: {
+          ord_direct: { [Op.in]: ["buy", "sell"] },
+          ord_type: "limit",
+          ord_status: "open",
+          asset_id: assetId,
+        },
       });
-      // jei ju nera nutraukiame paieska
+
+      // jei pendingOpen nera nutraukiame paieska
       if (!pendingOrders.length) return;
 
       // surandame valiutos kaina
@@ -109,26 +89,37 @@ class TradeService {
 
       // iteruojame per visus laukiancius orderius
       for (const order of pendingOrders) {
-        const orderPrice = parseFloat(order.price);
+        const orderPrice = parseFloat(order.order_value);
 
         // jei orderis pasieke kaina, vykdom ja
+
         if (
-          (order.ord_direct === "buy" && marketPrice <= orderPrice) ||
+          (order.ord_direct === "buy" && marketPrice < orderPrice) ||
           (order.ord_direct === "sell" && marketPrice >= orderPrice)
         ) {
           const transaction = await sequelize.transaction();
           try {
-            await order.update({ ord_status: "closed" }, { transaction });
+            await order.update({ ord_status: "filled" }, { transaction });
 
+            // pridedam balansa po ord_status filled
+            if (order.ord_direct === "sell") {
+              await this.updateUserWallet(
+                order.user_id,
+                order.price,
+                order.ord_direct,
+                transaction
+              );
+            }
+
+            // updatinam user portfolio
             await this.updateUserPortfolio(
               order.user_id,
-              assetId,
+              order.asset_id,
               order.amount,
               order.ord_direct,
               transaction
             );
 
-            await transaction.commit();
           } catch (err) {
             await transaction.rollback();
             throw new Error(
@@ -144,24 +135,17 @@ class TradeService {
 
   // updatiname vartotojo portfolio po pirkimo/pardavimo ivesties
   async updateUserPortfolio(userId, assetId, amount, ordDirect, transaction) {
-    console.log(
-      "Checking portfolio for userId:",
-      userId,
-      "and assetId:",
-      assetId
-    );
     const userPortfolio = await portfolio.findOne({
       where: { user_id: userId, asset_id: assetId },
+      transaction,
     });
 
-    console.log("Useris rastas", userPortfolio);
-
     if (ordDirect === "buy") {
+      const newAmount = userPortfolio
+        ? parseFloat(userPortfolio.amount) + parseFloat(amount)
+        : amount;
       if (userPortfolio) {
-        await userPortfolio.update(
-          { amount: userPortfolio.amount + amount },
-          { transaction }
-        );
+        await userPortfolio.update({ amount: newAmount }, { transaction });
       } else {
         await portfolio.create(
           { user_id: userId, asset_id: assetId, amount },
@@ -169,15 +153,105 @@ class TradeService {
         );
       }
     } else if (ordDirect === "sell") {
-      if (userPortfolio && userPortfolio.amount >= amount) {
-        await userPortfolio.update(
-          { amount: userPortfolio.amount - amount },
-          { transaction }
-        );
+      if (!userPortfolio || parseFloat(userPortfolio.amount) < amount) {
+        throw ApiError.BadRequest("Insufficient assets to sell");
+      }
+
+      const newAmount = parseFloat(userPortfolio.amount) - parseFloat(amount);
+
+      if (newAmount === 0) {
+        await userPortfolio.destroy({ transaction });
       } else {
-        throw new Error("Not enough assets to sell");
+        await userPortfolio.update({ amount: newAmount }, { transaction });
       }
     }
+  }
+
+  // updatinam userio wallet
+  async updateUserWallet(userId, price, ord_direct, transaction = null) {
+    const userWallet = await wallet.findOne({
+      where: { user_id: userId },
+      transaction,
+    });
+
+    if (!userWallet) {
+      throw new Error(`Wallet not found for user ${userId}`);
+    }
+
+    const balance = parseFloat(userWallet.balance);
+    const convertedPrice = parseFloat(price);
+
+    if (ord_direct === "buy" && userWallet.balance < price) {
+      throw new Error(`Insufficient balance to place ${ord_direct} order`);
+    }
+
+    if (ord_direct === "buy") {
+      await userWallet.update(
+        { balance: balance - convertedPrice },
+        { transaction }
+      );
+    } else if (ord_direct === "sell") {
+      await userWallet.update(
+        { balance: balance + convertedPrice },
+        { transaction }
+      );
+    }
+  }
+
+  async createTransaction(
+    userId,
+    assetId,
+    amount,
+    ord_direct,
+    ord_type,
+    price,
+    transaction
+  ) {
+  try {
+    const assetData = await asset.findOne({ where: { id: assetId } });
+    if (!assetData) {
+      throw new Error(`Asset not found: ${assetId}`);
+    }
+
+    const marketPrice = parseFloat(assetData.priceUsd);
+
+    const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
+
+    let ord_status = "open";
+
+    if (ord_type === "market") {
+      ord_status = ord_direct === "buy" ? "open" : "closed";
+    }
+
+    if(amount <= 0) {
+      throw new Error("Please enter amount");
+    }  
+
+    const newOrder = await transactions.create(
+      {
+        user_id: userId,
+        asset_id: assetId,
+        ord_direct,
+        ord_status,
+        ord_type,
+        amount,
+        price: ord_direct === "buy" ? -finalPrice : +finalPrice,
+        order_value: ord_type === "market" ? marketPrice : price,
+        open_date: ord_direct === "buy" ? new Date() : null,
+        closed_date:
+          ord_direct === "sell" && ord_type === "market" ? new Date() : null,
+      },
+      { transaction }
+    );
+
+    if (!newOrder || !newOrder.id) {
+      throw new Error("Transaction creation failed");
+    }
+    return newOrder;
+  } catch (error) {
+    console.error("There was error with createTransaction", error.message);
+    throw error;
+  }
   }
 }
 

@@ -13,11 +13,7 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuOpenOrClose = (closeMenu: boolean = false) => {
-    if (closeMenu) {
-      setIsOpen(false);
-    } else {
-      setIsOpen((prev) => !prev);
-    }
+    setIsOpen((prev) => (closeMenu ? false : !prev));
   };
 
   const links = {
@@ -31,7 +27,7 @@ export const Header = () => {
   return (
     <>
       <div
-        className={`container m-2 flex z-20 md:grid md:grid-cols-3 items-center justify-between  mx-auto h-[8vh] ${
+        className={`container flex md:grid md:grid-cols-3 items-center justify-between z-50 h-[10vh]${
           isDashboardPage ? 'hidden md:flex' : ''
         }`}
       >
@@ -66,7 +62,7 @@ export const Header = () => {
         </div>
 
         {/* Mobile Version Sign Buttons */}
-        <div className="md:hidden flex justify-center items-center text-white gap-2 w-full p-3">
+        <div className="md:hidden flex justify-center items-center text-white gap-4 w-full p-3">
           {user.id ? (
             <Logout />
           ) : (
@@ -91,6 +87,7 @@ export const Header = () => {
         <div className="flex justify-end md:justify-between text-white gap-6 inter text-[14px] font-semibold">
           <div className="md:hidden">
             <button
+            aria-label='Open Navigation'
               className="text-[25px] cursor-pointer shrink-0"
               onClick={() => menuOpenOrClose()}
             >
@@ -99,19 +96,19 @@ export const Header = () => {
           </div>
 
           {isOpen && (
-            <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 z-30 p-4 text-center rounded-[7px]">
+            <button className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
-                .filter((link) => user.id || link.title !== 'My Dashboard')
+                .filter((link) => user.id ?? link.title !== 'My Dashboard')
                 .map((link) => (
-                  <div
-                    className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer"
+                  <button
+                    className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer block"
                     onClick={() => menuOpenOrClose()}
                     key={link.href}
                   >
                     <Link to={link.href}>{link.title}</Link>
-                  </div>
+                  </button>
                 ))}
-            </div>
+            </button>
           )}
 
           {/* Sign Buttons */}

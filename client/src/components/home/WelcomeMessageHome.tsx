@@ -1,34 +1,51 @@
 import { Link } from "react-router";
+import portfolio from "/portfolio.png";
+import { useEffect, useState } from "react";
 import { CoinTable } from "../home/CoinTable";
-import  portfolio  from "/portfolio.png"
+import { Loader } from "../Loader";
 
 export const WelcomeMessageHome = () => {
+  const [isContentReady, setIsContentReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsContentReady(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isContentReady) {
+    return (
+      <div className="flex items-center justify-center h-[75vh]">
+        <Loader/>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center min-h-screen max-w-4xl p-1">
+    <main className="flex flex-col items-center min-h-screen max-w-4xl p-1">
       <div className="text-white text-center md:mt-32 mt-12">
         <h1 className="title-first">We make crypto clear and simple</h1>
       </div>
       <CoinTable />
-      <div className="mt-6">
-        <Link to="/registration" className=" btn-generic">
-          Get Started
-        </Link>
-      </div>
-      <div className="grid md:grid-cols-[0.7fr_1.3fr] text-white gap-3 relative mt-20 md:mt-40">
-        <div className="text-white text-center md:text-left">
-          <h1 className="title-first">
+      <div className="grid md:grid-cols-[1fr_1fr] text-white gap-3 relative mt-20 md:mt-40">
+        <div className="text-white text-center md:text-left p-2">
+          <p className="title-first">
             Take your first step into safe, secure crypto investing
-          </h1>
+          </p>
           <div className="mt-6">
-        <Link to="/registration" className=" btn-generic">
-          Get Started
-        </Link>
+            <Link to="/registration" className="btn-generic">
+              Get Started
+            </Link>
+          </div>
         </div>
-        </div>
-        <div className="texture-purple absolute top-60 right-10 md:-top-15 lg:-right-50 md:-right-80">
-        </div>
-        <img className="z-10 object-cover w-full" src={portfolio} alt="portfolio" />
+        <div className="texture-case absolute md:-top-35 lg:-top-35 lg:-right-30 md:-right-60"></div>
+        <img
+          className="z-10 object-cover max-w-[15rem] md:max-w-[20rem] w-full place-self-center md:place-self-end"
+          src={portfolio}
+          alt="portfolio"
+        />
       </div>
-    </div>
+    </main>
   );
 };

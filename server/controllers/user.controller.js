@@ -251,6 +251,18 @@ class UserController {
       next(e);
     }
   }
+  
+  async getUserPortfolio(req, res, next) {
+    try {
+      const userId = req.user.id;
+  
+      const getUserPortfolio = await userService.getUserPortfolioById(userId);
+  
+      return res.status(200).json(getUserPortfolio);
+    } catch (error) {
+      next(error); // siunciam i middlewear;
+    }
+  }
 }
 
 module.exports = new UserController();

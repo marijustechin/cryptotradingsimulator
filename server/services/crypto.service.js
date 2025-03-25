@@ -2,12 +2,13 @@ const axios = require('axios');
 const $api = require('../config/axios');
 const cryptoWSService = require('./crypto.ws.service');
 const assetService = require('./asset.service');
+const TradeService = require('./trade.service');
 
 const API_URL = '/assets';
 const POPULAR_CRYPTOS = [
   'bitcoin',
   'ethereum',
-  'tether',
+  'chainlink',
   'xrp',
   'binance-coin',
   'solana',
@@ -26,8 +27,14 @@ const fetchCryptoData = async () => {
     await assetService.updateAssets(response.data.data);
 
     // Transliuojam duomenis visiem klientams
-    console.log('gavau duomenis...');
     cryptoWSService.broadcastData(response.data.data);
+
+    // jog atnaujintu limitOrder
+    // kas karta kai duomenys pasikeicia
+    for (const crypto of response.data.data) {
+      await TradeService.limitOrder(crypto.id);
+    }
+    console.log('gavau duomenis...');
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response.data);

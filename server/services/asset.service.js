@@ -1,8 +1,10 @@
 const sequelize = require('../config/db');
 const ApiError = require('../exceptions/api.errors');
-const { asset, asset_hist } = sequelize.models;
+const { asset, asset_hist, instrument } = sequelize.models;
 const axios = require('axios');
+const $axios = require('../config/api');
 const $api = require('../config/axios');
+const helperService = require('./helper.service');
 
 class AssetService {
   async getAssets() {
@@ -78,10 +80,11 @@ class AssetService {
     }
   }
 
-  async getAssetsHistory(asset_id, limit = null) {
+  async getAssetsHistory(asset_id, limit = null, interval = 'm30') {
     // paskutines trisdesimt dienu
     const historyPrices = await asset_hist.findAll({
       where: { asset_id },
+      attributes: ['priceUsd', 'date'],
       order: [['date', 'DESC']],
       ...(limit ? { limit } : {}),
     });
@@ -103,18 +106,37 @@ class AssetService {
         !Array.isArray(response.data.data) ||
         response.data.data.length === 0
       ) {
-        const historyData = await this.getAssetsHistory(asset_id);
+        const historyData = await this.getAssetsHistoryFromDb(asset_id);
         if (Array.isArray(historyData) || historyData.length === 0) {
-          return historyData;
+          return helperService.correctDatePrice(historyData);
         } else {
           return 'Failed to get historical data';
         }
       }
       this.saveHistoricalData(asset_id, response.data.data);
-      return response.data.data;
+      return helperService.correctDatePrice(response.data.data);
     } catch (e) {
-      return await this.getAssetsHistory(asset_id);
+      return await this.getAssetsHistoryFromDb(asset_id);
     }
+  }
+
+  async getCandles(instrument = 'BTC-USD', interval = 'minutes') {
+    const queryParams = `/${interval}?market=kraken&instrument=${instrument}&limit=200&aggregate=1&fill=true&apply_mapping=true&response_format=JSON`;
+    try {
+      const response = await $axios.get(queryParams);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getInstruments() {
+    const instruments = await instrument.findAll();
+    if (instruments.length === 0) {
+      await helperService.initInstruments();
+      return await instrument.findAll();
+    }
+    return instruments;
   }
 }
 

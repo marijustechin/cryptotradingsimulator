@@ -1,3 +1,8 @@
+import { CreditsTextures } from "../components/CreditsDesign/CreditsTextures";
 export const CreditsPage = () => {
-  return <div>CreditsPage</div>;
+  return (
+    <div>
+      <CreditsTextures />
+    </div>
+  );
 };

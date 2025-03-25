@@ -22,3 +22,10 @@ export interface TAssetHistory {
   circulatingSupply: string;
   date: string;
 }
+
+export interface IInstrument {
+  id: string;
+  name: string;
+  code: string;
+  icon: string;
+}

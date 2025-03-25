@@ -243,6 +243,39 @@
     }
   }
   
-  
+  .texture-case {
+    position: absolute;
+    z-index: 0;
+    filter: blur(60px);
+    background: radial-gradient(
+  circle at 50% 50%, 
+  rgba(120, 81, 169, 0.6) 5%, 
+  rgba(80, 50, 160, 0.5) 25%, 
+  rgba(40, 30, 120, 0.4) 50%, 
+  rgba(20, 25, 90, 0.3) 70%, 
+  rgba(11, 11, 15, 0.1) 90%, 
+  rgba(11, 11, 15, 0) 120%
+),
+      linear-gradient(to left, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1)),
+      linear-gradient(to bottom, rgba(15, 10, 40, 0.95), rgba(10, 10, 30, 1));
+  }
+
+  @media (min-width: 320px) {
+    .texture-case {
+      top: 350px;
+      right: -90px;
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .texture-case {
+      top: 290px;
+      right: -450px;
+      width: 600px;
+      height: 600px;
+    }
+  }
 
 }
