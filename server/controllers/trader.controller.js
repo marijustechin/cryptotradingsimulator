@@ -27,8 +27,10 @@ class TraderController {
         price,
       } = req.body;
 
+      console.log("Gaunamas req.body", req.body);
 
-      const getTransaction = await TradeService.BuyCrypto(
+      console.log("Siunčiama transakciją")
+      const sendTransaction = await TradeService.BuyCrypto(
         userId,
         assetId,
         amount,
@@ -37,9 +39,9 @@ class TraderController {
         price
       );
 
-      
+      console.log("Transakcija praejo");
 
-      return res.status(201).json(getTransaction);
+      return res.status(201).json(sendTransaction);
     } catch (error) {
       next(error);
     }

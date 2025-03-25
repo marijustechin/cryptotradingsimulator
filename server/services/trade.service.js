@@ -2,6 +2,8 @@ const sequelize = require("../config/db");
 const { Op } = require("sequelize");
 const { asset, transactions, portfolio, wallet } = sequelize.models;
 const ApiError = require("../exceptions/api.errors");
+const { nanoid } = require("nanoid");
+const ProfitService = require('./profit.service');
 
 class TradeService {
   // pagrindine funkcija kuri sukuria kriptovaliuta
@@ -60,6 +62,7 @@ class TradeService {
         transaction
       );
     } catch (error) {
+      await transaction.rollback();
       console.error("There was a error with marketOrder", error);
       throw error;
     }
@@ -119,7 +122,6 @@ class TradeService {
               order.ord_direct,
               transaction
             );
-
           } catch (err) {
             await transaction.rollback();
             throw new Error(
@@ -207,51 +209,65 @@ class TradeService {
     price,
     transaction
   ) {
-  try {
-    const assetData = await asset.findOne({ where: { id: assetId } });
-    if (!assetData) {
-      throw new Error(`Asset not found: ${assetId}`);
+    try {
+      const assetData = await asset.findOne({ where: { id: assetId } });
+      if (!assetData) {
+        throw new Error(`Asset not found: ${assetId}`);
+      }
+
+      const orderID = nanoid(6).toUpperCase();
+
+      const marketPrice = parseFloat(assetData.priceUsd);
+
+      const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
+
+      let ord_status = "open";
+
+      if (ord_type === "market") {
+        ord_status = ord_direct === "buy" ? "open" : "closed";
+      }
+
+      if (amount <= 0) {
+        throw new Error("Please enter amount");
+      }
+
+      const newOrder = await transactions.create(
+        {
+          user_id: userId,
+          asset_id: assetId,
+          ord_direct,
+          ord_status,
+          ord_type,
+          amount,
+          price: ord_direct === "buy" ? -finalPrice : +finalPrice,
+          order_value: ord_type === "market" ? marketPrice : price,
+          open_date: ord_direct === "buy" ? new Date() : null,
+          closed_date:
+            ord_direct === "sell" && ord_type === "market" ? new Date() : null,
+          orderID,
+        },
+        { transaction }
+      );
+
+      if(ord_direct === "sell") {
+        const countProfit = await ProfitService.countUserProfit(userId, assetId, amount);
+        await transactions.update(
+         { profit: countProfit },
+         {
+           where: { id: newOrder.id },
+           transaction
+         }
+       );
+      }
+
+      if (!newOrder || !newOrder.id) {
+        throw new Error("Transaction creation failed");
+      }
+      return newOrder;
+    } catch (error) {
+      console.error("There was error with createTransaction", error.message);
+      throw error;
     }
-
-    const marketPrice = parseFloat(assetData.priceUsd);
-
-    const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
-
-    let ord_status = "open";
-
-    if (ord_type === "market") {
-      ord_status = ord_direct === "buy" ? "open" : "closed";
-    }
-
-    if(amount <= 0) {
-      throw new Error("Please enter amount");
-    }  
-
-    const newOrder = await transactions.create(
-      {
-        user_id: userId,
-        asset_id: assetId,
-        ord_direct,
-        ord_status,
-        ord_type,
-        amount,
-        price: ord_direct === "buy" ? -finalPrice : +finalPrice,
-        order_value: ord_type === "market" ? marketPrice : price,
-        open_date: ord_direct === "buy" ? new Date() : null,
-        closed_date:
-          ord_direct === "sell" && ord_type === "market" ? new Date() : null,
-      },
-      { transaction }
-    );
-
-    if (!newOrder || !newOrder.id) {
-      throw new Error("Transaction creation failed");
-    }
-    return newOrder;
-  } catch (error) {
-    console.error("There was error with createTransaction", error.message);
-    throw error;
-  }
   }
 }
 

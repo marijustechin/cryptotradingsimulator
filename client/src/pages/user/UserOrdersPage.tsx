@@ -45,7 +45,7 @@ export const UserOrdersPage = () => {
               `}
               key={index}
             >
-              <span>#{item.id}</span>
+              <span>#{item.orderID}</span>
               <span>{item.ord_direct}</span>
               <span>{item.amount}</span>
               <span>{item.ord_type}</span>

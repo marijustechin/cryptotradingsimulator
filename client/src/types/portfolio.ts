@@ -1,5 +1,5 @@
 export interface IPortfolioInfo {
-    id: number,
+    orderID: number,
     ord_direct: string;
     ord_status: string;
     ord_type: string;

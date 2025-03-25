@@ -4,14 +4,18 @@ module.exports = (sequelize) => {
   sequelize.models.transactions = sequelize.define(
     "transactions",
     {
+      orderID: {
+        type: DataTypes.STRING(),
+        allowNull: true,
+      },
       ord_direct: {
         type: DataTypes.ENUM("buy", "sell"),
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'Direct is required buy/sell'
-          }
-        }
+            msg: "Direct is required buy/sell",
+          },
+        },
       },
       ord_status: {
         type: DataTypes.ENUM("open", "closed", "filled"),
@@ -22,9 +26,9 @@ module.exports = (sequelize) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'Type is required limit/market'
-          }
-        }
+            msg: "Type is required limit/market",
+          },
+        },
       },
       price: {
         type: DataTypes.STRING(20),
@@ -39,9 +43,13 @@ module.exports = (sequelize) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'Amount is required'
-          }
-        }
+            msg: "Amount is required",
+          },
+        },
+      },
+      profit: {
+        type: DataTypes.DECIMAL(8,2),
+        allowNull: true,
       },
       open_date: {
         type: DataTypes.DATE,
@@ -50,10 +58,6 @@ module.exports = (sequelize) => {
       closed_date: {
         type: DataTypes.DATE,
         allowNull: true,
-      },
-      order_value: {
-        type: DataTypes.STRING,
-        allowNull: false,
       },
     },
     {
