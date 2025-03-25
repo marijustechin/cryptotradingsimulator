@@ -25,7 +25,7 @@ export const UserProfilePage = () => {
           onClick={togglePasswordForm}
           className="text-violet-400 cursor-pointer hover:text-violet-300 underline transition duration-150 text-center"
         >
-          {showPasswordForm ? 'Hide Change Password' : 'Change Password'}
+          {showPasswordForm ? "Hide Change Password" : "Change Password"}
         </p>
 
         {showPasswordForm && (
