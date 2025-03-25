@@ -15,7 +15,7 @@ export const ChartCandles = () => {
   const candles = useAppSelector(getChartCandles);
   const interval = useAppSelector(getChartInterval);
 
-  const socket = io('http://localhost:61630');
+  const socket = io('http://78.31.185.132:61630');
 
   // live data /////////////////////////////////////////////////
   useEffect(() => {
@@ -54,7 +54,7 @@ export const ChartCandles = () => {
     return () => {
       socket.off('historyData', listener);
     };
-  }, [interval, dispatch]);
+  }, [interval, dispatch, socket]);
 
   // Draw chart on data load /////////////////////////////////////////
   useEffect(() => {
@@ -106,7 +106,7 @@ export const ChartCandles = () => {
   }, [candles, interval]);
 
   return (
-    <div className="rounded-xl overflow-hidden">
+    <div className='rounded-xl overflow-hidden'>
       <div ref={chartContainerRef}></div>
     </div>
   );
