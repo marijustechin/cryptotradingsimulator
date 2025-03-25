@@ -14,7 +14,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { IntervalButtons } from './IntervalButtons';
 
 export const TradeChart = () => {
   const historyInterval = useAppSelector(getHistoryInterval);
@@ -55,12 +54,12 @@ export const TradeChart = () => {
   }, [getHistory]);
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className="flex flex-col gap-4">
       <IntervalButtons />
       <div>
-        <ResponsiveContainer width='100%' height={300}>
+        <ResponsiveContainer width="100%" height={300}>
           <LineChart data={historyData}>
-            <XAxis dataKey='date' tick={{ fill: '#fff', fontSize: 7 }} />
+            <XAxis dataKey="date" tick={{ fill: '#fff', fontSize: 7 }} />
             <YAxis
               tick={{ fill: '#fff', fontSize: 7 }}
               domain={['auto', 'auto']}
@@ -69,9 +68,9 @@ export const TradeChart = () => {
               contentStyle={{ backgroundColor: '#333', borderColor: '#555' }}
             />
             <Line
-              type='monotone'
+              type="monotone"
               dataKey={'priceUsd'}
-              stroke='#319c06'
+              stroke="#319c06"
               strokeWidth={1.5}
               dot={false}
             />

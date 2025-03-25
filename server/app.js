@@ -12,6 +12,7 @@ const imageDir = path.join(__dirname, 'public');
 const userRouter = require('./routers/user.router');
 const cryptoRouter = require('./routers/crypto.router');
 const tradeRouter = require('./routers/trader.router');
+const chartRouter = require('./routers/chart.router');
 
 // websocket routeris
 const setupWebSocketRoutes = require('./routers/crypto.ws.router');
@@ -47,6 +48,7 @@ app.use(
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/crypto', cryptoRouter);
 app.use('/api/v1/trade', tradeRouter);
+app.use('/api/v1/chart', chartRouter);
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);

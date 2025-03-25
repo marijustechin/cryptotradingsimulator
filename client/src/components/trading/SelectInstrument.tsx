@@ -10,11 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const SelectInstrument = () => {
   const dispatch = useAppDispatch();
-  const instrument = useAppSelector(getInstrument);
-  const allInstruments = useAppSelector(getAllInstruments);
-  const singleInstrument = useAppSelector(getSingleInstrument);
-
-  useEffect(() => {
+  const symbol = useEffect(() => {
     if (!allInstruments) {
       dispatch(getInstruments());
     }

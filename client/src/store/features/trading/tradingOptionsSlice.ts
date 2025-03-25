@@ -9,7 +9,7 @@ interface ITradingOptions {
   orderDirection: 'buy' | 'sell';
   amount: number;
   triggerPrice: number;
-  chartInterval: 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
+  chartInterval: '1' | '30' | '60' | 'D';
   instrument: string;
   singleInstrument: IInstrument | null;
   allInstruments: IInstrument[] | null;
@@ -22,7 +22,7 @@ const initialState: ITradingOptions = {
   orderDirection: 'buy',
   amount: 0,
   triggerPrice: 0,
-  chartInterval: 'hours',
+  chartInterval: '30',
   instrument: 'BTC-USD',
   singleInstrument: null,
   allInstruments: null,

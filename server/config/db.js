@@ -22,6 +22,7 @@ const allModels = [
   require('../models/portfolio.model'),
   require('../models/asset.model'),
   require('../models/instrument.model'),
+  require('../models/chart.model'),
 ];
 
 for (const modelDefiner of allModels) {
