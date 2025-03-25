@@ -7,7 +7,7 @@ import allUsersReducer from './features/user/allUsersSlice';
 import assetsReducer from './features/crypto/assetsSlice';
 import tradingOptionsReducer from './features/trading/tradingOptionsSlice';
 import tradeOptionsReducer from './features/trading/tradeOptionsSlice';
-import OrdersReducer from './features/orders/ordersSlice';
+import ordersReducer from './features/orders/ordersSlice';
 import chartReducer from './features/trading/chartSlice';
 
 export const store = configureStore({
@@ -18,7 +18,7 @@ export const store = configureStore({
     assets: assetsReducer,
     tradeOptions: tradeOptionsReducer,
     tradingOptions: tradingOptionsReducer,
-    orders: OrdersReducer,
+    orders: ordersReducer,
     chart: chartReducer,
   },
 });
