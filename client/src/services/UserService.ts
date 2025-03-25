@@ -38,4 +38,25 @@ export default class UserService {
     });
     return response.data;
   }
+
+  /**
+ * slaptazodzio keitimas
+ * @param currentPassword
+ * @param newPassword
+ * @param repeatPassword
+ * @returns { message }
+ */
+static async changePassword(
+  currentPassword: string,
+  newPassword: string,
+  repeatPassword: string
+): Promise<{ message: string }> {
+  const response = await $api.post('/users/change-password', {
+    currentPassword,
+    newPassword,
+    repeatPassword,
+  });
+  return response.data;
+}
+
 }

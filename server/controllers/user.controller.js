@@ -227,6 +227,31 @@ class UserController {
     }
   }
 
+  async changePassword(req, res, next) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const errorMessage = helperService.errorsToString(errors.array());
+        throw ApiError.BadRequest(errorMessage);
+      }
+
+      const userId = parseInt(req.user.id, 10); //prisijungusio vartotojo id
+      const { currentPassword, newPassword, repeatPassword } = req.body;
+
+      const response = await userService.changePassword(
+        userId,
+        currentPassword,
+        newPassword,
+        repeatPassword
+      );
+      res.clearCookie("refreshToken");
+
+      return res.status(200).json({ message: response });
+    } catch (e) {
+      next(e);
+    }
+  }
+  
   async getUserPortfolio(req, res, next) {
     try {
       const userId = req.user.id;

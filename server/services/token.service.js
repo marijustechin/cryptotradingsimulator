@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const sequelize = require('../config/db');
+const jwt = require("jsonwebtoken");
+const sequelize = require("../config/db");
 const { token } = sequelize.models;
 
 class TokenService {
@@ -72,6 +72,9 @@ class TokenService {
     const res = await token.findOne({ where: { refreshToken: refreshToken } });
 
     return res;
+  }
+  async removeTokenByUserId(userId) {
+    return token.destroy({ where: { user_id: userId } });
   }
 }
 
