@@ -61,7 +61,7 @@ export const ChangePasswordForm = () => {
           <input
             id="currentPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="Current password"
             autoComplete="off"
             {...register("currentPassword")}
@@ -80,7 +80,7 @@ export const ChangePasswordForm = () => {
           <input
             id="newPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="New password"
             autoComplete="off"
             {...register("newPassword")}
@@ -99,7 +99,7 @@ export const ChangePasswordForm = () => {
           <input
             id="repeatPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="Repeat password"
             autoComplete="off"
             {...register("repeatPassword")}
