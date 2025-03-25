@@ -25,6 +25,7 @@ import { AllUsersPage } from './pages/admin/AllUsersPage';
 import { RestorePasswordPage } from './pages/RestorePasswordPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { UserTradingPage } from './pages/user/UserTradingPage';
+import { TestPage } from './pages/user/TestPage';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,28 +37,29 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<MainLayout />}>
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path='login' element={<LoginPage />} />
-          <Route path='registration' element={<RegistrationPage />} />
-          <Route path='how-to-trade' element={<HowToTradePage />} />
-          <Route path='credits' element={<CreditsPage />} />
-          <Route path='restore-password' element={<RestorePasswordPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="registration" element={<RegistrationPage />} />
+          <Route path="how-to-trade" element={<HowToTradePage />} />
+          <Route path="credits" element={<CreditsPage />} />
+          <Route path="restore-password" element={<RestorePasswordPage />} />
         </Route>
-        <Route path='/dashboard' element={<AdminLayout />}>
+        <Route path="/dashboard" element={<AdminLayout />}>
           <Route index element={<AdminDashboardPage />} />
-          <Route path='/dashboard/settings' element={<SystemSettingsPage />} />
-          <Route path='/dashboard/users' element={<AllUsersPage />} />
+          <Route path="/dashboard/settings" element={<SystemSettingsPage />} />
+          <Route path="/dashboard/users" element={<AllUsersPage />} />
         </Route>
-        <Route path='/my-dashboard' element={<UserLayout />}>
+        <Route path="/my-dashboard" element={<UserLayout />}>
           <Route index element={<UserDashboardPage />} />
-          <Route path='/my-dashboard/trading' element={<UserTradingPage />} />
-          <Route path='/my-dashboard/profile' element={<UserProfilePage />} />
-          <Route path='/my-dashboard/orders' element={<UserOrdersPage />} />
+          <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
+          <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
+          <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
+          <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
         </Route>
-        <Route path='/404' element={<NotFoundPage />} />{' '}
+        <Route path="/404" element={<NotFoundPage />} />{' '}
         {/* Define explicit 404 page */}
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

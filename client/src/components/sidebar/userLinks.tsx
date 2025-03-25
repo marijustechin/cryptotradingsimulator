@@ -23,4 +23,9 @@ export const userLinks: ISSidebar[] = [
   // { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },
   // { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
   { title: 'Profile', href: '/my-dashboard/profile', icon: <FaRegUser /> },
+  {
+    title: 'Tests',
+    href: '/my-dashboard/just-for-tests',
+    icon: <FaMoneyBillWave />,
+  },
 ];

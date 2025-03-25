@@ -1,4 +1,3 @@
-import { ChartCandles } from '../../components/trading/ChartCandles';
 import { IntervalSelector } from '../../components/trading/IntervalSelector';
 import { PlaceOrderButton } from '../../components/trading/PlaceOrderButton';
 import { TradingOptions } from '../../components/trading/TradingOptions';
@@ -14,7 +13,6 @@ export const UserDashboardPage = () => {
           <IntervalSelector /> <div>Cia bus valiutos pasirinkimas</div>
         </div>
 
-        <ChartCandles />
         <PlaceOrderButton />
       </div>
     </main>
