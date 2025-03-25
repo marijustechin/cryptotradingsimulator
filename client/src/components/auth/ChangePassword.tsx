@@ -53,7 +53,7 @@ export const ChangePasswordForm = () => {
         {error && <span className="form-error-span">{error}</span>}
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-5">
         <div>
           <label className="text-sm text-violet-700" htmlFor="currentPassword">
             Current Password
@@ -66,11 +66,13 @@ export const ChangePasswordForm = () => {
             autoComplete="off"
             {...register("currentPassword")}
           />
+          <div className="relative">
           {errors.currentPassword && (
-            <span className="form-error-span">
+            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
               {errors.currentPassword.message}
             </span>
           )}
+          </div>
         </div>
 
         <div>
@@ -85,11 +87,13 @@ export const ChangePasswordForm = () => {
             autoComplete="off"
             {...register("newPassword")}
           />
+          <div className="relative">
           {errors.newPassword && (
-            <span className="form-error-span">
+            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
               {errors.newPassword.message}
             </span>
           )}
+          </div>
         </div>
 
         <div>
@@ -104,15 +108,17 @@ export const ChangePasswordForm = () => {
             autoComplete="off"
             {...register("repeatPassword")}
           />
+          <div className="relative">
           {errors.repeatPassword && (
-            <span className="form-error-span">
+            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
               {errors.repeatPassword.message}
             </span>
           )}
+          </div>
         </div>
       </div>
 
-      <button type="submit" className="btn-generic mt-6">
+      <button type="submit" className="btn-generic mt-8">
         Change Password
       </button>
     </form>
