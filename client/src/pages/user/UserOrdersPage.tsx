@@ -1,26 +1,22 @@
 import { useEffect } from "react";
-import UserService from "../../services/UserService";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { getUserOrders } from "../../store/features/orders/ordersSlice";
 
 export const UserOrdersPage = () => {
+  const dispatch = useAppDispatch();
 
-  // ko gero šią funkciją reikia naudoti portfolioSlice;
-  // ar getUserPortfolio turi būti userService ar kurti portfolioService;
-  
+  const { orders, status, error } = useAppSelector((state) => state.orders);
+
   useEffect(() => {
-    const fetchPortfolio = async () => {
-      try {
-        const response = await UserService.getUserPortfolio();
-        return response;
-      } catch (error) {
-        console.error("Error fetching data", error);
-      };
-    }
-    fetchPortfolio()
-  }, []);
+    dispatch(getUserOrders());
+  }, [dispatch]);
 
   return (
     <main className="flex flex-col gap-3">
       <h1>Orders</h1>
+      {orders?.portfolio.map((item, index) => (
+        <li key={index}>{item.amount};</li>
+      ))}
     </main>
   );
 };
