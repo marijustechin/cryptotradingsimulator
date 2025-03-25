@@ -8,7 +8,7 @@ import {
 } from '../../store/features/trading/tradingOptionsSlice';
 import AssetService from '../../services/AssetService';
 import { TradingOptions } from './TradingOptions';
-import { SelectInterval } from './SelectInterval';
+import { SelectInterval } from './IntervalSelector';
 import { PlaceOrderButton } from './PlaceOrderButton';
 
 interface IHistoryData {
