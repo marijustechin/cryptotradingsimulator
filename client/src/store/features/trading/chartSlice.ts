@@ -1,36 +1,36 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
-import { IInstrument, ITicker } from '../../../types/tradingN';
-import InstrumentService from '../../../services/InstrumentService';
-import HelperService from '../../../services/HelperService';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
+import { IInstrument, ITicker } from "../../../types/tradingN";
+import InstrumentService from "../../../services/InstrumentService";
+import HelperService from "../../../services/HelperService";
 
 interface ChartState {
   currentPrices: ITicker | null;
-  selectedInterval: '15' | '30' | '60';
+  selectedInterval: "15" | "30" | "60";
   selectedSymbol: string;
   selectedSymbolData: {
     name: string;
     icon: string;
     code: string;
   } | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: ChartState = {
   currentPrices: null,
-  selectedInterval: '30',
-  selectedSymbol: 'BTCUSDT',
+  selectedInterval: "30",
+  selectedSymbol: "BTC-USD",
   selectedSymbolData: null,
-  status: 'idle',
-  error: '',
+  status: "idle",
+  error: "",
 };
 
 export const getSymbolData = createAsyncThunk<
   IInstrument,
   void,
   { state: RootState }
->('getSymbolData', async (_, { getState, rejectWithValue }) => {
+>("getSymbolData", async (_, { getState, rejectWithValue }) => {
   try {
     const state = getState();
     const id = state.chart.selectedSymbol;
@@ -42,7 +42,7 @@ export const getSymbolData = createAsyncThunk<
 });
 
 export const chartSlice = createSlice({
-  name: 'chart',
+  name: "chart",
   initialState,
   reducers: {
     setChartInterval: (state, action) => {
@@ -58,7 +58,7 @@ export const chartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getSymbolData.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(getSymbolData.fulfilled, (state, action) => {
         const data = {
@@ -67,8 +67,8 @@ export const chartSlice = createSlice({
           icon: action.payload.icon,
         };
         state.selectedSymbolData = { ...data };
-        state.status = 'succeeded';
-        state.error = '';
+        state.status = "succeeded";
+        state.error = "";
       })
       .addCase(getSymbolData.rejected, (state, action) => {
         state.error = action.payload as string;

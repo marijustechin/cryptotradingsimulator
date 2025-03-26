@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
       },
       price_usd: {
         type: DataTypes.STRING(20),
-        allowNull: false,
+        allowNull: true,
       },
       ord_pl: {
         type: DataTypes.STRING(20),
@@ -61,7 +61,7 @@ module.exports = (sequelize) => {
       },
       entry_price: {
         type: DataTypes.DECIMAL(8,2),
-        allowNull: false,
+        allowNull: true,
       }
     },
     {

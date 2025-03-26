@@ -27,8 +27,6 @@ class TraderController {
         price,
       } = req.body;
 
-      console.log("Gaunamas req.body", req.body);
-
       console.log("Siunčiama transakciją")
       const sendTransaction = await TradeService.BuyCrypto(
         userId,

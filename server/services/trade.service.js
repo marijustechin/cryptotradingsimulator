@@ -1,6 +1,6 @@
 const sequelize = require("../config/db");
 const { Op } = require("sequelize");
-const { asset, transactions, portfolio, wallet, instrument } = sequelize.models;
+const { transactions, portfolio, wallet, instrument } = sequelize.models;
 const ApiError = require("../exceptions/api.errors");
 const { nanoid } = require("nanoid");
 const ProfitService = require("./profit.service");
@@ -47,7 +47,7 @@ class TradeService {
         throw new Error(`Asset not found ${assetId}`);
       }
 
-      const marketPrice = parseFloat(assetData.priceUsd);
+      const marketPrice = PriceService.getPrice(assetId);
       const totalCost = marketPrice * amount;
 
       await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
@@ -195,25 +195,34 @@ class TradeService {
     transaction
   ) {
     try {
-
       const assetData = await instrument.findOne({ where: { id: assetId } });
   
       if (!assetData) {
         throw new Error(`Asset not found: ${assetId}`);
       }
   
-      const orderID = nanoid(6).toUpperCase();
-      const marketPrice = parseFloat(assetData.priceUsd);
-      const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
-      const totalValue = finalPrice * amount;
+      console.log("Checking asset in DB:", assetId);
+      console.log("Asset found in DB:", assetData);
   
-      let ord_status = "open";
-      if (ord_type === "market") {
-        ord_status = ord_direct === "buy" ? "open" : "closed";
+      if (!price || isNaN(price)) {
+        throw new Error("Invalid price provided");
       }
   
       if (amount <= 0) {
-        throw new Error("Please enter amount");
+        throw new Error("Please enter a valid amount");
+      }
+  
+      const finalPrice = parseFloat(price);
+      console.log("FinalPrice", finalPrice);
+  
+      const totalValue = finalPrice * amount;
+      console.log("Totali kaina", totalValue);
+  
+      const orderID = nanoid(6).toUpperCase();
+  
+      let ord_status = "open";
+      if (ord_type === "market" && ord_direct === "sell") {
+        ord_status = "closed";
       }
   
       const newOrder = await transactions.create(
@@ -226,7 +235,7 @@ class TradeService {
           amount,
           entry_price: finalPrice,
           total_value: totalValue,
-          price_usd: marketPrice,
+          price_usd: finalPrice, // jeigu nori rodyti USD – naudoji šitą kainą
           open_date: ord_direct === "buy" ? new Date() : null,
           closed_date:
             ord_direct === "sell" && ord_type === "market" ? new Date() : null,
@@ -235,12 +244,16 @@ class TradeService {
         { transaction }
       );
   
+      console.log("Orderis sukurtas", newOrder);
+  
+      // jei parduodam, paskaičiuojam pelną
       if (ord_direct === "sell") {
         const countProfit = await ProfitService.countUserProfit(
           userId,
           assetId,
           amount
         );
+  
         await transactions.update(
           { profit: countProfit },
           {

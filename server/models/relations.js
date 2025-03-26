@@ -34,10 +34,12 @@ function modelRelations(sequelize) {
   });
   
   user.hasMany(transactions, { foreignKey: "user_id", onDelete: "CASCADE" });
-  transactions.belongsTo(user, { foreignKey: "user_id", onDelete: "CASCADE" });
   user.hasMany(portfolio, { foreignKey: "user_id", onDelete: "CASCADE" });
 
-  portfolio.belongsTo(asset, { foreignKey: "asset_id", as: "asset" });
+  portfolio.belongsTo(instrument, { foreignKey: "asset_id", as: "instrument" });
+  instrument.hasMany(portfolio, { foreignKey: "asset_id", onDelete: "CASCADE" });
+  
+
   asset.hasMany(portfolio, { foreignKey: "asset_id", onDelete: "CASCADE" });
   asset.hasMany(transactions, { foreignKey: "asset_id", onDelete: "CASCADE" });
 
