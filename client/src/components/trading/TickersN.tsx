@@ -1,14 +1,17 @@
-import { useState } from 'react';
-import { ITicker } from '../../types/tradingN';
-import { useAppSelector } from '../../store/store';
-import { getChartSymbol } from '../../store/features/trading/chartSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import {
+  getChartSymbol,
+  getCurrentPrices,
+  setCurrentPrices,
+} from '../../store/features/trading/chartSlice';
 
 import useWebSocket from 'react-use-websocket';
 import { WS_URL } from '../../api/ws';
 
 export const TickersN = () => {
+  const dispatch = useAppDispatch();
   const selectedSymbol = useAppSelector(getChartSymbol);
-  const [activeTicker, setActiveTicker] = useState<ITicker>();
+  const activeTicker = useAppSelector(getCurrentPrices);
 
   const { sendJsonMessage } = useWebSocket(WS_URL, {
     share: false,
@@ -17,7 +20,7 @@ export const TickersN = () => {
     onMessage: (event: WebSocketEventMap['message']) => {
       const parsedData = JSON.parse(event.data);
       if (parsedData.data.symbol === selectedSymbol) {
-        setActiveTicker(parsedData.data);
+        dispatch(setCurrentPrices(parsedData.data));
       }
     },
   });

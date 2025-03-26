@@ -4,10 +4,18 @@ import {
   setAmount,
   setTriggerPrice,
 } from '../../store/features/trading/tradingOptionsSlice';
+import {
+  getChartSymbol,
+  getCurrentPrices,
+  getSelectedSymbolData,
+} from '../../store/features/trading/chartSlice';
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
   const tradingOptions = useAppSelector(selectTradingOptions);
+  const selectedCrypto = useAppSelector(getChartSymbol);
+  const currentPrices = useAppSelector(getCurrentPrices);
+  const cryptoData = useAppSelector(getSelectedSymbolData);
 
   const handlePlaceOrder = async () => {
     // cia turim patikrinti:
@@ -21,6 +29,8 @@ export const PlaceOrderButton = () => {
     // 3. atstatom kai kurias tradeOptions reiksmes
     // 4. toast mesidza apie sekminga sandori
     console.log(tradingOptions);
+    console.log(selectedCrypto);
+    console.log(currentPrices?.lastPrice);
   };
 
   return (
@@ -72,7 +82,9 @@ export const PlaceOrderButton = () => {
             : 'bg-rose-500 border-rose-500'
         } min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl`}
       >
-        {tradingOptions.orderDirection === 'buy' ? 'Buy' : 'Sell'}
+        {tradingOptions.orderDirection === 'buy'
+          ? `Buy Long ${cryptoData?.name} (${cryptoData?.code})`
+          : `Sell Short ${cryptoData?.name} (${cryptoData?.code})`}
       </button>
     </div>
   );
