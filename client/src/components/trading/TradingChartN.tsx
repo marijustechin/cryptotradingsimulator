@@ -24,13 +24,6 @@ export const TradingChartN = () => {
     },
   });
 
-  const data = [{}];
-
-  data.push({
-    x: new Date(1538894800000),
-    y: [6669.81, 6660.5, 6663.04, 6663.33],
-  });
-
   const chartDataSeries = [
     {
       name: 'BTCUSDT',
@@ -47,18 +40,18 @@ export const TradingChartN = () => {
       height: 600,
     },
     title: {
-      text: 'Kazkoks tekstas',
-      align: 'right',
+      text: 'Pavadinimas',
+      align: 'center',
     },
   };
 
   return (
-    <div id="chart">
+    <div id='chart'>
       {chartData.length > 0 && (
         <Chart
           options={chartOptions}
           series={chartDataSeries}
-          type="candlestick"
+          type='candlestick'
           height={300}
         />
       )}

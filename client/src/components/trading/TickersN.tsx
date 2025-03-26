@@ -23,18 +23,18 @@ export const TickersN = () => {
   });
 
   return (
-    <section className="flex gap-3 p-2 border-t border-b border-violet-800 items-center">
-      <p>
-        24h high{' '}
-        <span className="text-emerald-500">{activeTicker?.highPrice24h}</span>
-      </p>
-      <p>
-        24h low{' '}
-        <span className="text-rose-500">{activeTicker?.lowPrice24h}</span>
-      </p>
-      <p>
-        24h change{' '}
-        <span
+    <section className='flex gap-3 p-2 border-t border-b border-violet-800 items-center justify-between'>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>24h high</p>
+        <p className='text-emerald-500'>{activeTicker?.highPrice24h}</p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>24h low</p>
+        <p className='text-rose-500'>{activeTicker?.lowPrice24h}</p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>24h change</p>{' '}
+        <p
           className={`${
             activeTicker?.price24hPcnt && activeTicker.price24hPcnt > 0
               ? 'text-emerald-500'
@@ -42,16 +42,32 @@ export const TickersN = () => {
           }`}
         >
           {activeTicker?.price24hPcnt}%
-        </span>
-      </p>
-      <p>
-        Indexed{' '}
-        <span className="text-emerald-500">{activeTicker?.usdIndexPrice}</span>
-      </p>
-      <p>
-        Volume:{' '}
-        <span className="text-amber-600">{activeTicker?.volume24h}</span>
-      </p>
+        </p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>Last price</p>{' '}
+        <p className='text-emerald-500'>{activeTicker?.lastPrice}</p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>Index</p>
+        <p className='text-amber-600'>
+          {activeTicker?.usdIndexPrice &&
+            Math.round(activeTicker?.usdIndexPrice * 1000) / 1000}
+        </p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>24h turnover</p>
+        <p className='text-amber-600'>
+          {activeTicker?.turnover24h && Math.round(activeTicker?.turnover24h)}
+        </p>
+      </div>
+      <div className='flex flex-col items-center w-full'>
+        <p className='text-xs text-violet-400'>Volume</p>
+        <p className='text-amber-600'>
+          {activeTicker?.volume24h &&
+            Math.round(activeTicker?.volume24h * 100) / 100}
+        </p>
+      </div>
     </section>
   );
 };

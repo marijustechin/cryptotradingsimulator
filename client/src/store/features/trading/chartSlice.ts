@@ -29,7 +29,6 @@ export const chartSlice = createSlice({
   initialState,
   reducers: {
     setChartInterval: (state, action) => {
-      console.log(action.payload);
       state.selectedInterval = action.payload;
     },
     setCandles: (
