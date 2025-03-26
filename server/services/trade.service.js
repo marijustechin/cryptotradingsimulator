@@ -201,22 +201,17 @@ class TradeService {
         throw new Error(`Asset not found: ${assetId}`);
       }
   
-      console.log("Checking asset in DB:", assetId);
-      console.log("Asset found in DB:", assetData);
-  
       if (!price || isNaN(price)) {
         throw new Error("Invalid price provided");
       }
   
       if (amount <= 0) {
-        throw new Error("Please enter a valid amount");
+        throw new Error("Please enter amount");
       }
   
       const finalPrice = parseFloat(price);
-      console.log("FinalPrice", finalPrice);
   
       const totalValue = finalPrice * amount;
-      console.log("Totali kaina", totalValue);
   
       const orderID = nanoid(6).toUpperCase();
   
@@ -235,7 +230,7 @@ class TradeService {
           amount,
           entry_price: finalPrice,
           total_value: totalValue,
-          price_usd: finalPrice, // jeigu nori rodyti USD – naudoji šitą kainą
+          price_usd: finalPrice,
           open_date: ord_direct === "buy" ? new Date() : null,
           closed_date:
             ord_direct === "sell" && ord_type === "market" ? new Date() : null,
@@ -244,9 +239,6 @@ class TradeService {
         { transaction }
       );
   
-      console.log("Orderis sukurtas", newOrder);
-  
-      // jei parduodam, paskaičiuojam pelną
       if (ord_direct === "sell") {
         const countProfit = await ProfitService.countUserProfit(
           userId,

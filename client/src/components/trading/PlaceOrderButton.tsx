@@ -19,6 +19,17 @@ export const PlaceOrderButton = () => {
   const currentPrices = useAppSelector(getCurrentPrices);
   const cryptoData = useAppSelector(getSelectedSymbolData);
 
+      // cia turim patikrinti:
+    // 1. ar naudotojas turi pakankamai lesu
+    // 2. jeigu direction 'sell', ar turi toki asseta savo portfelyje
+    // Jei yra bedu, metam modal pranesima apie negalima sandori
+      // tik jeigu viskas ok,
+    // 1. rasom i duomenu baze per OrderService
+    // 2. nuskaiciuojam pinigus arba valiuta
+    // 3. atstatom kai kurias tradeOptions reiksmes
+    // 4. toast mesidza apie sekminga sandori
+
+
   const handlePlaceOrder = async () => {
     try {
       const { amount, orderType, orderDirection, triggerPrice } =
