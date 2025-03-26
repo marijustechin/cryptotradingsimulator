@@ -1,28 +1,45 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { ICandle } from '../../../types/chart';
+import { IInstrument, ITicker } from '../../../types/tradingN';
+import InstrumentService from '../../../services/InstrumentService';
+import HelperService from '../../../services/HelperService';
 
 interface ChartState {
+  currentPrices: ITicker | null;
   selectedInterval: '15' | '30' | '60';
   selectedSymbol: string;
-  candles: {
-    [symbol: string]: {
-      [interval: string]: ICandle[];
-    };
-  };
+  selectedSymbolData: {
+    name: string;
+    icon: string;
+    code: string;
+  } | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
 }
 
 const initialState: ChartState = {
+  currentPrices: null,
   selectedInterval: '30',
   selectedSymbol: 'BTCUSDT',
-  candles: {
-    BTCUSDT: {
-      '15': [],
-      '30': [],
-      '60': [],
-    },
-  },
+  selectedSymbolData: null,
+  status: 'idle',
+  error: '',
 };
+
+export const getSymbolData = createAsyncThunk<
+  IInstrument,
+  void,
+  { state: RootState }
+>('getSymbolData', async (_, { getState, rejectWithValue }) => {
+  try {
+    const state = getState();
+    const id = state.chart.selectedSymbol;
+    const response = await InstrumentService.getInstrument(id);
+    return response;
+  } catch (e) {
+    return rejectWithValue(HelperService.errorToString(e));
+  }
+});
 
 export const chartSlice = createSlice({
   name: 'chart',
@@ -31,60 +48,43 @@ export const chartSlice = createSlice({
     setChartInterval: (state, action) => {
       state.selectedInterval = action.payload;
     },
-    setCandles: (
-      state,
-      action: PayloadAction<{
-        symbol: string;
-        interval: string;
-        candles: ICandle[];
-      }>
-    ) => {
-      const { symbol, interval, candles } = action.payload;
-
-      // 🔐 Make sure symbol exists
-      if (!state.candles[symbol]) {
-        state.candles[symbol] = {};
-      }
-
-      // 🔐 Make sure interval exists for this symbol
-      if (!state.candles[symbol][interval]) {
-        state.candles[symbol][interval] = [];
-      }
-
-      const existing = state.candles[symbol][interval];
-
-      for (const newCandle of candles) {
-        const i = existing.findIndex((c) => c.start === newCandle.start);
-
-        if (i !== -1) {
-          // Replace existing candle with same start time
-          existing[i] = newCandle;
-        } else {
-          // Append new candle
-          existing.push(newCandle);
-        }
-      }
-
-      // Optional: Keep only the last N candles
-      state.candles[symbol][interval] = existing.slice(-1000);
-    },
     setSymbol: (state, action: PayloadAction<string>) => {
       state.selectedSymbol = action.payload;
     },
+    setCurrentPrices: (state, action: PayloadAction<ITicker>) => {
+      state.currentPrices = { ...action.payload };
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSymbolData.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getSymbolData.fulfilled, (state, action) => {
+        const data = {
+          name: action.payload.name,
+          code: action.payload.code,
+          icon: action.payload.icon,
+        };
+        state.selectedSymbolData = { ...data };
+        state.status = 'succeeded';
+        state.error = '';
+      })
+      .addCase(getSymbolData.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { setChartInterval, setCandles, setSymbol } = chartSlice.actions;
+export const { setChartInterval, setSymbol, setCurrentPrices } =
+  chartSlice.actions;
 
 export const getChartInterval = (state: RootState) =>
   state.chart.selectedInterval;
 
-export const getChartCandles = (state: RootState): ICandle[] => {
-  const { selectedSymbol, selectedInterval, candles } = state.chart;
-
-  return candles[selectedSymbol]?.[selectedInterval] || [];
-};
-
 export const getChartSymbol = (state: RootState) => state.chart.selectedSymbol;
+export const getCurrentPrices = (state: RootState) => state.chart.currentPrices;
+export const getSelectedSymbolData = (state: RootState) =>
+  state.chart.selectedSymbolData;
 
 export default chartSlice.reducer;

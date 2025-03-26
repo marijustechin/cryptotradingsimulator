@@ -11,27 +11,8 @@ export const TradingOptions = () => {
 
   return (
     <div className='flex gap-4 items-center'>
-      <p className='text-2xl text-violet-300'>Spot</p>
       <div>
         <div className='flex flex-col'></div>
-        <div>
-          <p className='text-sm text-violet-400'>
-            Selected order type:{' '}
-            <span className='text-violet-50'>
-              {tradeOptions.orderType.toLocaleUpperCase()}
-            </span>{' '}
-            , order dircection:{' '}
-            <span
-              className={`${
-                tradeOptions.orderDirection === 'buy'
-                  ? 'text-emerald-500'
-                  : 'text-rose-500'
-              }`}
-            >
-              {tradeOptions.orderDirection.toLocaleUpperCase()}
-            </span>
-          </p>
-        </div>
         {/* sandorio tipo mygtukai */}
         <div className='flex gap-2'>
           <button

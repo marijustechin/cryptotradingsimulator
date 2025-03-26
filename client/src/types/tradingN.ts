@@ -23,3 +23,10 @@ export interface ICandle {
   confirm: boolean; // true
   timestamp: number; // 1742905801142
 }
+
+export interface IInstrument {
+  id: string;
+  name: string;
+  code: string;
+  icon: string;
+}
