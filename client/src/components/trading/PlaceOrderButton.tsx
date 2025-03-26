@@ -1,17 +1,13 @@
-import { useEffect, useState } from 'react';
-import { selectAssets } from '../../store/features/crypto/assetsSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
-  selectTradeOptions,
+  selectTradingOptions,
   setAmount,
   setTriggerPrice,
-} from '../../store/features/trading/tradeOptionsSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+} from '../../store/features/trading/tradingOptionsSlice';
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
-  const tradeOptions = useAppSelector(selectTradeOptions);
-  const assets = useAppSelector(selectAssets);
-  const [assetName, setAssetName] = useState('');
+  const tradingOptions = useAppSelector(selectTradingOptions);
 
   const handlePlaceOrder = async () => {
     // cia turim patikrinti:
@@ -24,17 +20,8 @@ export const PlaceOrderButton = () => {
     // 2. nuskaiciuojam pinigus arba valiuta
     // 3. atstatom kai kurias tradeOptions reiksmes
     // 4. toast mesidza apie sekminga sandori
-    console.log(tradeOptions);
+    console.log(tradingOptions);
   };
-
-  useEffect(() => {
-    if (tradeOptions.assetId.length > 1) {
-      const asset = assets?.find((item) => item.id === tradeOptions.assetId);
-      if (asset) {
-        setAssetName(asset.name);
-      }
-    }
-  }, [tradeOptions.assetId, assets]);
 
   return (
     <div className='flex flex-col gap-2'>
@@ -42,12 +29,12 @@ export const PlaceOrderButton = () => {
         <div className='flex gap-2 items-center'>
           <label
             className='text-sm text-violet-300'
-            htmlFor={'amount' + tradeOptions.assetId}
+            htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
           </label>
           <input
-            id={'amount' + tradeOptions.assetId}
+            id={'amount' + tradingOptions.orderDirection}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               dispatch(setAmount(Number(e.target.value)))
             }
@@ -56,16 +43,16 @@ export const PlaceOrderButton = () => {
             min={0.01}
           />
         </div>
-        {tradeOptions.orderType === 'limit' && (
+        {tradingOptions.orderType === 'limit' && (
           <div className='flex gap-2 items-center'>
             <label
               className='text-sm text-violet-300'
-              htmlFor={'triggerPrice' + tradeOptions.assetId}
+              htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
             </label>
             <input
-              id={'triggerPrice' + tradeOptions.assetId}
+              id={'triggerPrice' + 'single'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
@@ -80,12 +67,12 @@ export const PlaceOrderButton = () => {
       <button
         onClick={handlePlaceOrder}
         className={`${
-          tradeOptions.orderDirection === 'buy'
+          tradingOptions.orderDirection === 'buy'
             ? 'bg-emerald-500 border-emerald-500'
             : 'bg-rose-500 border-rose-500'
         } min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl`}
       >
-        {tradeOptions.orderDirection === 'buy' ? 'Buy' : 'Sell'} {assetName}
+        {tradingOptions.orderDirection === 'buy' ? 'Buy' : 'Sell'}
       </button>
     </div>
   );
