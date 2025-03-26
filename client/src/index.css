@@ -34,7 +34,7 @@ body {
 }
 /* Naudojamas, netrinti */
 .form-input {
-  @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none autofill:transition-colors autofill:duration-[999999999s];
+  @apply w-full border border-violet-800 bg-zinc-900 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 autofill:transition-colors autofill:duration-[999999999s];
 }
 .form-label {
   @apply text-sm text-violet-300;
@@ -113,7 +113,7 @@ p,
 /* credits page */
 .credits-title{
   font-family: cursive;
-  @apply text-xl md:text-5xl lg:text-6xl;
+  @apply text-2xl md:text-5xl lg:text-6xl;
 }
 .credits-card-name{
   @apply text-base md:text-3xl lg:text-4xl;
@@ -141,9 +141,4 @@ p,
 .h4-title{
   font-weight: bold;
   @apply text-base md:text-lg lg:text-lg;
-}
-.ol-steps {
-  padding: 0;
-  margin: 0;
-  list-style: none;
 }
