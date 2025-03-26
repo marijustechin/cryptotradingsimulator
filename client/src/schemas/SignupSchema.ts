@@ -10,7 +10,7 @@ export const SignupSchema = z
       .nonempty({ message: 'First name is required' })
       .min(2, { message: 'First name must be at least 2 characters' })
       .max(30, { message: 'First name must be at most 30 characters' })
-      .regex(/^[\p{L}'-]+(?: [\p{L}'-]+)*$/u, {
+      .regex(/^[\p{L}](?!.*['-]{2})[\p{L}'-]*$/u, {
         message: 'First name contains excessive stacked characters',
       }),
     email: z
