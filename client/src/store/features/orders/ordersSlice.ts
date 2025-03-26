@@ -39,7 +39,7 @@ export const getUserOrders = createAsyncThunk<
   { state: RootState }
 >("orders/transactions", async (_, { rejectWithValue }) => {
   try {
-    const response = await OrdersService.getUserPortfolio();
+    const response = await OrdersService.getUserOrders();
     return response;
   } catch (error) {
     return rejectWithValue(HelperService.errorToString(error));

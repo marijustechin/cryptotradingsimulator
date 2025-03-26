@@ -1,15 +1,11 @@
 const sequelize = require("../config/db");
 const { Op } = require("sequelize");
-const { asset, transactions, portfolio, wallet } = sequelize.models;
+const { asset, transactions, portfolio, wallet, instrument } = sequelize.models;
 const ApiError = require("../exceptions/api.errors");
 const { nanoid } = require("nanoid");
-const ProfitService = require('./profit.service');
+const ProfitService = require("./profit.service");
 
 class TradeService {
-  // pagrindine funkcija kuri sukuria kriptovaliuta
-  // jei market orderis jis iskart vykdomas
-  // jei limit orderis jis laukia kol pasieks reikiama kaina
-
   async BuyCrypto(userId, assetId, amount, ord_direct, ord_type, price = null) {
     const transaction = await sequelize.transaction();
 
@@ -43,9 +39,10 @@ class TradeService {
       throw new Error(`Transaction failed: ${err.message}`);
     }
   }
+
   async marketOrder(userId, assetId, amount, ord_direct, transaction) {
     try {
-      const assetData = await asset.findOne({ where: { id: assetId } });
+      const assetData = await instrument.findOne({ where: { id: assetId } });
       if (!assetData) {
         throw new Error(`Asset not found ${assetId}`);
       }
@@ -68,11 +65,8 @@ class TradeService {
     }
   }
 
-  // tikrina limit orderius
-  // prides i laukiamuju sarasa ir ivykdys kurie pasieke kainos riba.
   async limitOrder(assetId) {
     try {
-      // isgauname visus laukiancius limit orderius
       const pendingOrders = await transactions.findAll({
         where: {
           ord_direct: { [Op.in]: ["buy", "sell"] },
@@ -82,19 +76,14 @@ class TradeService {
         },
       });
 
-      // jei pendingOpen nera nutraukiame paieska
       if (!pendingOrders.length) return;
 
-      // surandame valiutos kaina
-      const assetData = await asset.findOne({ where: { id: assetId } });
+      const assetData = await instrument.findOne({ where: { id: assetId } });
       if (!assetData) return;
       const marketPrice = parseFloat(assetData.priceUsd);
 
-      // iteruojame per visus laukiancius orderius
       for (const order of pendingOrders) {
         const orderPrice = parseFloat(order.order_value);
-
-        // jei orderis pasieke kaina, vykdom ja
 
         if (
           (order.ord_direct === "buy" && marketPrice < orderPrice) ||
@@ -104,17 +93,15 @@ class TradeService {
           try {
             await order.update({ ord_status: "filled" }, { transaction });
 
-            // pridedam balansa po ord_status filled
             if (order.ord_direct === "sell") {
               await this.updateUserWallet(
                 order.user_id,
-                order.price,
+                order.total_value,
                 order.ord_direct,
                 transaction
               );
             }
 
-            // updatinam user portfolio
             await this.updateUserPortfolio(
               order.user_id,
               order.asset_id,
@@ -135,7 +122,6 @@ class TradeService {
     }
   }
 
-  // updatiname vartotojo portfolio po pirkimo/pardavimo ivesties
   async updateUserPortfolio(userId, assetId, amount, ordDirect, transaction) {
     const userPortfolio = await portfolio.findOne({
       where: { user_id: userId, asset_id: assetId },
@@ -169,7 +155,6 @@ class TradeService {
     }
   }
 
-  // updatinam userio wallet
   async updateUserWallet(userId, price, ord_direct, transaction = null) {
     const userWallet = await wallet.findOne({
       where: { user_id: userId },
@@ -210,27 +195,27 @@ class TradeService {
     transaction
   ) {
     try {
-      const assetData = await asset.findOne({ where: { id: assetId } });
+
+      const assetData = await instrument.findOne({ where: { id: assetId } });
+  
       if (!assetData) {
         throw new Error(`Asset not found: ${assetId}`);
       }
-
+  
       const orderID = nanoid(6).toUpperCase();
-
       const marketPrice = parseFloat(assetData.priceUsd);
-
       const finalPrice = ord_type === "limit" ? parseFloat(price) : marketPrice;
-
+      const totalValue = finalPrice * amount;
+  
       let ord_status = "open";
-
       if (ord_type === "market") {
         ord_status = ord_direct === "buy" ? "open" : "closed";
       }
-
+  
       if (amount <= 0) {
         throw new Error("Please enter amount");
       }
-
+  
       const newOrder = await transactions.create(
         {
           user_id: userId,
@@ -239,8 +224,9 @@ class TradeService {
           ord_status,
           ord_type,
           amount,
-          price: ord_direct === "buy" ? -finalPrice : +finalPrice,
-          order_value: ord_type === "market" ? marketPrice : price,
+          entry_price: finalPrice,
+          total_value: totalValue,
+          price_usd: marketPrice,
           open_date: ord_direct === "buy" ? new Date() : null,
           closed_date:
             ord_direct === "sell" && ord_type === "market" ? new Date() : null,
@@ -248,24 +234,25 @@ class TradeService {
         },
         { transaction }
       );
-
-      if(ord_direct === "sell") {
-        const countProfit = await ProfitService.countUserProfit(userId, assetId, amount);
+  
+      if (ord_direct === "sell") {
+        const countProfit = await ProfitService.countUserProfit(
+          userId,
+          assetId,
+          amount
+        );
         await transactions.update(
-         { profit: countProfit },
-         {
-           where: { id: newOrder.id },
-           transaction
-         }
-       );
+          { profit: countProfit },
+          {
+            where: { id: newOrder.id },
+            transaction,
+          }
+        );
       }
-
-      if (!newOrder || !newOrder.id) {
-        throw new Error("Transaction creation failed");
-      }
+  
       return newOrder;
     } catch (error) {
-      console.error("There was error with createTransaction", error.message);
+      console.error("createTransaction error:", error.message);
       throw error;
     }
   }

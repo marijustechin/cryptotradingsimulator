@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
           },
         },
       },
-      price: {
+      price_usd: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
         },
       },
       profit: {
-        type: DataTypes.DECIMAL(8,2),
+        type: DataTypes.DECIMAL(8, 2),
         allowNull: true,
       },
       open_date: {
@@ -59,6 +59,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      entry_price: {
+        type: DataTypes.DECIMAL(8,2),
+        allowNull: false,
+      }
     },
     {
       timestamps: false,

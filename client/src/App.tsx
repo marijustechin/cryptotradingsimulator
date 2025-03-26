@@ -20,7 +20,7 @@ import { HowToTradePage } from './pages/HowToTradePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { CreditsPage } from './pages/CreditsPage';
-import { UserOrdersPage } from './pages/user/UserOrdersPage';
+import { UserOrdersPage } from './components/orders/UserOrdersPage';
 import { AllUsersPage } from './pages/admin/AllUsersPage';
 import { RestorePasswordPage } from './pages/RestorePasswordPage';
 import { NotFoundPage } from './pages/NotFoundPage';

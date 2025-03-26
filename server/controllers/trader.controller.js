@@ -41,6 +41,7 @@ class TraderController {
 
       console.log("Transakcija praejo");
 
+      
       return res.status(201).json(sendTransaction);
     } catch (error) {
       next(error);

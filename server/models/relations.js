@@ -6,6 +6,7 @@ function modelRelations(sequelize) {
     wallet,
     portfolio,
     asset,
+    instrument,
     asset_hist,
     transactions,
   } = sequelize.models;
@@ -21,21 +22,24 @@ function modelRelations(sequelize) {
 
   // crypto
 
-  asset.hasMany(transactions, { foreignKey: "asset_id", onDelete: "CASCADE" });
-  transactions.belongsTo(asset, {
+  instrument.hasMany(transactions, {
     foreignKey: "asset_id",
-    onDelete: "CASCADE",
+    sourceKey: "id",
   });
+  
+  transactions.belongsTo(instrument, {
+    foreignKey: "asset_id",
+    targetKey: "id",
+    as: "instrument",
+  });
+  
   user.hasMany(transactions, { foreignKey: "user_id", onDelete: "CASCADE" });
   transactions.belongsTo(user, { foreignKey: "user_id", onDelete: "CASCADE" });
   user.hasMany(portfolio, { foreignKey: "user_id", onDelete: "CASCADE" });
 
+  portfolio.belongsTo(asset, { foreignKey: "asset_id", as: "asset" });
   asset.hasMany(portfolio, { foreignKey: "asset_id", onDelete: "CASCADE" });
   asset.hasMany(transactions, { foreignKey: "asset_id", onDelete: "CASCADE" });
-  transactions.belongsTo(asset, {
-    foreignKey: "asset_id",
-    onDelete: "CASCADE",
-  });
 
   // assets
   asset.hasMany(asset_hist, {

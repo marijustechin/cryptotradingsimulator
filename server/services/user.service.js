@@ -1,10 +1,11 @@
-const bcrypt = require('bcryptjs');
-const sequelize = require('../config/db');
-const { user, user_secret, wallet, transactions, portfolio } = sequelize.models;
-const ApiError = require('../exceptions/api.errors');
-const tokenService = require('../services/token.service');
-const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
-const Op = require('sequelize').Op;
+const bcrypt = require("bcryptjs");
+const sequelize = require("../config/db");
+const { user, asset, user_secret, wallet, transactions, portfolio, instrument } =
+  sequelize.models;
+const ApiError = require("../exceptions/api.errors");
+const tokenService = require("../services/token.service");
+const { UserInfoDto, AllUsersDto } = require("../dtos/user.dto");
+const Op = require("sequelize").Op;
 
 class UserService {
   /**
@@ -279,30 +280,44 @@ class UserService {
 
     return "Password updated successfully.";
   }
-  
+
   async getUserPortfolioById(userId, transaction) {
     try {
       const getUserTransaction = await transactions.findAll({
         where: { user_id: userId },
-        transaction
+        include: [
+          {
+            model: instrument,
+            as: "instrument_id",
+            attributes: ["symbol"],
+          },
+        ],
+        transaction,
       });
-    
+
       const getUserById = await portfolio.findAll({
         where: { user_id: userId },
-        transaction
+        include: [
+          {
+            model: asset,
+            as: "asset",
+            attributes: ["symbol"],
+          },
+        ],
+        transaction,
       });
-    
-      if(!getUserById && getUserTransaction.length === 0) {
+
+      if (!getUserById && getUserTransaction.length === 0) {
         console.log("Transakciju nerasta");
       }
-    
+
       return {
         transactions: getUserTransaction,
-        portfolio: getUserById
-      }
+        portfolio: getUserById,
+      };
     } catch (error) {
       console.error("There was error with getUserById", error);
-      throw new Error;
+      throw new Error();
     }
   }
 }
