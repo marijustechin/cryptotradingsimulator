@@ -5,9 +5,13 @@ export interface IPortfolioInfo {
     ord_type: string;
     asset_id: string;
     amount: number;
-    order_value: number;
+    entry_price: number;
+    price_usd: number;
     open_date: string;
     closed_date: string;
+    asset: {
+        symbol: string;
+    }
 }
 
 export interface IUserPortfolioItem {
