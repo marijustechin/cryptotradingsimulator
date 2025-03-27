@@ -3,25 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { getUserOrders } from "../../store/features/orders/ordersSlice";
 import { format } from "date-fns";
 
-type TabOption =
-  | "Open Orders"
-  | "Positions"
-  | "Order History"
-  | "Trade History"
-  | "Assets"
-  | "Borrowings"
-  | "P%L";
-
-const TABS: TabOption[] = [
-  "Open Orders",
-  "Positions",
-  "Order History",
-  "Trade History",
-  "Assets",
-  "Borrowings",
-  "P%L",
-];
-
 export const UserOrdersPage = () => {
   const dispatch = useAppDispatch();
 
@@ -41,13 +22,7 @@ export const UserOrdersPage = () => {
       <h1>Orders</h1>
       <nav>
         <div className="grid grid-cols-7">
-          {TABS.map((tab) => (
-            <span
-              key={tab}
-              onClick={() => setActive(tab)}
-              className={`cursor-pointer py-2 text-center`}
-            ></span>
-          ))}
+            
         </div>
       </nav>
       <section>

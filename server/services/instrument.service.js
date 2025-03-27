@@ -1,6 +1,6 @@
-const { where } = require('sequelize');
-const sequelize = require('../config/db');
-const ApiError = require('../exceptions/api.errors');
+const { where } = require("sequelize");
+const sequelize = require("../config/db");
+const ApiError = require("../exceptions/api.errors");
 const { instrument } = sequelize.models;
 
 class InstrumentService {
