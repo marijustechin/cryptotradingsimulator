@@ -1,31 +1,31 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
-import { useEffect } from 'react';
-import { useAppDispatch } from './store/store';
-import { restoreSession } from './store/features/user/authSlice';
-
+import { BrowserRouter, Route, Routes } from "react-router";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "./store/store";
+import { restoreSession } from "./store/features/user/authSlice";
+import { useLivePriceSocket } from "./components/orders/useLivePriceSocket";
 // Components
 
 // Layouts
-import { MainLayout } from './layouts/MainLayout';
-import { AdminLayout } from './layouts/AdminLayout';
-import { UserLayout } from './layouts/UserLayout';
+import { MainLayout } from "./layouts/MainLayout";
+import { AdminLayout } from "./layouts/AdminLayout";
+import { UserLayout } from "./layouts/UserLayout";
 
 // Pages
-import { HomePage } from './pages/HomePage';
-import { UserDashboardPage } from './pages/user/UserDashboardPage';
-import { UserProfilePage } from './pages/user/UserProfilePage';
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import { SystemSettingsPage } from './pages/admin/SystemSettingsPage';
-import { HowToTradePage } from './pages/HowToTradePage';
-import { LoginPage } from './pages/LoginPage';
-import { RegistrationPage } from './pages/RegistrationPage';
-import { CreditsPage } from './pages/CreditsPage';
-import { UserOrdersPage } from './components/orders/UserOrdersPage';
-import { AllUsersPage } from './pages/admin/AllUsersPage';
-import { RestorePasswordPage } from './pages/RestorePasswordPage';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { UserTradingPage } from './pages/user/UserTradingPage';
-import { TestPage } from './pages/user/TestPage';
+import { HomePage } from "./pages/HomePage";
+import { UserDashboardPage } from "./pages/user/UserDashboardPage";
+import { UserProfilePage } from "./pages/user/UserProfilePage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import { SystemSettingsPage } from "./pages/admin/SystemSettingsPage";
+import { HowToTradePage } from "./pages/HowToTradePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegistrationPage } from "./pages/RegistrationPage";
+import { CreditsPage } from "./pages/CreditsPage";
+import { UserOrdersPage } from "./components/orders/UserOrdersPage";
+import { AllUsersPage } from "./pages/admin/AllUsersPage";
+import { RestorePasswordPage } from "./pages/RestorePasswordPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { UserTradingPage } from "./pages/user/UserTradingPage";
+import { TestPage } from "./pages/user/TestPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -57,7 +57,7 @@ function App() {
           <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
           <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
         </Route>
-        <Route path="/404" element={<NotFoundPage />} />{' '}
+        <Route path="/404" element={<NotFoundPage />} />{" "}
         {/* Define explicit 404 page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

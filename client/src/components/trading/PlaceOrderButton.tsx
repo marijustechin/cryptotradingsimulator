@@ -11,7 +11,7 @@ import {
   getSelectedSymbolData,
 } from "../../store/features/trading/chartSlice";
 import { toast } from "react-hot-toast";
-import { useEffect } from "react";
+
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
