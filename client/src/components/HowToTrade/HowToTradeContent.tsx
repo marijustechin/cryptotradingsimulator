@@ -1,5 +1,6 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import StepsComponent from "../Steps";
+
 export const HowToTradeContent = () => {
   const faqs = [
     {
@@ -25,26 +26,19 @@ export const HowToTradeContent = () => {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col items-center mx-5 mb-10 z-10">
+    <main className="min-h-screen w-full overflow-x-hidden flex flex-col items-center justify-start mb-10 z-10">
       <div className="text-white text-center md:my-32 my-12">
         <h1 className="title-first"> Steps For Trading on CryptoHill</h1>
       </div>
       <StepsComponent />
-      <div className="md:mx-10 lg:mx-50 container">
+      <div className="w-full max-w-[1440px] px-4 sm:px-6 md:px-10 my-10 md:mb-40 flex flex-col">
         {/* What is Crypto Trading */}
-        <section className="pb-10 grid md:grid-cols-[0.8fr_1.2fr] items-center last:hidden gap-6">
-        <div className="flex justify-center order-last md:order-first">
-          <Player
-            src="/Coin_City.json"
-            loop
-            autoplay
-            className="max-w-50 md:max-w-100"
-          />
+        <section className="pb-10 grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] items-center gap-6">
+          <div className="flex justify-center order-last md:order-first">
+            <Player src="/Coin_City.json" loop autoplay className="max-w-50 md:max-w-100" />
           </div>
           <article className="grid place-content-center">
-            <h3 className="text-lg md:text-4xl lg:text-4xl pb-5">
-              What is Crypto Trading
-            </h3>
+            <h3 className="text-lg md:text-4xl pb-5">What is Crypto Trading</h3>
             <p className="pb-5">
               Crypto trading is all about buying and selling digital currencies,
               such as Bitcoin(BTC) or Ethereum (ETH), to make a profit. Unlike
@@ -63,11 +57,9 @@ export const HowToTradeContent = () => {
 
         {/* How Does Crypto Work? */}
         <section className="pb-10">
-          <article className="grid md:grid-cols-[1.2fr_0.8fr] items-center gap-6">
+          <article className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-center gap-6">
             <div>
-              <h3 className="text-lg md:text-4xl lg:text-4xl pb-5">
-                How Does Crypto Work?
-              </h3>
+              <h3 className="text-lg md:text-4xl pb-5">How Does Crypto Work?</h3>
               <p className="pb-5">
                 Cryptocurrencies operate on blockchain networks. Think of a
                 blockchain network as a series of blocks that contain
@@ -89,54 +81,38 @@ export const HowToTradeContent = () => {
               <Player src="/Server-Coins.json" loop autoplay className="max-w-50 md:max-w-100" />
             </div>
           </article>
-          <article className="grid md:grid-cols-[1fr_1fr] items-center gap-6">
-          <div className="flex justify-center order-last md:order-first">
-            <Player src="/Server2.json" loop autoplay className="max-w-50 md:max-w-100" />
-          </div>
-          <div>
-            <h3 className="text-base md:text-2xl lg:text-2xl pb-2">
-              Steps in a Typical Crypto Transaction:
-            </h3>
-            <ol className="list-decimal pl-10">
-              <li>
-                <span className="font-bold">Initiate Transfer:</span> Sender
-                enters recipient's wallet address and amount.
-              </li>
-              <li>
-                <span className="font-bold">Verification:</span> Network nodes
-                confirm the transaction's validity.
-              </li>
-              <li>
-                <span className="font-bold">Confirmation:</span> Transaction is
-                added to the blockchain.
-              </li>
-              <li>
-                <span className="font-bold">Settlement:</span> Funds are
-                available in the recipient's wallet.
-              </li>
-            </ol>
-          </div>
+
+          <article className="grid grid-cols-1 md:grid-cols-[1fr_1fr] items-center gap-6">
+            <div className="flex justify-center order-last md:order-first">
+              <Player src="/Server2.json" loop autoplay className="max-w-50 md:max-w-100" />
+            </div>
+            <div>
+              <h3 className="text-base md:text-2xl pb-2">Steps in a Typical Crypto Transaction:</h3>
+              <ol className="list-decimal pl-6">
+                <li><strong>Initiate Transfer:</strong> Sender enters recipient's wallet address and amount.</li>
+                <li><strong>Verification:</strong> Network nodes confirm the transaction's validity.</li>
+                <li><strong>Confirmation:</strong> Transaction is added to the blockchain.</li>
+                <li><strong>Settlement:</strong> Funds are available in the recipient's wallet.</li>
+              </ol>
+            </div>
           </article>
         </section>
 
         {/* Long and short term trading */}
         <section className="pb-10">
-          <h3 className="text-lg md:text-4xl lg:text-4xl pb-5 text-center">
-            Long-term or Short-term Trading
-          </h3>
-          <div className="flex flex-col md:flex-row lg:flex-row gap-10">
-            <div className="border rounded-2xl">
-              <div className="m-5">
+          <h3 className="text-lg md:text-4xl pb-5 text-center">Long-term or Short-term Trading</h3>
+          <div className="flex flex-col md:flex-row gap-10">
+            <div className="border rounded-2xl w-full">
+              <div className="p-5">
                 <div className="flex flex-col items-center pb-3">
-                  <p className="text-lg md:text-2xl lg:text-2xl text-center pb-2">
-                    Long-term trading
-                  </p>
-                  {/* svg */}
-                  <img
-                    src="/textures/bitcoin-piggy-bank.svg"
-                    alt="bitcoin trading svg"
-                    className="w-20"
-                  />
+                  <h6 className="text-lg md:text-2xl text-center pb-2">Long-term trading</h6>
+                  <figure>
+                    <img
+                      src="/textures/bitcoin-piggy-bank.svg"
+                      alt="Bitcoin piggy bank svg"
+                      className="w-20"
+                    />
+                  </figure>
                 </div>
                 <p className="pb-5">
                   Long-term traders buy and hold cryptocurrencies for weeks,
@@ -151,18 +127,18 @@ export const HowToTradeContent = () => {
                 </p>
               </div>
             </div>
-            <div className="border rounded-2xl">
-              <div className="m-5">
+
+            <div className="border rounded-2xl w-full">
+              <div className="p-5">
                 <div className="flex flex-col items-center pb-3">
-                  <p className="text-lg md:text-2xl lg:text-2xl text-center pb-2">
-                    Short-term trading
-                  </p>
-                  {/* svg */}
-                  <img
-                    src="/textures/bitcoin-trading.svg"
-                    alt="bitcoin trading svg"
-                    className="w-20"
-                  />
+                  <h6 className="text-lg md:text-2xl text-center pb-2">Short-term trading</h6>
+                  <figure>
+                    <img
+                      src="/textures/bitcoin-trading.svg"
+                      alt="Bitcoin trading tag svg"
+                      className="w-20"
+                    />
+                  </figure>
                 </div>
                 <p className="pb-5">
                   Short-term trading is about taking advantage of short-term
@@ -182,15 +158,12 @@ export const HowToTradeContent = () => {
 
         {/* Common Mistakes Beginners Should Avoid */}
         <section className="pb-10">
-          <h3 className="text-lg md:text-4xl lg:text-4xl py-6 text-center ">
-            Common Mistakes Beginners Should Avoid
-          </h3>
-          <article className="grid md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
+          <h3 className="text-lg md:text-4xl py-6 text-center">Common Mistakes Beginners Should Avoid</h3>
+
+          <article className="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
             <div>
-            <h4 className="font-bold pb-5 text-base md:text-lg lg:text-lg">
-              Lack of Research:
-            </h4>
-            <p className="pb-3">
+              <h4 className="font-bold pb-5 text-base md:text-lg">Lack of Research:</h4>
+              <p className="pb-3">
               The single greatest mistake that we have seen a lot of beginners
               make is blindly following someone in hopes of getting rich quick.
               You must acknowledge the fact that it's a marathon not a race. If
@@ -201,19 +174,23 @@ export const HowToTradeContent = () => {
             <p className="pb-5">
               Always do your own research, polish your trading skills and trust
               yourself more than anyone else if you want to consistently make
-              money. Whenever you hear FUD or read about it, make sure to double
-              check it with reputable resources before believing it.
+              money. Whenever you hear FUD (Fear, Uncertainty, Doubt) or read
+              about it, make sure to double check it with reputable resources
+              before believing it.
             </p>
             </div>
-            <div className="flex justify-center"><img src="/analytics.png" alt="analytics" className="max-w-80 object-cover"/></div>
+            <div className="flex justify-center">
+              <img src="/analytics.png" alt="analytics" className="max-w-80 object-cover" />
+            </div>
           </article>
-          <article className="grid md:grid-cols-[0.6fr_1.4fr] items-center gap-6">
-          <div className="flex justify-center order-last md:order-first"><img src="/emotions.png" alt="analytics" className="max-w-80 object-cover"/></div>
+
+          <article className="grid grid-cols-1 md:grid-cols-[0.6fr_1.4fr] items-center gap-6">
+            <div className="flex justify-center order-last md:order-first">
+              <img src="/emotions.png" alt="emotions" className="max-w-80 object-cover" />
+            </div>
             <div>
-            <h4 className="font-bold pb-5 text-base md:text-lg lg:text-lg">
-              Emotional Trading:
-            </h4>
-            <p className="pb-3">
+              <h4 className="font-bold pb-5 text-base md:text-lg">Emotional Trading:</h4>
+              <p className="pb-3">
               When trading with your hard-earned money and seeing it wash away,
               a common mistake lots of traders make is trying to win it all back
               in one trade. While it sounds good and might sometimes work, it
@@ -231,18 +208,17 @@ export const HowToTradeContent = () => {
             </p>
             </div>
           </article>
-          <article className="grid md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
-          <div>
-            <h4 className="font-bold pb-5 text-base md:text-lg lg:text-lg">
-              Overtrading:
-            </h4>
-            <p className="pb-3">
-              Lastly, you need to remember that touching some grass every once
-              in a while is not only good for your mental health but will also
-              help you become a better trader. Trying to capitalize on every
-              price movement can be exhausting and costly. You need to give
-              yourself enough time to recover so that you are in good shape to
-              trade.
+
+          <article className="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
+            <div>
+              <h4 className="font-bold pb-5 text-base md:text-lg">Overtrading:</h4>
+              <p className="pb-3">
+              Lastly, you need to remember that taking breaks to recharge every
+              once in a while is not only good for your mental health but will
+              also help you become a better trader. Trying to capitalize on
+              every price movement can be exhausting and costly. You need to
+              give yourself enough time to recover so that you are in good shape
+              to trade.
             </p>
             <p className="pb-5">
               It is also a good strategy to distance yourself from the market
@@ -251,21 +227,33 @@ export const HowToTradeContent = () => {
               doing wrong will help you freshen your mind and get back in your
               groove much faster.
             </p>
-          </div>
-          <div className="flex justify-center"><img src="/Cryptocurrencies.png" alt="Cryptocurrencies" className="max-w-80 object-cover"/></div>
+            </div>
+            <div className="flex justify-center">
+              <img src="/Cryptocurrencies.png" alt="Cryptocurrencies" className="max-w-80 object-cover" />
+            </div>
+          </article>
+          <article>
+            <p>
+              Remember, trading is a journey of constant learning, and every
+              mistake is an opportunity to grow and improve.
+            </p>
           </article>
         </section>
 
         {/* FAQ */}
-        <section className="flex flex-row gap-10 md:gap-10 lg:gap-40 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
+        <section className="flex flex-col md:flex-row gap-10 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
           <div className="flex flex-col justify-between">
-            <span className="text-lg md:text-4xl lg:text-4xl">
-              Frequently Asked Questions
-            </span>
-            <img src="/textures/bitcoin-tag.svg" alt="star" className="w-18" />
+          <h2 className="faq-title">Frequently Asked Questions</h2>
+            <figure>
+              <img
+                src="/textures/bitcoin-tag.svg"
+                alt="bitcoin tag svg"
+                className="w-18"
+              />
+            </figure>
           </div>
 
-          <div className="flex flex-col text-sm md:text-xl lg:text-2xl w-full md:w-3/4 lg:w-1/2">
+          <div className="flex flex-col text-sm md:text-xl w-full md:w-3/4 lg:w-1/2">
             {faqs.map((faq, index) => (
               <div key={index} className="pb-4">
                 <details className="collapse">
@@ -281,6 +269,7 @@ export const HowToTradeContent = () => {
           </div>
         </section>
 
+        {/* Disclaimer */}
         <section className="text-sm pt-5">
           <p>This page is for educational and informational purposes only.</p>
           <p>
