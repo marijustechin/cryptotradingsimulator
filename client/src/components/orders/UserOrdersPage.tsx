@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { getUserOrders } from "../../store/features/orders/ordersSlice";
 import { format } from "date-fns";
 
-export const UserOrdersPage = () => {
+const UserOrdersPage = () => {
   const dispatch = useAppDispatch();
 
   const { orders, status, error } = useAppSelector((state) => state.orders);
@@ -61,3 +61,4 @@ export const UserOrdersPage = () => {
     </main>
   );
 };
+export default UserOrdersPage;

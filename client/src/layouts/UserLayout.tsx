@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Sidebar } from "../components/sidebar/Sidebar";
 import { userLinks } from "../components/sidebar/userLinks";
 
-export const UserLayout = () => {
+const UserLayout = () => {
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
 
@@ -32,3 +32,4 @@ export const UserLayout = () => {
     </div>
   );
 };
+export default UserLayout;

@@ -4,23 +4,10 @@ import { useEffect, useState } from "react";
 import { CoinTable } from "../home/CoinTable";
 import { Loader } from "../Loader";
 
+import { lazy } from "react";
+const CoinTable = lazy(() => import("../home/CoinTable"));
+
 export const WelcomeMessageHome = () => {
-  const [isContentReady, setIsContentReady] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsContentReady(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isContentReady) {
-    return (
-      <div className="flex items-center justify-center h-[75vh]">
-        <Loader/>
-      </div>
-    );
-  }
 
   return (
     <main className="flex flex-col items-center min-h-screen max-w-4xl p-1">

@@ -58,7 +58,7 @@ export const CreditsContent = () => {
       </section>
 
       {/* cards using component */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-3 place-self-center">
         {contributors.map((contributor, index) => (
 
           <ContributorCard key={index} contributor={contributor} />

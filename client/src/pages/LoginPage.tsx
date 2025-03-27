@@ -5,7 +5,7 @@ import { useAppSelector } from '../store/store';
 import { useNavigate } from 'react-router';
 import bg from '/forms-background.png';
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
 
@@ -30,3 +30,4 @@ export const LoginPage = () => {
     </main>
   );
 };
+export default LoginPage;

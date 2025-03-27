@@ -2,7 +2,7 @@ import { UpdateUserForm } from "../../components/auth/UpdateUserForm";
 import { ChangePasswordForm } from "../../components/auth/ChangePassword";
 import { useState } from "react";
 
-export const UserProfilePage = () => {
+const UserProfilePage = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
 
   const togglePasswordForm = () => {
@@ -37,3 +37,4 @@ export const UserProfilePage = () => {
     </main>
   );
 };
+export default UserProfilePage;
