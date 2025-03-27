@@ -13,7 +13,6 @@ export const TopCryptos = () => {
   return (
     <div className='flex flex-col gap-3'>
       <TickersN />
-      <TradingChartN />
       <div className='flex gap-3 items-center'>
         <h3 className='text-2xl text-violet-300'>Spot Trading</h3>
         <p className='text-sm text-violet-400'>
@@ -41,6 +40,7 @@ export const TopCryptos = () => {
       </div>
       <LightWeightChart />
       <PlaceOrderButton />
+      <TradingChartN />
     </div>
   );
 };
