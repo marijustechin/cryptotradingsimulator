@@ -18,8 +18,9 @@ class TraderController {
         throw new Error(errString);
       }
 
+      const userId = req.user?.id;
+
       const {
-        userId,
         assetId,
         amount,
         ord_direct,

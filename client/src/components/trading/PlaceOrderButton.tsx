@@ -1,4 +1,4 @@
-import axios from "axios";
+import $api from "../../api/axios";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
   selectTradingOptions,
@@ -11,6 +11,7 @@ import {
   getSelectedSymbolData,
 } from "../../store/features/trading/chartSlice";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
@@ -39,9 +40,13 @@ export const PlaceOrderButton = () => {
       const price =
         orderType === "limit"
           ? triggerPrice
-          : currentPrices
+          : currentPrices?.lastPrice
 
-      await axios.post("http://localhost:3003/api/v1/trade", {
+        if(amount <= 0 && triggerPrice <= 0) {
+          toast.error(`Enter Amount or Trigger Price`)
+        }
+
+      await $api.post("/trade", {
         assetId,
         amount,
         ord_type: orderType,
@@ -53,9 +58,9 @@ export const PlaceOrderButton = () => {
       dispatch(setTriggerPrice(0));
       toast.success("Order placed successfully!");
     } catch (err: any) {
+      console.error("Atsakas iš API", err?.response);
       toast.error(
-        "Order failed: " + (err.response.data.data)
-      );
+        "Order failed: " + (err.response.data.data) || err.response.data.message || err?.response);
     }
   };
 
@@ -76,6 +81,7 @@ export const PlaceOrderButton = () => {
             }
             className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
             type="number"
+            value={tradingOptions.amount}
             min={0.01}
           />
         </div>
@@ -95,6 +101,7 @@ export const PlaceOrderButton = () => {
               className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
               type="number"
               min={0.01}
+              value={tradingOptions.triggerPrice}
             />
           </div>
         )}

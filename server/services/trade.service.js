@@ -7,6 +7,7 @@ const ProfitService = require("./profit.service");
 
 class TradeService {
   async BuyCrypto(userId, assetId, amount, ord_direct, ord_type, price = null) {
+    console.log("🧠 BuyCrypto userId:", userId);
     const transaction = await sequelize.transaction();
 
     try {
@@ -24,12 +25,13 @@ class TradeService {
         await this.marketOrder(
           userId,
           assetId,
+          price,
           amount,
           ord_direct,
-          transaction,
-          newOrder
+          transaction
         );
       }
+
       await transaction.commit();
       return {
         message: `Your entire order has been filled \n Bought ${amount} ${assetId} contracts at market price`,
@@ -40,15 +42,17 @@ class TradeService {
     }
   }
 
-  async marketOrder(userId, assetId, amount, ord_direct, transaction) {
+  async marketOrder(userId, assetId, price, amount, ord_direct, transaction) {
     try {
       const assetData = await instrument.findOne({ where: { id: assetId } });
       if (!assetData) {
         throw new Error(`Asset not found ${assetId}`);
       }
+      const totalCost = price * amount;
 
-      const marketPrice = PriceService.getPrice(assetId);
-      const totalCost = marketPrice * amount;
+      if (!userId) {
+        throw new Error("userId is undefined in updateUserWallet");
+      }
 
       await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
       await this.updateUserPortfolio(
@@ -65,7 +69,7 @@ class TradeService {
     }
   }
 
-  async limitOrder(assetId) {
+  async limitOrder(userId, assetId) {
     try {
       const pendingOrders = await transactions.findAll({
         where: {
@@ -76,7 +80,13 @@ class TradeService {
         },
       });
 
+
       if (!pendingOrders.length) return;
+
+      if (!userId) {
+        throw new Error("userId is undefined in updateUserWallet");
+      }
+
 
       const assetData = await instrument.findOne({ where: { id: assetId } });
       if (!assetData) return;
@@ -161,6 +171,10 @@ class TradeService {
       transaction,
     });
 
+    console.log("Userid", userId);
+
+    console.log("Wallet found!", userWallet);
+
     if (!userWallet) {
       throw new Error(`Wallet not found for user ${userId}`);
     }
@@ -169,7 +183,7 @@ class TradeService {
     const convertedPrice = parseFloat(price);
 
     if (ord_direct === "buy" && userWallet.balance < price) {
-      throw new Error(`Insufficient balance to place ${ord_direct} order`);
+      throw ApiError.BadRequest(`Insufficient balance to place ${ord_direct} order`);
     }
 
     if (ord_direct === "buy") {
@@ -196,30 +210,30 @@ class TradeService {
   ) {
     try {
       const assetData = await instrument.findOne({ where: { id: assetId } });
-  
+
       if (!assetData) {
         throw new Error(`Asset not found: ${assetId}`);
       }
-  
+
       if (!price || isNaN(price)) {
         throw new Error("Invalid price provided");
       }
-  
+
       if (amount <= 0) {
         throw new Error("Please enter amount");
       }
-  
+
       const finalPrice = parseFloat(price);
-  
+
       const totalValue = finalPrice * amount;
-  
+
       const orderID = nanoid(6).toUpperCase();
-  
+
       let ord_status = "open";
       if (ord_type === "market" && ord_direct === "sell") {
         ord_status = "closed";
       }
-  
+
       const newOrder = await transactions.create(
         {
           user_id: userId,
@@ -238,14 +252,14 @@ class TradeService {
         },
         { transaction }
       );
-  
+
       if (ord_direct === "sell") {
         const countProfit = await ProfitService.countUserProfit(
           userId,
           assetId,
           amount
         );
-  
+
         await transactions.update(
           { profit: countProfit },
           {
@@ -254,7 +268,7 @@ class TradeService {
           }
         );
       }
-  
+
       return newOrder;
     } catch (error) {
       console.error("createTransaction error:", error.message);
