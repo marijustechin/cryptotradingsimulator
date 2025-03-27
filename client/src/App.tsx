@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./store/store";
 import { restoreSession } from "./store/features/user/authSlice";
-import { useLivePriceSocket } from "./components/orders/useLivePriceSocket";
 // Components
 
 // Layouts
