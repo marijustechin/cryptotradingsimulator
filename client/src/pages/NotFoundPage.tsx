@@ -3,7 +3,7 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/header/Header";
 import { NotFoundTextures } from "../components/NotFound/NotFoundTextures";
 
-export const NotFoundPage = () => {
+const NotFoundPage = () => {
   return (
     <div className="grid grid-rows-[auto_1fr_auto]">
       <Header />
@@ -14,3 +14,4 @@ export const NotFoundPage = () => {
     </div>
   );
 };
+export default NotFoundPage;

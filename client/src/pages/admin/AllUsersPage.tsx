@@ -17,7 +17,7 @@ import { Search } from '../../components/Search';
 import { ConfirmationModal } from '../../components/ConfirmationModal';
 import toast from 'react-hot-toast';
 
-export const AllUsersPage = () => {
+const AllUsersPage = () => {
   const dispatch = useAppDispatch();
   const allUsers = useAppSelector(selectAllUsers);
   const totalPages = useAppSelector(getTotalPages);
@@ -176,3 +176,4 @@ export const AllUsersPage = () => {
     </main>
   );
 };
+export default AllUsersPage;

@@ -1,5 +1,6 @@
 import { HomePageTextures } from '../components/home/HomePageTextures';
 
-export const HomePage = () => {
+const HomePage = () => {
   return <HomePageTextures />;
 };
+export default HomePage;

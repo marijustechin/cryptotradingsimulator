@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-export const RestorePasswordPage = () => {
+const RestorePasswordPage = () => {
   return (
     <main className="container">
       <h1>Restore password page</h1>
@@ -11,3 +11,4 @@ export const RestorePasswordPage = () => {
     </main>
   );
 };
+export default RestorePasswordPage;

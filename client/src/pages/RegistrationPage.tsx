@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useAppSelector } from '../store/store';
 import { selectUser } from '../store/features/user/authSlice';
 
-export const RegistrationPage = () => {
+const RegistrationPage = () => {
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
 
@@ -27,3 +27,4 @@ export const RegistrationPage = () => {
     </main>
   );
 };
+export default RegistrationPage;

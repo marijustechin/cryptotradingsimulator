@@ -6,7 +6,7 @@ import { selectUser } from '../store/features/user/authSlice';
 import { useEffect } from 'react';
 import { AdminHeader } from '../components/admin/AdminHeader';
 
-export const AdminLayout = () => {
+const AdminLayout = () => {
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
 
@@ -24,3 +24,4 @@ export const AdminLayout = () => {
     </div>
   );
 };
+export default AdminLayout;

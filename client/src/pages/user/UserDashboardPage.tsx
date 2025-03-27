@@ -2,7 +2,7 @@ import { IntervalSelector } from '../../components/trading/IntervalSelector';
 import { PlaceOrderButton } from '../../components/trading/PlaceOrderButton';
 import { TradingOptions } from '../../components/trading/TradingOptions';
 
-export const UserDashboardPage = () => {
+const UserDashboardPage = () => {
   return (
     <main>
       <h1>User Dashboard</h1>
@@ -18,3 +18,4 @@ export const UserDashboardPage = () => {
     </main>
   );
 };
+export default UserDashboardPage;

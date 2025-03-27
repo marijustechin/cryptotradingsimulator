@@ -11,7 +11,7 @@ const WS_URL = 'ws://localhost:3003/ws/crypto';
 import { Coin } from './Coin';
 import { Loader } from '../Loader';
 
-export const CoinTable = () => {
+const CoinTable = () => {
   const dispatch = useAppDispatch();
   const assets = useAppSelector(selectAssets) as ICryptoAsset[];
   const [isLoading, setIsLoading] = useState(true);
@@ -48,3 +48,4 @@ export const CoinTable = () => {
     </div>
   );
 };
+export default CoinTable;
