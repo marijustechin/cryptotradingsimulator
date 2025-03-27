@@ -77,95 +77,95 @@ export const UpdateUserForm = () => {
 
   return (
     <form
-      className="bg-gray-900 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto"
+      className='bg-gray-900 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto'
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="text-center">
+      <div className='text-center'>
         {infoStatus === 'loading' && (
-          <span className="text-sm text-emerald-500">Saving data...</span>
+          <span className='text-sm text-emerald-500'>Saving data...</span>
         )}
-        {infoError && <span className="form-error-span">{infoError}</span>}
+        {infoError && <span className='form-error-span'>{infoError}</span>}
       </div>
-      <div className="flex flex-col gap-3">
+      <div className='flex flex-col gap-3'>
         <div>
-          <label className="text-sm text-violet-700" htmlFor="first_name">
+          <label className='text-sm text-violet-700' htmlFor='first_name'>
             First name
           </label>
           <input
-            id="first_name"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-            type="text"
-            autoComplete="on"
-            placeholder="Your name"
+            id='first_name'
+            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            type='text'
+            autoComplete='on'
+            placeholder='Your name'
             {...register('first_name', { onChange: handleChange })}
           />
           {errors.first_name && (
-            <span className="form-error-span">{errors.first_name.message}</span>
+            <span className='form-error-span'>{errors.first_name.message}</span>
           )}
         </div>
         <div>
-          <label className="text-sm text-violet-700" htmlFor="last_name">
+          <label className='text-sm text-violet-700' htmlFor='last_name'>
             Last name
           </label>
           <input
-            id="last_name"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-            type="text"
-            autoComplete="on"
-            placeholder="Last name"
+            id='last_name'
+            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            type='text'
+            autoComplete='on'
+            placeholder='Last name'
             {...register('last_name', { onChange: handleChange })}
           />
           {errors.last_name && (
-            <span className="form-error-span">{errors.last_name.message}</span>
+            <span className='form-error-span'>{errors.last_name.message}</span>
           )}
         </div>
         <div>
-          <label className="text-sm text-violet-700" htmlFor="email">
+          <label className='text-sm text-violet-700' htmlFor='email'>
             Email
           </label>
           <input
-            id="email"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-            type="text"
-            autoComplete="on"
-            placeholder="Your email"
+            id='email'
+            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            type='text'
+            autoComplete='on'
+            placeholder='Your email'
             {...register('email', { onChange: handleChange })}
           />
           {errors.email && (
-            <span className="form-error-span">{errors.email.message}</span>
+            <span className='form-error-span'>{errors.email.message}</span>
           )}
         </div>
         <div>
-          <label className="text-violet-700 text-sm" htmlFor="address">
+          <label className='text-violet-700 text-sm' htmlFor='address'>
             Address
           </label>
           <input
-            id="address"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-            type="text"
-            autoComplete="on"
-            placeholder="Address"
+            id='address'
+            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            type='text'
+            autoComplete='on'
+            placeholder='Address'
             {...register('address', { onChange: handleChange })}
           />
           {errors.address && (
-            <span className="form-error-span">{errors.address.message}</span>
+            <span className='form-error-span'>{errors.address.message}</span>
           )}
         </div>
         <div>
-          <label className="text-sm text-violet-700" htmlFor="phone_number">
+          <label className='text-sm text-violet-700' htmlFor='phone_number'>
             Phone number
           </label>
           <input
-            id="phone_number"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-            type="text"
-            autoComplete="on"
-            placeholder="Phone number"
+            id='phone_number'
+            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            type='text'
+            autoComplete='on'
+            placeholder='Phone number'
             {...register('phone_number', { onChange: handleChange })}
           />
           {errors.phone_number && (
-            <span className="form-error-span">
+            <span className='form-error-span'>
               {errors.phone_number.message}
             </span>
           )}
@@ -174,7 +174,7 @@ export const UpdateUserForm = () => {
 
       {/* Taip mes rodome mygtuka tik tada, kai kurio nors lauko duomenys keiciasi */}
       {isFormChanged && (
-        <button type="submit" className="btn-generic mt-6">
+        <button type='submit' className='btn-generic mt-6'>
           Update
         </button>
       )}
