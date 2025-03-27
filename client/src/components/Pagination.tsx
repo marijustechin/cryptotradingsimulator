@@ -16,34 +16,34 @@ export const Pagination = ({
   onChange,
 }: PaginationProps) => {
   const getPageNumbers = () => {
-    const pages = [];
+    const pages: (number | string)[] = [];
 
-    if (totalPages <= 7) {
-      // Jei maziau nei 7 puslapiai rodom vsus
-      for (let i = 1; i <= totalPages; i++) {
+    // Always show first page
+    pages.push(1);
+
+    // Show left "..." if needed
+    if (currentPage > 4) {
+      pages.push('...');
+    }
+
+    // Show neighbors (up to 2 before and after)
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      if (i !== 1 && i !== totalPages) {
         pages.push(i);
       }
-    } else {
-      // Visada rodom 3 pirmus puslapius
-      pages.push(1, 2, 3);
+    }
 
-      // Rodom "..." jei aktyvus puslapis daugiau nei pirmi 5
-      if (currentPage > 5) {
-        pages.push('...');
-      }
+    // Show right "..." if needed
+    if (currentPage < totalPages - 3) {
+      pages.push('...');
+    }
 
-      // Rodom aktyvu puslapi ir kaimynus (jeigu)
-      if (currentPage > 3 && currentPage < totalPages - 2) {
-        pages.push(currentPage - 1, currentPage, currentPage + 1);
-      }
-
-      // Rodom "..." jei aktyvus puslapis gerokai didesnis nei 3
-      if (currentPage < totalPages - 4) {
-        pages.push('...');
-      }
-
-      // visada rodom paskutinius 3 puslapius
-      pages.push(totalPages - 2, totalPages - 1, totalPages);
+    // Always show last page
+    if (totalPages > 1) {
+      pages.push(totalPages);
     }
 
     return pages;
@@ -52,19 +52,19 @@ export const Pagination = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="border-t border-violet-900 py-3">
-      <p className="text-center py-2">
+    <div className='border-t border-violet-900 py-3'>
+      <p className='text-center py-2'>
         Page:{' '}
-        <span className="text-violet-200">
+        <span className='text-violet-200'>
           {' '}
           {currentPage}/{totalPages}{' '}
         </span>
       </p>
-      <div className="flex items-center justify-center">
+      <div className='flex items-center justify-center'>
         {currentPage > 1 && (
           <button
             onClick={() => onChange(currentPage - 1)}
-            className="cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200"
+            className='cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200'
           >
             <FaLongArrowAltLeft size={24} />
           </button>
@@ -87,7 +87,7 @@ export const Pagination = ({
         {currentPage < totalPages && (
           <button
             onClick={() => onChange(currentPage + 1)}
-            className="cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200"
+            className='cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200'
           >
             <FaLongArrowAltRight size={24} />
           </button>
