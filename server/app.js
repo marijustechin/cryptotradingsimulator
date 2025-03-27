@@ -14,6 +14,7 @@ const cryptoRouter = require('./routers/crypto.router');
 const tradeRouter = require('./routers/trader.router');
 const chartRouter = require('./routers/chart.router');
 const instrumentRouter = require('./routers/instruments');
+const adminRouter = require('./routers/admin.router');
 
 // websocket routeris
 const setupWebSocketRoutes = require('./routers/crypto.ws.router');
@@ -51,6 +52,7 @@ app.use('/api/v1/crypto', cryptoRouter);
 app.use('/api/v1/trade', tradeRouter);
 app.use('/api/v1/chart', chartRouter);
 app.use('/api/v1/instrument', instrumentRouter);
+app.use('/api/v1/admin', adminRouter);
 
 // Svarbu!!! klaidos turi buti paskutines
 app.use(errorsMiddleware);
