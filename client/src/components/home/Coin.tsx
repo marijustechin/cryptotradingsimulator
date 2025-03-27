@@ -9,8 +9,14 @@ interface IAsset {
 
 export const Coin = ({ asset }: IAsset) => {
   return (
-    <div className="grid grid-cols-[0.7fr_1fr_0.8fr_1.5fr_1fr] md:text-lg text-xs p-3 text-white">
-      <div className="text-left place-content-center">{asset.name}</div>
+    <div className="grid grid-cols-[0.5fr_1.3fr_0.9fr_1.3fr_1fr] md:grid-cols-[0.7fr_1fr_0.8fr_1.5fr_1fr] md:text-lg text-xs  p-3 ext-white">
+      <div className="text-left place-content-center">
+  {/* Show symbol on small screens */}
+  <div className="block md:hidden">{asset.symbol}</div>
+  
+  {/* Show name on md and up */}
+  <div className="hidden md:block">{asset.name}</div>
+</div>
       <div className="place-content-center">
         {HelperService.formatCurrency(asset.priceUsd)}
       </div>
