@@ -69,7 +69,7 @@ class TradeService {
     }
   }
 
-  async limitOrder(userId, assetId) {
+  async limitOrder(assetId) {
     try {
       const pendingOrders = await transactions.findAll({
         where: {
