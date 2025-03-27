@@ -1,4 +1,4 @@
-interface IUserGeneral {
+export interface IUserGeneral {
   userCount: number;
   activeUsers: number;
 }
