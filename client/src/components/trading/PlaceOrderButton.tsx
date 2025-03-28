@@ -11,6 +11,7 @@ import {
   getSelectedSymbolData,
 } from "../../store/features/trading/chartSlice";
 import { toast } from "react-hot-toast";
+import HelperService from "../../services/HelperService";
 
 
 export const PlaceOrderButton = () => {
@@ -46,6 +47,11 @@ export const PlaceOrderButton = () => {
           toast.error(`Enter Amount or Trigger Price`)
         }
 
+        if(!amount || !triggerPrice) {
+          toast.error("Missing required fields");
+        }
+
+
       await $api.post("/trade", {
         assetId,
         amount,
@@ -57,10 +63,8 @@ export const PlaceOrderButton = () => {
       dispatch(setAmount(0));
       dispatch(setTriggerPrice(0));
       toast.success("Order placed successfully!");
-    } catch (err: any) {
-      console.error("Atsakas iš API", err?.response);
-      toast.error(
-        "Order failed: " + (err.response.data.data) || err.response.data.message || err?.response);
+    } catch (err: unknown) {
+      console.error("Atsakas iš API", HelperService.errorToString(err));
     }
   };
 

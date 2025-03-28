@@ -79,21 +79,21 @@ class TradeService {
           asset_id: assetId,
         },
       });
-  
+
       if (!pendingOrders.length) return;
-  
+
       for (const order of pendingOrders) {
         const orderPrice = parseFloat(order.order_value);
-  
+
         if (
           (order.ord_direct === "buy" && marketPrice <= orderPrice) ||
           (order.ord_direct === "sell" && marketPrice >= orderPrice)
         ) {
           const transaction = await sequelize.transaction();
-  
+
           try {
             await order.update({ ord_status: "filled" }, { transaction });
-  
+
             if (order.ord_direct === "sell") {
               await this.updateUserWallet(
                 order.user_id,
@@ -102,7 +102,7 @@ class TradeService {
                 transaction
               );
             }
-  
+
             await this.updateUserPortfolio(
               order.user_id,
               order.asset_id,
@@ -110,12 +110,14 @@ class TradeService {
               order.ord_direct,
               transaction
             );
-  
+
             await transaction.commit();
             console.log(`Limit order ${order.id} filled`);
           } catch (err) {
             await transaction.rollback();
-            throw new Error(`Error executing order ${order.id}: ${err.message}`);
+            throw new Error(
+              `Error executing order ${order.id}: ${err.message}`
+            );
           }
         }
       }
@@ -162,22 +164,20 @@ class TradeService {
       where: { user_id: userId },
       transaction,
     });
-
-    console.log("Userid", userId);
-
-    console.log("Wallet found!", userWallet);
-
+  
     if (!userWallet) {
       throw new Error(`Wallet not found for user ${userId}`);
     }
-
+  
     const balance = parseFloat(userWallet.balance);
     const convertedPrice = parseFloat(price);
-
+  
     if (ord_direct === "buy" && userWallet.balance < price) {
-      throw ApiError.BadRequest(`Insufficient balance to place ${ord_direct} order`);
+      throw ApiError.BadRequest(
+        `Insufficient balance to place ${ord_direct} order`
+      );
     }
-
+  
     if (ord_direct === "buy") {
       await userWallet.update(
         { balance: balance - convertedPrice },

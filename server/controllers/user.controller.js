@@ -251,13 +251,22 @@ class UserController {
       next(e);
     }
   }
-  
+
   async getUserPortfolio(req, res, next) {
     try {
       const userId = req.user.id;
-  
+      if (!userId) {
+        const errorMessage = helperService.errorsToString(errors.array());
+        throw ApiError.BadRequest(errorMessage);
+      }
+
       const getUserPortfolio = await userService.getUserPortfolioById(userId);
-  
+
+      if (!getUserPortfolio) {
+        const errorMessage = helperService.errorsToString(errors.array());
+        throw ApiError.BadRequest(errorMessage);
+      }
+
       return res.status(200).json(getUserPortfolio);
     } catch (error) {
       next(error); // siunciam i middlewear;
