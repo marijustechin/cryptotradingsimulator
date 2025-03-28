@@ -12,6 +12,7 @@ import {
 } from "../../store/features/trading/chartSlice";
 import { toast } from "react-hot-toast";
 import HelperService from "../../services/HelperService";
+import { selectUser } from "../../store/features/user/authSlice";
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ export const PlaceOrderButton = () => {
   const selectedCrypto = useAppSelector(getChartSymbol);
   const currentPrices = useAppSelector(getCurrentPrices);
   const cryptoData = useAppSelector(getSelectedSymbolData);
+  const user = useAppSelector(selectUser);
 
   // cia turim patikrinti:
   // 1. ar naudotojas turi pakankamai lesu
@@ -31,31 +33,46 @@ export const PlaceOrderButton = () => {
   // 4. toast mesidza apie sekminga sandori
 
   const handlePlaceOrder = async () => {
-    try {
-      const { amount, orderType, orderDirection, triggerPrice } =
-        tradingOptions;
+    const { amount, orderType, orderDirection, triggerPrice } = tradingOptions;
 
+    const userBalance = user?.balance;
+
+    const checkPrice = currentPrices?.lastPrice * amount;
+
+    if (checkPrice > userBalance) {
+      toast.error(`Not enough balance to buy ${selectedCrypto}`);
+      return;
+    }
+
+    if (orderType === "limit") {
+      if (amount <= 0 && triggerPrice <= 0) {
+        toast.error(`Enter Amount or Trigger Price`);
+        return;
+      }
+    }
+
+    if (orderType === "limit") {
+      if (!triggerPrice) {
+        toast.error("Missing Trigger Price");
+        return;
+      } else if (!amount) {
+        toast.error("Missing Amount");
+        return;
+      }
+    }
+
+    // if(orderType === "market") {
+    //   if(triggerPrice)
+    // }
+
+    if (orderType === "market" && !amount) {
+      toast.error("Enter amount");
+    }
+
+    try {
       const assetId = selectedCrypto;
       const price =
         orderType === "limit" ? triggerPrice : currentPrices?.lastPrice;
-
-      if (orderType === "limit") {
-        if (amount <= 0 && triggerPrice <= 0) {
-          toast.error(`Enter Amount or Trigger Price`);
-        }
-      }
-
-      if (orderType === "limit") {
-        if (!triggerPrice) {
-          toast.error("Missing Trigger Price");
-        } else if (!amount) {
-          toast.error("Missing Amount");
-        }
-      }
-
-      if (orderType === "market" && !amount) {
-        toast.error("Enter amount");
-      }
 
       await $api.post("/trade", {
         assetId,
