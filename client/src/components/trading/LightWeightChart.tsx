@@ -1,12 +1,12 @@
-import { CandlestickSeries, ColorType, createChart } from 'lightweight-charts';
-import { useEffect, useRef, useState } from 'react';
-import useWebSocket from 'react-use-websocket';
-import { WS_URL } from '../../api/ws';
-import { useAppSelector } from '../../store/store';
+import { CandlestickSeries, ColorType, createChart } from "lightweight-charts";
+import { useEffect, useRef, useState } from "react";
+import useWebSocket from "react-use-websocket";
+import { WS_URL } from "../../api/ws";
+import { useAppSelector } from "../../store/store";
 import {
   getChartInterval,
   getChartSymbol,
-} from '../../store/features/trading/chartSlice';
+} from "../../store/features/trading/chartSlice";
 
 export const LightWeightChart = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -21,18 +21,18 @@ export const LightWeightChart = () => {
     shouldReconnect: () => true,
     onOpen: () =>
       sendJsonMessage({
-        type: 'history',
+        type: "history",
         symbol: symbol,
         interval: interval,
       }),
-    onMessage: (event: WebSocketEventMap['message']) => {
+    onMessage: (event: WebSocketEventMap["message"]) => {
       const parsedData = JSON.parse(event.data);
       setChartData(parsedData.data);
     },
   });
 
   useEffect(() => {
-    sendJsonMessage({ type: 'history', symbol: symbol, interval: interval });
+    sendJsonMessage({ type: "history", symbol: symbol, interval: interval });
   }, [interval, sendJsonMessage, symbol]);
 
   // Draw chart on data load /////////////////////////////////////////
@@ -41,23 +41,23 @@ export const LightWeightChart = () => {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: '#111827' },
-        textColor: '#A78BFA',
+        background: { type: ColorType.Solid, color: "#111827" },
+        textColor: "#A78BFA",
       },
       grid: {
-        vertLines: { color: '#4C1D95' },
-        horzLines: { color: '#4C1D95' },
+        vertLines: { color: "#4C1D95" },
+        horzLines: { color: "#4C1D95" },
       },
       width: chartContainerRef.current.clientWidth,
       height: 400,
     });
 
     const newSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#10B981',
-      downColor: '#F43F5E',
+      upColor: "#10B981",
+      downColor: "#F43F5E",
       borderVisible: false,
-      wickUpColor: '#10B981',
-      wickDownColor: '#F43F5E',
+      wickUpColor: "#10B981",
+      wickDownColor: "#F43F5E",
     });
 
     const reformatedArray = chartData.map(
@@ -85,8 +85,8 @@ export const LightWeightChart = () => {
     ) => {
       const arrBack = [];
       for (const a of arr) {
-        const date = new Date(Number(a.time)).toISOString().split('T');
-        const isoDate = date[0] + ' ' + date[1].slice(0, 5);
+        const date = new Date(Number(a.time)).toISOString().split("T");
+        const isoDate = date[0] + " " + date[1].slice(0, 5);
         const temp = {
           time: Date.parse(isoDate) / 1000,
           open: a.open,
@@ -122,8 +122,8 @@ export const LightWeightChart = () => {
   }, [chartData]);
 
   return (
-    <div className='rounded-xl overflow-hidden'>
-      <div ref={chartContainerRef}></div>
+    <div className="rounded-xl overflow-hidden w-full h-full">
+      <div className="w-full h-full" ref={chartContainerRef}></div>
     </div>
   );
 };

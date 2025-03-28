@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect } from "react";
 import {
   allActiveSymbols,
   getAllSymbols,
   getSelectedSymbolData,
   setSymbol,
-} from '../../store/features/trading/chartSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+} from "../../store/features/trading/chartSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 export const CryptoSelector = () => {
   const dispatch = useAppDispatch();
@@ -23,18 +23,22 @@ export const CryptoSelector = () => {
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col gap-2 items-center sm:flex-row sm:gap-3 w-full">
       {symbolData && (
-        <div className="w-12 flex items-center justify-center">
-          <img className="h-10" src={symbolData.icon} alt={symbolData.name} />
+        <div className="w-10 h-10 flex items-center justify-center">
+          <img
+            className="h-8 w-8 object-contain"
+            src={symbolData.icon}
+            alt={symbolData.name}
+          />
         </div>
       )}
       <select
-        className="bg-violet-500 p-2 rounded-lg focus:outline-none"
+        className="bg-violet-500 p-2 rounded-lg focus:outline-none w-full sm:w-auto text-sm"
         onChange={handleCryptoChange}
       >
-        <option value={'BTCUSDT'}>Bitcoin</option>
-        <option value={'ETHUSDT'}>Ethereum</option>
+        <option value={"BTCUSDT"}>Bitcoin</option>
+        <option value={"ETHUSDT"}>Ethereum</option>
       </select>
     </div>
   );
