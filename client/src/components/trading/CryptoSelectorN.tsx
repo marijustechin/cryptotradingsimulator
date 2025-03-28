@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect } from 'react';
 import {
   allActiveSymbols,
   getAllSymbols,
   getSelectedSymbolData,
   setSymbol,
-} from "../../store/features/trading/chartSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+} from '../../store/features/trading/chartSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const CryptoSelector = () => {
   const dispatch = useAppDispatch();
@@ -37,8 +37,15 @@ export const CryptoSelector = () => {
         className="bg-violet-500 p-2 rounded-lg focus:outline-none w-full sm:w-auto text-sm"
         onChange={handleCryptoChange}
       >
-        <option value={"BTCUSDT"}>Bitcoin</option>
-        <option value={"ETHUSDT"}>Ethereum</option>
+        {allSymbols ? (
+          allSymbols.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))
+        ) : (
+          <option>Nodata</option>
+        )}
       </select>
     </div>
   );
