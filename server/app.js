@@ -12,7 +12,6 @@ const instrumentRouter = require('./routers/instruments');
 const adminRouter = require('./routers/admin.router');
 const priceUpdateRouter = require("./routers/price.update.router");
 
-
 // Importuojam klaidu midlvare
 const errorsMiddleware = require("./middlewares/error.middleware");
 
