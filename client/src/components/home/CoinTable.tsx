@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { HomeLiveChart } from './HomeLiveChart';
 
 import useWebSocket from 'react-use-websocket';
 import { Coin } from './Coin';
-import { Loader } from '../Loader';
 import {
   allActiveSymbols,
   getAllSymbols,
 } from '../../store/features/trading/chartSlice';
 import { ITicker } from '../../types/tradingN';
 import { WS_URL } from '../../api/ws';
-import { HomeLiveChart } from './HomeLiveChart';
 
 const CoinTable = () => {
   const dispatch = useAppDispatch();
   const assets = useAppSelector(allActiveSymbols);
-  const [isLoading, setIsLoading] = useState(true);
   const [btc, setBtc] = useState<ITicker>();
   const [eth, setEth] = useState<ITicker>();
   const [chartData, setChartData] = useState<{ price: number }[]>([]);
@@ -26,7 +24,7 @@ const CoinTable = () => {
     }
   }, [dispatch, assets]);
 
-  const MAX_LENGTH = 200;
+  const MAX_LENGTH = 8;
 
   const { sendJsonMessage } = useWebSocket(WS_URL, {
     share: false,
@@ -54,9 +52,9 @@ const CoinTable = () => {
   });
 
   return (
-    <div className='relative z-15 rounded-[25px] bg-[#1A1B23] mx-auto p-3 mt-10 divide-y divide-black w-full'>
-      {btc && <Coin asset={btc} />}
-      {eth && <Coin asset={eth} />}
+    <div className='relative z-15 rounded-[25px] bg-[#1A1B23] mx-auto p-3 mt-10 divide-y divide-gray-700 w-full'>
+      {btc && <Coin asset={btc} chartData={chartData}/>}
+      {eth && <Coin asset={eth} chartData={chartData}/>}
       <HomeLiveChart chartData={chartData} />
     </div>
   );
