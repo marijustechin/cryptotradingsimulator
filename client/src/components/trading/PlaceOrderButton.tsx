@@ -36,22 +36,15 @@ export const PlaceOrderButton = () => {
     const { amount, orderType, orderDirection, triggerPrice } = tradingOptions;
 
     const userBalance = user?.balance;
-
-    const checkPrice = currentPrices?.lastPrice * amount;
-
-    if (checkPrice > userBalance) {
-      toast.error(`Not enough balance to buy ${selectedCrypto}`);
-      return;
-    }
+    const marketPrice = currentPrices?.lastPrice;
 
     if (orderType === "limit") {
-      if (amount <= 0 && triggerPrice <= 0) {
-        toast.error(`Enter Amount or Trigger Price`);
+      const totalCost = triggerPrice * amount;
+      if (totalCost > userBalance) {
+        toast.error(`Not enough balance to buy ${selectedCrypto}`);
         return;
       }
-    }
 
-    if (orderType === "limit") {
       if (!triggerPrice) {
         toast.error("Missing Trigger Price");
         return;
@@ -61,12 +54,16 @@ export const PlaceOrderButton = () => {
       }
     }
 
-    // if(orderType === "market") {
-    //   if(triggerPrice)
-    // }
-
-    if (orderType === "market" && !amount) {
-      toast.error("Enter amount");
+    if (orderType === "market") {
+      const totalCost = marketPrice * amount;
+      if (totalCost > userBalance) {
+        toast.error(`Not enough balance to buy ${selectedCrypto}`);
+        return;
+      }
+      if (!amount) {
+        toast.error("Missing Amount");
+        return;
+      }
     }
 
     try {
