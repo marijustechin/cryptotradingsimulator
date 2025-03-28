@@ -1,30 +1,33 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./store/store";
-import { restoreSession } from "./store/features/user/authSlice";
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { useEffect, lazy, Suspense } from 'react';
+import { useAppDispatch } from './store/store';
+import { restoreSession } from './store/features/user/authSlice';
+import { Loader } from './components/Loader';
+
 // Components
 
 // Layouts
-import { MainLayout } from "./layouts/MainLayout";
-import { AdminLayout } from "./layouts/AdminLayout";
-import { UserLayout } from "./layouts/UserLayout";
+// Layouts
+const MainLayout = lazy(() => import('./layouts/MainLayout'));
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
+const UserLayout = lazy(() => import('./layouts/UserLayout'));
 
 // Pages
-import { HomePage } from "./pages/HomePage";
-import { UserDashboardPage } from "./pages/user/UserDashboardPage";
-import { UserProfilePage } from "./pages/user/UserProfilePage";
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
-import { SystemSettingsPage } from "./pages/admin/SystemSettingsPage";
-import { HowToTradePage } from "./pages/HowToTradePage";
-import { LoginPage } from "./pages/LoginPage";
-import { RegistrationPage } from "./pages/RegistrationPage";
-import { CreditsPage } from "./pages/CreditsPage";
-import { UserOrdersPage } from "./components/orders/UserOrdersPage";
-import { AllUsersPage } from "./pages/admin/AllUsersPage";
-import { RestorePasswordPage } from "./pages/RestorePasswordPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { UserTradingPage } from "./pages/user/UserTradingPage";
-import { TestPage } from "./pages/user/TestPage";
+const HomePage = lazy(() => import('./pages/HomePage'));
+const UserDashboardPage = lazy(() => import('./pages/user/UserDashboardPage'));
+const UserProfilePage = lazy(() => import('./pages/user/UserProfilePage'));
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
+const SystemSettingsPage = lazy(() => import('./pages/admin/SystemSettingsPage'));
+const HowToTradePage = lazy(() => import('./pages/HowToTradePage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
+const CreditsPage = lazy(() => import('./pages/CreditsPage'));
+const UserOrdersPage = lazy(() => import('./components/orders/UserOrdersPage'));
+const AllUsersPage = lazy(() => import('./pages/admin/AllUsersPage'));
+const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
+const TestPage = lazy(() => import('./pages/user/TestPage'));
 
 function App() {
   const dispatch = useAppDispatch();
@@ -35,6 +38,7 @@ function App() {
 
   return (
     <BrowserRouter>
+   <Suspense fallback={<Loader/>}>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
@@ -60,6 +64,7 @@ function App() {
         {/* Define explicit 404 page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

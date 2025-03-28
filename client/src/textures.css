@@ -279,3 +279,41 @@
   }
 
 }
+
+.bg-home-textures-desktop {
+  background-image: url('/textures/sphere.svg'),
+                    url('/textures/Monero.svg'),
+                    url('/textures/star-img.svg'),
+                    url('/textures/star-img2.svg'),
+                    url('/textures/star-img3.svg'),
+                    url('/textures/Etherium-2.svg'),
+                    url('/textures/LiteCoin-1.svg'),
+                    url('/textures/sphere-y.svg'),
+                    url('/textures/Bitcoin-1.svg'),
+                    url('/textures/star-img3.svg');
+  background-repeat: no-repeat;
+  background-size: 7%, 10%, 3%, 2%, 2%, 8%, 7%, 5%, 7%, 2%;
+  background-position:
+    right 0px top 550px,
+    right 130px top 220px,
+    right 300px top 110px,
+    right 200px top 200px,
+    right 250px top 900px,
+    right 430px top 650px,
+    left 300px top 550px,
+    left 130px top 410px,
+    left 370px top 100px,
+    left 350px top 290px;
+}
+
+.bg-home-textures-mobile {
+  background-image: url('/textures/star-img.svg'),
+                    url('/textures/star-img2.svg'),
+                    url('/textures/star-img3.svg');
+  background-repeat: no-repeat;
+  background-size: 3%, 2%, 2%;
+  background-position:
+    right 50px top 300px,
+    left 50px top 150px,
+    right 100px top 500px;
+}

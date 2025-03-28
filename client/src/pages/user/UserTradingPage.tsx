@@ -1,9 +1,10 @@
 import { TopCryptos } from '../../components/trading/TopCryptos';
 
-export const UserTradingPage = () => {
+const UserTradingPage = () => {
   return (
     <main>
       <TopCryptos />
     </main>
   );
 };
+export default UserTradingPage;

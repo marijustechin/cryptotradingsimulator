@@ -12,5 +12,13 @@ class InstrumentController {
       next(e);
     }
   }
+  async getAllInstruments(req, res, next) {
+    try {
+      const instruments = await instrumentService.getAllInstruments();
+      return res.status(200).json(instruments);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 module.exports = new InstrumentController();

@@ -4,20 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import authReducer from './features/user/authSlice';
 import userInfoReducer from './features/user/userInfoSlice';
 import allUsersReducer from './features/user/allUsersSlice';
-import assetsReducer from './features/crypto/assetsSlice';
 import tradingOptionsReducer from './features/trading/tradingOptionsSlice';
 import ordersReducer from './features/orders/ordersSlice';
 import chartReducer from './features/trading/chartSlice';
+import adminReducer from './features/admin/adminSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userInfoReducer,
     allUsers: allUsersReducer,
-    assets: assetsReducer,
     tradingOptions: tradingOptionsReducer,
     orders: ordersReducer,
     chart: chartReducer,
+    admin: adminReducer,
   },
 });
 

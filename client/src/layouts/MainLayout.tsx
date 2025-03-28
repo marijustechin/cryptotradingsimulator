@@ -2,7 +2,7 @@ import { Outlet } from 'react-router';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/header/Header';
 
-export const MainLayout = () => {
+const MainLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -15,3 +15,4 @@ export const MainLayout = () => {
     </div>
   );
 };
+export default MainLayout;

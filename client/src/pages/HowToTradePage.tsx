@@ -1,9 +1,10 @@
 import { HowToTradeTextures } from "../components/HowToTrade/HowToTradeTextures";
 
-export const HowToTradePage = () => {
+const HowToTradePage = () => {
   return (
     <>
       <HowToTradeTextures />
     </>
   );
 };
+export default HowToTradePage;

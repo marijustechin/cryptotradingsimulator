@@ -51,12 +51,11 @@ export const Pagination = ({
 
   const pageNumbers = getPageNumbers();
 
-  return (
+  return totalPages > 0 ? (
     <div className='border-t border-violet-900 py-3'>
       <p className='text-center py-2'>
         Page:{' '}
         <span className='text-violet-200'>
-          {' '}
           {currentPage}/{totalPages}{' '}
         </span>
       </p>
@@ -69,7 +68,6 @@ export const Pagination = ({
             <FaLongArrowAltLeft size={24} />
           </button>
         )}
-
         {pageNumbers.map((page, i) => (
           <button
             key={i}
@@ -94,5 +92,7 @@ export const Pagination = ({
         )}
       </div>
     </div>
+  ) : (
+    <p className='text-center pt-5'>No content to display</p>
   );
 };

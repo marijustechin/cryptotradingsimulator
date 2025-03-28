@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useLivePriceSocket } from "./useLivePriceSocket";
 import { getCurrentPrices } from "../../store/features/trading/chartSlice";
 
-export const UserOrdersPage = () => {
+const UserOrdersPage = () => {
   const dispatch = useAppDispatch();
   const currentPrices = useAppSelector(getCurrentPrices);
   useLivePriceSocket();
@@ -66,3 +66,4 @@ export const UserOrdersPage = () => {
     </main>
   );
 };
+export default UserOrdersPage;
