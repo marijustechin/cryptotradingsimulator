@@ -37,6 +37,12 @@ class HelperService {
         code: 'ETH',
         icon: 'http://localhost:3003/public/assets/ethereum-icon.png',
       },
+      {
+        id: 'SOLUSDT',
+        name: 'Solana',
+        code: 'SOL',
+        icon: 'http://localhost:3003/public/assets/solana-icon.png',
+      },
     ];
 
     await instrument.bulkCreate(instruments);

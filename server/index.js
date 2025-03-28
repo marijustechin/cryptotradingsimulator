@@ -1,8 +1,8 @@
-require("dotenv").config();
+require('dotenv').config();
 const port = process.env.PORT || 3003;
-const sequelize = require("./config/db");
+const sequelize = require('./config/db');
 
-const app = require("./app");
+const app = require('./app');
 
 const startServer = async () => {
   try {
@@ -11,6 +11,7 @@ const startServer = async () => {
 
     // sinchronizuojam modelius su DB
     await sequelize.sync({ alter: true });
+    // alter pakeiciam i force, tada save, tada pakeiciam atal i alter
 
     // serveris
     app.listen(port, () => {
