@@ -89,7 +89,7 @@ export const PlaceOrderButton = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row sm:gap-3 gap-2">
         <div className="flex gap-2 items-center">
           <label
             className="text-sm text-violet-300"
@@ -130,13 +130,36 @@ export const PlaceOrderButton = () => {
         )}
       </div>
 
+      {/* <!-- Mobile Button --> */}
       <button
         onClick={handlePlaceOrder}
-        className={`${
-          tradingOptions.orderDirection === "buy"
-            ? "bg-emerald-500 border-emerald-500"
-            : "bg-rose-500 border-rose-500"
-        } min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl`}
+        className={`
+    ${
+      tradingOptions.orderDirection === "buy"
+        ? "bg-emerald-500 border-emerald-500"
+        : "bg-rose-500 border-rose-500"
+    }
+    min-w-20 px-1 py-0.5 rounded-lg border cursor-pointer text-violet-950 text-sm
+    sm:hidden
+  `}
+      >
+        {tradingOptions.orderDirection === "buy"
+          ? `Buy ${cryptoData?.name}`
+          : `Sell ${cryptoData?.name}`}
+      </button>
+
+      {/* <!-- Desktop Button --> */}
+      <button
+        onClick={handlePlaceOrder}
+        className={`
+    ${
+      tradingOptions.orderDirection === "buy"
+        ? "bg-emerald-500 border-emerald-500"
+        : "bg-rose-500 border-rose-500"
+    }
+    min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl
+    hidden sm:block
+  `}
       >
         {tradingOptions.orderDirection === "buy"
           ? `Buy Long ${cryptoData?.name} (${cryptoData?.code})`

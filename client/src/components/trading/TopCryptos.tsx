@@ -10,11 +10,15 @@ import { selectTradingOptions } from "../../store/features/trading/tradingOption
 export const TopCryptos = () => {
   const tradeOptions = useAppSelector(selectTradingOptions);
   return (
-    <div className="flex flex-col gap-4 p-6 bg-gray-900 rounded-xl shadow-lg">
+    <div className="flex flex-col gap-4 p-4 bg-gray-900 rounded-xl w-full">
       <TickersN />
-      <div className="flex gap-3 items-center">
-        <h3 className="text-2xl text-violet-300 font-semibold">Spot Trading</h3>
-        <p className="text-sm text-violet-400">
+
+      {/* Spot Trading Section */}
+      <div className="flex flex-col gap-3 items-center text-center sm:flex-row sm:text-left">
+        <h3 className="text-lg sm:text-2xl text-violet-300 font-semibold">
+          Spot Trading
+        </h3>
+        <p className="text-xs sm:text-sm text-violet-400">
           Selected order type:
           <span className="text-violet-50 ml-1">
             {tradeOptions.orderType.toUpperCase()}
@@ -32,17 +36,20 @@ export const TopCryptos = () => {
         </p>
       </div>
 
-      <div className="flex gap-5 justify-between items-center bg-gray-800 p-4 rounded-lg shadow-md">
+      {/* Trading Options Section */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-5 justify-between items-center bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md w-full">
         <CryptoSelector />
         <IntervalSelector />
         <TradingOptions />
       </div>
 
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+      {/* Chart Section */}
+      <div className="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md w-full">
         <LightWeightChart />
       </div>
 
-      <div className="flex justify-center mt-4">
+      {/* Place Order Button Section */}
+      <div className="flex justify-center mt-3 sm:mt-4 w-full">
         <PlaceOrderButton />
       </div>
     </div>
