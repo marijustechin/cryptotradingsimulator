@@ -4,7 +4,7 @@ import {
 } from '../../store/features/trading/chartSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const intervals = ['15', '30', '60'];
+const intervals = ['1', '15', '30', '60'];
 
 export const IntervalSelector = () => {
   const dispatch = useAppDispatch();
