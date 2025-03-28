@@ -69,7 +69,7 @@ class TradeService {
     }
   }
 
-  async limitOrder(assetId) {
+  async limitOrder(assetId, marketPrice) {
     try {
       const pendingOrders = await transactions.findAll({
         where: {
@@ -79,30 +79,21 @@ class TradeService {
           asset_id: assetId,
         },
       });
-
-
+  
       if (!pendingOrders.length) return;
-
-      if (!userId) {
-        throw new Error("userId is undefined in updateUserWallet");
-      }
-
-
-      const assetData = await instrument.findOne({ where: { id: assetId } });
-      if (!assetData) return;
-      const marketPrice = parseFloat(assetData.priceUsd);
-
+  
       for (const order of pendingOrders) {
         const orderPrice = parseFloat(order.order_value);
-
+  
         if (
-          (order.ord_direct === "buy" && marketPrice < orderPrice) ||
+          (order.ord_direct === "buy" && marketPrice <= orderPrice) ||
           (order.ord_direct === "sell" && marketPrice >= orderPrice)
         ) {
           const transaction = await sequelize.transaction();
+  
           try {
             await order.update({ ord_status: "filled" }, { transaction });
-
+  
             if (order.ord_direct === "sell") {
               await this.updateUserWallet(
                 order.user_id,
@@ -111,7 +102,7 @@ class TradeService {
                 transaction
               );
             }
-
+  
             await this.updateUserPortfolio(
               order.user_id,
               order.asset_id,
@@ -119,11 +110,12 @@ class TradeService {
               order.ord_direct,
               transaction
             );
+  
+            await transaction.commit();
+            console.log(`Limit order ${order.id} filled`);
           } catch (err) {
             await transaction.rollback();
-            throw new Error(
-              `Error executing order ${order.id}: ${err.message}`
-            );
+            throw new Error(`Error executing order ${order.id}: ${err.message}`);
           }
         }
       }

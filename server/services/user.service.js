@@ -1,7 +1,14 @@
 const bcrypt = require("bcryptjs");
 const sequelize = require("../config/db");
-const { user, asset, user_secret, wallet, transactions, portfolio, instrument } =
-  sequelize.models;
+const {
+  user,
+  asset,
+  user_secret,
+  wallet,
+  transactions,
+  portfolio,
+  instrument,
+} = sequelize.models;
 const ApiError = require("../exceptions/api.errors");
 const tokenService = require("../services/token.service");
 const { UserInfoDto, AllUsersDto } = require("../dtos/user.dto");
@@ -288,8 +295,8 @@ class UserService {
         include: [
           {
             model: instrument,
-            as: "instrument_id",
-            attributes: ["symbol"],
+            as: "instrument",
+            attributes: ["id"],
           },
         ],
         transaction,
@@ -297,11 +304,12 @@ class UserService {
 
       const getUserById = await portfolio.findAll({
         where: { user_id: userId },
+        // JOIN instrument
         include: [
           {
-            model: asset,
-            as: "asset",
-            attributes: ["symbol"],
+            model: instrument,
+            as: "instrument",
+            attributes: ["id"], // ka norim pasiimti is instrument lenteles
           },
         ],
         transaction,
