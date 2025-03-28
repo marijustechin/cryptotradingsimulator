@@ -10,22 +10,15 @@ import {
 } from '../../store/features/trading/chartSlice';
 import { ITicker } from '../../types/tradingN';
 import { WS_URL } from '../../api/ws';
-import { Line, LineChart, ResponsiveContainer } from 'recharts';
+import { HomeLiveChart } from './HomeLiveChart';
 
 const CoinTable = () => {
   const dispatch = useAppDispatch();
   const assets = useAppSelector(allActiveSymbols);
   const [isLoading, setIsLoading] = useState(true);
-  const [btc, setBtc] = useState<ITableData>();
-  const [eth, setEth] = useState<ITableData>();
-  const [chartData, setChartData] = useState<number[]>([]);
-
-  interface ITableData {
-    name: string;
-    code: string;
-    price: number;
-    priceChange: number;
-  }
+  const [btc, setBtc] = useState<ITicker>();
+  const [eth, setEth] = useState<ITicker>();
+  const [chartData, setChartData] = useState<{ price: number }[]>([]);
 
   useEffect(() => {
     if (!assets) {
@@ -33,29 +26,7 @@ const CoinTable = () => {
     }
   }, [dispatch, assets]);
 
-  const handleSetBtc = (data: ITicker) => {
-    setBtc({
-      name: 'Bitcoin',
-      code: 'BTC',
-      price: data.lastPrice,
-      priceChange: data.price24hPcnt,
-    });
-    if (chartData) {
-      setChartData((prev) => [...prev, data.lastPrice]);
-    } else {
-      const temp = [];
-      temp.push(data.lastPrice);
-      setChartData([...temp]);
-    }
-  };
-  const handleSetEth = (data: ITicker) => {
-    setEth({
-      name: 'Ethereum',
-      code: 'ETH',
-      price: data.lastPrice,
-      priceChange: data.price24hPcnt,
-    });
-  };
+  const MAX_LENGTH = 200;
 
   const { sendJsonMessage } = useWebSocket(WS_URL, {
     share: false,
@@ -64,18 +35,29 @@ const CoinTable = () => {
     onMessage: (event: WebSocketEventMap['message']) => {
       const parsedData = JSON.parse(event.data);
       if (parsedData.data.symbol === 'BTCUSDT') {
-        handleSetBtc(parsedData.data);
+        const price = Number(parsedData.data.lastPrice); // Make sure it's a number
+        setBtc(parsedData.data);
+        setChartData((prev) => {
+          const updated = [...prev, { price }];
+          return updated.length > 30 ? updated.slice(-MAX_LENGTH) : updated;
+        });
       }
       if (parsedData.data.symbol === 'ETHUSDT') {
-        handleSetEth(parsedData.data);
+        const price = Number(parsedData.data.lastPrice); // Make sure it's a number
+        setEth(parsedData.data);
+        setChartData((prev) => {
+          const updated = [...prev, { price }];
+          return updated.length > 30 ? updated.slice(-MAX_LENGTH) : updated;
+        });
       }
     },
   });
 
   return (
-    <div className="relative z-15 rounded-[25px] bg-[#1A1B23] mx-auto p-3 mt-10 divide-y divide-black w-full">
+    <div className='relative z-15 rounded-[25px] bg-[#1A1B23] mx-auto p-3 mt-10 divide-y divide-black w-full'>
       {btc && <Coin asset={btc} />}
       {eth && <Coin asset={eth} />}
+      <HomeLiveChart chartData={chartData} />
     </div>
   );
 };
