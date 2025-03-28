@@ -1,35 +1,36 @@
 import { ChangeEvent, useEffect } from 'react';
 import {
+  allActiveSymbols,
+  getAllSymbols,
   getSelectedSymbolData,
-  getSymbolData,
   setSymbol,
 } from '../../store/features/trading/chartSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
 export const CryptoSelector = () => {
   const dispatch = useAppDispatch();
+  const allSymbols = useAppSelector(allActiveSymbols);
   const symbolData = useAppSelector(getSelectedSymbolData);
 
   useEffect(() => {
-    if (!symbolData) {
-      dispatch(getSymbolData());
+    if (!allSymbols) {
+      dispatch(getAllSymbols());
     }
-  }, [dispatch, symbolData]);
+  }, [dispatch, allSymbols]);
 
   const handleCryptoChange = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSymbol(e.target.value));
-    dispatch(getSymbolData());
   };
 
   return (
-    <div className='flex gap-3'>
+    <div className="flex gap-3">
       {symbolData && (
-        <div className='w-12 flex items-center justify-center'>
-          <img className='h-10' src={symbolData.icon} alt={symbolData.name} />
+        <div className="w-12 flex items-center justify-center">
+          <img className="h-10" src={symbolData.icon} alt={symbolData.name} />
         </div>
       )}
       <select
-        className='bg-violet-500 p-2 rounded-lg focus:outline-none'
+        className="bg-violet-500 p-2 rounded-lg focus:outline-none"
         onChange={handleCryptoChange}
       >
         <option value={'BTCUSDT'}>Bitcoin</option>

@@ -1,50 +1,81 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import {
-  getAssets,
-  selectAssets,
-  updateAssets,
-} from '../../store/features/crypto/assetsSlice';
-import { ICryptoAsset } from '../../types/crypto';
+
 import useWebSocket from 'react-use-websocket';
-const WS_URL = 'ws://localhost:3003/ws/crypto';
 import { Coin } from './Coin';
 import { Loader } from '../Loader';
+import {
+  allActiveSymbols,
+  getAllSymbols,
+} from '../../store/features/trading/chartSlice';
+import { ITicker } from '../../types/tradingN';
+import { WS_URL } from '../../api/ws';
+import { Line, LineChart, ResponsiveContainer } from 'recharts';
 
 const CoinTable = () => {
   const dispatch = useAppDispatch();
-  const assets = useAppSelector(selectAssets) as ICryptoAsset[];
+  const assets = useAppSelector(allActiveSymbols);
   const [isLoading, setIsLoading] = useState(true);
+  const [btc, setBtc] = useState<ITableData>();
+  const [eth, setEth] = useState<ITableData>();
+  const [chartData, setChartData] = useState<number[]>([]);
+
+  interface ITableData {
+    name: string;
+    code: string;
+    price: number;
+    priceChange: number;
+  }
+
   useEffect(() => {
-    if (assets?.length === 0) {
-      setIsLoading(true);
-      dispatch(getAssets()).then(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
+    if (!assets) {
+      dispatch(getAllSymbols());
     }
   }, [dispatch, assets]);
 
-  useWebSocket(WS_URL, {
+  const handleSetBtc = (data: ITicker) => {
+    setBtc({
+      name: 'Bitcoin',
+      code: 'BTC',
+      price: data.lastPrice,
+      priceChange: data.price24hPcnt,
+    });
+    if (chartData) {
+      setChartData((prev) => [...prev, data.lastPrice]);
+    } else {
+      const temp = [];
+      temp.push(data.lastPrice);
+      setChartData([...temp]);
+    }
+  };
+  const handleSetEth = (data: ITicker) => {
+    setEth({
+      name: 'Ethereum',
+      code: 'ETH',
+      price: data.lastPrice,
+      priceChange: data.price24hPcnt,
+    });
+  };
+
+  const { sendJsonMessage } = useWebSocket(WS_URL, {
     share: false,
     shouldReconnect: () => true,
+    onOpen: () => sendJsonMessage({ type: 'subscribe', role: 'live' }),
     onMessage: (event: WebSocketEventMap['message']) => {
       const parsedData = JSON.parse(event.data);
-      if (Array.isArray(parsedData)) {
-        dispatch(updateAssets([...parsedData].sort((a, b) => a.rank - b.rank)));
-      } else {
-        console.error('Received data is not an array:', parsedData);
+      if (parsedData.data.symbol === 'BTCUSDT') {
+        handleSetBtc(parsedData.data);
+      }
+      if (parsedData.data.symbol === 'ETHUSDT') {
+        handleSetEth(parsedData.data);
       }
     },
   });
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <div className="relative z-15 rounded-[25px] bg-[#1A1B23] mx-auto p-3 mt-10 divide-y divide-black w-full">
-      {assets.slice(0, 5).map((asset) => (
-        <Coin key={asset.id} asset={asset} />
-      ))}
+      {btc && <Coin asset={btc} />}
+      {eth && <Coin asset={eth} />}
     </div>
   );
 };

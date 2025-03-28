@@ -6,4 +6,9 @@ export default class InstrumentService {
     const response = await $api.get(`/instrument/${id}`);
     return response.data;
   }
+
+  static async getAllInstruments(): Promise<IInstrument[]> {
+    const response = await $api.get(`/instrument`);
+    return response.data;
+  }
 }
