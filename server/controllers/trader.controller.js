@@ -1,24 +1,22 @@
-const ApiError = require("../exceptions/api.errors");
-const TradeService = require("../services/trade.service");
-const { validationResult } = require("express-validator");
+const ApiError = require('../exceptions/api.errors');
+const tradeService = require('../services/trade.service');
+const { validationResult } = require('express-validator');
 
 class TraderController {
-  async BuyCrypto(req, res, next) {
+  async buyCrypto(req, res, next) {
     try {
       const errors = validationResult(req);
       // jei error paverciam ji string
       if (!errors.isEmpty()) {
         const err = errors.array();
-        let errString = "";
+        let errString = '';
 
         for (const element of err) {
-          errString += element.msg + "; ";
+          errString += element.msg + '; ';
         }
 
         throw new Error(errString);
       }
-
-      const userId = req.user?.id;
 
       const {
         assetId,
@@ -26,24 +24,33 @@ class TraderController {
         ord_direct,
         ord_type,
         price,
+        trigerPrice,
+        userId,
       } = req.body;
 
-      console.log("Siunčiama transakciją")
-      const sendTransaction = await TradeService.BuyCrypto(
+      const newOrder = await tradeService.buyCrypto(
         userId,
         assetId,
         amount,
         ord_direct,
         ord_type,
-        price
+        price,
+        trigerPrice
       );
 
-      console.log("Transakcija praejo");
-
-      
-      return res.status(201).json(sendTransaction);
+      return res.status(201).json(newOrder);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async getOpenOrders(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const openOrders = await tradeService.getOpenOrders(userId);
+      return res.status(200).json(openOrders);
+    } catch (e) {
+      next(e);
     }
   }
 }

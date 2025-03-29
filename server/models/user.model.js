@@ -77,7 +77,7 @@ module.exports = (sequelize) => {
           userSecret.password = await bcrypt.hash(userSecret.password, 10);
         },
         beforeUpdate: async (userSecret) => {
-          if (userSecret.changed("password")) {
+          if (userSecret.changed('password')) {
             userSecret.password = await bcrypt.hash(userSecret.password, 10);
           }
         },
@@ -89,13 +89,20 @@ module.exports = (sequelize) => {
   sequelize.models.wallet = sequelize.define(
     'wallet',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       balance: {
         type: DataTypes.DECIMAL,
       },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    {
-      timestamps: false,
-    }
+    { timestamps: false }
   );
 
   // token model

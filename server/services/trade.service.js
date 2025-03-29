@@ -1,43 +1,77 @@
-const sequelize = require("../config/db");
-const { Op } = require("sequelize");
-const { transactions, portfolio, wallet, instrument } = sequelize.models;
-const ApiError = require("../exceptions/api.errors");
-const { nanoid } = require("nanoid");
-const ProfitService = require("./profit.service");
+const sequelize = require('../config/db');
+const { Op } = require('sequelize');
+const { orders, wallet, instrument } = sequelize.models;
+const ApiError = require('../exceptions/api.errors');
+const { nanoid } = require('nanoid');
+const ProfitService = require('./profit.service');
+const helperService = require('./helper.service');
 
 class TradeService {
-  async BuyCrypto(userId, assetId, amount, ord_direct, ord_type, price = null) {
-    console.log("🧠 BuyCrypto userId:", userId);
+  async buyCrypto(
+    userId,
+    assetId,
+    amount,
+    ord_direct,
+    ord_type,
+    price,
+    triggerPrice
+  ) {
     const transaction = await sequelize.transaction();
 
     try {
-      const newOrder = await this.createTransaction(
-        userId,
-        assetId,
-        amount,
-        ord_direct,
-        ord_type,
-        price,
-        transaction
-      );
+      const cost = price * amount;
 
-      if (ord_type === "market") {
-        await this.marketOrder(
-          userId,
-          assetId,
-          price,
-          amount,
-          ord_direct,
-          transaction
-        );
+      // 1. Nuskaiciuojam kapeikas
+      const userWallet = await wallet.findOne({
+        where: { user_id: userId },
+        transaction,
+      });
+
+      if (!userWallet) {
+        throw new Error('Wallet not found for user');
       }
 
+      if (parseFloat(userWallet.balance) < cost) {
+        throw new Error('Insufficient balance');
+      }
+
+      // Jei viskas ok, atimam
+      userWallet.balance = parseFloat(userWallet.balance) - cost;
+
+      await userWallet.save({ transaction });
+
+      // 2. Create order
+      const isInstantExecution =
+        ord_type === 'market' ||
+        (ord_type === 'limit' && price === triggerPrice);
+
+      const ord_status = isInstantExecution ? 'closed' : 'open';
+      const closed_date = isInstantExecution ? new Date() : null;
+      await orders.create(
+        {
+          userId,
+          assetId,
+          amount,
+          ord_direct,
+          ord_type,
+          price,
+          triggerPrice,
+          ord_status,
+          open_date: new Date(),
+          closed_date,
+        },
+        { transaction }
+      );
+
+      // 3. komitinam
       await transaction.commit();
+
       return {
-        message: `Your entire order has been filled \n Bought ${amount} ${assetId} contracts at market price`,
+        message: `Your entire order has been filled\nBought ${amount} ${assetId} at $${price}`,
       };
     } catch (err) {
       await transaction.rollback();
+      console.error('ROLLBACK REASON:', err); // issami info apie klaida
       throw new Error(`Transaction failed: ${err.message}`);
     }
   }
@@ -51,7 +85,7 @@ class TradeService {
       const totalCost = price * amount;
 
       if (!userId) {
-        throw new Error("userId is undefined in updateUserWallet");
+        throw new Error('userId is undefined in updateUserWallet');
       }
 
       await this.updateUserWallet(userId, totalCost, ord_direct, transaction);
@@ -64,7 +98,7 @@ class TradeService {
       );
     } catch (error) {
       await transaction.rollback();
-      console.error("There was a error with marketOrder", error);
+      console.error('There was a error with marketOrder', error);
       throw error;
     }
   }
@@ -73,9 +107,9 @@ class TradeService {
     try {
       const pendingOrders = await transactions.findAll({
         where: {
-          ord_direct: { [Op.in]: ["buy", "sell"] },
-          ord_type: "limit",
-          ord_status: "open",
+          ord_direct: { [Op.in]: ['buy', 'sell'] },
+          ord_type: 'limit',
+          ord_status: 'open',
           asset_id: assetId,
         },
       });
@@ -86,15 +120,15 @@ class TradeService {
         const orderPrice = parseFloat(order.order_value);
 
         if (
-          (order.ord_direct === "buy" && marketPrice <= orderPrice) ||
-          (order.ord_direct === "sell" && marketPrice >= orderPrice)
+          (order.ord_direct === 'buy' && marketPrice <= orderPrice) ||
+          (order.ord_direct === 'sell' && marketPrice >= orderPrice)
         ) {
           const transaction = await sequelize.transaction();
 
           try {
-            await order.update({ ord_status: "filled" }, { transaction });
+            await order.update({ ord_status: 'filled' }, { transaction });
 
-            if (order.ord_direct === "sell") {
+            if (order.ord_direct === 'sell') {
               await this.updateUserWallet(
                 order.user_id,
                 order.total_value,
@@ -122,7 +156,7 @@ class TradeService {
         }
       }
     } catch (error) {
-      console.error("Error processing limit orders:", error.message);
+      console.error('Error processing limit orders:', error.message);
     }
   }
 
@@ -132,7 +166,7 @@ class TradeService {
       transaction,
     });
 
-    if (ordDirect === "buy") {
+    if (ordDirect === 'buy') {
       const newAmount = userPortfolio
         ? parseFloat(userPortfolio.amount) + parseFloat(amount)
         : amount;
@@ -144,9 +178,9 @@ class TradeService {
           { transaction }
         );
       }
-    } else if (ordDirect === "sell") {
+    } else if (ordDirect === 'sell') {
       if (!userPortfolio || parseFloat(userPortfolio.amount) < amount) {
-        throw ApiError.BadRequest("Insufficient assets to sell");
+        throw ApiError.BadRequest('Insufficient assets to sell');
       }
 
       const newAmount = parseFloat(userPortfolio.amount) - parseFloat(amount);
@@ -164,26 +198,26 @@ class TradeService {
       where: { user_id: userId },
       transaction,
     });
-  
+
     if (!userWallet) {
       throw new Error(`Wallet not found for user ${userId}`);
     }
-  
+
     const balance = parseFloat(userWallet.balance);
     const convertedPrice = parseFloat(price);
-  
-    if (ord_direct === "buy" && userWallet.balance < price) {
+
+    if (ord_direct === 'buy' && userWallet.balance < price) {
       throw ApiError.BadRequest(
         `Insufficient balance to place ${ord_direct} order`
       );
     }
-  
-    if (ord_direct === "buy") {
+
+    if (ord_direct === 'buy') {
       await userWallet.update(
         { balance: balance - convertedPrice },
         { transaction }
       );
-    } else if (ord_direct === "sell") {
+    } else if (ord_direct === 'sell') {
       await userWallet.update(
         { balance: balance + convertedPrice },
         { transaction }
@@ -208,11 +242,11 @@ class TradeService {
       }
 
       if (!price || isNaN(price)) {
-        throw new Error("Invalid price provided");
+        throw new Error('Invalid price provided');
       }
 
       if (amount <= 0) {
-        throw new Error("Please enter amount");
+        throw new Error('Please enter amount');
       }
 
       const finalPrice = parseFloat(price);
@@ -221,9 +255,9 @@ class TradeService {
 
       const orderID = nanoid(6).toUpperCase();
 
-      let ord_status = "open";
-      if (ord_type === "market" && ord_direct === "sell") {
-        ord_status = "closed";
+      let ord_status = 'open';
+      if (ord_type === 'market' && ord_direct === 'sell') {
+        ord_status = 'closed';
       }
 
       const newOrder = await transactions.create(
@@ -237,15 +271,15 @@ class TradeService {
           entry_price: finalPrice,
           total_value: totalValue,
           price_usd: finalPrice,
-          open_date: ord_direct === "buy" ? new Date() : null,
+          open_date: ord_direct === 'buy' ? new Date() : null,
           closed_date:
-            ord_direct === "sell" && ord_type === "market" ? new Date() : null,
+            ord_direct === 'sell' && ord_type === 'market' ? new Date() : null,
           orderID,
         },
         { transaction }
       );
 
-      if (ord_direct === "sell") {
+      if (ord_direct === 'sell') {
         const countProfit = await ProfitService.countUserProfit(
           userId,
           assetId,
@@ -263,9 +297,50 @@ class TradeService {
 
       return newOrder;
     } catch (error) {
-      console.error("createTransaction error:", error.message);
+      console.error('createTransaction error:', error.message);
       throw error;
     }
+  }
+
+  async getOpenOrders(userId) {
+    const openOrders = await orders.findAll({
+      where: {
+        userId: userId,
+        ord_status: 'open',
+      },
+      attributes: [
+        'id',
+        'amount',
+        'ord_direct',
+        'ord_type',
+        'price',
+        'triggerPrice',
+        'open_date',
+      ],
+      include: [
+        {
+          model: instrument,
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    const result = openOrders.map((order) => {
+      const raw = order.toJSON();
+
+      return {
+        id: raw.id,
+        amount: raw.amount,
+        ord_direct: raw.ord_direct,
+        ord_type: raw.ord_type,
+        price: raw.price,
+        triggerPrice: raw.triggerPrice,
+        open_date: helperService.formatDate(raw.open_date),
+        assetName: raw.instrument.name,
+      };
+    });
+
+    return result;
   }
 }
 
