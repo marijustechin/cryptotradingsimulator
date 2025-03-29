@@ -4,11 +4,13 @@ import OrdersService from '../../../services/OrdersService';
 import { IPortfolioInfo, IUserPortfolioItem } from '../../../types/portfolio';
 import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
-import { IOpenOrder } from '../../../types/order';
+import { IOpenOrder, IOrdersHistory, IUserAssets } from '../../../types/order';
 
 // aprasom kaip atrodo state, susijusi su portfolio
 interface OrdersState {
   openOrders: IOpenOrder[] | null;
+  ordersHistory: IOrdersHistory[] | null;
+  userAssets: IUserAssets[] | null;
   orders: {
     transactions: IPortfolioInfo[];
     portfolio: IUserPortfolioItem[];
@@ -21,6 +23,8 @@ interface OrdersState {
 
 const initialState: OrdersState = {
   openOrders: null,
+  ordersHistory: null,
+  userAssets: null,
   orders: {
     transactions: [],
     portfolio: [],
@@ -62,6 +66,30 @@ export const getOpenOrders = createAsyncThunk<IOpenOrder[], { userId: string }>(
   }
 );
 
+export const getUserAssets = createAsyncThunk<
+  IUserAssets[],
+  { userId: string }
+>('orders/getUserAssets', async ({ userId }, { rejectWithValue }) => {
+  try {
+    const response = await OrdersService.getUserAssets(userId);
+    return response;
+  } catch (e) {
+    return rejectWithValue(HelperService.errorToString(e));
+  }
+});
+
+export const getOrdersHistory = createAsyncThunk<
+  IOrdersHistory[],
+  { userId: string }
+>('orders/getOrdersHistory', async ({ userId }, { rejectWithValue }) => {
+  try {
+    const response = await OrdersService.getOpenOrders(userId);
+    return response;
+  } catch (e) {
+    return rejectWithValue(HelperService.errorToString(e));
+  }
+});
+
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
@@ -83,6 +111,7 @@ export const ordersSlice = createSlice({
       .addCase(getUserOrders.rejected, (state, action) => {
         state.error = action.payload as string;
       })
+      // open orders ///////////////////////////////////
       .addCase(getOpenOrders.pending, (state) => {
         state.status = 'loading';
       })
@@ -92,10 +121,35 @@ export const ordersSlice = createSlice({
       })
       .addCase(getOpenOrders.rejected, (state, action) => {
         state.error = action.payload as string;
+      })
+      // user assets ////////////////////////////////
+      .addCase(getUserAssets.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getUserAssets.fulfilled, (state, action) => {
+        state.userAssets = [...action.payload];
+        state.status = 'idle';
+      })
+      .addCase(getUserAssets.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      // orders history //////////////////////
+      .addCase(getOrdersHistory.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getOrdersHistory.fulfilled, (state, action) => {
+        state.ordersHistory = [...action.payload];
+        state.status = 'idle';
+      })
+      .addCase(getOrdersHistory.rejected, (state, action) => {
+        state.error = action.payload as string;
       });
   },
 });
 
 export const selectOpenOrders = (state: RootState) => state.orders.openOrders;
+export const selectOrdersHistory = (state: RootState) =>
+  state.orders.ordersHistory;
+export const selectUserAssets = (state: RootState) => state.orders.userAssets;
 
 export default ordersSlice.reducer;

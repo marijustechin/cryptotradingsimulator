@@ -2,8 +2,12 @@ import { useState } from 'react';
 import { OpenOrders } from '../../components/orders/OpenOrders';
 import { OrdersHistory } from '../../components/orders/OrdersHistory';
 import { UserAssets } from '../../components/orders/UserAssets';
+import { useAppSelector } from '../../store/store';
+import { selectOpenOrders } from '../../store/features/orders/ordersSlice';
 
 const UserOrdersPage = () => {
+  const openOrders = useAppSelector(selectOpenOrders);
+
   const [activeTab, setActiveTab] = useState('oo');
   return (
     <main>
@@ -16,7 +20,7 @@ const UserOrdersPage = () => {
               : 'border-violet-800 text-violet-500'
           } p-2 rounded-lg cursor-pointer border `}
         >
-          Open Orders(count)
+          Open Orders({openOrders?.length})
         </button>
         <button
           onClick={() => setActiveTab('oh')}
