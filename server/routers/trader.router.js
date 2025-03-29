@@ -7,5 +7,7 @@ const validator = require('../validators/order.validator');
 tradeRouter.post('/', validator.placeOrder, traderController.buyCrypto);
 
 tradeRouter.get('/openorders/:userId', traderController.getOpenOrders);
+tradeRouter.get('/userassets/:userId', traderController.getUserAssets);
+tradeRouter.get('/orderhistory/:userId', traderController.getOrdersHistory);
 
 module.exports = tradeRouter;

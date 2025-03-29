@@ -53,6 +53,25 @@ class TraderController {
       next(e);
     }
   }
+
+  async getOrdersHistory(req, res, next) {
+    try {
+      return res.status(200).json('ok');
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getUserAssets(req, res, next) {
+    try {
+      const { userId } = req.params;
+
+      const userAssets = await tradeService.getUserAssets(userId);
+      return res.status(200).json(userAssets);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new TraderController();
