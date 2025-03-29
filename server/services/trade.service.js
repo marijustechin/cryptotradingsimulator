@@ -342,6 +342,58 @@ class TradeService {
 
     return result;
   }
+
+  async getUserAssets(userId) {
+    const orders = await sequelize.models.orders.findAll({
+      where: {
+        userId,
+        ord_status: 'closed',
+      },
+      raw: true,
+    });
+
+    const assets = {};
+
+    for (const order of orders) {
+      const asset = order.assetId;
+
+      if (!assets[asset]) {
+        assets[asset] = {
+          balance: 0,
+          totalBuyCost: 0, // USD spent
+          totalBuyAmount: 0,
+          totalSellAmount: 0,
+        };
+      }
+
+      const amount = parseFloat(order.amount);
+      const price = parseFloat(order.price || 0); // fallback if null
+
+      if (order.ord_direct === 'buy') {
+        assets[asset].balance += amount;
+        assets[asset].totalBuyAmount += amount;
+        assets[asset].totalBuyCost += amount * price;
+      } else if (order.ord_direct === 'sell') {
+        assets[asset].balance -= amount;
+        assets[asset].totalSellAmount += amount;
+      }
+    }
+
+    // Final result per asset
+    const result = Object.entries(assets).map(([asset, data]) => {
+      const avgBuyPrice =
+        data.totalBuyAmount > 0 ? data.totalBuyCost / data.totalBuyAmount : 0;
+
+      return {
+        asset,
+        balance: data.balance,
+        spotCost: data.totalBuyCost, // total spent
+        avgBuyPrice: avgBuyPrice.toFixed(2),
+      };
+    });
+
+    return result;
+  }
 }
 
 module.exports = new TradeService();
