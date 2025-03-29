@@ -16,13 +16,17 @@ const UserLayout = lazy(() => import('./layouts/UserLayout'));
 const HomePage = lazy(() => import('./pages/HomePage'));
 const UserDashboardPage = lazy(() => import('./pages/user/UserDashboardPage'));
 const UserProfilePage = lazy(() => import('./pages/user/UserProfilePage'));
-const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
-const SystemSettingsPage = lazy(() => import('./pages/admin/SystemSettingsPage'));
+const AdminDashboardPage = lazy(
+  () => import('./pages/admin/AdminDashboardPage')
+);
+const SystemSettingsPage = lazy(
+  () => import('./pages/admin/SystemSettingsPage')
+);
 const HowToTradePage = lazy(() => import('./pages/HowToTradePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const CreditsPage = lazy(() => import('./pages/CreditsPage'));
-const UserOrdersPage = lazy(() => import('./components/orders/UserOrdersPage'));
+const UserOrdersPage = lazy(() => import('./pages/user/UserOrdersPage'));
 const AllUsersPage = lazy(() => import('./pages/admin/AllUsersPage'));
 const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -38,32 +42,35 @@ function App() {
 
   return (
     <BrowserRouter>
-   <Suspense fallback={<Loader/>}>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="registration" element={<RegistrationPage />} />
-          <Route path="how-to-trade" element={<HowToTradePage />} />
-          <Route path="credits" element={<CreditsPage />} />
-          <Route path="restore-password" element={<RestorePasswordPage />} />
-        </Route>
-        <Route path="/dashboard" element={<AdminLayout />}>
-          <Route index element={<AdminDashboardPage />} />
-          <Route path="/dashboard/settings" element={<SystemSettingsPage />} />
-          <Route path="/dashboard/users" element={<AllUsersPage />} />
-        </Route>
-        <Route path="/my-dashboard" element={<UserLayout />}>
-          <Route index element={<UserDashboardPage />} />
-          <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
-          <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
-          <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
-          <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
-        </Route>
-        <Route path="/404" element={<NotFoundPage />} />{" "}
-        {/* Define explicit 404 page */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="registration" element={<RegistrationPage />} />
+            <Route path="how-to-trade" element={<HowToTradePage />} />
+            <Route path="credits" element={<CreditsPage />} />
+            <Route path="restore-password" element={<RestorePasswordPage />} />
+          </Route>
+          <Route path="/dashboard" element={<AdminLayout />}>
+            <Route index element={<AdminDashboardPage />} />
+            <Route
+              path="/dashboard/settings"
+              element={<SystemSettingsPage />}
+            />
+            <Route path="/dashboard/users" element={<AllUsersPage />} />
+          </Route>
+          <Route path="/my-dashboard" element={<UserLayout />}>
+            <Route index element={<UserDashboardPage />} />
+            <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
+            <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
+            <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
+            <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
+          </Route>
+          <Route path="/404" element={<NotFoundPage />} />{' '}
+          {/* Define explicit 404 page */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </Suspense>
     </BrowserRouter>
   );

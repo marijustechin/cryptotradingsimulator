@@ -1,18 +1,22 @@
-import $api from "../../api/axios";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
   selectTradingOptions,
   setAmount,
   setTriggerPrice,
-} from "../../store/features/trading/tradingOptionsSlice";
+} from '../../store/features/trading/tradingOptionsSlice';
 import {
   getChartSymbol,
   getCurrentPrices,
   getSelectedSymbolData,
-} from "../../store/features/trading/chartSlice";
-import { toast } from "react-hot-toast";
-import HelperService from "../../services/HelperService";
-import { selectUser } from "../../store/features/user/authSlice";
+} from '../../store/features/trading/chartSlice';
+import { toast } from 'react-hot-toast';
+import HelperService from '../../services/HelperService';
+import {
+  selectUser,
+  setUserBalance,
+} from '../../store/features/user/authSlice';
+import OrdersService from '../../services/OrdersService';
+import { getOpenOrders } from '../../store/features/orders/ordersSlice';
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
@@ -22,68 +26,69 @@ export const PlaceOrderButton = () => {
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
 
-  // cia turim patikrinti:
-  // 1. ar naudotojas turi pakankamai lesu
-  // 2. jeigu direction 'sell', ar turi toki asseta savo portfelyje
-  // Jei yra bedu, metam modal pranesima apie negalima sandori
-  // tik jeigu viskas ok,
-  // 1. rasom i duomenu baze per OrderService
-  // 2. nuskaiciuojam pinigus arba valiuta
-  // 3. atstatom kai kurias tradeOptions reiksmes
-  // 4. toast mesidza apie sekminga sandori
-
   const handlePlaceOrder = async () => {
-    const { amount, orderType, orderDirection, triggerPrice } = tradingOptions;
-
-    const userBalance = user?.balance;
-    const marketPrice = currentPrices?.lastPrice;
-
-    if (orderType === "limit") {
-      const totalCost = triggerPrice * amount;
-      if (totalCost > userBalance) {
-        toast.error(`Not enough balance to buy ${selectedCrypto}`);
-        return;
-      }
-
-      if (!triggerPrice) {
-        toast.error("Missing Trigger Price");
-        return;
-      } else if (!amount) {
-        toast.error("Missing Amount");
-        return;
-      }
+    // 0. Sistemos testas
+    if (user?.balance === undefined || user?.balance === null) {
+      toast.error('System error');
+      return;
     }
 
-    if (orderType === "market") {
-      const totalCost = marketPrice * amount;
-      if (totalCost > userBalance) {
-        toast.error(`Not enough balance to buy ${selectedCrypto}`);
-        return;
-      }
-      if (!amount) {
-        toast.error("Missing Amount");
-        return;
-      }
+    // 1. Ar ivestas kiekis?
+    if (tradingOptions.amount === 0) {
+      toast.error('Amount cannot be empty');
+      return;
+    }
+
+    // 2. Jei sandoris 'limit' ar ivesta trigger kaina?
+    // jei kaina neivesta, darom lastPrice
+    if (
+      tradingOptions.triggerPrice === 0 &&
+      tradingOptions.orderType === 'limit'
+    ) {
+      dispatch(setTriggerPrice(currentPrices?.lastPrice));
+    }
+
+    // 3. Jei perka, ar uzteks pinigu?
+    if (
+      tradingOptions.orderDirection === 'buy' &&
+      user?.balance !== undefined &&
+      user?.balance !== null &&
+      currentPrices?.lastPrice !== undefined &&
+      user.balance < tradingOptions.amount * currentPrices.lastPrice
+    ) {
+      toast.error('Insufficient funds');
+      return;
+    }
+    // 4. Jei parduoda, ar turi tokia valiuta?
+    if (tradingOptions.orderDirection === 'sell') {
+      // tikrinam ar turi ir kiek turi
+      // bus veliau
     }
 
     try {
-      const assetId = selectedCrypto;
-      const price =
-        orderType === "limit" ? triggerPrice : currentPrices?.lastPrice;
-
-      await $api.post("/trade", {
-        assetId,
-        amount,
-        ord_type: orderType,
-        ord_direct: orderDirection,
-        price,
-      });
-
-      dispatch(setAmount(0));
-      dispatch(setTriggerPrice(0));
-      toast.success("Order placed successfully!");
+      // bandom irasyti sandori
+      if (currentPrices?.lastPrice && user.id) {
+        const response = await OrdersService.placeOrder(
+          selectedCrypto,
+          tradingOptions.amount,
+          tradingOptions.orderDirection,
+          tradingOptions.orderType,
+          currentPrices?.lastPrice,
+          user.id,
+          tradingOptions.triggerPrice
+        );
+        toast.success(response);
+        dispatch(
+          setUserBalance(
+            user.balance - tradingOptions.amount * currentPrices.lastPrice
+          )
+        );
+        dispatch(getOpenOrders({ userId: user.id }));
+        dispatch(setAmount(0));
+        dispatch(setTriggerPrice(0));
+      }
     } catch (err: unknown) {
-      console.error("Atsakas iš API", HelperService.errorToString(err));
+      console.error('Atsakas iš API', HelperService.errorToString(err));
     }
   };
 
@@ -93,12 +98,12 @@ export const PlaceOrderButton = () => {
         <div className="flex gap-2 items-center">
           <label
             className="text-sm text-violet-300"
-            htmlFor={"amount" + tradingOptions.orderType}
+            htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
           </label>
           <input
-            id={"amount" + tradingOptions.orderDirection}
+            id={'amount' + tradingOptions.orderDirection}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               dispatch(setAmount(Number(e.target.value)))
             }
@@ -108,16 +113,16 @@ export const PlaceOrderButton = () => {
             min={0.01}
           />
         </div>
-        {tradingOptions.orderType === "limit" && (
+        {tradingOptions.orderType === 'limit' && (
           <div className="flex gap-2 items-center">
             <label
               className="text-sm text-violet-300"
-              htmlFor={"triggerPrice" + "xml"}
+              htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
             </label>
             <input
-              id={"triggerPrice" + "single"}
+              id={'triggerPrice' + 'single'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
@@ -135,15 +140,15 @@ export const PlaceOrderButton = () => {
         onClick={handlePlaceOrder}
         className={`
     ${
-      tradingOptions.orderDirection === "buy"
-        ? "bg-emerald-500 border-emerald-500"
-        : "bg-rose-500 border-rose-500"
+      tradingOptions.orderDirection === 'buy'
+        ? 'bg-emerald-500 border-emerald-500'
+        : 'bg-rose-500 border-rose-500'
     }
     min-w-20 px-1 py-0.5 rounded-lg border cursor-pointer text-violet-950 text-sm
     sm:hidden
   `}
       >
-        {tradingOptions.orderDirection === "buy"
+        {tradingOptions.orderDirection === 'buy'
           ? `Buy ${cryptoData?.name}`
           : `Sell ${cryptoData?.name}`}
       </button>
@@ -153,15 +158,15 @@ export const PlaceOrderButton = () => {
         onClick={handlePlaceOrder}
         className={`
     ${
-      tradingOptions.orderDirection === "buy"
-        ? "bg-emerald-500 border-emerald-500"
-        : "bg-rose-500 border-rose-500"
+      tradingOptions.orderDirection === 'buy'
+        ? 'bg-emerald-500 border-emerald-500'
+        : 'bg-rose-500 border-rose-500'
     }
     min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl
     hidden sm:block
   `}
       >
-        {tradingOptions.orderDirection === "buy"
+        {tradingOptions.orderDirection === 'buy'
           ? `Buy Long ${cryptoData?.name} (${cryptoData?.code})`
           : `Sell Short ${cryptoData?.name} (${cryptoData?.code})`}
       </button>
