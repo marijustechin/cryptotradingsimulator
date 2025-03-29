@@ -12,17 +12,6 @@ class HelperService {
     return errorString;
   }
 
-  correctDatePrice(histData, interval) {
-    const formated = histData.map((item) => ({
-      priceUsd: Math.round(parseFloat(item.priceUsd) * 1000) / 1000,
-      date: item.date.split('T')[1].slice(0, 5),
-      circulatingSupply: item.circulatingSupply,
-      time: item.time,
-    }));
-
-    return formated;
-  }
-
   async initInstruments() {
     const instruments = [
       {
@@ -46,6 +35,17 @@ class HelperService {
     ];
 
     await instrument.bulkCreate(instruments);
+  }
+
+  formatDate(date) {
+    const d = new Date(date);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0'); // Months start at 0
+    const dd = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   }
 }
 
