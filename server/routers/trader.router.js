@@ -10,4 +10,6 @@ tradeRouter.get('/openorders/:userId', traderController.getOpenOrders);
 tradeRouter.get('/userassets/:userId', traderController.getUserAssets);
 tradeRouter.get('/orderhistory/:userId', traderController.getOrdersHistory);
 
+tradeRouter.delete('/:id', traderController.cancelOrder);
+
 module.exports = tradeRouter;

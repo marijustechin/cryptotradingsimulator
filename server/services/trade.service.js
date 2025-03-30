@@ -394,6 +394,48 @@ class TradeService {
 
     return result;
   }
+
+  /**
+   * 
+   * @param {*} priceData  array of {   time: unix timestamp,
+      open: number,
+      high: number,
+      low: number,
+      close: number}
+   */
+  async checkAndCloseOrders(symbol, priceData) {
+    // select limit open orders of given symbol
+    const selectedOrders = await orders.findAll({
+      where: {
+        ord_status: 'open',
+        assetId: symbol,
+        ord_type: 'limit',
+      },
+    });
+
+    for (const order of selectedOrders) {
+      const closestPrice = helperService.getClosestPriceMatch(
+        order.triggerPrice,
+        priceData
+      );
+      const diff = Math.abs(closestPrice - order.triggerPrice);
+
+      // pagal viska skirtumas turetu buti nedidelis
+      // jei ka, tai galima pareguliuoti
+      if (diff < 0.01) {
+        order.status = 'closed';
+        order.closed_date = new Date(priceData.timestamp);
+        await order.save();
+        console.log(`Order ${order.id} closed at ${closestPrice} (${symbol})`);
+      }
+    }
+  }
+
+  async cancelOrder(id) {
+    const deletedOrder = await orders.destroy({ where: { id } });
+
+    return `Order ${id} deleted`;
+  }
 }
 
 module.exports = new TradeService();

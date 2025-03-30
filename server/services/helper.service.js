@@ -47,6 +47,19 @@ class HelperService {
 
     return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   }
+
+  getClosestPriceMatch(orderPrice, priceData) {
+    const candidates = [
+      priceData.open,
+      priceData.close,
+      priceData.high,
+      priceData.low,
+    ];
+
+    return candidates.reduce((prev, curr) =>
+      Math.abs(curr - orderPrice) < Math.abs(prev - orderPrice) ? curr : prev
+    );
+  }
 }
 
 module.exports = new HelperService();

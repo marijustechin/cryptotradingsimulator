@@ -2,56 +2,45 @@ import { useState } from 'react';
 import { OpenOrders } from '../../components/orders/OpenOrders';
 import { OrdersHistory } from '../../components/orders/OrdersHistory';
 import { UserAssets } from '../../components/orders/UserAssets';
-import { useAppSelector } from '../../store/store';
-import { selectOpenOrders } from '../../store/features/orders/ordersSlice';
 
 const UserOrdersPage = () => {
-  const openOrders = useAppSelector(selectOpenOrders);
-
   const [activeTab, setActiveTab] = useState('oo');
+
+  const buttons = [
+    {
+      text: 'Open Orders',
+      tabCode: 'oo',
+    },
+    {
+      text: 'Order History',
+      tabCode: 'oh',
+    },
+    {
+      text: 'Assets',
+      tabCode: 'ua',
+    },
+    {
+      text: 'Borrowings',
+      tabCode: 'br',
+    },
+  ];
+
   return (
     <main>
       <nav className="flex items-center justify-around py-2">
-        <button
-          onClick={() => setActiveTab('oo')}
-          className={`${
-            activeTab === 'oo'
-              ? 'border-violet-400 text-violet-200'
-              : 'border-violet-800 text-violet-500'
-          } p-2 rounded-lg cursor-pointer border `}
-        >
-          Open Orders({openOrders?.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('oh')}
-          className={`${
-            activeTab === 'oh'
-              ? 'border-violet-400 text-violet-200'
-              : 'border-violet-800 text-violet-500'
-          } p-2 rounded-lg cursor-pointer border `}
-        >
-          Orders History
-        </button>
-        <button
-          onClick={() => setActiveTab('ua')}
-          className={`${
-            activeTab === 'ua'
-              ? 'border-violet-400 text-violet-200'
-              : 'border-violet-800 text-violet-500'
-          } p-2 rounded-lg cursor-pointer border `}
-        >
-          Assets
-        </button>
-        <button
-          onClick={() => setActiveTab('br')}
-          className={`${
-            activeTab === 'br'
-              ? 'border-violet-400 text-violet-200'
-              : 'border-violet-800 text-violet-500'
-          } p-2 rounded-lg cursor-pointer border `}
-        >
-          Borrowings
-        </button>
+        {buttons.map((button) => (
+          <button
+            key={button.text}
+            onClick={() => setActiveTab(button.tabCode)}
+            className={`${
+              activeTab === button.tabCode
+                ? 'border-violet-400 text-violet-200'
+                : 'border-violet-800 text-violet-500'
+            } p-2 rounded-lg cursor-pointer border `}
+          >
+            {button.text}
+          </button>
+        ))}
       </nav>
       <section>
         {activeTab === 'oo' && <OpenOrders />}
