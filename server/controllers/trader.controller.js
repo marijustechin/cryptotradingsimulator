@@ -72,6 +72,18 @@ class TraderController {
       next(e);
     }
   }
+
+  async cancelOrder(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const deletedOrder = await tradeService.cancelOrder(id);
+
+      return res.status(200).json(deletedOrder);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new TraderController();
