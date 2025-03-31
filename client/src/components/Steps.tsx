@@ -24,7 +24,7 @@ const StepsComponent = () => {
               </div>
               
               {/* Step Text */}
-              <p className="mt-3 text-sm md:text-base font-semibold bg-gradient-to-r from-violet-500 to-blue-500 text-transparent bg-clip-text">
+              <p className="mt-3 text-sm md:text-base font-semibold bg-gradient-to-r from-cyan-400 to-pink-400 text-transparent bg-clip-text">
                 {step.text}
               </p>
             </div>
