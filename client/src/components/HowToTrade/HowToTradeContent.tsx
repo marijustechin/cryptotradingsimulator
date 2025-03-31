@@ -31,7 +31,7 @@ export const HowToTradeContent = () => {
         <h1 className="title-first"> Steps For Trading on CryptoHill</h1>
       </div>
       <StepsComponent />
-      <div className="w-full max-w-[1440px] px-4 sm:px-6 md:px-10 my-10 md:mb-40 flex flex-col">
+      <div className="w-full max-w-[1440px] px-4 sm:px-6 md:px-10 my-10 flex flex-col">
         {/* What is Crypto Trading */}
         <section className="pb-10 grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] items-center gap-6">
           <div className="flex justify-center order-last md:order-first">
