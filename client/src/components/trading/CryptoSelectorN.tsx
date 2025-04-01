@@ -34,16 +34,14 @@ export const CryptoSelector = () => {
         </div>
       )}
       <select
+        id='selectCrypto'
+        defaultValue={symbolData ? symbolData.id : ''}
         className='bg-violet-500 p-2 rounded-lg focus:outline-none w-full sm:w-auto text-sm'
         onChange={handleCryptoChange}
       >
         {allSymbols ? (
           allSymbols.map((item) => (
-            <option
-              selected={item.name === symbolData?.name}
-              key={item.id}
-              value={item.id}
-            >
+            <option key={item.id} value={item.id}>
               {item.name}
             </option>
           ))
