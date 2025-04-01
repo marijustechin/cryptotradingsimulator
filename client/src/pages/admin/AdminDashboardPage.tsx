@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAppSelector } from '../../store/store';
-import { selectUser } from '../../store/features/user/authSlice';
+import { Sidebar } from '../../components/sidebar/Sidebar';
+import { adminLinks } from '../../components/sidebar/adminLinks';
 import {
   BarChart,
   Bar,
@@ -35,21 +35,9 @@ const activityData = [
 ];
 
 const AdminDashboardPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const user = useAppSelector(selectUser);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [user]);
 
   return (
-    <main className='flex-1 p-6 bg-gray-100 dark:bg-gray-900 overflow-auto'>
-      {isLoading ? (
-        <div className='flex justify-center items-center h-screen'>
-          Loading...
-        </div>
-      ) : (
-        <>
+    <main className='flex-1 p-6 bg-gray-800 lg:bg-transparent'>
           {/* sitam dive turi buti trys atskiri komponentai
         Jei kas nors kartojasi, turi eiti į atskirą komponentą
         pvz. tavo card -turi būti atskiras kompoenetas
@@ -64,8 +52,8 @@ const AdminDashboardPage = () => {
           {/* user stats - cia irgi atskiras komponentas
           nu ir taip toliau - manau čia viskas aišku
           */}
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md mb-6'>
-            <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
+          <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
+            <h2 className='text-xl font-semibold text-gray-200 mb-4'>
               USER STATS
             </h2>
             <ResponsiveContainer width='100%' height={300}>
@@ -87,7 +75,7 @@ const AdminDashboardPage = () => {
           </div>
 
           {/* user activity */}
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md mb-6'>
+          <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
             <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
               USER ACTIVITY
             </h2>
@@ -103,13 +91,13 @@ const AdminDashboardPage = () => {
           </div>
 
           {/* last operations */}
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md'>
-            <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
+          <div className='bg-gray-700 p-6 rounded-xl shadow-md'>
+            <h2 className='text-xl font-semibold text-gray-200 mb-4'>
               Last operations
             </h2>
             <table className='w-full text-left'>
               <thead>
-                <tr className='border-b border-gray-200 dark:border-gray-700'>
+                <tr className='border-b border-gray-700'>
                   <th className='py-2'>Type</th>
                   <th className='py-2'>Amount</th>
                   <th className='py-2'>Date</th>
@@ -121,7 +109,7 @@ const AdminDashboardPage = () => {
                   <td className='py-2'>$10,000</td>
                   <td className='py-2'>12.10.2023</td>
                 </tr>
-                <tr className='border-b border-gray-200 dark:border-gray-700'>
+                <tr className='border-b border-gray-700'>
                   <td className='py-2'>Sell ETH</td>
                   <td className='py-2'>$5,000</td>
                   <td className='py-2'>11.10.2023</td>
@@ -129,19 +117,17 @@ const AdminDashboardPage = () => {
               </tbody>
             </table>
           </div>
-        </>
-      )}
     </main>
   );
 };
 
 // metrikos
 const Card = ({ title, value }: { title: string; value: string }) => (
-  <div className='bg-white/20 dark:bg-gray-800/40 p-6 rounded-xl shadow-lg backdrop-blur-md flex flex-col justify-center items-center'>
-    <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
+  <div className='bg-gray-700/40 p-6 shadow-lg backdrop-blur-md flex flex-col justify-center items-center rounded-2xl'>
+    <h3 className='text-lg font-semibold text-gray-200'>
       {title}
     </h3>
-    <p className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
+    <p className='text-2xl font-bold text-gray-100'>
       {value}
     </p>
   </div>
@@ -157,7 +143,7 @@ const CryptoCard = ({
   price: number;
   change: string;
 }) => (
-  <div className='bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md flex flex-col items-center justify-center'>
+  <div className='bg-gray-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center'>
     <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
       {name}
     </h3>

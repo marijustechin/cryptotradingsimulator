@@ -95,7 +95,7 @@ const AllUsersPage = () => {
       </div>
       {/* nauja lentele ========================================= */}
       <div className="overflow-x-auto">
-        <table className="table table-zebra">
+        <table className="table">
           <thead>
             <tr>
               <th>ID</th>
@@ -139,8 +139,8 @@ const AllUsersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {allUsers?.map((user) => (
-              <tr key={user.email}>
+            {allUsers?.map((user, index) => (
+              <tr key={user.email} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'}>
                 <th>{user.id}</th>
                 <td>{user.first_name}</td>
                 <td>{user.email}</td>
