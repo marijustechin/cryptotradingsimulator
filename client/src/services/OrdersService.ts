@@ -43,7 +43,7 @@ export default class OrdersService {
   }
 
   static async getOrdersHistory(userId: string): Promise<IOrdersHistory[]> {
-    const response = await $api.get(`/trade/ordershistory/${userId}`);
+    const response = await $api.get(`/trade/orderhistory/${userId}`);
     return response.data;
   }
 }

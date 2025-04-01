@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import OrdersService from '../../../services/OrdersService';
 // importuojam tipa kuris aprašo, kaip atrodo vartotojo portfolio objektas
-import { IPortfolioInfo, IUserPortfolioItem } from '../../../types/portfolio';
 import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
 import { IOpenOrder, IOrdersHistory, IUserAssets } from '../../../types/order';
@@ -11,10 +10,6 @@ interface OrdersState {
   openOrders: IOpenOrder[] | null;
   ordersHistory: IOrdersHistory[] | null;
   userAssets: IUserAssets[] | null;
-  orders: {
-    transactions: IPortfolioInfo[];
-    portfolio: IUserPortfolioItem[];
-  } | null; // portfolio duomenys
   status: 'idle' | 'loading' | 'succeeded' | 'failed'; // krovimo pranesimai
   error: string | null; // jei klaida - jos pranesimas
 }
@@ -25,10 +20,6 @@ const initialState: OrdersState = {
   openOrders: null,
   ordersHistory: null,
   userAssets: null,
-  orders: {
-    transactions: [],
-    portfolio: [],
-  },
   status: 'idle',
   error: '',
 };
@@ -37,21 +28,7 @@ const initialState: OrdersState = {
 // generuoja 3 busenas: pending, fulfilled, rejected
 // leidžia kviesti async API funkciją
 // leidžia naudoti komponentuose per dispatch
-export const getUserOrders = createAsyncThunk<
-  {
-    transactions: IPortfolioInfo[];
-    portfolio: IUserPortfolioItem[];
-  },
-  void,
-  { state: RootState }
->('orders/transactions', async (_, { rejectWithValue }) => {
-  try {
-    const response = await OrdersService.getUserOrders();
-    return response;
-  } catch (error) {
-    return rejectWithValue(HelperService.errorToString(error));
-  }
-});
+
 
 // get openOrders
 export const getOpenOrders = createAsyncThunk<IOpenOrder[], { userId: string }>(
@@ -83,12 +60,13 @@ export const getOrdersHistory = createAsyncThunk<
   { userId: string }
 >('orders/getOrdersHistory', async ({ userId }, { rejectWithValue }) => {
   try {
-    const response = await OrdersService.getOpenOrders(userId);
+    const response = await OrdersService.getOrdersHistory(userId);
     return response;
   } catch (e) {
     return rejectWithValue(HelperService.errorToString(e));
   }
 });
+
 
 export const ordersSlice = createSlice({
   name: 'orders',
@@ -97,20 +75,6 @@ export const ordersSlice = createSlice({
   // tvarkome asinchroninius veiksmus
   extraReducers: (builder) => {
     builder
-      .addCase(getUserOrders.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getUserOrders.fulfilled, (state, action) => {
-        state.orders = {
-          transactions: action.payload.transactions,
-          portfolio: action.payload.portfolio,
-        }; // saugom gauta portfolio
-        state.status = 'succeeded';
-        state.error = '';
-      })
-      .addCase(getUserOrders.rejected, (state, action) => {
-        state.error = action.payload as string;
-      })
       // open orders ///////////////////////////////////
       .addCase(getOpenOrders.pending, (state) => {
         state.status = 'loading';
@@ -148,8 +112,7 @@ export const ordersSlice = createSlice({
 });
 
 export const selectOpenOrders = (state: RootState) => state.orders.openOrders;
-export const selectOrdersHistory = (state: RootState) =>
-  state.orders.ordersHistory;
+export const selectOrdersHistory = (state: RootState) => state.orders.ordersHistory;
 export const selectUserAssets = (state: RootState) => state.orders.userAssets;
 
 export default ordersSlice.reducer;

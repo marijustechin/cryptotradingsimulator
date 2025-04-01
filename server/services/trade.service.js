@@ -436,6 +436,12 @@ class TradeService {
 
     return `Order ${id} deleted`;
   }
+
+  async getUserOrders(userId) {
+    const userOrder = await orders.findAll({where: {userId}});
+    
+    return userOrder;
+  }
 }
 
 module.exports = new TradeService();
