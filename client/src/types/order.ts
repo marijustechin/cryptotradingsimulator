@@ -16,6 +16,7 @@ export interface IOrdersHistory {
   assetName: string;
   ord_type: string;
   ord_direct: string;
+  ord_status: string;
   price: number;
   amount: number;
   orderValue: number;
