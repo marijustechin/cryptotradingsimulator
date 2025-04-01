@@ -23,23 +23,27 @@ export const CryptoSelector = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center sm:flex-row sm:gap-3 w-full">
+    <div className='flex flex-col gap-2 items-center sm:flex-row sm:gap-3 w-full'>
       {symbolData && (
-        <div className="w-10 h-10 flex items-center justify-center">
+        <div className='w-10 h-10 flex items-center justify-center'>
           <img
-            className="h-8 w-8 object-contain"
+            className='h-8 w-8 object-contain'
             src={symbolData.icon}
             alt={symbolData.name}
           />
         </div>
       )}
       <select
-        className="bg-violet-500 p-2 rounded-lg focus:outline-none w-full sm:w-auto text-sm"
+        className='bg-violet-500 p-2 rounded-lg focus:outline-none w-full sm:w-auto text-sm'
         onChange={handleCryptoChange}
       >
         {allSymbols ? (
           allSymbols.map((item) => (
-            <option key={item.id} value={item.id}>
+            <option
+              selected={item.name === symbolData?.name}
+              key={item.id}
+              value={item.id}
+            >
               {item.name}
             </option>
           ))
