@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import {
   getOpenOrders,
   selectOpenOrders,
-} from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+} from "../../store/features/orders/ordersSlice";
+import { selectUser } from "../../store/features/user/authSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 export const OpenOrders = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export const OpenOrders = () => {
         </thead>
         <tbody>
           {openOrders?.map((order) => (
-            <tr key={order.assetName + order.id}>
+            <tr className="" key={order.assetName + order.id}>
               <td>{order.id}</td>
               <td>{order.assetName}</td>
               <td>{order.ord_type}</td>

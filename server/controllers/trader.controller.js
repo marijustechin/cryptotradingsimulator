@@ -1,6 +1,6 @@
-const ApiError = require('../exceptions/api.errors');
-const tradeService = require('../services/trade.service');
-const { validationResult } = require('express-validator');
+const ApiError = require("../exceptions/api.errors");
+const tradeService = require("../services/trade.service");
+const { validationResult } = require("express-validator");
 
 class TraderController {
   async buyCrypto(req, res, next) {
@@ -9,10 +9,10 @@ class TraderController {
       // jei error paverciam ji string
       if (!errors.isEmpty()) {
         const err = errors.array();
-        let errString = '';
+        let errString = "";
 
         for (const element of err) {
-          errString += element.msg + '; ';
+          errString += element.msg + "; ";
         }
 
         throw new Error(errString);
@@ -56,7 +56,9 @@ class TraderController {
 
   async getOrdersHistory(req, res, next) {
     try {
-      return res.status(200).json('ok');
+      const { userId } = req.params;
+      const userOrders = await tradeService.getUserOrders(userId);
+      return res.status(200).json(userOrders);
     } catch (e) {
       next(e);
     }
