@@ -93,41 +93,41 @@ export const PlaceOrderButton = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col sm:flex-row sm:gap-3 gap-2">
-        <div className="flex gap-2 items-center">
+    <div className='flex flex-col gap-2'>
+      <div className='flex flex-col sm:flex-row sm:gap-3 gap-2'>
+        <div className='flex gap-2 items-center'>
           <label
-            className="text-sm text-violet-300"
+            className='text-sm text-violet-300'
             htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
           </label>
           <input
-            id={'amount' + tradingOptions.orderDirection}
+            id={'amount' + tradingOptions.orderType}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               dispatch(setAmount(Number(e.target.value)))
             }
-            className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
-            type="number"
+            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
+            type='number'
             value={tradingOptions.amount}
             min={0.01}
           />
         </div>
         {tradingOptions.orderType === 'limit' && (
-          <div className="flex gap-2 items-center">
+          <div className='flex gap-2 items-center'>
             <label
-              className="text-sm text-violet-300"
+              className='text-sm text-violet-300'
               htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
             </label>
             <input
-              id={'triggerPrice' + 'single'}
+              id={'triggerPrice' + 'xml'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
-              className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
-              type="number"
+              className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
+              type='number'
               min={0.01}
               value={tradingOptions.triggerPrice}
             />
