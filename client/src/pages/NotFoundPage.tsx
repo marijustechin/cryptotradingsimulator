@@ -1,7 +1,7 @@
 
 import { Footer } from "../components/Footer";
 import { Header } from "../components/header/Header";
-import { NotFoundTextures } from "../components/NotFound/NotFoundTextures";
+import { NotFoundTextures } from "../components/notFound/NotFoundTextures";
 
 const NotFoundPage = () => {
   return (

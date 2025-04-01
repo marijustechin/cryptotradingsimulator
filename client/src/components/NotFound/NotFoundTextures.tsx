@@ -3,7 +3,7 @@ import "../../textures.css";
 
 export const NotFoundTextures = () => {
     return (
-        <div className="sm:block relative min-h-[78vh] max-w-full overflow-hidden">
+        <div className="sm:block relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
 
             {/* Desktop version */ }
             <div
@@ -103,7 +103,7 @@ export const NotFoundTextures = () => {
             <div className="texture-oval z-9"></div>
             <div className="texture-oval2 z-9"></div>
             <div className="texture-oval3 z-9"></div>
-            <div className="relative z-20 max-w-4xl grid grid-cols-1 place-self-center">
+            <div className="relative z-20 flex items-center justify-center text-center">
                 <NotFoundContent />
             </div>
 

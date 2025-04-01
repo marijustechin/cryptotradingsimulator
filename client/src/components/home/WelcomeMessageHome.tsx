@@ -1,9 +1,5 @@
 import { Link } from "react-router";
 import portfolio from "/portfolio.png";
-import { useEffect, useState } from "react";
-import { CoinTable } from "../home/CoinTable";
-import { Loader } from "../Loader";
-
 import { lazy } from "react";
 const CoinTable = lazy(() => import("../home/CoinTable"));
 

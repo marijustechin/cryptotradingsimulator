@@ -54,7 +54,7 @@ export const CreditsContent = () => {
   return (
     <main className="min-h-screen container mb-10">
       <section className="flex flex-col items-center text-2xl md:text-3xl lg:text-4xl pt-10 pb-20">
-        <h1 className="text-center title-first">The Team Simulating Success</h1>
+        <h1 className="text-center title-first">The People Behind The Magic</h1>
       </section>
 
       {/* cards using component */}
