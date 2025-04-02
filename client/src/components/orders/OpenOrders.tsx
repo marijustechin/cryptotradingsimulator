@@ -18,13 +18,12 @@ export const OpenOrders = () => {
   }, [dispatch, openOrders, user.id]);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="border-separate border-spacing-y-2 w-full table">
       <table className="table">
         <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Instrument</th>
-            <th>Type</th>
+          <tr className="text-gray-500">
+            <th>Market</th>
+            <th>Order Type</th>
             <th>Direction</th>
             <th>Price</th>
             <th>Order Qty</th>
@@ -35,12 +34,25 @@ export const OpenOrders = () => {
         </thead>
         <tbody>
           {openOrders?.map((order) => (
-            <tr className="" key={order.assetName + order.id}>
-              <td>{order.id}</td>
-              <td>{order.assetName}</td>
+            <tr className="hover:bg-gray-800" key={order.assetName + order.id}>
+              <td
+                className={
+                  order.ord_direct === "buy"
+                    ? "border-l-[2px] border-green-700"
+                    : "border-l-[2px] border-red-700"
+                }
+              >
+                {order.assetName}
+              </td>
               <td>{order.ord_type}</td>
-              <td>{order.ord_direct}</td>
-              <td>{order.triggerPrice}</td>
+              <td
+                className={
+                  order.ord_direct === "buy" ? "text-green-700" : "text-red-700"
+                }
+              >
+                {order.ord_direct}
+              </td>
+              <td>{parseFloat(Number(order.triggerPrice).toFixed(2))}</td>
               <td>{order.amount}</td>
               <td>{order.amount * order.triggerPrice}</td>
               <td>{order.open_date}</td>

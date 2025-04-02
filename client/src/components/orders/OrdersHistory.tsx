@@ -28,7 +28,7 @@ export const OrdersHistory = () => {
 
   return (
     <div>
-      <table className="table">
+      <table className="border-separate border-spacing-y-2 w-full table">
         <thead>
           <tr className="text-gray-500">
             <th>Market</th>
@@ -42,12 +42,21 @@ export const OrdersHistory = () => {
         </thead>
         <tbody>
           {ordersHistory?.map((order) => (
-            <tr className="" key={order.id}>
-              <td>{order.assetId}</td>
+            <tr className="hover:bg-gray-800" key={order.id}>
+              <td
+                className={
+                  order.ord_direct === "buy"
+                    ? "border-l-[2px] border-green-700"
+                    : "border-l-[2px] border-red-700"
+                }
+                key={order.id}
+              >
+                {order.assetId}
+              </td>
               <td>{order.ord_type}</td>
               <td
                 className={
-                  order.ord_direct === "buy" ? "text-green-500" : "text-red-500"
+                  order.ord_direct === "buy" ? "text-green-700" : "text-red-700"
                 }
               >
                 {order.ord_direct}
