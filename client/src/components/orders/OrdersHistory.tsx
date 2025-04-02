@@ -12,7 +12,13 @@ export const OrdersHistory = () => {
   const user = useAppSelector(selectUser);
   const ordersHistory = useAppSelector(selectOrdersHistory);
 
-  console.log(ordersHistory);
+  // jei vartotojo statusas open - open date
+  // jei vartotojo statusas closed - closed date
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toISOString().slice(0, 19).replace("T", " ");
+  };
 
   useEffect(() => {
     if (!ordersHistory && user.id) {
@@ -30,6 +36,7 @@ export const OrdersHistory = () => {
             <th>Direction</th>
             <th>Order Price</th>
             <th>Order Quantity</th>
+            <th>Status</th>
             <th>Order Time</th>
           </tr>
         </thead>
@@ -38,10 +45,30 @@ export const OrdersHistory = () => {
             <tr className="" key={order.id}>
               <td>{order.assetId}</td>
               <td>{order.ord_type}</td>
-              <td>{order.ord_direct}</td>
-              <td>{order.price}</td>
-              <td>{order.amount}</td>
-              <td>{order.open_date}</td>
+              <td
+                className={
+                  order.ord_direct === "buy" ? "text-green-500" : "text-red-500"
+                }
+              >
+                {order.ord_direct}
+              </td>
+              <td>
+                {parseFloat(Number(order.price).toFixed(2))}/{order.ord_type}
+              </td>
+              <td>
+                {order.amount}/
+                <span className="text-gray-400 text-[12px]">
+                  {order.assetId}
+                </span>
+              </td>
+              <td>{order.ord_status}</td>
+              <td>
+                {formatDate(
+                  order.ord_status === "open"
+                    ? order.open_date
+                    : order.closed_date
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
