@@ -1,12 +1,12 @@
-import useWebSocket from 'react-use-websocket';
+import useWebSocket from "react-use-websocket";
 import {
   getUserAssets,
   selectUserAssets,
-} from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { WS_URL } from '../../api/ws';
-import { useEffect, useState, useMemo } from 'react';
+} from "../../store/features/orders/ordersSlice";
+import { selectUser } from "../../store/features/user/authSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { WS_URL } from "../../api/ws";
+import { useEffect, useState, useMemo } from "react";
 
 interface ILivePrices {
   symbol: string;
@@ -31,7 +31,7 @@ export const UserAssets = () => {
     share: false,
     shouldReconnect: () => true,
     onOpen: () => {
-      sendJsonMessage({ type: 'subscribe', role: 'live' });
+      sendJsonMessage({ type: "subscribe", role: "live" });
     },
     onMessage: (event) => {
       const parsedData = JSON.parse(event.data);
@@ -87,9 +87,9 @@ export const UserAssets = () => {
 
   return (
     <div>
-      <table className="table">
+      <table className=" table">
         <thead>
-          <tr>
+          <tr className="text-gray-500">
             <th>Asset</th>
             <th>Net Asset Value</th>
             <th>Balance</th>
@@ -99,7 +99,7 @@ export const UserAssets = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className="hover:bg-gray-800">
             <td>USD</td>
             <td>{user.balance} USD</td>
             <td>{user.balance}</td>
@@ -108,16 +108,18 @@ export const UserAssets = () => {
             <td>—</td>
           </tr>
           {assetRows.map((row) => (
-            <tr key={row.asset}>
+            <tr className="hover:bg-gray-800" key={row.asset}>
               <td>{row.asset}</td>
-              <td>{row.netAssetValue} USD</td>
+              <td className="min-w-[80px]">{row.netAssetValue} USD</td>
               <td>{row.balance}</td>
-              <td>{row.spotCost} USD</td>
-              <td>{row.lastPrice} USD</td>
+              <td className="min-w-[80px]">{row.spotCost} USD</td>
+              <td className="min-w-[80px]">{row.lastPrice} USD</td>
               <td
-                style={{
-                  color: parseFloat(row.pnlAmount) >= 0 ? 'limegreen' : 'red',
-                }}
+                className={`min-w-[80px] ${
+                  parseFloat(row.pnlAmount) >= 0
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
               >
                 {row.pnlAmount} USD ({row.pnlPercent}%)
               </td>
