@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 
-import { Coin } from './Coin';
+import  Coin  from './Coin';
 import {
   allActiveSymbols,
   getAllSymbols,
@@ -24,7 +24,6 @@ const CoinTable = () => {
           <Coin
             key={item.id}
             assetId={item.id}
-            assetName={item.name}
             assetCode={item.code}
           />
         ))

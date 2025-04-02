@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
 interface ITradingOptions {
+  allActiveSymbols: any;
   orderType: 'limit' | 'market';
   orderDirection: 'buy' | 'sell';
   amount: number;

@@ -1,5 +1,5 @@
 import useWebSocket from 'react-use-websocket';
-import { Line, LineChart, ResponsiveContainer } from 'recharts';
+import { Line, LineChart, ResponsiveContainer, YAxis } from 'recharts';
 import { WS_URL } from '../../api/ws';
 import { useState } from 'react';
 
@@ -52,23 +52,32 @@ export const HomeLiveChart = ({ assetId }: TestChartProps) => {
 
   if (chartData) {
     return (
-      <ResponsiveContainer width='100%' height={100}>
-        <LineChart data={chartData.data}>
-          <defs>
-            <linearGradient id='purpleToBlue' x1='0' y1='0' x2='1' y2='0'>
-              <stop offset='0%' stopColor='#6D28D9' /> {/* Purple */}
-              <stop offset='100%' stopColor='#3B82F6' /> {/* Blue */}
-            </linearGradient>
-          </defs>
-          <Line
-            dot={false}
-            type='monotone'
-            dataKey='price'
-            stroke='url(#purpleToBlue)'
-            strokeWidth={4}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <ResponsiveContainer width='100%' height={50}>
+      <LineChart data={chartData.data}>
+        <defs>
+          <linearGradient id='purpleToBlue' x1='0' y1='0' x2='1' y2='0'>
+            <stop offset='0%' stopColor='#6D28D9' /> {/* Purple */}
+            <stop offset='100%' stopColor='#3B82F6' /> {/* Blue */}
+          </linearGradient>
+        </defs>
+    
+        {/* YAxis is needed to define scale positioning */}
+        <YAxis
+          type='number'
+          domain={['dataMin', 'dataMax']}
+          hide
+        />
+    
+        <Line
+          dot={false}
+          type='monotone'
+          dataKey='price'
+          stroke='url(#purpleToBlue)'
+          strokeWidth={2}
+          isAnimationActive={false} // Optional: avoids jumpy effect on small charts
+        />
+      </LineChart>
+    </ResponsiveContainer>
     );
   } else {
     return <div>No data to display</div>;

@@ -45,9 +45,9 @@ export const ChangePasswordForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
-      <h3 className="text-center font-semibold text-purple-300 mb-4">
+      <h4 className="text-center font-semibold text-white-300 mb-4">
         Change Password
-      </h3>
+      </h4>
 
       <div className="text-center">
         {error && <span className="form-error-span">{error}</span>}

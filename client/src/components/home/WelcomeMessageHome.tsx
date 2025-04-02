@@ -1,7 +1,8 @@
 import { Link } from 'react-router';
 import portfolio from '/portfolio.png';
 
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
+import { Loader } from '../Loader';
 const CoinTable = lazy(() => import('../home/CoinTable'));
 
 export const WelcomeMessageHome = () => {
@@ -10,7 +11,9 @@ export const WelcomeMessageHome = () => {
       <div className='text-white text-center md:mt-32 mt-12'>
         <h1 className='title-first'>We make crypto clear and simple</h1>
       </div>
-      <CoinTable />
+      <Suspense fallback={<Loader />}>
+        <CoinTable />
+      </Suspense>
       <div className='grid md:grid-cols-[1fr_1fr] text-white gap-3 relative mt-20 md:mt-40'>
         <div className='text-white text-center md:text-left p-2'>
           <p className='title-first'>

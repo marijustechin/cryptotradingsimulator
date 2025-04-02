@@ -8,11 +8,10 @@ import { ITicker } from '../../types/tradingN';
 
 interface ICoinProps {
   assetId: string;
-  assetName: string;
   assetCode: string;
 }
 
-export const Coin = ({ assetName, assetId, assetCode }: ICoinProps) => {
+const Coin = ({ assetId, assetCode }: ICoinProps) => {
   const [ticker, setTicker] = useState<ITicker>();
 
   // gaunam istorija ////////////////////////////////
@@ -31,9 +30,9 @@ export const Coin = ({ assetName, assetId, assetCode }: ICoinProps) => {
   // istorijios pabaiga /////////////////////////////
 
   return (
-    <div className='grid grid-cols-[0.8fr_1.9fr_1.3fr_1.5fr_1fr] items-center py-4 px-2 text-white text-sm md:text-base'>
+    <div className='grid grid-cols-[0.8fr_1.9fr_1.3fr_1.5fr_1fr] items-center py-4 px-2 text-white text-sm md:text-base place-content-center'>
       <div className='font-bold text-violet-400'>
-        {assetName} ({assetCode})
+         {assetCode}
       </div>
       <div>
         {ticker?.lastPrice && HelperService.formatCurrency(ticker.lastPrice)}
@@ -44,9 +43,6 @@ export const Coin = ({ assetName, assetId, assetCode }: ICoinProps) => {
         }`}
       >
         {ticker?.price24hPcnt}%
-      </div>
-      <div className='text-amber-500'>
-        {Number(ticker?.turnover24h).toFixed(0)}
       </div>
       <HomeLiveChart assetId={assetId} />
 
@@ -59,3 +55,4 @@ export const Coin = ({ assetName, assetId, assetCode }: ICoinProps) => {
     </div>
   );
 };
+export default Coin;

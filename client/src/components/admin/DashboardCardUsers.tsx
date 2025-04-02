@@ -4,7 +4,7 @@ import {
   getGeneralInfo,
 } from '../../store/features/admin/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { Pie, PieChart, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 
 export const DashboardCardUsers = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ export const DashboardCardUsers = () => {
   };
 
   return (
-    <div className='bg-white/20 dark:bg-gray-800/40 p-6 rounded-xl shadow-lg backdrop-blur-md flex flex-col justify-center items-center'>
+    <div className='bg-gray-700/40 p-6 rounded-xl shadow-lg backdrop-blur-md flex flex-col justify-center items-center'>
       <p> Active/Inactive users</p>
       <ResponsiveContainer width={'100%'} height={'100%'}>
         <PieChart width={200} height={200}>
