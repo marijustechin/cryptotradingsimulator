@@ -101,8 +101,12 @@ export const UserAssets = () => {
         <tbody>
           <tr className="hover:bg-gray-800">
             <td>USD</td>
-            <td>{user.balance} USD</td>
-            <td>{user.balance}</td>
+            <td className="min-w-[80px]">
+              {parseFloat(Number(user.balance).toFixed(2))} USD
+            </td>
+            <td className="min-w-[80px]">
+              {parseFloat(Number(user.balance).toFixed(2))}
+            </td>
             <td>—</td>
             <td>—</td>
             <td>—</td>
@@ -121,7 +125,8 @@ export const UserAssets = () => {
                     : "text-red-500"
                 }`}
               >
-                {row.pnlAmount} USD ({row.pnlPercent}%)
+                {parseFloat(Number(row.pnlAmount).toFixed(2))} USD (
+                {row.pnlPercent}%)
               </td>
             </tr>
           ))}
