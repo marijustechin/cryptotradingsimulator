@@ -88,6 +88,9 @@ export const UpdateUserForm = () => {
         {infoError && <span className='form-error-span'>{infoError}</span>}
       </div>
       <div className='flex flex-col gap-3'>
+      <h4 className="text-center font-semibold text-white-300 mb-4">
+        Update your information
+      </h4>
         <div>
           <label className='text-sm text-violet-700' htmlFor='first_name'>
             First name
@@ -161,7 +164,7 @@ export const UpdateUserForm = () => {
             className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Phone number'
+            placeholder='Number example: 37012312345'
             {...register('phone_number', { onChange: handleChange })}
           />
           {errors.phone_number && (

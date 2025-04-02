@@ -8,32 +8,29 @@ const UserProfilePage = () => {
   const togglePasswordForm = () => {
     setShowPasswordForm((prev) => !prev);
   };
+
   return (
     <main className='flex flex-col gap-3'>
-      <h1>User profile</h1>
-      <p>Here you can update your personal info</p>
-      <p>
-        Phone number should consist exactly of 11 digits omiting '+' sign. For
-        example: 37012312345
-      </p>
-      <div>
-        <UpdateUserForm />
-      </div>
-      <div className='my-4'>
-        <button
-          onClick={togglePasswordForm}
-          className='text-violet-400 cursor-pointer hover:text-violet-300 underline transition duration-150 text-center'
-        >
-          {showPasswordForm ? 'Hide Change Password' : 'Change Password'}
-        </button>
+      <h1 className='title-first text-center'>User profile</h1>
 
-        {showPasswordForm && (
-          <div className='mt-4'>
-            <ChangePasswordForm />
-          </div>
-        )}
+      <div className='my-4 grid grid-cols-1 lg:grid-cols-2 gap-4'>
+        {/* Left column: Update form */}
+        <UpdateUserForm />
+
+        {/* Right column: Password section */}
+        <div className='flex flex-col gap-4'>
+          <button
+            onClick={togglePasswordForm}
+            className='text-violet-400 cursor-pointer hover:text-violet-300 underline transition duration-150 text-left'
+          >
+            {showPasswordForm ? 'Hide Change Password' : 'Change Password'}
+          </button>
+
+          {showPasswordForm && <ChangePasswordForm />}
+        </div>
       </div>
     </main>
   );
 };
+
 export default UserProfilePage;

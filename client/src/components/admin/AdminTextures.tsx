@@ -8,7 +8,7 @@ import "../../textures.css";
 
 export const AdminTextures = () => {
   return (
-    <div className="sm:block relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+    <div className="sm:block relative w-full flex flex-col justify-center items-center overflow-hidden">
       {/* Desktop version */}
       <div
         className="absolute inset-0 z-20 hidden lg:block"
@@ -104,7 +104,7 @@ export const AdminTextures = () => {
       <div className="texture-oval2 z-9"></div>
       <div className="texture-oval3 z-9"></div>
       <div className="relative z-20">
-        <div className="flex flex-col min-h-screen container ">
+        <div className="flex flex-col container min-h-screen">
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={adminLinks} />

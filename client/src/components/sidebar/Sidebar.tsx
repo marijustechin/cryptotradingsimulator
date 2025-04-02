@@ -44,7 +44,7 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 h-screen rounded-xl text-white bg-gray-900 p-6 w-64 transform transition-transform duration-300 z-40 
+        className={`fixed left-0 min-h-[85vh] rounded-xl text-white bg-gray-900 p-6 w-64 transform transition-transform duration-300 z-40 
     ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
     md:translate-x-0 md:relative md:flex md:flex-col
    top-[9vh] md:top-0 border-r border-t border-violet-900 shadow-[2px_-2px_8px_rgba(138,43,226,0.6)]`}

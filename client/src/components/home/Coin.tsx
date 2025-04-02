@@ -1,36 +1,50 @@
 import HelperService from '../../services/HelperService';
 import { Link } from 'react-router';
+import { HomeLiveChart } from './HomeLiveChart';
+import useWebSocket from 'react-use-websocket';
+import { WS_URL } from '../../api/ws';
+import { useState } from 'react';
 import { ITicker } from '../../types/tradingN';
-import { LiveHistory } from './LiveHistory';
 
 interface ICoinProps {
-  asset: ITicker;
-  chartData: { price: number }[]; // pridėta
+  assetId: string;
+  assetCode: string;
 }
 
-export const Coin = ({ asset }: ICoinProps) => {
+const Coin = ({ assetId, assetCode }: ICoinProps) => {
+  const [ticker, setTicker] = useState<ITicker>();
+
+  // gaunam istorija ////////////////////////////////
+  const { sendJsonMessage } = useWebSocket(WS_URL, {
+    share: false,
+    shouldReconnect: () => true,
+    onOpen: () => sendJsonMessage({ type: 'subscribe', role: 'live' }),
+
+    onMessage: (event: WebSocketEventMap['message']) => {
+      const eventData = JSON.parse(event.data);
+      if (eventData.data.symbol === assetId) {
+        setTicker(eventData.data);
+      }
+    },
+  });
+  // istorijios pabaiga /////////////////////////////
+
   return (
-    <div className='grid grid-cols-[0.8fr_1.9fr_1.3fr_1.5fr_1fr] items-center py-4 px-2 text-white text-sm md:text-base'>
+    <div className='grid grid-cols-[0.8fr_1.9fr_1.3fr_1.5fr_1fr] items-center py-4 px-2 text-white text-sm md:text-base place-content-center'>
       <div className='font-bold text-violet-400'>
-        {asset.symbol.slice(0, 3)}
+         {assetCode}
       </div>
-
-      <div className='text-white'>
-        {HelperService.formatCurrency(asset.lastPrice)}
+      <div>
+        {ticker?.lastPrice && HelperService.formatCurrency(ticker.lastPrice)}
       </div>
-
       <div
         className={`${
-          asset.price24hPcnt >= 0 ? 'text-green-500' : 'text-red-500'
+          ticker && ticker.price24hPcnt >= 0 ? 'text-green-500' : 'text-red-500'
         }`}
       >
-        {asset.price24hPcnt > 0 ? '+' : ''}
-        {Math.round(asset.price24hPcnt * 100) / 100}%
+        {ticker?.price24hPcnt}%
       </div>
-
-      <div className='place-content-center text-violet-500'>
-        {Math.round(asset.usdIndexPrice * 100) / 100}
-      </div>
+      <HomeLiveChart assetId={assetId} />
 
       <Link
         to='/registration'
@@ -38,7 +52,7 @@ export const Coin = ({ asset }: ICoinProps) => {
       >
         Trade Now →
       </Link>
-      <LiveHistory />
     </div>
   );
 };
+export default Coin;
