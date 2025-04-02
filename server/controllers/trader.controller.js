@@ -77,11 +77,32 @@ class TraderController {
 
   async cancelOrder(req, res, next) {
     try {
+      const userId = req.user.id;
       const { id } = req.params;
 
-      const deletedOrder = await tradeService.cancelOrder(id);
+      const deletedOrder = await tradeService.cancelOrder(id, userId);
 
       return res.status(200).json(deletedOrder);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateUserOrder(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+
+      const { triggerPrice, amount } = req.body;
+
+      const editedOrder = await tradeService.editUserOrder(
+        id,
+        userId,
+        triggerPrice,
+        amount
+      );
+
+      return res.status(200).json(editedOrder);
     } catch (e) {
       next(e);
     }

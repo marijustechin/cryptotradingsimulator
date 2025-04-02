@@ -18,8 +18,8 @@ export const OpenOrders = () => {
   }, [dispatch, openOrders, user.id]);
 
   return (
-    <div className="border-separate border-spacing-y-2 w-full table">
-      <table className="table">
+    <div className="">
+      <table className="border-separate border-spacing-y-2 w-full table">
         <thead>
           <tr className="text-gray-500">
             <th>Market</th>
@@ -27,7 +27,7 @@ export const OpenOrders = () => {
             <th>Direction</th>
             <th>Price</th>
             <th>Order Qty</th>
-            <th>Order Value</th>
+            <th>Entry Price</th>
             <th>Order Time</th>
             <th>Action</th>
           </tr>
@@ -52,8 +52,11 @@ export const OpenOrders = () => {
               >
                 {order.ord_direct}
               </td>
-              <td>{parseFloat(Number(order.triggerPrice).toFixed(2))}</td>
-              <td>{order.amount}</td>
+              <td>
+                {parseFloat(Number(order.triggerPrice).toFixed(2))}{" "}
+                <span className="text-gray-400 text-[12px]">USDT</span>
+              </td>
+              <td className="text-green-700">{order.amount}</td>
               <td>{order.amount * order.triggerPrice}</td>
               <td>{order.open_date}</td>
               <td>

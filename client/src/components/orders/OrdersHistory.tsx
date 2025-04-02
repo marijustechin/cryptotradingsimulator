@@ -12,9 +12,6 @@ export const OrdersHistory = () => {
   const user = useAppSelector(selectUser);
   const ordersHistory = useAppSelector(selectOrdersHistory);
 
-  // jei vartotojo statusas open - open date
-  // jei vartotojo statusas closed - closed date
-
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toISOString().slice(0, 19).replace("T", " ");
