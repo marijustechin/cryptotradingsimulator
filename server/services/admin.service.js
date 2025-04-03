@@ -1,5 +1,5 @@
 const sequelize = require('../config/db');
-const { user } = sequelize.models;
+const { user, userLogs } = sequelize.models;
 
 class AdminService {
   async getGeneralData() {
