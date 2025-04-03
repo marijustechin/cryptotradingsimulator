@@ -44,7 +44,7 @@ $api.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error('No refresh token, logging out...', refreshError);
-        localStorage.removeItem('accessToken');
+        await $api.post<{ message: string }>(`/users/logout`);
         window.location.href = '/login';
       }
     }
