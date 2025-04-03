@@ -11,7 +11,7 @@ const UserProfilePage = () => {
 
   return (
     <main className='flex flex-col gap-3'>
-      <h1 className='title-first text-center'>User profile</h1>
+      <h1>User profile</h1>
 
       <div className='my-4 grid grid-cols-1 lg:grid-cols-2 gap-4'>
         {/* Left column: Update form */}

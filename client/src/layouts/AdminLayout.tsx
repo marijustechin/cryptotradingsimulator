@@ -21,7 +21,7 @@ const AdminLayout = () => {
   // Handle window resize event to detect desktop size
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1440); // Adjust this breakpoint as needed (1280px for xl)
+      setIsDesktop(window.innerWidth >= 768); // Adjust this breakpoint as needed (1280px for xl)
     };
 
     handleResize(); // Check initial screen size
