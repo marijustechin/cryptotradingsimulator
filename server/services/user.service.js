@@ -1,5 +1,5 @@
-const bcrypt = require("bcryptjs");
-const sequelize = require("../config/db");
+const bcrypt = require('bcryptjs');
+const sequelize = require('../config/db');
 const {
   user,
   asset,
@@ -9,10 +9,11 @@ const {
   portfolio,
   instrument,
 } = sequelize.models;
-const ApiError = require("../exceptions/api.errors");
-const tokenService = require("../services/token.service");
-const { UserInfoDto, AllUsersDto } = require("../dtos/user.dto");
-const Op = require("sequelize").Op;
+const ApiError = require('../exceptions/api.errors');
+const tokenService = require('../services/token.service');
+const userLogService = require('../services/userLog.service');
+const { UserInfoDto, AllUsersDto } = require('../dtos/user.dto');
+const Op = require('sequelize').Op;
 
 class UserService {
   /**
@@ -51,7 +52,7 @@ class UserService {
 
       await transaction.commit();
 
-      return { message: "Registration successful. Please login." };
+      return { message: 'Registration successful. Please login.' };
     } catch (e) {
       await transaction.rollback();
       throw ApiError.BadRequest(`Registration failed: ${e.message}`);
@@ -64,7 +65,7 @@ class UserService {
    * @param {*} password
    * @returns tokenus ir naudotojo duomenis {id, role}
    */
-  async login(email, password) {
+  async login(email, password, ip) {
     const activeUser = await user.findOne({
       where: { email },
       include: [user_secret, wallet],
@@ -89,6 +90,9 @@ class UserService {
 
     await tokenService.saveRefreshToken(activeUser.id, tokens.refreshToken);
 
+    // loginam userio data
+    await userLogService.logUserLogin(activeUser.id, ip);
+
     return {
       ...tokens,
       user: {
@@ -108,7 +112,7 @@ class UserService {
     // patikrinam, ar tokenas validus
     const userData = tokenService.validateRefreshToken(refreshToken);
 
-    if (!userData) throw ApiError.BadRequest("Invalid request");
+    if (!userData) throw ApiError.BadRequest('Invalid request');
 
     const token = await tokenService.removeToken(refreshToken);
 
@@ -116,7 +120,7 @@ class UserService {
   }
 
   async getUserInfo(authorizationHeader) {
-    const accessToken = authorizationHeader.split(" ")[1];
+    const accessToken = authorizationHeader.split(' ')[1];
 
     if (!accessToken) throw ApiError.UnauthorizedError();
 
@@ -145,22 +149,22 @@ class UserService {
   async getAllUsers(
     page = 1,
     limit = 10,
-    sort = "first_name:asc",
-    filter = ""
+    sort = 'first_name:asc',
+    filter = ''
   ) {
-    const sortOptions = sort.split(":");
+    const sortOptions = sort.split(':');
 
-    let whereCondition = "";
+    let whereCondition = '';
 
     if (filter) {
-      const filterOptions = filter.split(":");
+      const filterOptions = filter.split(':');
       // postgres iesko pagal didziasias ir mazasias raides
       // o mysql/mariadb tas pats
       // todel verciam stulpelius i LOWER tam, kad abejose
       // db nekreiptu demesio i raidziu registra
       whereCondition = {
         [filterOptions[0]]: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col(filterOptions[0])), // stulpelis mazisios
+          sequelize.fn('LOWER', sequelize.col(filterOptions[0])), // stulpelis mazisios
           { [Op.like]: `%${filterOptions[1].toLowerCase()}%` } // paieskos tekstas mazosios
         ),
       };
@@ -202,11 +206,11 @@ class UserService {
   async deleteUser(id) {
     const foundUser = await user.findOne({ where: { id } });
 
-    if (!foundUser) throw ApiError.BadRequest("No such user");
+    if (!foundUser) throw ApiError.BadRequest('No such user');
 
     await foundUser.destroy();
 
-    return "User deteted";
+    return 'User deteted';
   }
 
   async refresh(refreshToken) {
@@ -242,7 +246,7 @@ class UserService {
     }
 
     const userToUpdate = await user.findByPk(userId);
-    if (!userToUpdate) throw ApiError.NotFound("User not found");
+    if (!userToUpdate) throw ApiError.NotFound('User not found');
 
     await userToUpdate.update(updateData);
     return new UserInfoDto(userToUpdate);
@@ -250,10 +254,10 @@ class UserService {
 
   async changePassword(userId, currentPassword, newPassword, repeatPassword) {
     if (!currentPassword || !newPassword || !repeatPassword) {
-      throw ApiError.BadRequest("All fields are required");
+      throw ApiError.BadRequest('All fields are required');
     }
     if (newPassword !== repeatPassword) {
-      throw ApiError.BadRequest("New passwords do not match");
+      throw ApiError.BadRequest('New passwords do not match');
     }
 
     const userSecret = await user_secret.findOne({
@@ -261,12 +265,12 @@ class UserService {
     });
 
     if (!userSecret) {
-      throw ApiError.NotFound("User not found");
+      throw ApiError.NotFound('User not found');
     }
 
     //patikrina dabartini slaptazodi
     const isMatch = await bcrypt.compare(currentPassword, userSecret.password);
-    if (!isMatch) throw ApiError.BadRequest("Incorrect current password");
+    if (!isMatch) throw ApiError.BadRequest('Incorrect current password');
 
     //patikrina ar naujas slaptazodis skiriasi nuo senojo
     const isSamePassword = await bcrypt.compare(
@@ -275,7 +279,7 @@ class UserService {
     );
     if (isSamePassword) {
       throw ApiError.ConflictError(
-        "The new password must be different from the old password"
+        'The new password must be different from the old password'
       );
     }
 
@@ -285,7 +289,7 @@ class UserService {
     // istrina sena tokena (force logout)
     await tokenService.removeTokenByUserId(userId);
 
-    return "Password updated successfully.";
+    return 'Password updated successfully.';
   }
 
   async getUserPortfolioById(userId, transaction) {
@@ -295,8 +299,8 @@ class UserService {
         include: [
           {
             model: instrument,
-            as: "instrument",
-            attributes: ["id"],
+            as: 'instrument',
+            attributes: ['id'],
           },
         ],
         transaction,
@@ -308,15 +312,15 @@ class UserService {
         include: [
           {
             model: instrument,
-            as: "instrument",
-            attributes: ["id"], // ka norim pasiimti is instrument lenteles
+            as: 'instrument',
+            attributes: ['id'], // ka norim pasiimti is instrument lenteles
           },
         ],
         transaction,
       });
 
       if (!getUserById && getUserTransaction.length === 0) {
-        console.log("Transakciju nerasta");
+        console.log('Transakciju nerasta');
       }
 
       return {
@@ -324,7 +328,7 @@ class UserService {
         portfolio: getUserById,
       };
     } catch (error) {
-      console.error("There was error with getUserById", error);
+      console.error('There was error with getUserById', error);
       throw new Error();
     }
   }

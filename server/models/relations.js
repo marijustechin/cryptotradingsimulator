@@ -1,5 +1,5 @@
 function modelRelations(sequelize) {
-  const { user, user_secret, token, wallet, instrument, orders } =
+  const { user, user_secret, token, wallet, instrument, orders, userLogs } =
     sequelize.models;
 
   // --- User relations ---
@@ -14,6 +14,9 @@ function modelRelations(sequelize) {
 
   user.hasMany(orders, { foreignKey: 'userId', onDelete: 'CASCADE' });
   orders.belongsTo(user, { foreignKey: 'userId' });
+
+  user.hasMany(userLogs, { foreignKey: 'userId', onDelete: 'CASCADE' });
+  userLogs.belongsTo(user, { foreignKey: 'userId' });
 
   // --- Instrument relations ---
   instrument.hasMany(orders, { foreignKey: 'assetId' });

@@ -21,6 +21,7 @@ const allModels = [
   require('../models/user.model'),
   require('../models/order.model'),
   require('../models/instrument.model'),
+  require('../models/userLogs.model'),
 ];
 
 for (const modelDefiner of allModels) {
