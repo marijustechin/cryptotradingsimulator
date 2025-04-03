@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Sidebar } from '../../components/sidebar/Sidebar';
-import { adminLinks } from '../../components/sidebar/adminLinks';
+
 import {
   BarChart,
   Bar,
@@ -13,6 +11,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { DashboardCardUsers } from '../../components/admin/DashboardCardUsers';
+import { Card } from '../../components/admin/AdminCard';
 
 const userData = [
   { name: 'Январь', users: 400 },
@@ -37,16 +36,18 @@ const activityData = [
 const AdminDashboardPage = () => {
 
   return (
-    <main className='flex-1 p-6 bg-gray-800 lg:bg-transparent'>
+    <main className='flex-1 p-6 bg-gray-800 md:bg-transparent'>
           {/* sitam dive turi buti trys atskiri komponentai
         Jei kas nors kartojasi, turi eiti į atskirą komponentą
         pvz. tavo card -turi būti atskiras kompoenetas
         */}
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-6'>
+          <div className='grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center'>
             {/* <Card title='Total users' value='$87,743' /> */}
             <DashboardCardUsers />
-            <Card title='Total Deposits' value='$78,342' />
-            <Card title='APY' value='+12.3%' />
+            <div className='w-full space-y-2'>
+            <Card title='Orders Value' value='$78,342'/>
+            <Card title='Finance Flow' value='$12,342' />
+            </div>
           </div>
 
           {/* user stats - cia irgi atskiras komponentas
@@ -121,17 +122,6 @@ const AdminDashboardPage = () => {
   );
 };
 
-// metrikos
-const Card = ({ title, value }: { title: string; value: string }) => (
-  <div className='bg-gray-700/40 p-6 shadow-lg backdrop-blur-md flex flex-col justify-center items-center rounded-2xl'>
-    <h3 className='text-lg font-semibold text-gray-200'>
-      {title}
-    </h3>
-    <p className='text-2xl font-bold text-gray-100'>
-      {value}
-    </p>
-  </div>
-);
 
 // crypto price
 const CryptoCard = ({
