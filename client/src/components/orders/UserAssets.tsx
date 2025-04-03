@@ -1,12 +1,12 @@
-import useWebSocket from "react-use-websocket";
+import useWebSocket from 'react-use-websocket';
 import {
   getUserAssets,
   selectUserAssets,
-} from "../../store/features/orders/ordersSlice";
-import { selectUser } from "../../store/features/user/authSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { WS_URL } from "../../api/ws";
-import { useEffect, useState, useMemo } from "react";
+} from '../../store/features/orders/ordersSlice';
+import { selectUser } from '../../store/features/user/authSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { WS_URL } from '../../api/ws';
+import { useEffect, useState, useMemo } from 'react';
 
 interface ILivePrices {
   symbol: string;
@@ -31,7 +31,7 @@ export const UserAssets = () => {
     share: false,
     shouldReconnect: () => true,
     onOpen: () => {
-      sendJsonMessage({ type: "subscribe", role: "live" });
+      sendJsonMessage({ type: 'subscribe', role: 'live' });
     },
     onMessage: (event) => {
       const parsedData = JSON.parse(event.data);
@@ -87,9 +87,9 @@ export const UserAssets = () => {
 
   return (
     <div>
-      <table className=" table">
+      <table className="table border-separate border-spacing-y-2">
         <thead>
-          <tr className="text-gray-500">
+          <tr className="text-white bg-gray-800">
             <th>Asset</th>
             <th>Net Asset Value</th>
             <th>Balance</th>
@@ -99,7 +99,7 @@ export const UserAssets = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="hover:bg-gray-800">
+          <tr className="bg-gray-700">
             <td>USD</td>
             <td className="min-w-[80px]">
               {parseFloat(Number(user.balance).toFixed(2))} USD
@@ -111,8 +111,11 @@ export const UserAssets = () => {
             <td>—</td>
             <td>—</td>
           </tr>
-          {assetRows.map((row) => (
-            <tr className="hover:bg-gray-800" key={row.asset}>
+          {assetRows.map((row, index) => (
+            <tr
+              className={index % 2 ? 'bg-gray-700' : 'bg-gray-800'}
+              key={row.asset}
+            >
               <td>{row.asset}</td>
               <td className="min-w-[80px]">{row.netAssetValue} USD</td>
               <td>{row.balance}</td>
@@ -121,8 +124,8 @@ export const UserAssets = () => {
               <td
                 className={`min-w-[80px] ${
                   parseFloat(row.pnlAmount) >= 0
-                    ? "text-green-500"
-                    : "text-red-500"
+                    ? 'text-green-500'
+                    : 'text-red-500'
                 }`}
               >
                 {parseFloat(Number(row.pnlAmount).toFixed(2))} USD (

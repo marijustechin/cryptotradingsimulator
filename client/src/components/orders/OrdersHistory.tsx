@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { selectUser } from "../../store/features/user/authSlice";
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { selectUser } from '../../store/features/user/authSlice';
 import {
   selectOrdersHistory,
   getOrdersHistory,
-} from "../../store/features/orders/ordersSlice";
+} from '../../store/features/orders/ordersSlice';
 
 export const OrdersHistory = () => {
   // dispatch - nueina į duomenu baze ir atnaujina state naujais duomenim.
@@ -14,8 +14,12 @@ export const OrdersHistory = () => {
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    return date.toISOString().slice(0, 19).replace("T", " ");
+    return date.toISOString().slice(0, 19).replace('T', ' ');
   };
+
+  const filterOrders = ordersHistory?.filter(
+    (item) => item.ord_status === 'closed'
+  );
 
   useEffect(() => {
     if (!ordersHistory && user.id) {
@@ -25,26 +29,28 @@ export const OrdersHistory = () => {
 
   return (
     <div>
-      <table className="border-separate border-spacing-y-2 w-full table">
+      <table className="border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent ">
         <thead>
-          <tr className="text-gray-500">
+          <tr className="text-white bg-gray-800">
             <th>Market</th>
             <th>Order type</th>
             <th>Direction</th>
             <th>Order Price</th>
             <th>Order Quantity</th>
-            <th>Status</th>
             <th>Order Time</th>
           </tr>
         </thead>
         <tbody>
-          {ordersHistory?.map((order) => (
-            <tr className="hover:bg-gray-800" key={order.id}>
+          {filterOrders?.map((order, index) => (
+            <tr
+              className={index % 2 ? 'bg-gray-800' : 'bg-gray-700'}
+              key={order.id}
+            >
               <td
                 className={
-                  order.ord_direct === "buy"
-                    ? "border-l-[2px] border-green-700"
-                    : "border-l-[2px] border-red-700"
+                  order.ord_direct === 'buy'
+                    ? 'border-l-[2px] border-green-700'
+                    : 'border-l-[2px] border-red-700'
                 }
                 key={order.id}
               >
@@ -53,7 +59,7 @@ export const OrdersHistory = () => {
               <td>{order.ord_type}</td>
               <td
                 className={
-                  order.ord_direct === "buy" ? "text-green-700" : "text-red-700"
+                  order.ord_direct === 'buy' ? 'text-green-700' : 'text-red-700'
                 }
               >
                 {order.ord_direct}
@@ -67,10 +73,9 @@ export const OrdersHistory = () => {
                   {order.assetId}
                 </span>
               </td>
-              <td>{order.ord_status}</td>
               <td>
                 {formatDate(
-                  order.ord_status === "open"
+                  order.ord_status === 'open'
                     ? order.open_date
                     : order.closed_date
                 )}
