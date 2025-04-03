@@ -5,19 +5,6 @@ const SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
 
 let ws;
 
-function getClosestPriceMatch(orderPrice, priceData) {
-  const candidates = [
-    priceData.open,
-    priceData.close,
-    priceData.high,
-    priceData.low,
-  ];
-
-  return candidates.reduce((prev, curr) =>
-    Math.abs(curr - orderPrice) < Math.abs(prev - orderPrice) ? curr : prev
-  );
-}
-
 function subscribeAll() {
   SYMBOLS.forEach((symbol) => {
     ws.send(
