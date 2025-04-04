@@ -60,7 +60,11 @@ export const OpenOrders = () => {
                 <span className="text-gray-400 text-[12px]">USDT</span>
               </td>
               <td className="text-green-700">{order.amount}</td>
-              <td>{order.amount * order.triggerPrice}</td>
+              <td>
+                {parseFloat(
+                  Number(order.amount * order.triggerPrice).toFixed(2)
+                )}
+              </td>
               <td>{order.open_date}</td>
               <td>
                 <button>Cancel</button>

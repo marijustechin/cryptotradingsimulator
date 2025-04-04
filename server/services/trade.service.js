@@ -1,10 +1,11 @@
 const sequelize = require('../config/db');
 const { Op } = require('sequelize');
-const { orders, wallet, instrument } = sequelize.models;
+const { orders, wallet, instrument, user } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const { nanoid } = require('nanoid');
 const ProfitService = require('./profit.service');
 const helperService = require('./helper.service');
+const EmailService = require('./email.service');
 
 class TradeService {
   async buyCrypto(
@@ -43,6 +44,7 @@ class TradeService {
         ord_type === 'market' ||
         (ord_type === 'limit' && price === triggerPrice);
 
+
       const ord_status = isInstantExecution ? 'closed' : 'open';
       const closed_date = isInstantExecution ? new Date() : null;
       await orders.create(
@@ -61,6 +63,12 @@ class TradeService {
         },
         { transaction }
       );
+
+      if (isInstantExecution) {
+        await EmailService.sendMailer(userId);
+      }
+
+      console.log("Turetu issiusti i email")
 
       // 3. komitinam
       await transaction.commit();

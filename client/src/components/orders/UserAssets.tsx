@@ -119,7 +119,7 @@ export const UserAssets = () => {
               <td>{row.asset}</td>
               <td className="min-w-[80px]">{row.netAssetValue} USD</td>
               <td>{row.balance}</td>
-              <td className="min-w-[80px]">{row.spotCost} USD</td>
+              <td className="min-w-[80px]">{parseFloat(Number(row.spotCost).toFixed(2))} USD</td>
               <td className="min-w-[80px]">{row.lastPrice} USD</td>
               <td
                 className={`min-w-[80px] ${
