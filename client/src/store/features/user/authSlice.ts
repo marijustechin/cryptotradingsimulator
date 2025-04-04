@@ -148,6 +148,7 @@ const authSlice = createSlice({
         state.status = 'idle';
         state.user = { id: null, role: null, balance: null };
         state.accessToken = null; // pasalinam tokena
+        localStorage.removeItem('accessToken');
         state.error = null;
       })
       .addCase(restoreSession.fulfilled, (state, action) => {

@@ -220,14 +220,25 @@ class UserService {
     const tokenFromDb = await tokenService.findToken(refreshToken);
     if (!userData || !tokenFromDb) throw ApiError.UnauthorizedError();
 
-    const activeUser = await user.findOne({ where: { id: userData.id } });
+    const activeUser = await user.findOne({
+      where: { id: userData.id },
+      include: [wallet],
+    });
 
     const tokens = tokenService.generateTokens({
       id: activeUser.id,
       role: activeUser.role,
+      balance: activeUser.wallet.balance,
     });
 
-    return { ...tokens, user: { id: activeUser.id, role: activeUser.role } };
+    return {
+      ...tokens,
+      user: {
+        id: activeUser.id,
+        role: activeUser.role,
+        balance: activeUser.wallet.balance,
+      },
+    };
   }
 
   async updateUser(userId, updateData) {
