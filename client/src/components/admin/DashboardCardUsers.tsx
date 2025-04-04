@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import {
-  getAdminUserInfo,
   getGeneralInfo,
+  selectAdminUserInfo,
 } from '../../store/features/admin/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 
-
 export const DashboardCardUsers = () => {
   const dispatch = useAppDispatch();
-  const usersInfo = useAppSelector(getAdminUserInfo);
+  const usersInfo = useAppSelector(selectAdminUserInfo);
 
   const [outerRadius, setOuterRadius] = useState(90);
 
@@ -71,8 +70,10 @@ export const DashboardCardUsers = () => {
       {/* Left side: user stats and legend */}
       <div className='flex flex-col justify-center gap-4'>
         <div>
-        <h3>Monthly Activity</h3>
-          <h5 className='mt-2 font-semibold'>Total users: {usersInfo?.userCount}</h5>
+          <h3>Monthly Activity</h3>
+          <h5 className='mt-2 font-semibold'>
+            Total users: {usersInfo?.userCount}
+          </h5>
         </div>
 
         <div className='flex items-center gap-2'>
