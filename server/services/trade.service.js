@@ -30,11 +30,7 @@ class TradeService {
       if (!userWallet) {
         throw new Error('Wallet not found for user');
       }
-
-      if (parseFloat(userWallet.balance) < cost) {
-        throw new Error('Insufficient balance');
-      }
-
+      
       // Jei viskas ok, atimam
       userWallet.balance = parseFloat(userWallet.balance) - cost;
 

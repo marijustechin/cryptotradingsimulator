@@ -16,7 +16,11 @@ import {
   setUserBalance,
 } from '../../store/features/user/authSlice';
 import OrdersService from '../../services/OrdersService';
-import { getOpenOrders } from '../../store/features/orders/ordersSlice';
+import {
+  getOpenOrders,
+  getUserAssets,
+  selectUserAssets,
+} from '../../store/features/orders/ordersSlice';
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +29,7 @@ export const PlaceOrderButton = () => {
   const currentPrices = useAppSelector(getCurrentPrices);
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
+  const order = useAppSelector(selectUserAssets);
 
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
@@ -59,10 +64,21 @@ export const PlaceOrderButton = () => {
       toast.error('Insufficient funds');
       return;
     }
+    
     // 4. Jei parduoda, ar turi tokia valiuta?
     if (tradingOptions.orderDirection === 'sell') {
-      // tikrinam ar turi ir kiek turi
-      // bus veliau
+      const assets = await dispatch(
+        getUserAssets({ userId: user.id })
+      ).unwrap();
+
+      const isHaveAsset = assets.some(
+        (asset) => asset.asset === selectedCrypto
+      );
+
+      if (!isHaveAsset) {
+        toast.error("You don't have this asset to sell");
+        return;
+      }
     }
 
     try {
@@ -93,11 +109,11 @@ export const PlaceOrderButton = () => {
   };
 
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex flex-col sm:flex-row sm:gap-3 gap-2'>
-        <div className='flex gap-2 items-center'>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col sm:flex-row sm:gap-3 gap-2">
+        <div className="flex gap-2 items-center">
           <label
-            className='text-sm text-violet-300'
+            className="text-sm text-violet-300"
             htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
@@ -107,16 +123,16 @@ export const PlaceOrderButton = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               dispatch(setAmount(Number(e.target.value)))
             }
-            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
-            type='number'
+            className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
+            type="number"
             value={tradingOptions.amount}
             min={0.01}
           />
         </div>
         {tradingOptions.orderType === 'limit' && (
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <label
-              className='text-sm text-violet-300'
+              className="text-sm text-violet-300"
               htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
@@ -126,8 +142,8 @@ export const PlaceOrderButton = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
-              className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
-              type='number'
+              className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
+              type="number"
               min={0.01}
               value={tradingOptions.triggerPrice}
             />
