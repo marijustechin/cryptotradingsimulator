@@ -7,6 +7,7 @@ import { selectUser } from '../../store/features/user/authSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { WS_URL } from '../../api/ws';
 import { useEffect, useState, useMemo } from 'react';
+import { DataExport } from './DataExport';
 
 interface ILivePrices {
   symbol: string;
@@ -87,9 +88,10 @@ export const UserAssets = () => {
 
   return (
     <div>
-      <table className="table border-separate border-spacing-y-2">
+      <DataExport type='Assets' />
+      <table className='table border-separate border-spacing-y-2'>
         <thead>
-          <tr className="text-white bg-gray-800">
+          <tr className='text-white bg-gray-800'>
             <th>Asset</th>
             <th>Net Asset Value</th>
             <th>Balance</th>
@@ -99,12 +101,12 @@ export const UserAssets = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-gray-700">
+          <tr className='bg-gray-700'>
             <td>USD</td>
-            <td className="min-w-[80px]">
+            <td className='min-w-[80px]'>
               {parseFloat(Number(user.balance).toFixed(2))} USD
             </td>
-            <td className="min-w-[80px]">
+            <td className='min-w-[80px]'>
               {parseFloat(Number(user.balance).toFixed(2))}
             </td>
             <td>—</td>
@@ -117,10 +119,12 @@ export const UserAssets = () => {
               key={row.asset}
             >
               <td>{row.asset}</td>
-              <td className="min-w-[80px]">{row.netAssetValue} USD</td>
+              <td className='min-w-[80px]'>{row.netAssetValue} USD</td>
               <td>{row.balance}</td>
-              <td className="min-w-[80px]">{parseFloat(Number(row.spotCost).toFixed(2))} USD</td>
-              <td className="min-w-[80px]">{row.lastPrice} USD</td>
+              <td className='min-w-[80px]'>
+                {parseFloat(Number(row.spotCost).toFixed(2))} USD
+              </td>
+              <td className='min-w-[80px]'>{row.lastPrice} USD</td>
               <td
                 className={`min-w-[80px] ${
                   parseFloat(row.pnlAmount) >= 0

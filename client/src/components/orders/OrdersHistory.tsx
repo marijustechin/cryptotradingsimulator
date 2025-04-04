@@ -5,6 +5,7 @@ import {
   selectOrdersHistory,
   getOrdersHistory,
 } from '../../store/features/orders/ordersSlice';
+import { DataExport } from './DataExport';
 
 export const OrdersHistory = () => {
   // dispatch - nueina į duomenu baze ir atnaujina state naujais duomenim.
@@ -12,7 +13,7 @@ export const OrdersHistory = () => {
   const user = useAppSelector(selectUser);
   const ordersHistory = useAppSelector(selectOrdersHistory);
 
-  const formatDate = (isoString) => {
+  const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     return date.toISOString().slice(0, 19).replace('T', ' ');
   };
@@ -29,9 +30,10 @@ export const OrdersHistory = () => {
 
   return (
     <div>
-      <table className="border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent ">
+      <DataExport type='History' />
+      <table className='border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent '>
         <thead>
-          <tr className="text-white bg-gray-800">
+          <tr className='text-white bg-gray-800'>
             <th>Market</th>
             <th>Order type</th>
             <th>Direction</th>
@@ -69,7 +71,7 @@ export const OrdersHistory = () => {
               </td>
               <td>
                 {order.amount}/
-                <span className="text-gray-400 text-[12px]">
+                <span className='text-gray-400 text-[12px]'>
                   {order.assetId}
                 </span>
               </td>
