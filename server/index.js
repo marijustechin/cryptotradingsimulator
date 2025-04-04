@@ -1,11 +1,11 @@
-require("dotenv").config();
+require('dotenv').config();
 const {
   startWebSocketService,
-} = require("./services/close.limit.orders.service");
+} = require('./services/close.limit.orders.service');
 const port = process.env.PORT || 3003;
-const sequelize = require("./config/db");
+const sequelize = require('./config/db');
 
-const app = require("./app");
+const app = require('./app');
 
 const startServer = async () => {
   try {
