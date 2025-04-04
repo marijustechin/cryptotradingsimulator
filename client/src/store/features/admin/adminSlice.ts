@@ -1,17 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IGeneralInfo, IUserGeneral } from '../../../types/admin';
+import {
+  IAdminOrderInfo,
+  IGeneralInfo,
+  IUserGeneral,
+} from '../../../types/admin';
 import HelperService from '../../../services/HelperService';
 import AdminService from '../../../services/AdminService';
 import { RootState } from '../../store';
 
 interface AdminSliceState {
   userInfo: IUserGeneral | null;
+  orderInfo: IAdminOrderInfo | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: AdminSliceState = {
   userInfo: null,
+  orderInfo: null,
   status: 'idle',
   error: null,
 };
@@ -39,10 +45,15 @@ export const adminSlice = createSlice({
       })
       .addCase(getGeneralInfo.fulfilled, (state, action) => {
         state.userInfo = action.payload.userInfo;
+        state.orderInfo = action.payload.orderInfo;
+      })
+      .addCase(getGeneralInfo.rejected, (state, action) => {
+        state.error = action.payload as string;
       });
   },
 });
 
-export const getAdminUserInfo = (state: RootState) => state.admin.userInfo;
+export const selectAdminUserInfo = (state: RootState) => state.admin.userInfo;
+export const selectAdminOrderInfo = (state: RootState) => state.admin.orderInfo;
 
 export default adminSlice.reducer;
