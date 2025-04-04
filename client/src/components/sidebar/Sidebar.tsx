@@ -64,8 +64,8 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
           <div>
             {mainNavLinks
               .filter((link) => link.title !== 'My Dashboard')
-              .map((link, index) => (
-                <li key={index}>
+              .map((link) => (
+                <li key={link.title}>
                   <NavLink
                     to={link.href}
                     className={`flex items-center p-4 rounded-lg hover:bg-gray-800 transition duration-200 text-lg font-medium
@@ -83,8 +83,8 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
           </div>
 
           {/* Other navLinks (for larger screens, still on mobile but should appear) */}
-          {navLinks.map((link, index) => (
-            <li key={index}>
+          {navLinks.map((link) => (
+            <li key={link.title}>
               <NavLink
                 to={link.href}
                 className={`flex items-center p-4 rounded-lg hover:bg-gray-800 transition duration-200 text-lg font-medium

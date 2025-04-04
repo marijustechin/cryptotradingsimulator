@@ -30,9 +30,11 @@ class TradeService {
       if (!userWallet) {
         throw new Error('Wallet not found for user');
       }
-      
-      // Jei viskas ok, atimam
-      userWallet.balance = parseFloat(userWallet.balance) - cost;
+
+      // Jei viskas ok, atimam is balanso
+      // iskaitant ir mokesti
+      const fee = ord_type === 'market' ? cost * 0.015 : cost * 0.0045;
+      userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
 
       await userWallet.save({ transaction });
 

@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
-const sequelize = require("../config/db");
+const jwt = require('jsonwebtoken');
+const sequelize = require('../config/db');
 const { token } = sequelize.models;
 
 class TokenService {
   // payload - tai duomenys, kuriuos tures uzsifruotus jwt
-  // cia turetu buti role ir naudotojo ID
+  // cia turetu buti role ir naudotojo ID + balansas
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
       expiresIn: process.env.JWT_ACCESS_EXPIRES,
