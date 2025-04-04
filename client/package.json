@@ -17,6 +17,8 @@
     "@tailwindcss/vite": "^4.0.8",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",
     "lightweight-charts": "^5.0.3",
     "motion": "^12.4.10",

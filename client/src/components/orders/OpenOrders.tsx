@@ -5,6 +5,7 @@ import {
 } from '../../store/features/orders/ordersSlice';
 import { selectUser } from '../../store/features/user/authSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { DataExport } from './DataExport';
 
 export const OpenOrders = () => {
   const dispatch = useAppDispatch();
@@ -18,10 +19,11 @@ export const OpenOrders = () => {
   }, [dispatch, openOrders, user.id]);
 
   return (
-    <div className="">
-      <table className="border-separate border-spacing-y-2 w-full table">
+    <div className=''>
+      <DataExport type='Open orders' />
+      <table className='border-separate border-spacing-y-2 w-full table'>
         <thead>
-          <tr className="text-white bg-gray-800">
+          <tr className='text-white bg-gray-800'>
             <th>Market</th>
             <th>Order Type</th>
             <th>Direction</th>
@@ -57,9 +59,9 @@ export const OpenOrders = () => {
               </td>
               <td>
                 {parseFloat(Number(order.triggerPrice).toFixed(2))}{' '}
-                <span className="text-gray-400 text-[12px]">USDT</span>
+                <span className='text-gray-400 text-[12px]'>USDT</span>
               </td>
-              <td className="text-green-700">{order.amount}</td>
+              <td className='text-green-700'>{order.amount}</td>
               <td>
                 {parseFloat(
                   Number(order.amount * order.triggerPrice).toFixed(2)

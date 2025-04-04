@@ -18,14 +18,7 @@ import {
   selectAdminUserInfo,
 } from '../../store/features/admin/adminSlice';
 import { useEffect } from 'react';
-
-const userData = [
-  { name: 'Январь', users: 400 },
-  { name: 'Февраль', users: 300 },
-  { name: 'Март', users: 500 },
-  { name: 'Апрель', users: 200 },
-  { name: 'Май', users: 600 },
-];
+import HelperService from '../../services/HelperService';
 
 const cryptoData = [
   { name: 'BTC', price: 28000, change: '+1.2%' },
@@ -47,6 +40,13 @@ const AdminDashboardPage = () => {
   const ordersByCryptoData = orderInfo?.ordersByCrypto;
   const incomeByOrderType = orderInfo?.income;
 
+  const totalOrders = ordersByCryptoData?.reduce((acc, item) => {
+    return acc + Number(item.count);
+  }, 0);
+  const totalIncome = incomeByOrderType?.reduce((acc, item) => {
+    return acc + Number(item.total_fee);
+  }, 0);
+
   return (
     <main className='flex-1 p-6 bg-gray-800 md:bg-transparent'>
       {/* sitam dive turi buti trys atskiri komponentai
@@ -66,14 +66,19 @@ const AdminDashboardPage = () => {
           nu ir taip toliau - manau čia viskas aišku
           */}
       <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
-        <h2 className='text-xl font-semibold text-gray-200 mb-4'>USER STATS</h2>
+        <h2 className='text-xl font-semibold text-gray-200 mb-4'>
+          Total Income{' '}
+          <span className='text-emerald-500'>
+            {totalIncome && HelperService.formatCurrency(totalIncome)}
+          </span>
+        </h2>
         <ResponsiveContainer width='100%' height={300}>
-          <BarChart data={userData}>
+          <BarChart data={incomeByOrderType}>
             <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='name' stroke='#8884d8' />
             <YAxis />
+            <XAxis dataKey='ord_type' stroke='#8884d8' />
             <Tooltip />
-            <Bar dataKey='users' fill='#8884d8' barSize={50} />
+            <Bar dataKey='total_fee' fill='#8884d8' barSize={50} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -88,7 +93,7 @@ const AdminDashboardPage = () => {
       {/* user activity */}
       <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
         <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
-          Orders by Crypto
+          Total orders <span className='text-emerald-500'>{totalOrders}</span>
         </h2>
         <ResponsiveContainer width='100%' height={300}>
           <LineChart data={ordersByCryptoData}>
