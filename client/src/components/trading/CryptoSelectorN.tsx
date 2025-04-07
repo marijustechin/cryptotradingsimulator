@@ -23,7 +23,7 @@ export const CryptoSelector = () => {
   };
 
   return (
-    <div className='flex flex-col gap-2 items-center sm:flex-row sm:gap-3 w-full'>
+    <div className='flex flex-col gap-2 items-center sm:flex-row sm:gap-3 w-auto'>
       {symbolData && (
         <div className='w-10 h-10 flex items-center justify-center'>
           <img

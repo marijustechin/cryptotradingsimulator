@@ -14,11 +14,11 @@ export const TopCryptos = () => {
       <TickersN />
 
       {/* Spot Trading Section */}
-      <div className="flex flex-col gap-3 items-center text-center sm:flex-row sm:text-left">
-        <h3 className="text-lg sm:text-2xl text-violet-300 font-semibold">
+      <div className="flex flex-col gap-3 items-center text-center lg:flex-row lg:text-left">
+        <h3 className="text-lg lg:text-2xl text-violet-300 font-semibold">
           Spot Trading
         </h3>
-        <p className="text-xs sm:text-sm text-violet-400">
+        <p className="text-xs lg:text-sm text-violet-400">
           Selected order type:
           <span className="text-violet-50 ml-1">
             {tradeOptions.orderType.toUpperCase()}
@@ -37,19 +37,19 @@ export const TopCryptos = () => {
       </div>
 
       {/* Trading Options Section */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:gap-5 justify-between items-center bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md w-full">
+      <div className="flex flex-col gap-3 lg:flex-row lg:gap-5 justify-between items-center bg-gray-800 p-3 lg:p-4 rounded-lg shadow-md w-full">
         <CryptoSelector />
         <IntervalSelector />
         <TradingOptions />
       </div>
 
       {/* Chart Section */}
-      <div className="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md w-full">
+      <div className="bg-gray-800 p-3 lg:p-4 rounded-lg shadow-md w-full">
         <LightWeightChart />
       </div>
 
       {/* Place Order Button Section */}
-      <div className="flex justify-center mt-3 sm:mt-4 w-full">
+      <div className="flex justify-center mt-3 lg:mt-4 w-full">
         <PlaceOrderButton />
       </div>
     </div>
