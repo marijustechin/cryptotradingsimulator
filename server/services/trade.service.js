@@ -21,6 +21,7 @@ class TradeService {
 
     try {
       const cost = price * amount;
+      let fee = 0;
 
       // 1. Nuskaiciuojam kapeikas
       const userWallet = await wallet.findOne({
