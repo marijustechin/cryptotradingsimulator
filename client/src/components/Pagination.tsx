@@ -52,10 +52,10 @@ export const Pagination = ({
   const pageNumbers = getPageNumbers();
 
   return totalPages > 0 ? (
-    <div className='border-t border-violet-900 py-3'>
+    <div className='py-3'>
       <p className='text-center py-2'>
         Page:{' '}
-        <span className='text-violet-200'>
+        <span className='text-white'>
           {currentPage}/{totalPages}{' '}
         </span>
       </p>

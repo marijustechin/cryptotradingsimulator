@@ -16,14 +16,19 @@ export const Header = () => {
     setIsOpen((prev) => (closeMenu ? false : !prev));
   };
 
-  const links = {
-    Dashboard: '/my-dashboard',
-    Stats: '/my-dashboard/stats',
-    Portfolio: '/my-dashboard/portfolio',
-    Profile: '/my-dashboard/profile',
-  };
+  const isAdmin = user?.role === 'ADMIN';
+
+  const links = isAdmin
+    ? {
+        Dashboard: '/dashboard'
+      }
+    : {
+        Dashboard: '/my-dashboard'
+      };
+
   const allLinks = Object.values(links);
   const isDashboardPage = allLinks.includes(location.pathname);
+
   return (
     <>
       <div
@@ -42,23 +47,29 @@ export const Header = () => {
           </Link>
         </div>
 
+        {/* Desktop Nav */}
         <div className="hidden md:flex text-center justify-center text-white gap-5 text-[14px] font-semibold">
           {mainNavLinks
             .filter((link) => !isDashboardPage && user.id || link.title !== 'My Dashboard')
-            .map((link) => (
-              <div className="" key={link.title}>
-                <Link
-                  to={link.href}
-                  className={`hover:shadow-lg hover:shadow-purple-500/90 transition-all duration-300 cursor-pointer whitespace-nowrap ${
-                    location.pathname === link.href
-                      ? 'border-b p-[2px] pb-2 border-violet-600'
-                      : ''
-                  }`}
-                >
-                  {link.title}
-                </Link>
-              </div>
-            ))}
+            .map((link) => {
+              const correctedHref =
+                link.title === 'My Dashboard' && isAdmin ? '/dashboard' : link.href;
+
+              return (
+                <div className="" key={link.title}>
+                  <Link
+                    to={correctedHref}
+                    className={`hover:shadow-lg hover:shadow-purple-500/90 transition-all duration-300 cursor-pointer whitespace-nowrap ${
+                      location.pathname === correctedHref
+                        ? 'border-b p-[2px] pb-2 border-violet-600'
+                        : ''
+                    }`}
+                  >
+                    {link.title}
+                  </Link>
+                </div>
+              );
+            })}
         </div>
 
         {/* Mobile Version Sign Buttons */}
@@ -87,7 +98,7 @@ export const Header = () => {
         <div className="flex justify-end md:justify-between text-white gap-6 inter text-[14px] font-semibold">
           <div className="md:hidden">
             <button
-            aria-label='Open Navigation'
+              aria-label="Open Navigation"
               className="text-[25px] cursor-pointer shrink-0"
               onClick={() => menuOpenOrClose()}
             >
@@ -99,15 +110,20 @@ export const Header = () => {
             <button className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
                 .filter((link) => user.id ?? link.title !== 'My Dashboard')
-                .map((link) => (
-                  <button
-                    className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer block"
-                    onClick={() => menuOpenOrClose()}
-                    key={link.href}
-                  >
-                    <Link to={link.href}>{link.title}</Link>
-                  </button>
-                ))}
+                .map((link) => {
+                  const correctedHref =
+                    link.title === 'My Dashboard' && isAdmin ? '/dashboard' : link.href;
+
+                  return (
+                    <button
+                      className="border-b p-[2px] pb-1 border-gray-600 mb-1 cursor-pointer block"
+                      onClick={() => menuOpenOrClose()}
+                      key={link.href}
+                    >
+                      <Link to={correctedHref}>{link.title}</Link>
+                    </button>
+                  );
+                })}
             </button>
           )}
 
@@ -132,6 +148,8 @@ export const Header = () => {
           </div>
         </div>
       </div>
+
+      {/* Logout on mobile when inside dashboard */}
       {isDashboardPage && (
         <div className="block md:hidden p-4 text-white text-center">
           <Logout />

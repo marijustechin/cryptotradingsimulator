@@ -20,4 +20,7 @@ export interface IAdminOrdersByCrypto {
 export interface IAdminOrderInfo {
   income: IAdminIncome[];
   ordersByCrypto: IAdminOrdersByCrypto[];
+  monthlyIncome: number;
+  monthlyOrdersValue: number;
+  yearlyIncomeByMonth: { month: string; limit: number; market: number }[];
 }
