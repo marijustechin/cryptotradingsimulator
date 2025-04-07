@@ -19,6 +19,7 @@ import {
 } from '../../store/features/admin/adminSlice';
 import { useEffect } from 'react';
 import HelperService from '../../services/HelperService';
+import { TotalIncome } from '../../components/admin/TotalIncome';
 
 const cryptoData = [
   { name: 'BTC', price: 28000, change: '+1.2%' },
@@ -39,6 +40,10 @@ const AdminDashboardPage = () => {
 
   const ordersByCryptoData = orderInfo?.ordersByCrypto;
   const incomeByOrderType = orderInfo?.income;
+  const monthlyIncome = orderInfo?.monthlyIncome;
+  const monthlyOrdersValue  = orderInfo?.monthlyOrdersValue;
+  const yearlyIncomeByMonth = orderInfo?.yearlyIncomeByMonth ?? [];
+
 
   const totalOrders = ordersByCryptoData?.reduce((acc, item) => {
     return acc + Number(item.count);
@@ -49,39 +54,17 @@ const AdminDashboardPage = () => {
 
   return (
     <main className='flex-1 p-6 bg-gray-800 md:bg-transparent'>
-      {/* sitam dive turi buti trys atskiri komponentai
-        Jei kas nors kartojasi, turi eiti į atskirą komponentą
-        pvz. tavo card -turi būti atskiras kompoenetas
-        */}
       <div className='grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center'>
-        {/* <Card title='Total users' value='$87,743' /> */}
         <DashboardCardUsers />
         <div className='w-full space-y-2'>
-          <Card title='Orders Value' value='$78,342' />
-          <Card title='Finance Flow' value='$12,342' />
+          <Card title='Order Revenue' value={monthlyOrdersValue && HelperService.formatCurrency(monthlyOrdersValue)} />
+          <Card title='Monthly Income' value={monthlyIncome && HelperService.formatCurrency(monthlyIncome)} />
+
         </div>
       </div>
+      <TotalIncome yearlyIncomeByMonth={yearlyIncomeByMonth} />
 
-      {/* user stats - cia irgi atskiras komponentas
-          nu ir taip toliau - manau čia viskas aišku
-          */}
-      <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
-        <h2 className='text-xl font-semibold text-gray-200 mb-4'>
-          Total Income{' '}
-          <span className='text-emerald-500'>
-            {totalIncome && HelperService.formatCurrency(totalIncome)}
-          </span>
-        </h2>
-        <ResponsiveContainer width='100%' height={300}>
-          <BarChart data={incomeByOrderType}>
-            <CartesianGrid strokeDasharray='3 3' />
-            <YAxis />
-            <XAxis dataKey='ord_type' stroke='#8884d8' />
-            <Tooltip />
-            <Bar dataKey='total_fee' fill='#8884d8' barSize={50} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+
 
       {/* kursas */}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-6'>

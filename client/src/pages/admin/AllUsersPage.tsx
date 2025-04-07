@@ -95,9 +95,9 @@ const AllUsersPage = () => {
       </div>
       {/* nauja lentele ========================================= */}
       <div className="overflow-x-auto">
-        <table className="table">
+        <table className="table border-separate border-spacing-y-2">
           <thead>
-            <tr>
+            <tr className="bg-gray-800 text-white">
               <th>ID</th>
               <th
                 className="cursor-pointer"
@@ -140,7 +140,7 @@ const AllUsersPage = () => {
           </thead>
           <tbody>
             {allUsers?.map((user, index) => (
-              <tr key={user.email} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'}>
+              <tr key={user.email} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}>
                 <th>{user.id}</th>
                 <td>{user.first_name}</td>
                 <td>{user.email}</td>

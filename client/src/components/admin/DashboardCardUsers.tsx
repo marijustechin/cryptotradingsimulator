@@ -37,7 +37,7 @@ export const DashboardCardUsers = () => {
     { name: 'Inactive', value: usersInfo?.userCount - usersInfo?.activeUsers },
   ];
 
-  const COLORS = ['#00C49F', '#0088FE'];
+  const COLORS = ['#4ade80', '#818cf8'];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
@@ -71,7 +71,7 @@ export const DashboardCardUsers = () => {
       <div className='flex flex-col justify-center gap-4'>
         <div>
           <h3>Monthly Activity</h3>
-          <h5 className='mt-2 font-semibold'>
+          <h5 className='mt-2 font-semibold text-emerald-500'>
             Total users: {usersInfo?.userCount}
           </h5>
         </div>
@@ -82,7 +82,7 @@ export const DashboardCardUsers = () => {
         </div>
 
         <div className='flex items-center gap-2'>
-          <div className='bg-[#0088FE] w-4 h-4 rounded-sm'></div>
+          <div className='bg-[#818cf8] w-4 h-4 rounded-sm'></div>
           <p className='text-white'>Inactive users</p>
         </div>
       </div>
@@ -98,7 +98,7 @@ export const DashboardCardUsers = () => {
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={outerRadius}
-              fill='#8884d8'
+              fill='#4ade80'
               dataKey='value'
             >
               {data.map((entry, index) => (
