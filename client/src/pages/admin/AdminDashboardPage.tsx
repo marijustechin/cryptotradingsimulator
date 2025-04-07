@@ -90,22 +90,6 @@ const AdminDashboardPage = () => {
         ))}
       </div>
 
-      {/* user activity */}
-      <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
-        <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
-          Total orders <span className='text-emerald-500'>{totalOrders}</span>
-        </h2>
-        <ResponsiveContainer width='100%' height={300}>
-          <LineChart data={ordersByCryptoData}>
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='assetId' stroke='#8884d8' />
-            <YAxis />
-            <Tooltip />
-            <Line type='monotone' dataKey='count' stroke='#8884d8' />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
       {/* last operations */}
       <div className='bg-gray-700 p-6 rounded-xl shadow-md'>
         <h2 className='text-xl font-semibold text-gray-200 mb-4'>
@@ -117,6 +101,8 @@ const AdminDashboardPage = () => {
               <th className='py-2'>Type</th>
               <th className='py-2'>Amount</th>
               <th className='py-2'>Date</th>
+              <th className='py-2'>Type</th>
+              <th className='py-2'>Fee</th>
             </tr>
           </thead>
           <tbody>
@@ -124,11 +110,15 @@ const AdminDashboardPage = () => {
               <td className='py-2'>Buy BTC</td>
               <td className='py-2'>$10,000</td>
               <td className='py-2'>12.10.2023</td>
+              <td className='py-2'>Market</td>
+              <td className='py-2'>1$</td>
             </tr>
             <tr className='border-b border-gray-700'>
               <td className='py-2'>Sell ETH</td>
               <td className='py-2'>$5,000</td>
               <td className='py-2'>11.10.2023</td>
+              <td className='py-2'>Limit order</td>
+              <td className='py-2'>0.5$</td>
             </tr>
           </tbody>
         </table>
