@@ -1,20 +1,22 @@
-import $api from "../../api/axios";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import $api from '../../api/axios';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
   selectTradingOptions,
   setAmount,
   setTriggerPrice,
-} from "../../store/features/trading/tradingOptionsSlice";
+} from '../../store/features/trading/tradingOptionsSlice';
 import {
   getChartSymbol,
   getCurrentPrices,
   getSelectedSymbolData,
-} from "../../store/features/trading/chartSlice";
+} from '../../store/features/trading/chartSlice';
 import {
   selectUser,
   setUserBalance,
-} from "../../store/features/user/authSlice";
-import { toast } from "react-hot-toast";
+} from '../../store/features/user/authSlice';
+import { toast } from 'react-hot-toast';
+import BuyAsset from '../../components/trading/BuyAsset';
+import SellAsset from './SellAsset';
 
 export const PlaceOrderButton = () => {
   const dispatch = useAppDispatch();
@@ -41,31 +43,25 @@ export const PlaceOrderButton = () => {
 
       const assetId = selectedCrypto;
       const price =
-        orderType === "limit" ? triggerPrice : currentPrices?.lastPrice;
+        orderType === 'limit' ? triggerPrice : currentPrices?.lastPrice;
 
       if (amount <= 0 && triggerPrice <= 0) {
         toast.error(`Enter Amount or Trigger Price`);
         return;
       }
 
-      const totalCost = amount * currentPrices?.lastPrice;
-
-      if (orderType === "market" && user?.balance < totalCost) {
-        toast.error(`Insufficient balance to buy ${selectedCrypto}`);
-        return;
-      }
-
-      if (orderType === "limit" && user?.balance < triggerPrice) {
-        toast.error(`Insufficient balance to buy ${selectedCrypto} on limit `);
-        return;
-      }
-
       if (!amount || !price) {
-        toast.error("Missing amount & price");
+        toast.error('Missing amount & price');
         return;
       }
 
-      await $api.post("/trade", {
+      if (orderDirection === 'buy') {
+        await BuyAsset();
+      } else if (orderDirection === "sell") {
+        await SellAsset();
+      }
+
+      await $api.post('/trade', {
         assetId,
         amount,
         ord_type: orderType,
@@ -73,13 +69,13 @@ export const PlaceOrderButton = () => {
         price,
       });
 
-      const { data: userData } = await $api.get("/user/me");
+      const { data: userData } = await $api.get('/user/me');
       dispatch(setUserBalance(userData.balance));
       dispatch(setAmount(0));
       dispatch(setTriggerPrice(0));
-      toast.success("Order placed successfully!");
+      toast.success('Order placed successfully!');
     } catch (err: any) {
-      console.error("Atsakas iš API", err?.response);
+      console.error('Atsakas iš API', err?.response);
     }
   };
 
@@ -89,12 +85,12 @@ export const PlaceOrderButton = () => {
         <div className="flex gap-2 items-center">
           <label
             className="text-sm text-violet-300"
-            htmlFor={"amount" + tradingOptions.orderType}
+            htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
           </label>
           <input
-            id={"amount" + tradingOptions.orderDirection}
+            id={'amount' + tradingOptions.orderDirection}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               dispatch(setAmount(Number(e.target.value)))
             }
@@ -104,16 +100,16 @@ export const PlaceOrderButton = () => {
             min={0.01}
           />
         </div>
-        {tradingOptions.orderType === "limit" && (
+        {tradingOptions.orderType === 'limit' && (
           <div className="flex gap-2 items-center">
             <label
               className="text-sm text-violet-300"
-              htmlFor={"triggerPrice" + "xml"}
+              htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
             </label>
             <input
-              id={"triggerPrice" + "single"}
+              id={'triggerPrice' + 'single'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
@@ -129,12 +125,12 @@ export const PlaceOrderButton = () => {
       <button
         onClick={handlePlaceOrder}
         className={`${
-          tradingOptions.orderDirection === "buy"
-            ? "bg-emerald-500 border-emerald-500"
-            : "bg-rose-500 border-rose-500"
+          tradingOptions.orderDirection === 'buy'
+            ? 'bg-emerald-500 border-emerald-500'
+            : 'bg-rose-500 border-rose-500'
         } min-w-40 px-2 py-1 rounded-lg border cursor-pointer text-violet-950 text-xl`}
       >
-        {tradingOptions.orderDirection === "buy"
+        {tradingOptions.orderDirection === 'buy'
           ? `Buy Long ${cryptoData?.name} (${cryptoData?.code})`
           : `Sell Short ${cryptoData?.name} (${cryptoData?.code})`}
       </button>
