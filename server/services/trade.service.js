@@ -58,6 +58,7 @@ class TradeService {
           price,
           triggerPrice,
           orderPrice: triggerPrice,
+          fee,
           ord_status,
           open_date: new Date(),
           closed_date,
