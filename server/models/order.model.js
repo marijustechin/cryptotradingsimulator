@@ -51,6 +51,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL(20, 5),
         allowNull: true,
       },
+      orderPrice: {
+        type: DataTypes.DECIMAL(20, 5),
+        allowNull: true,
+      },
       fee: {
         type: DataTypes.DECIMAL(20, 5),
         allowNull: true,

@@ -44,7 +44,6 @@ class TradeService {
         ord_type === 'market' ||
         (ord_type === 'limit' && price === triggerPrice);
 
-
       const ord_status = isInstantExecution ? 'closed' : 'open';
       const closed_date = isInstantExecution ? new Date() : null;
       await orders.create(
@@ -56,6 +55,7 @@ class TradeService {
           ord_type,
           price,
           triggerPrice,
+          orderPrice: triggerPrice,
           ord_status,
           open_date: new Date(),
           closed_date,
@@ -67,7 +67,7 @@ class TradeService {
         await EmailService.sendMailer(userId);
       }
 
-      console.log("Turetu issiusti i email")
+      console.log('Turetu issiusti i email');
 
       // 3. komitinam
       await transaction.commit();
@@ -228,83 +228,6 @@ class TradeService {
         { balance: balance + convertedPrice },
         { transaction }
       );
-    }
-  }
-
-  async createTransaction(
-    userId,
-    assetId,
-    amount,
-    ord_direct,
-    ord_type,
-    price,
-    transaction
-  ) {
-    try {
-      const assetData = await instrument.findOne({ where: { id: assetId } });
-
-      if (!assetData) {
-        throw new Error(`Asset not found: ${assetId}`);
-      }
-
-      if (!price || isNaN(price)) {
-        throw new Error('Invalid price provided');
-      }
-
-      if (amount <= 0) {
-        throw new Error('Please enter amount');
-      }
-
-      const finalPrice = parseFloat(price);
-
-      const totalValue = finalPrice * amount;
-
-      const orderID = nanoid(6).toUpperCase();
-
-      let ord_status = 'open';
-      if (ord_type === 'market' && ord_direct === 'sell') {
-        ord_status = 'closed';
-      }
-
-      const newOrder = await transactions.create(
-        {
-          user_id: userId,
-          asset_id: assetId,
-          ord_direct,
-          ord_status,
-          ord_type,
-          amount,
-          entry_price: finalPrice,
-          total_value: totalValue,
-          price_usd: finalPrice,
-          open_date: ord_direct === 'buy' ? new Date() : null,
-          closed_date:
-            ord_direct === 'sell' && ord_type === 'market' ? new Date() : null,
-          orderID,
-        },
-        { transaction }
-      );
-
-      if (ord_direct === 'sell') {
-        const countProfit = await ProfitService.countUserProfit(
-          userId,
-          assetId,
-          amount
-        );
-
-        await transactions.update(
-          { profit: countProfit },
-          {
-            where: { id: newOrder.id },
-            transaction,
-          }
-        );
-      }
-
-      return newOrder;
-    } catch (error) {
-      console.error('createTransaction error:', error.message);
-      throw error;
     }
   }
 
@@ -504,10 +427,26 @@ class TradeService {
     if (triggerPrice !== undefined) fieldsToUpdate.triggerPrice = triggerPrice;
     if (amount !== undefined) fieldsToUpdate.amount = amount;
 
+    // kai vartotojas keicia amount - perskaiciuojame orderio kaina
+    // kai vartotojas uzsisako orderPrice pvz : 50$
+    // keiciant kieki i 2 orderValue pasikeicia i 100$
+    // kai vartotojas nori pakeisti kieki i 1 turetu pasikeisti i pradine kiekio reiksme
+
+    const getTriggerPrice = findTriggerPrice.triggerPrice;
+    const newPrice = getTriggerPrice * amount;
+    if (amount) {
+      await orders.update(
+        { triggerPrice: newPrice },
+        { where: { id }, transaction }
+      );
+    }
+
     await orders.update(fieldsToUpdate, {
       where: { id },
       transaction,
     });
+
+    // await wallet.update({where: {balance:}})
 
     await transaction.commit();
 
