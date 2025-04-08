@@ -46,4 +46,25 @@ export default class OrdersService {
     const response = await $api.get(`/trade/orderhistory/${userId}`);
     return response.data;
   }
+
+  static async cancelOrder(orderId: number): Promise<string> {
+    const response = await $api.delete(`/trade/${orderId}`);
+    return response.data.message;
+  }
+
+  static async editOrderPrice(
+    orderId: number,
+    triggerPrice: number
+  ): Promise<string> {
+    const response = await $api.patch(`/trade/${orderId}`, { triggerPrice });
+    return response.data.message;
+  }
+
+  static async editOrderAmount(
+    orderId: number,
+    amount: number
+  ): Promise<string> {
+    const response = await $api.patch(`/trade/${orderId}`, { amount });
+    return response.data.message;
+  }
 }
