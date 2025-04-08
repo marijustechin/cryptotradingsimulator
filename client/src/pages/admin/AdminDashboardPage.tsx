@@ -1,6 +1,4 @@
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -19,7 +17,7 @@ import {
 } from '../../store/features/admin/adminSlice';
 import { useEffect } from 'react';
 import HelperService from '../../services/HelperService';
-import { TotalIncome } from '../../components/admin/TotalIncome';
+import { StackedBarChartCard } from '../../components/admin/StackedBarChartCard';
 import { TopMonthlyUsersCard } from '../../components/admin/TopMonthlyUsersCard';
 
 
@@ -34,22 +32,23 @@ const AdminDashboardPage = () => {
     }
   }, [dispatch, userInfo, orderInfo]);
 
-  const ordersByCryptoData = orderInfo?.ordersByCrypto;
+  // const ordersByCryptoData = orderInfo?.ordersByCrypto;
   const monthlyIncome = orderInfo?.monthlyIncome;
+  const incomeByOrderType = orderInfo?.income;
   const monthlyOrdersValue  = orderInfo?.monthlyOrdersValue;
   const yearlyIncomeByMonth = orderInfo?.yearlyIncomeByMonth ?? [];
   const topUsers = userInfo?.topUsers ?? [];
-  
-
-
-
-
-  const totalOrders = ordersByCryptoData?.reduce((acc, item) => {
-    return acc + Number(item.count);
+  const Income = incomeByOrderType?.reduce((acc, item) => {
+    return acc + Number(item.total_fee);
   }, 0);
+  const yearlyOrdersValue = orderInfo?.yearlyOrdersValueByMonth ?? [];
+  const totalOrderValue = orderInfo?.yearlyOrdersValueTotal;
 
+  // const totalOrders = ordersByCryptoData?.reduce((acc, item) => {
+  //   return acc + Number(item.count);
+  // }, 0);
   return (
-    <main className='flex-1 p-6 bg-gray-800 md:bg-transparent'>
+    <main className='flex-1 bg-gray-800 md:bg-transparent'>
       <div className='grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center'>
         <DashboardCardUsers />
         <div className='w-full space-y-2'>
@@ -58,26 +57,22 @@ const AdminDashboardPage = () => {
 
         </div>
       </div>
-      <TotalIncome yearlyIncomeByMonth={yearlyIncomeByMonth} />
-
+      <StackedBarChartCard
+  title="Yearly Income by Month"
+  total={Income}
+  data={yearlyIncomeByMonth}
+  keys={['limit', 'market']}
+  colors={['#10B981', '#818cf8']}
+/>
       <TopMonthlyUsersCard users={topUsers} />
-
-
-      {/* user activity */}
-      <div className='bg-gray-700 p-6 rounded-xl shadow-md mb-6'>
-        <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
-          Total orders <span className='text-emerald-500'>{totalOrders}</span>
-        </h2>
-        <ResponsiveContainer width='100%' height={300}>
-          <LineChart data={ordersByCryptoData}>
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='assetId' stroke='#8884d8' />
-            <YAxis />
-            <Tooltip />
-            <Line type='monotone' dataKey='count' stroke='#8884d8' />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <StackedBarChartCard
+  title="Yearly Order Value by Month"
+  total={totalOrderValue}
+  data={yearlyOrdersValue}
+  keys={['limit', 'market']}
+  colors={['#10B981', '#818cf8']}
+/>
+    
 
       {/* last operations */}
       <div className='bg-gray-700 p-6 rounded-xl shadow-md'>

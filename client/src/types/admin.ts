@@ -24,4 +24,6 @@ export interface IAdminOrderInfo {
   monthlyIncome: number;
   monthlyOrdersValue: number;
   yearlyIncomeByMonth: { month: string; limit: number; market: number }[];
+  yearlyOrdersValueByMonth : { month: string; limit: number; market: number }[];
+  yearlyOrdersValueTotal : number;
 }
