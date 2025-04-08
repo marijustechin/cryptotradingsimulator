@@ -90,6 +90,8 @@ const AdminDashboardPage = () => {
               <th className='py-2'>Type</th>
               <th className='py-2'>Amount</th>
               <th className='py-2'>Date</th>
+              <th className='py-2'>Type</th>
+              <th className='py-2'>Fee</th>
             </tr>
           </thead>
           <tbody>
@@ -97,11 +99,15 @@ const AdminDashboardPage = () => {
               <td className='py-2'>Buy BTC</td>
               <td className='py-2'>$10,000</td>
               <td className='py-2'>12.10.2023</td>
+              <td className='py-2'>Market</td>
+              <td className='py-2'>1$</td>
             </tr>
             <tr className='border-b border-gray-700'>
               <td className='py-2'>Sell ETH</td>
               <td className='py-2'>$5,000</td>
               <td className='py-2'>11.10.2023</td>
+              <td className='py-2'>Limit order</td>
+              <td className='py-2'>0.5$</td>
             </tr>
           </tbody>
         </table>
