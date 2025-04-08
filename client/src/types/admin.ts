@@ -1,6 +1,7 @@
 export interface IUserGeneral {
   userCount: number;
   activeUsers: number;
+  topUsers: { userId: number; email: string; totalFee: number, orderCount: number }[];
 }
 export interface IGeneralInfo {
   userInfo: IUserGeneral;

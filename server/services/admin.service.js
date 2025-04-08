@@ -106,21 +106,47 @@ class AdminService {
         },
       },
     });
+// Add this before the final return in getGeneralData()
+const topUsersRaw = await orders.findAll({
+  attributes: [
+    'userId',
+    [sequelize.fn('SUM', sequelize.col('fee')), 'totalFeesPaid'],
+    [sequelize.fn('COUNT', sequelize.col('orders.id')), 'ordersCount'], // ✅ disambiguate "id"
+  ],
+  group: ['userId', 'user.id'], // ✅ include 'user.id' because of join
+  order: [[sequelize.fn('SUM', sequelize.col('fee')), 'DESC']],
+  limit: 3,
+  include: [
+    {
+      model: user,
+      attributes: ['email'],
+    },
+  ],
+});
+const topUsers = topUsersRaw.map((entry) => ({
+  userId: entry.userId,
+  email: entry.user.email,
+  totalFee: parseFloat(entry.dataValues.totalFeesPaid), // renamed to match your component prop
+  orderCount: parseInt(entry.dataValues.ordersCount, 10),
+}));
 
-    // Return all general dashboard data
-    return {
-      orderInfo: {
-        income: totalIncomeByType,
-        monthlyIncome,
-        ordersByCrypto,
-        monthlyOrdersValue,
-        yearlyIncomeByMonth,
-      },
-      userInfo: {
-        userCount,
-        activeUsers,
-      },
-    };
+
+// Then modify the return
+return {
+  orderInfo: {
+    income: totalIncomeByType,
+    monthlyIncome,
+    ordersByCrypto,
+    monthlyOrdersValue,
+    yearlyIncomeByMonth,
+  },
+  userInfo: {
+    userCount,
+    activeUsers,
+    topUsers
+  },
+};
+
   }
 }
 
