@@ -8,6 +8,7 @@ import tradingOptionsReducer from './features/trading/tradingOptionsSlice';
 import ordersReducer from './features/orders/ordersSlice';
 import chartReducer from './features/trading/chartSlice';
 import adminReducer from './features/admin/adminSlice';
+import settingsReducer from './features/admin/settingsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     orders: ordersReducer,
     chart: chartReducer,
     admin: adminReducer,
+    settings: settingsReducer,
   },
 });
 
