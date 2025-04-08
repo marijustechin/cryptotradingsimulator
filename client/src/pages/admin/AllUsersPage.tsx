@@ -16,6 +16,7 @@ import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa';
 import { Search } from '../../components/Search';
 import { ConfirmationModal } from '../../components/ConfirmationModal';
 import toast from 'react-hot-toast';
+import HelperService from '../../services/HelperService';
 
 const AllUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -83,30 +84,30 @@ const AllUsersPage = () => {
 
   return (
     <main>
-      <div className="flex gap-4 py-3 items-center">
+      <div className='flex gap-4 py-3 items-center'>
         <Search
-          placeholderText="Search by First Name"
+          placeholderText='Search by First Name'
           onSearch={(searchText) => handleFilter(searchText, 'first_name')}
         />
         <Search
-          placeholderText="Search by Email"
+          placeholderText='Search by Email'
           onSearch={(searchText) => handleFilter(searchText, 'email')}
         />
       </div>
       {/* nauja lentele ========================================= */}
-      <div className="overflow-x-auto">
-        <table className="table border-separate border-spacing-y-2">
+      <div className='overflow-x-auto'>
+        <table className='table border-separate border-spacing-y-2'>
           <thead>
-            <tr className="bg-gray-800 text-white">
+            <tr className='bg-gray-800 text-white'>
               <th>ID</th>
               <th
-                className="cursor-pointer"
+                className='cursor-pointer'
                 onClick={() => handleSorting('first_name')}
-                scope="col"
+                scope='col'
               >
-                <span className="flex gap-1 items-center">
+                <span className='flex gap-1 items-center'>
                   <span>First name</span>
-                  <span className="ml-2 text-violet-300">
+                  <span className='ml-2 text-violet-300'>
                     {sortField === 'first_name' &&
                       (sortOrder === 'asc' ? (
                         <FaLongArrowAltDown />
@@ -117,13 +118,13 @@ const AllUsersPage = () => {
                 </span>
               </th>
               <th
-                className="cursor-pointer"
+                className='cursor-pointer'
                 onClick={() => handleSorting('email')}
-                scope="col"
+                scope='col'
               >
-                <span className="flex gap-1 items-center">
+                <span className='flex gap-1 items-center'>
                   <span>Email</span>
-                  <span className="ml-2 text-violet-300">
+                  <span className='ml-2 text-violet-300'>
                     {sortField === 'email' &&
                       (sortOrder === 'asc' ? (
                         <FaLongArrowAltDown />
@@ -140,16 +141,19 @@ const AllUsersPage = () => {
           </thead>
           <tbody>
             {allUsers?.map((user, index) => (
-              <tr key={user.email} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}>
+              <tr
+                key={user.email}
+                className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'}
+              >
                 <th>{user.id}</th>
                 <td>{user.first_name}</td>
                 <td>{user.email}</td>
-                <td>{user.balance}</td>
+                <td>{HelperService.formatCurrency(user.balance)}</td>
                 <td>{user.role}</td>
                 <td>
                   <button
                     onClick={() => handleModalOpen(user.id, user.first_name)}
-                    className="cursor-pointer text-violet-500 hover:text-violet-400"
+                    className='cursor-pointer text-violet-500 hover:text-violet-400'
                   >
                     ❌ Delete
                   </button>
@@ -168,7 +172,7 @@ const AllUsersPage = () => {
       />
       <ConfirmationModal
         isOpen={isModalOpen}
-        title="Delete user"
+        title='Delete user'
         message={modalMessage}
         onConfirm={confirmDelete}
         onCancel={() => setIsModalOpen(false)}

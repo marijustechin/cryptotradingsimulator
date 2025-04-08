@@ -54,7 +54,7 @@ function startWebSocketService() {
     if (ws && ws.readyState === WebSocket.OPEN) {
       subscribeAll();
     }
-  }, 10 * 60 * 1000);
+  }, 2 * 60 * 1000);
 }
 
 module.exports = {
