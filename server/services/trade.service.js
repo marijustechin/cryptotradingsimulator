@@ -36,7 +36,7 @@ class TradeService {
       // Jei viskas ok, atimam is balanso
       // iskaitant ir mokesti
       if (ord_direct === 'buy') {
-        const fee = ord_type === 'market' ? cost * 0.015 : cost * 0.0045;
+        fee = ord_type === 'market' ? cost * 0.015 : cost * 0.0045;
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
         await userWallet.save({ transaction });
       }
@@ -301,25 +301,60 @@ class TradeService {
     // kai vartotojas uzsisako orderPrice pvz : 50$
     // keiciant kieki i 2 orderValue pasikeicia i 100$
     // kai vartotojas nori pakeisti kieki i 1 turetu pasikeisti i pradine kiekio reiksme
-
-    const getTriggerPrice = findTriggerPrice.triggerPrice;
+    const getTriggerPrice = findOrder.triggerPrice;
     const newPrice = getTriggerPrice * amount;
-    if (amount) {
+    const getOrderPrice = findOrder.orderPrice;
+    const parsedAmount = Number(amount);
+    if (parsedAmount === 1) {
+      // jei amount = 1 atstatome i pradine pirkimo kaina;
+      const startingPrice = getOrderPrice;
+      console.log('Pradine kaina', startingPrice);
+      await orders.update(
+        { triggerPrice: startingPrice },
+        { where: { id }, transaction }
+      );
+    } else if (amount) {
+      // jei keičiamas amount apskaičiuojame automatiškai triggerPrice
       await orders.update(
         { triggerPrice: newPrice },
         { where: { id }, transaction }
       );
     }
-
     await orders.update(fieldsToUpdate, {
       where: { id },
       transaction,
     });
 
-    // await wallet.update({where: {balance:}})
+    // jei naudotojas pakeite kaina i didesne nei buvo nustatyta pradine kaina
+    // atimam is balanso
+    // jei naudotojas pakeite kaina i mazesne nei buvo nustatyta pradine kaina
+    // grazinam i balansa
+    // jei pasikeite triggerPrice nuskaiciuojame balansa
+      const userWallet = await wallet.findOne({ where: { user_id: userId } });
+      const balance = parseFloat(userWallet.balance);
+      const oldPrice = parseFloat(getTriggerPrice);
+      const tg = parseFloat(triggerPrice);
 
-    await transaction.commit();
+      // jei naujas triggerPrice mazesnis nei senas grazinam skirtuma
+      if (tg < oldPrice) {
+        const difference = Number((oldPrice - tg).toFixed(5));
+        const updatedBalance = Number((balance + difference).toFixed(5));
+        await wallet.update(
+          { balance: updatedBalance },
+          { where: { user_id: userId } }
+        );
 
+        // jei naujas triggerPrice didesnis nei senas papildomai nuskaiciuojam
+      } else if (tg > oldPrice) {
+        const difference = Number((tg - oldPrice).toFixed(5));
+        const updatedBalance = Number((balance - difference).toFixed(5));
+        await wallet.update(
+          { balance: updatedBalance },
+          { where: { user_id: userId } }
+        );
+      }
+
+      await transaction.commit();
     return `Order was updated succesfully!`;
   }
 }
