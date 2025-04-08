@@ -3,7 +3,7 @@ import './TopMonthlyUsersCard.css';
 
 interface TopUser {
   userId: number;
-  email?: string;
+  first_name?: string;
   totalFee: number;
   orderCount?: number;
 }
@@ -31,7 +31,7 @@ export const TopMonthlyUsersCard = ({ users }: { users: TopUser[] }) => {
             >
               <div className="text-6xl mb-2">{medalIcons[index]}</div>
               <div>
-                <p className="text-white font-medium">{user.email}</p>
+                <p className="text-white font-medium">{user.first_name}</p>
                 <p className="text-emerald-500 font-semibold">
                   ${user.totalFee.toFixed(2)}
                 </p>

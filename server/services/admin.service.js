@@ -4,31 +4,60 @@ const { Op } = require('sequelize');
 
 class AdminService {
   async getGeneralData() {
-    // Total users
     const userCount = await user.count();
 
-    // Orders grouped by asset
-    const ordersByCrypto = await orders.findAll({
+    const now = new Date();
+    const startMonth = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+    const date30DaysAgo = new Date();
+    date30DaysAgo.setDate(date30DaysAgo.getDate() - 30);
+
+    // 🟪 Orders grouped by asset (last 12 months)
+    const rawOrdersByCryptoMonthly = await orders.findAll({
       attributes: [
         'assetId',
-        [sequelize.fn('COUNT', sequelize.col('assetId')), 'count'],
+        [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
+        [sequelize.fn('COUNT', sequelize.col('id')), 'count'],
       ],
-      group: ['assetId'],
+      where: {
+        closed_date: { [Op.gte]: startMonth },
+      },
+      group: ['assetId', sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date'))],
+      order: [
+        ['assetId', 'ASC'],
+        [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'ASC'],
+      ],
     });
 
-    // Total income grouped by order type
+    const ordersByCryptoMonthlyMap = {};
+    rawOrdersByCryptoMonthly.forEach(entry => {
+      const assetId = entry.assetId;
+      const rawMonth = entry.dataValues.month;
+      const count = parseInt(entry.dataValues.count, 10);
+      const month = new Date(rawMonth).toLocaleString('en-US', { month: 'short' });
+
+      if (!ordersByCryptoMonthlyMap[assetId]) {
+        ordersByCryptoMonthlyMap[assetId] = { assetId, total: 0, monthly: {} };
+      }
+
+      ordersByCryptoMonthlyMap[assetId].monthly[month] = count;
+      ordersByCryptoMonthlyMap[assetId].total += count;
+    });
+
+    const ordersByCrypto = Object.values(ordersByCryptoMonthlyMap);
+
+    // 🟩 Total income by order type (last 12 months)
     const totalIncomeByType = await orders.findAll({
       attributes: [
         'ord_type',
         [sequelize.fn('SUM', sequelize.col('fee')), 'total_fee'],
       ],
+      where: {
+        closed_date: { [Op.gte]: startMonth },
+      },
       group: ['ord_type'],
     });
 
-    // Monthly income & order value (last 30 days)
-    const date30DaysAgo = new Date();
-    date30DaysAgo.setDate(date30DaysAgo.getDate() - 30);
-
+    // 🟨 Monthly income & turnover (last 30 days)
     const monthlyIncomeData = await orders.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('fee')), 'monthly_total']],
       where: { closed_date: { [Op.gte]: date30DaysAgo } },
@@ -43,10 +72,7 @@ class AdminService {
 
     const monthlyOrdersValue = parseFloat(monthlyOrdersValueData?.[0]?.dataValues?.monthly_value || 0);
 
-    // Yearly income by month and order type
-    const now = new Date();
-    const startMonth = new Date(now.getFullYear(), now.getMonth() - 11, 1);
-
+    // 🟦 Yearly income by month/type (last 12 months)
     const rawYearlyIncome = await orders.findAll({
       attributes: [
         [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
@@ -77,7 +103,7 @@ class AdminService {
 
     const yearlyIncomeByMonth = Object.values(incomeByMonthMap);
 
-    // 🆕 Yearly order value by month and order type
+    // 🟥 Yearly order value by type (last 12 months)
     const rawYearlyOrdersValue = await orders.findAll({
       attributes: [
         [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
@@ -112,7 +138,7 @@ class AdminService {
       0
     );
 
-    // Active users in last 30 days
+    // 👤 Active users (last 30 days)
     const activeUsers = await userLogs.count({
       distinct: true,
       col: 'userId',
@@ -121,22 +147,25 @@ class AdminService {
       },
     });
 
-    // Top users by fee
+    // 🏆 Top users by fee (last 30 days)
     const topUsersRaw = await orders.findAll({
       attributes: [
         'userId',
         [sequelize.fn('SUM', sequelize.col('fee')), 'totalFeesPaid'],
         [sequelize.fn('COUNT', sequelize.col('orders.id')), 'ordersCount'],
       ],
+      where: {
+        closed_date: { [Op.gte]: date30DaysAgo }, // ✅ Only last 30 days
+      },
       group: ['userId', 'user.id'],
       order: [[sequelize.fn('SUM', sequelize.col('fee')), 'DESC']],
       limit: 3,
-      include: [{ model: user, attributes: ['email'] }],
+      include: [{ model: user, attributes: ['first_name'] }],
     });
 
     const topUsers = topUsersRaw.map((entry) => ({
       userId: entry.userId,
-      email: entry.user.email,
+      first_name: entry.user.first_name,
       totalFee: parseFloat(entry.dataValues.totalFeesPaid),
       orderCount: parseInt(entry.dataValues.ordersCount, 10),
     }));
@@ -148,8 +177,8 @@ class AdminService {
         ordersByCrypto,
         monthlyOrdersValue,
         yearlyIncomeByMonth,
-        yearlyOrdersValueByMonth,     // ✅ new
-        yearlyOrdersValueTotal        // ✅ new
+        yearlyOrdersValueByMonth,
+        yearlyOrdersValueTotal,
       },
       userInfo: {
         userCount,
