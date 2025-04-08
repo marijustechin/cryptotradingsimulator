@@ -4,6 +4,7 @@ import { useAppDispatch } from './store/store';
 import { restoreSession } from './store/features/user/authSlice';
 import { Loader } from './components/Loader';
 
+
 // Components
 
 // Layouts
@@ -22,6 +23,9 @@ const AdminDashboardPage = lazy(
 const SystemSettingsPage = lazy(
   () => import('./pages/admin/SystemSettingsPage')
 );
+const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'));
+<Route path='/dashboard/orders' element={<AdminOrdersPage />} />
+
 const HowToTradePage = lazy(() => import('./pages/HowToTradePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
@@ -32,6 +36,7 @@ const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
 const TestPage = lazy(() => import('./pages/user/TestPage'));
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -65,6 +70,7 @@ function App() {
               element={<SystemSettingsPage />}
             />
             <Route path='/dashboard/users' element={<AllUsersPage />} />
+            <Route path='/dashboard/orders' element={<AdminOrdersPage />} />
           </Route>
           <Route path='/my-dashboard' element={<UserLayout />}>
             <Route index element={<UserDashboardPage />} />
