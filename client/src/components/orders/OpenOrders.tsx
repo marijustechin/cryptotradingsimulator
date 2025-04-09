@@ -41,6 +41,7 @@ export const OpenOrders = () => {
             <th>Order Qty</th>
             <th>Entry Price</th>
             <th>Order Time</th>
+            <th>Order Value</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -85,9 +86,12 @@ export const OpenOrders = () => {
 
               </td>
               <td>
-                {HelperService.formatCurrency(Number(order.amount * order.triggerPrice))}
+                {HelperService.formatCurrency(Number(order.price))}
               </td>
               <td>{order.open_date}</td>
+              <td>
+              {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}
+              </td>
               <td>
               <CancelOrder orderId={order.id} onSuccess={refreshOrders} />
 

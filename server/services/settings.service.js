@@ -1,5 +1,5 @@
 const sequelize = require('../config/db');
-const { settings, instrument, user } = sequelize.models;
+const { settings, instrument, user, orders } = sequelize.models;
 
 const axios = require('axios');
 const { faker } = require('@faker-js/faker');
@@ -59,7 +59,7 @@ class SystemSettings {
 
   getRandomCurrency(items) {
     const randomItem = Math.floor(Math.random() * items.length);
-    return items[randomItem];
+    return items[randomItem].id;
   }
 
   getRandomCurrencyPrice(item) {
@@ -85,28 +85,136 @@ class SystemSettings {
   }
 
   getRandomDate() {
-    const start = new Date(
-      new Date().setFullYear(new Date().getFullYear() - 1)
-    );
-    const end = new Date();
-    const date = new Date(+start + Math.random() * (end - start));
+    const currentDate = new Date();
 
-    return date;
+    // -1 metai nuo dabartines dateos
+    const previousDate = new Date(
+      currentDate.getFullYear() - 1,
+      currentDate.getMonth(),
+      currentDate.getDay(),
+      currentDate.getHours(),
+      currentDate.getMinutes()
+    );
+
+    return new Date(
+      previousDate.getTime() +
+        Math.random() * (currentDate.getTime() - previousDate.getTime())
+    );
+  }
+
+  getOrderType() {
+    const randomType = Math.round(Math.random() + 1);
+    if (randomType === 1) {
+      return 'market';
+    } else {
+      return 'limit';
+    }
+  }
+
+  async getOrderDirection(userId, assetId) {
+    const userAssets = await orders.findOne({
+      where: {
+        userId,
+        assetId,
+        ord_status: 'closed',
+      },
+    });
+
+    if (!userAssets) {
+      return { direction: 'buy' };
+    } else {
+      return {
+        direction: 'sell',
+        amount: userAssets.amount,
+        price: userAssets.price,
+      };
+    }
   }
 
   async generateFakeActivity() {
     const symbols = await instrument.findAll();
     const fUsers = await user.findAll({ include: ['wallet'] });
+    const fees = await this.getSettings();
+
+    let counter = 0;
+    let number = Math.floor(Math.round() * (10 - 3) + 3);
 
     for (const uSer of fUsers) {
-      const currency = this.getRandomCurrency(symbols);
-      const currencyPrice = this.getRandomCurrencyPrice(currency.id);
-      const openDate = this.getRandomDate();
-      const closeDate = openDate;
-      closeDate.setDate(closeDate.getDate() + Math.floor(Math.random() * 10));
-      console.log(
-        `${currency.id} ${currencyPrice} \n ${openDate} ${closeDate}`
-      );
+      if (uSer.role !== 'ADMIN') {
+        // pinigines likutis tarp 500-100
+        const minBalance = Math.random() * (500 - 100) + 100;
+
+        // naudotojas vykdo pirkimus tol, kol jo pinigineje lieka maziau nei x pinigu
+        let userBalance = uSer.wallet.balance;
+        while (userBalance > minBalance) {
+          const assetId = this.getRandomCurrency(symbols);
+          const price = this.getRandomCurrencyPrice(assetId);
+          const amount = (uSer.wallet.balance * 0.25) / price;
+          const ord_type = this.getOrderType();
+          const ord_direct = 'buy';
+          const open_date = this.getRandomDate();
+
+          // sandorio tipas?
+          if (ord_type === 'market') {
+            const fee = amount * price * fees.market_order_fee;
+            const closed_date = open_date;
+
+            if (ord_direct === 'buy') {
+              await orders.create({
+                userId: uSer.id,
+                assetId,
+                amount,
+                ord_direct,
+                ord_type,
+                ord_status: 'closed',
+                price,
+                fee,
+                open_date,
+                closed_date,
+              });
+              uSer.wallet.balance -= amount * price + fee;
+              uSer.wallet.save();
+              userBalance -= amount * price + fee;
+            } else {
+              console.log('Parduodam...');
+            }
+          } else {
+            // limit sandoris
+            const fee = amount * price * fees.limit_order_fee;
+            const tempDate = open_date;
+            const closed_date = new Date(
+              tempDate.setDate(
+                tempDate.getDate() + Math.floor(Math.random() * (5 - 3) + 3)
+              )
+            );
+
+            const triggerPrice = price - price * 0.03;
+
+            if (ord_direct === 'buy') {
+              await orders.create({
+                userId: uSer.id,
+                assetId,
+                amount,
+                ord_direct,
+                ord_type,
+                ord_status: 'closed',
+                price,
+                triggerPrice,
+                fee,
+                open_date,
+                closed_date,
+              });
+              uSer.wallet.balance -= amount * price + fee;
+              uSer.wallet.save();
+              userBalance -= amount * price + fee;
+            } else {
+              console.log('Parduodam...');
+            }
+          }
+        }
+
+        console.log(`[while ciklas] ${userBalance}`);
+      }
     }
 
     return 'fake activity generated';

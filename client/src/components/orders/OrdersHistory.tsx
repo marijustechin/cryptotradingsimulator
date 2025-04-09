@@ -3,12 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { selectUser } from '../../store/features/user/authSlice';
 import { DataExport } from './DataExport';
 import HelperService from '../../services/HelperService';
-
-<<<<<<< Updated upstream
 import { Pagination } from '../../components/Pagination';
 import { getOrdersHistory } from '../../store/features/orders/ordersSlice';
-=======
->>>>>>> Stashed changes
 
 export const OrdersHistory = () => {
   // dispatch - nueina į duomenu baze ir atnaujina state naujais duomenim.
@@ -94,7 +90,7 @@ export const OrdersHistory = () => {
                 )}
               </td>
               <td>
-  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}/{order.ord_type}
+  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}
 </td>
             </tr>
           ))}
