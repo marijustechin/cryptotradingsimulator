@@ -44,6 +44,18 @@ export const PlaceOrderButton = () => {
       return;
     }
 
+    // jei vartotojas daro limit orderi
+    // tikrina ar triggerPrice uzteks turimo balanso.
+    if (
+      tradingOptions.orderDirection === 'buy' &&
+      tradingOptions.orderType === 'limit' &&
+      user?.balance !== undefined &&
+      user?.balance < tradingOptions.amount * tradingOptions.triggerPrice
+    ) {
+      toast.error('Insufficient funds for limit order');
+      return;
+    }
+
     // 2. Jei sandoris 'limit' ar ivesta trigger kaina?
     // jei kaina neivesta, darom lastPrice
     if (
@@ -53,18 +65,6 @@ export const PlaceOrderButton = () => {
       dispatch(setTriggerPrice(currentPrices?.lastPrice));
     }
 
-    // 3. Jei perka, ar uzteks pinigu?
-    if (
-      tradingOptions.orderDirection === 'buy' &&
-      user?.balance !== undefined &&
-      user?.balance !== null &&
-      currentPrices?.lastPrice !== undefined &&
-      user.balance < tradingOptions.amount * currentPrices.lastPrice
-    ) {
-      toast.error('Insufficient funds');
-      return;
-    }
-    
     // 4. Jei parduoda, ar turi tokia valiuta?
     if (tradingOptions.orderDirection === 'sell') {
       const assets = await dispatch(
