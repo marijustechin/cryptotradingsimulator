@@ -74,13 +74,10 @@ export const OrdersHistory = () => {
                 {order.ord_direct}
               </td>
               <td>
-  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price: order.triggerPrice)}/{order.ord_type}
+  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price: order.triggerPrice)}
 </td>
               <td>
-                {order.amount}/
-                <span className='text-gray-400 text-[12px]'>
-                  {order.assetId}
-                </span>
+                {order.amount}
               </td>
               <td>
                 {formatDate(

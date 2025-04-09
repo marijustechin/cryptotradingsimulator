@@ -3,19 +3,19 @@ function modelRelations(sequelize) {
     sequelize.models;
 
   // --- User relations ---
-  user.hasOne(user_secret, { foreignKey: 'user_id', onDelete: 'CASCADE', ontimeupdate: 'CASCADE'});
+  user.hasOne(user_secret, { foreignKey: 'user_id', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
   user_secret.belongsTo(user, { foreignKey: 'user_id' });
 
-  user.hasOne(wallet, { foreignKey: 'user_id', onDelete: 'CASCADE', ontimeupdate: 'CASCADE'});
+  user.hasOne(wallet, { foreignKey: 'user_id', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
   wallet.belongsTo(user, { foreignKey: 'user_id' });
 
-  user.hasOne(token, { foreignKey: 'user_id', onDelete: 'CASCADE', ontimeupdate: 'CASCADE' });
+  user.hasOne(token, { foreignKey: 'user_id', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   token.belongsTo(user, { foreignKey: 'user_id' });
 
-  user.hasMany(orders, { foreignKey: 'userId', onDelete: 'CASCADE', ontimeupdate: 'CASCADE' });
+  user.hasMany(orders, { foreignKey: 'userId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   orders.belongsTo(user, { foreignKey: 'userId' });
 
-  user.hasMany(userLogs, { foreignKey: 'userId', onDelete: 'CASCADE', ontimeupdate: 'CASCADE' });
+  user.hasMany(userLogs, { foreignKey: 'userId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   userLogs.belongsTo(user, { foreignKey: 'userId' });
 
   // --- Instrument relations ---
