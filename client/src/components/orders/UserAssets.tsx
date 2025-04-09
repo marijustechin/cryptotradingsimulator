@@ -67,31 +67,33 @@ export const UserAssets = () => {
   const assetRows = useMemo(() => {
     if (!userAssets) return [];
 
-    return userAssets.map((asset) => {
-      const lastPrice = Number(priceMap.get(asset.asset) ?? 0);
-      const nav = Number(asset.balance) * lastPrice;
-      const pnlAmount = nav - Number(asset.spotCost);
-      const pnlPercent =
-        Number(asset.spotCost) > 0
-          ? (pnlAmount / Number(asset.spotCost)) * 100
-          : 0;
+    return userAssets
+      .filter((asset) => asset.balance > 0)
+      .map((asset) => {
+        const lastPrice = Number(priceMap.get(asset.asset) ?? 0);
+        const nav = Number(asset.balance) * lastPrice;
+        const pnlAmount = nav - Number(asset.spotCost);
+        const pnlPercent =
+          Number(asset.spotCost) > 0
+            ? (pnlAmount / Number(asset.spotCost)) * 100
+            : 0;
 
-      return {
-        ...asset,
-        lastPrice: lastPrice.toFixed(2),
-        netAssetValue: nav.toFixed(2),
-        pnlAmount: pnlAmount.toFixed(2),
-        pnlPercent: pnlPercent.toFixed(2),
-      };
-    });
+        return {
+          ...asset,
+          lastPrice: lastPrice.toFixed(2),
+          netAssetValue: nav.toFixed(2),
+          pnlAmount: pnlAmount.toFixed(2),
+          pnlPercent: pnlPercent.toFixed(2),
+        };
+      });
   }, [userAssets, priceMap]);
 
   return (
     <div>
-      <DataExport type='Assets' />
-      <table className='table border-separate border-spacing-y-2'>
+      <DataExport type="Assets" />
+      <table className="table border-separate border-spacing-y-2">
         <thead>
-          <tr className='text-white bg-gray-800'>
+          <tr className="text-white bg-gray-800">
             <th>Asset</th>
             <th>Net Asset Value</th>
             <th>Balance</th>
@@ -101,12 +103,12 @@ export const UserAssets = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className='bg-gray-700'>
+          <tr className="bg-gray-700">
             <td>USD</td>
-            <td className='min-w-[80px]'>
+            <td className="min-w-[80px]">
               {parseFloat(Number(user.balance).toFixed(2))} USD
             </td>
-            <td className='min-w-[80px]'>
+            <td className="min-w-[80px]">
               {parseFloat(Number(user.balance).toFixed(2))}
             </td>
             <td>—</td>
@@ -119,12 +121,12 @@ export const UserAssets = () => {
               key={row.asset}
             >
               <td>{row.asset}</td>
-              <td className='min-w-[80px]'>{row.netAssetValue} USD</td>
+              <td className="min-w-[80px]">{row.netAssetValue} USD</td>
               <td>{row.balance}</td>
-              <td className='min-w-[80px]'>
+              <td className="min-w-[80px]">
                 {parseFloat(Number(row.spotCost).toFixed(2))} USD
               </td>
-              <td className='min-w-[80px]'>{row.lastPrice} USD</td>
+              <td className="min-w-[80px]">{row.lastPrice} USD</td>
               <td
                 className={`min-w-[80px] ${
                   parseFloat(row.pnlAmount) >= 0

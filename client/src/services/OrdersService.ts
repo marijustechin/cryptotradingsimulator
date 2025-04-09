@@ -1,6 +1,6 @@
 import { IPortfolioInfo, IUserPortfolioItem } from '../types/portfolio';
 import $api from '../api/axios';
-import { IOpenOrder, IOrdersHistory, IUserAssets } from '../types/order';
+import { IOpenOrder, IOrdersHistoryResponse, IUserAssets } from '../types/order';
 
 export default class OrdersService {
   static async getUserOrders(): Promise<{
@@ -42,9 +42,15 @@ export default class OrdersService {
     return response.data;
   }
 
-  static async getOrdersHistory(userId: string): Promise<IOrdersHistory[]> {
-    const response = await $api.get(`/trade/orderhistory/${userId}`);
-    return response.data;
+  /**
+   * 
+   * @param userId
+   * @param query = page = 1, limit = 10
+   * @returns totalUsers, totalPages, currentPage, orders[]
+   */
+  static async getOrdersHistory(userId: string, query: string): Promise<IOrdersHistoryResponse> {
+    const response = await $api.get(`/trade/orderhistory/${userId}${query}`);
+    return response.data
   }
 
   static async cancelOrder(orderId: number): Promise<string> {

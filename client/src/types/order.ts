@@ -1,7 +1,7 @@
 export interface IOpenOrder {
-  triggerPrice: 1840;
+  triggerPrice: number;
   id: number;
-  assetName: string;
+  assetId: string;
   ord_type: string;
   ord_direct: string;
   price: number;
@@ -11,9 +11,9 @@ export interface IOpenOrder {
 }
 
 export interface IOrdersHistory {
-  triggerPrice: 1840;
+  triggerPrice: number;
   id: number;
-  assetName: string;
+  assetId: string;
   ord_type: string;
   ord_direct: string;
   ord_status: string;
@@ -21,6 +21,7 @@ export interface IOrdersHistory {
   amount: number;
   orderValue: number;
   open_date: string;
+  closed_date: string;
 }
 
 export interface IUserAssets {
@@ -30,4 +31,11 @@ export interface IUserAssets {
   avgBuyPrice: number;
 }
 
-//export interface IUserAssets {}
+export interface IOrdersHistoryResponse {
+  totalOrders: number;
+  totalPages: number;
+  currentPage: number;
+  limit: number;
+  orders: IOrdersHistory[]
+}
+
