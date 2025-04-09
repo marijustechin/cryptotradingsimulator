@@ -3,22 +3,38 @@ import OrdersService from '../../../services/OrdersService';
 // importuojam tipa kuris aprašo, kaip atrodo vartotojo portfolio objektas
 import { RootState } from '../../store';
 import HelperService from '../../../services/HelperService';
-import { IOpenOrder, IOrdersHistory, IUserAssets } from '../../../types/order';
+import {
+  IOpenOrder,
+  IOrdersHistoryResponse,
+  IOrdersHistory,
+  IUserAssets,
+} from '../../../types/order';
+import { setCurrentPage } from '../user/allUsersSlice';
+import { Root } from 'react-dom/client';
 
-// aprasom kaip atrodo state, susijusi su portfolio
+// aprasom kaip atrodo state
 interface OrdersState {
   openOrders: IOpenOrder[] | null;
-  ordersHistory: IOrdersHistory[] | null;
+  ordersHistory: {
+    data: IOrdersHistory[] | null;
+    limit: number;
+    totalPages: number;
+    totalOrders: number;
+  };
   userAssets: IUserAssets[] | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed'; // krovimo pranesimai
   error: string | null; // jei klaida - jos pranesimas
 }
 
 // pradine state reiksme
-
 const initialState: OrdersState = {
   openOrders: null,
-  ordersHistory: null,
+  ordersHistory: {
+    data: null,
+    limit: 10,
+    totalPages: 0,
+    totalOrders: 0,
+  },
   userAssets: null,
   status: 'idle',
   error: '',
@@ -28,7 +44,6 @@ const initialState: OrdersState = {
 // generuoja 3 busenas: pending, fulfilled, rejected
 // leidžia kviesti async API funkciją
 // leidžia naudoti komponentuose per dispatch
-
 
 // get openOrders
 export const getOpenOrders = createAsyncThunk<IOpenOrder[], { userId: string }>(
@@ -56,17 +71,22 @@ export const getUserAssets = createAsyncThunk<
 });
 
 export const getOrdersHistory = createAsyncThunk<
-  IOrdersHistory[],
-  { userId: string }
->('orders/getOrdersHistory', async ({ userId }, { rejectWithValue }) => {
-  try {
-    const response = await OrdersService.getOrdersHistory(userId);
-    return response;
-  } catch (e) {
-    return rejectWithValue(HelperService.errorToString(e));
+  IOrdersHistoryResponse,
+  { page: number; limit?: number },
+  { state: RootState }
+>(
+  'orders/getOrdersHistory',
+  async ({ page, limit = 10 }, { getState, rejectWithValue }) => {
+    try {
+      const userId = getState().auth.user.id;
+      const query = `?page=${page}&limit=${limit}`;
+      const response = await OrdersService.getOrdersHistory(userId, query);
+      return response;
+    } catch (e) {
+      return rejectWithValue(HelperService.errorToString(e));
+    }
   }
-});
-
+);
 
 export const ordersSlice = createSlice({
   name: 'orders',
@@ -102,8 +122,12 @@ export const ordersSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getOrdersHistory.fulfilled, (state, action) => {
-        state.ordersHistory = [...action.payload];
-        state.status = 'idle';
+        state.ordersHistory.data = action.payload.orders;
+        state.ordersHistory.limit =
+          action.payload.limit ?? state.ordersHistory.limit;
+        (state.ordersHistory.totalPages = action.payload.totalPages),
+          (state.ordersHistory.totalOrders = action.payload.totalOrders);
+        state.status = 'succeeded';
       })
       .addCase(getOrdersHistory.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -112,7 +136,10 @@ export const ordersSlice = createSlice({
 });
 
 export const selectOpenOrders = (state: RootState) => state.orders.openOrders;
-export const selectOrdersHistory = (state: RootState) => state.orders.ordersHistory;
+export const selectOrdersHistory = (state: RootState) =>
+  state.orders.ordersHistory;
 export const selectUserAssets = (state: RootState) => state.orders.userAssets;
+export const selectCurrentPage = (state: RootState) =>
+  state.orders.ordersHistory.currentPage;
 
 export default ordersSlice.reducer;
