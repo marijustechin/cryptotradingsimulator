@@ -20,8 +20,8 @@ class TradeService {
     const transaction = await sequelize.transaction();
 
     try {
-      let cost
-      if(ord_type === "market") {
+      let cost;
+      if (ord_type === 'market') {
         cost = price * amount;
       } else {
         cost = triggerPrice * amount;
@@ -86,9 +86,25 @@ class TradeService {
       // 3. komitinam
       await transaction.commit();
 
-      return {
-        message: `Your entire order has been filled\nBought ${amount} ${assetId} at $${price}`,
-      };
+      if (ord_type === 'market' && ord_direct === 'buy') {
+        return {
+          message: `Your entire order has been filled\nBought ${amount} ${assetId} at $${price}`,
+        };
+      } else if (ord_type === 'market' && ord_direct === 'sell') {
+        return {
+          message: `Your entire order has been filled\nSold ${amount} ${assetId} contracts at $${price}`,
+        };
+      }
+
+      if (ord_type === 'limit' && ord_direct === 'buy') {
+        return {
+          message: `Order Submitted Succesfully\n${amount} ${assetId} will be bought at $${triggerPrice} price`,
+        };
+      } else if (ord_type === 'market' && ord_direct === 'sell') {
+        return {
+          message: `Order Submitted Succesfully\n${amount} ${assetId} will be sold at $${triggerPrice} price`,
+        };
+      }
     } catch (err) {
       await transaction.rollback();
       console.error('ROLLBACK REASON:', err); // issami info apie klaida
