@@ -77,7 +77,7 @@ export const DashboardCardUsers = () => {
         </div>
 
         <div className='flex items-center gap-2'>
-          <div className='bg-[#00C49F] w-4 h-4 rounded-sm'></div>
+          <div className='bg-[#10B981] w-4 h-4 rounded-sm'></div>
           <p className='text-white'>Active users</p>
         </div>
 
