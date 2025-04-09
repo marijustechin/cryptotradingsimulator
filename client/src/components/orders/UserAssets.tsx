@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { WS_URL } from '../../api/ws';
 import { useEffect, useState, useMemo } from 'react';
 import { DataExport } from './DataExport';
+import HelperService from '../../services/HelperService';
 
 interface ILivePrices {
   symbol: string;
@@ -90,30 +91,30 @@ export const UserAssets = () => {
 
   return (
     <div>
-      <DataExport type="Assets" />
-      <table className="table border-separate border-spacing-y-2">
-        <thead>
-          <tr className="text-white bg-gray-800">
-            <th>Asset</th>
-            <th>Net Asset Value</th>
-            <th>Balance</th>
-            <th>Spot Cost</th>
-            <th>Last Price</th>
-            <th>PnL</th>
+      <DataExport type='Assets' />
+      <table className='table border-separate border-spacing-y-2 w-full'>
+        <thead className='w-full'>
+          <tr className='text-white bg-gray-800'>
+            <th className='w-1/6'>Asset</th>
+            <th className='w-1/6'>Net Asset Value</th>
+            <th className='w-1/6'>Balance</th>
+            <th className='w-1/6'>Spot Cost</th>
+            <th className='w-1/6'>Last Price</th>
+            <th className='w-1/6'>PnL</th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="bg-gray-700">
-            <td>USD</td>
-            <td className="min-w-[80px]">
-              {parseFloat(Number(user.balance).toFixed(2))} USD
+        <tbody className='w-full'>
+          <tr className='bg-gray-700'>
+            <td className='w-1/6'>USD</td>
+            <td className='w-1/6'>
+              {HelperService.formatCurrency(Number(user.balance))}
             </td>
-            <td className="min-w-[80px]">
-              {parseFloat(Number(user.balance).toFixed(2))}
+            <td className='w-1/6'>
+              {HelperService.formatCurrency(Number(user.balance))}
             </td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
+            <td className='w-1/6'>—</td>
+            <td className='w-1/6'>—</td>
+            <td className='w-1/6'>—</td>
           </tr>
           {assetRows.map((row, index) => (
             <tr
@@ -121,20 +122,20 @@ export const UserAssets = () => {
               key={row.asset}
             >
               <td>{row.asset}</td>
-              <td className="min-w-[80px]">{row.netAssetValue} USD</td>
+              <td className='w-1/6'>{HelperService.formatCurrency(Number(row.netAssetValue))}</td>
               <td>{row.balance}</td>
-              <td className="min-w-[80px]">
-                {parseFloat(Number(row.spotCost).toFixed(2))} USD
+              <td className='w-1/6'>
+                {HelperService.formatCurrency(Number(row.spotCost))}
               </td>
-              <td className="min-w-[80px]">{row.lastPrice} USD</td>
+              <td className='w-1/6'>{HelperService.formatCurrency(Number(row.lastPrice))}</td>
               <td
-                className={`min-w-[80px] ${
+                className={`w-1/6 ${
                   parseFloat(row.pnlAmount) >= 0
                     ? 'text-green-500'
                     : 'text-red-500'
                 }`}
               >
-                {parseFloat(Number(row.pnlAmount).toFixed(2))} USD (
+                {HelperService.formatCurrency(Number(row.pnlAmount))} (
                 {row.pnlPercent}%)
               </td>
             </tr>

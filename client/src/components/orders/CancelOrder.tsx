@@ -5,9 +5,10 @@ import OrdersService from "../../services/OrdersService";
 
 interface CancelOrderProps {
   orderId: number;
+  onSuccess?: () => void;
 }
 
-export default function CancelOrder({ orderId }: CancelOrderProps) {
+export default function CancelOrder({ orderId, onSuccess }: Readonly<CancelOrderProps>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>("");
   const [delOrder, setDelOrder] = useState<{ orderId: number } | null>(null);
@@ -24,6 +25,8 @@ export default function CancelOrder({ orderId }: CancelOrderProps) {
       try {
         await OrdersService.cancelOrder(delOrder.orderId);
         toast.success("Order cancelled");
+
+        if (onSuccess) onSuccess(); // ✅ trigger refresh from parent
       } catch (error) {
         toast.error("Failed to cancel order");
       }

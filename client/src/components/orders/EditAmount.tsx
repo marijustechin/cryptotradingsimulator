@@ -6,12 +6,14 @@ import OrdersService from "../../services/OrdersService";
 interface EditOrderAmountProps {
   orderId: number;
   amount: number;
+  onSuccess?: () => void; // ✅ callback for refresh
 }
 
 export default function EditOrderAmount({
   orderId,
   amount,
-}: EditOrderAmountProps) {
+  onSuccess
+}: Readonly<EditOrderAmountProps>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>("");
   const [editOrder, setEditOrder] = useState({ orderId, amount });
@@ -35,6 +37,8 @@ export default function EditOrderAmount({
           editOrder.amount
         );
         toast.success("Amount successfully changed");
+
+        if (onSuccess) onSuccess(); // ✅ notify parent to refresh
       } catch (error) {
         toast.error("Failed to change the amount");
       }
@@ -50,7 +54,7 @@ export default function EditOrderAmount({
         className="btn btn-ghost ml-1 px-1 rounded-2xl"
         title="Edit amount"
       >
-        <img src="/edit-order.svg" alt="ped icon for edit" className="w-5" />
+        <img src="/edit-order.svg" alt="pen icon for edit" className="w-5" />
       </button>
       <ConfirmationModal
         isOpen={isModalOpen}
@@ -60,7 +64,7 @@ export default function EditOrderAmount({
         onCancel={() => setIsModalOpen(false)}
       >
         <input
-          id="newPrice"
+          id="newAmount"
           type="number"
           step={0.01}
           className="form-input mb-5"

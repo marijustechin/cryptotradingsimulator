@@ -19,10 +19,6 @@ const UserOrdersPage = () => {
       text: "Assets",
       tabCode: "ua",
     },
-    {
-      text: "Borrowings",
-      tabCode: "br",
-    },
   ];
 
   return (

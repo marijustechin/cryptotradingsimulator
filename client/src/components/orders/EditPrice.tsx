@@ -6,12 +6,14 @@ import OrdersService from "../../services/OrdersService";
 interface EditPriceOrderProps {
   orderId: number;
   triggerPrice: number;
+  onSuccess?: () => void;
 }
 
 export default function EditOrderPrice({
   orderId,
   triggerPrice,
-}: EditPriceOrderProps) {
+  onSuccess,
+}: Readonly<EditPriceOrderProps>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>("");
   const [editOrder, setEditOrder] = useState({ orderId, triggerPrice });
@@ -35,6 +37,8 @@ export default function EditOrderPrice({
           editOrder.triggerPrice
         );
         toast.success("Price successfully changed");
+
+        if (onSuccess) onSuccess(); // ✅ refresh parent
       } catch (error) {
         toast.error("Failed to change the price");
       }
@@ -50,7 +54,7 @@ export default function EditOrderPrice({
         className="btn btn-ghost ml-1 px-1 rounded-2xl"
         title="Edit price"
       >
-        <img src="/edit-order.svg" alt="ped icon for edit" className="w-5" />
+        <img src="/edit-order.svg" alt="pen icon for edit" className="w-5" />
       </button>
       <ConfirmationModal
         isOpen={isModalOpen}

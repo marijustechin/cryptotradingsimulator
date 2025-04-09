@@ -25,16 +25,17 @@ const isTokenValid = (token: string): boolean => {
 
 // Atstatom useri is local storage **with accessToken**
 const storedToken = localStorage.getItem('accessToken');
-let restoredUser: IUser = { id: null, role: null, balance: null };
+let restoredUser: IUser = { id: null, role: null, balance: null, first_name: null };
 let restoredAccessToken: string | null = null;
 
 if (storedToken && isTokenValid(storedToken)) {
-  const { id, role, balance } = jwtDecode<{
+  const { id, role, balance, first_name } = jwtDecode<{
     id: string;
     role: string;
     balance: number;
+    first_name: string;
   }>(storedToken);
-  restoredUser = { id, role, balance };
+  restoredUser = { id, role, balance, first_name };
   restoredAccessToken = storedToken;
 }
 
@@ -54,23 +55,25 @@ export const restoreSession = createAsyncThunk(
       const oldToken = localStorage.getItem('accessToken');
 
       if (oldToken && isTokenValid(oldToken)) {
-        const { id, role, balance } = jwtDecode<{
+        const { id, role, balance, first_name } = jwtDecode<{
           id: string;
           role: string;
           balance: number;
+          first_name: string;
         }>(oldToken);
-        return { accessToken: oldToken, user: { id, role, balance } };
+        return { accessToken: oldToken, user: { id, role, balance, first_name } };
       } else if (oldToken) {
         const newToken = await AuthService.refresh();
         if (!newToken) throw new Error('Sesija baigėsi...');
 
         localStorage.setItem('accessToken', newToken);
-        const { id, role, balance } = jwtDecode<{
+        const { id, role, balance, first_name } = jwtDecode<{
           id: string;
           role: string;
           balance: number;
+          first_name: string;
         }>(newToken);
-        return { accessToken: newToken, user: { id, role, balance } };
+        return { accessToken: newToken, user: { id, role, balance, first_name } };
       } else {
         throw new Error('Session expired. Please login.');
       }
@@ -85,7 +88,7 @@ export const restoreSession = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
-    { email, password }: { email: string; password: string },
+    { email, password }: { email: string; password: string; first_name: string },
     { rejectWithValue }
   ) => {
     try {
@@ -116,7 +119,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     resetAuthState: (state) => {
-      state.user = { id: null, role: null, balance: null };
+      state.user = { id: null, role: null, balance: null, first_name: null  };
       state.accessToken = null; // Pasalinam tokena
       state.status = 'idle';
       state.error = null;
@@ -146,7 +149,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = 'idle';
-        state.user = { id: null, role: null, balance: null };
+        state.user = { id: null, role: null, balance: null, first_name: null  };
         state.accessToken = null; // pasalinam tokena
         localStorage.removeItem('accessToken');
         state.error = null;
@@ -156,7 +159,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(restoreSession.rejected, (state) => {
-        state.user = { id: null, role: null, balance: null };
+        state.user = { id: null, role: null, balance: null, first_name: null  };
         state.accessToken = null;
         localStorage.removeItem('accessToken');
       });

@@ -52,9 +52,13 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
         {/* Balance Display */}
         <div className='flex flex-col items-center justify-center mb-8'>
           {user.balance && user.role === 'USER' && (
-            <h3 className='text-center text-2xl font-bold'>
+            <>
+            <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              Sveiki, {user.first_name}
+            </h4>
+            <h3>
               {HelperService.formatCurrency(user.balance)}
-            </h3>
+            </h3></>
           )}
         </div>
 
