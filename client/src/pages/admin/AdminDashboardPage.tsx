@@ -1,4 +1,3 @@
-
 import { DashboardCardUsers } from '../../components/admin/DashboardCardUsers';
 import { Card } from '../../components/admin/AdminCard';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -19,14 +18,15 @@ const AdminDashboardPage = () => {
   const orderInfo = useAppSelector(selectAdminOrderInfo);
 
   useEffect(() => {
-    dispatch(getGeneralInfo());
-  }, [dispatch]);
-
+    if (!userInfo) {
+      dispatch(getGeneralInfo());
+    }
+  }, [dispatch, userInfo]);
 
   const ordersByCryptoData = orderInfo?.ordersByCrypto;
   const monthlyIncome = orderInfo?.monthlyIncome;
   const incomeByOrderType = orderInfo?.income;
-  const monthlyOrdersValue  = orderInfo?.monthlyOrdersValue;
+  const monthlyOrdersValue = orderInfo?.monthlyOrdersValue;
   const yearlyIncomeByMonth = orderInfo?.yearlyIncomeByMonth ?? [];
   const topUsers = userInfo?.topUsers ?? [];
   const Income = incomeByOrderType?.reduce((acc, item) => {
@@ -35,36 +35,42 @@ const AdminDashboardPage = () => {
   const yearlyOrdersValue = orderInfo?.yearlyOrdersValueByMonth ?? [];
   const totalOrderValue = orderInfo?.yearlyOrdersValueTotal;
 
-
   return (
     <main className='flex-1 bg-gray-800 md:bg-transparent'>
       <div className='grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center'>
         <DashboardCardUsers />
         <div className='w-full space-y-2'>
-          <Card title='Monthly Turnover' value={monthlyOrdersValue && HelperService.formatCurrency(monthlyOrdersValue)} />
-          <Card title='Monthly Income' value={monthlyIncome && HelperService.formatCurrency(monthlyIncome)} />
-
+          <Card
+            title='Monthly Turnover'
+            value={
+              monthlyOrdersValue &&
+              HelperService.formatCurrency(monthlyOrdersValue)
+            }
+          />
+          <Card
+            title='Monthly Income'
+            value={monthlyIncome && HelperService.formatCurrency(monthlyIncome)}
+          />
         </div>
       </div>
       <TopMonthlyUsersCard users={topUsers} />
       <StackedBarChartCard
-  title="Yearly Income by Month"
-  total={HelperService.formatCurrency(Income ?? 0)}
-  data={yearlyIncomeByMonth}
-  keys={['limit', 'market']}
-  colors={['#10B981', '#818cf8']}
-/>
+        title='Yearly Income by Month'
+        total={HelperService.formatCurrency(Income ?? 0)}
+        data={yearlyIncomeByMonth}
+        keys={['limit', 'market']}
+        colors={['#10B981', '#818cf8']}
+      />
 
-<StackedBarChartCard
-  title="Yearly Order Value by Month"
-  total={HelperService.formatCurrency(totalOrderValue ?? 0)}
-  data={yearlyOrdersValue}
-  keys={['limit', 'market']}
-  colors={['#10B981', '#818cf8']}
-/>
+      <StackedBarChartCard
+        title='Yearly Order Value by Month'
+        total={HelperService.formatCurrency(totalOrderValue ?? 0)}
+        data={yearlyOrdersValue}
+        keys={['limit', 'market']}
+        colors={['#10B981', '#818cf8']}
+      />
 
-<MonthlyOrdersChart rawData={ordersByCryptoData ?? []} />
-  
+      <MonthlyOrdersChart rawData={ordersByCryptoData ?? []} />
     </main>
   );
 };
