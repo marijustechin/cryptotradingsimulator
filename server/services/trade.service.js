@@ -20,7 +20,12 @@ class TradeService {
     const transaction = await sequelize.transaction();
 
     try {
-      const cost = price * amount;
+      let cost
+      if(ord_type === "market") {
+        cost = price * amount;
+      } else {
+        cost = triggerPrice * amount;
+      }
       let fee = 0;
 
       // 1. Nuskaiciuojam kapeikas
@@ -46,6 +51,11 @@ class TradeService {
       const isInstantExecution =
         ord_type === 'market' ||
         (ord_type === 'limit' && price === triggerPrice);
+
+      // kai limit naudoji triggerPrice if statement,
+      // kai operacija ivyksta
+      // price turi buti = triggerPrice
+      // kai market naudoji marketPrice
 
       const ord_status = isInstantExecution ? 'closed' : 'open';
       const closed_date = isInstantExecution ? new Date() : null;

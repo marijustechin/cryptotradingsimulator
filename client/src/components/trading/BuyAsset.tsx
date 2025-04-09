@@ -1,8 +1,6 @@
 import { selectTradingOptions } from '../../store/features/trading/tradingOptionsSlice';
 import { useAppSelector } from '../../store/store';
-import {
-  selectUser,
-} from '../../store/features/user/authSlice';
+import { selectUser } from '../../store/features/user/authSlice';
 import { toast } from 'react-hot-toast';
 import {
   getCurrentPrices,
@@ -15,21 +13,30 @@ const BuyAsset = async () => {
   const currentPrices = useAppSelector(getCurrentPrices);
   const selectedCrypto = useAppSelector(getChartSymbol);
 
-  const { amount, orderType, orderDirection, triggerPrice } =
-  tradingOptions;
+  const { amount, orderType, orderDirection, triggerPrice } = tradingOptions;
 
   // jei vartotojas perka
   // ar uztenka vartotojo pinigu
+  const priceToCheck =
+    orderType === 'limit' && triggerPrice
+      ? triggerPrice
+      : currentPrices?.lastPrice;
+
   if (
-    tradingOptions.orderDirection === 'buy' &&
+    orderDirection === 'buy' &&
     user?.balance !== undefined &&
     user?.balance !== null &&
-    currentPrices?.lastPrice !== undefined &&
-    user.balance < tradingOptions.amount * currentPrices.lastPrice
+    priceToCheck !== undefined &&
+    user.balance < amount * priceToCheck
   ) {
     toast.error('Insufficient funds');
     return;
   }
+
+
+  // vartotojas kai nustato BTC triggerPrice jam raso, kad neuztenka lesu
+  // nors jis nustato triggerPrice pagal save
+  // bet reikia ir tikrinimo, kad triggerPrice nevirsytu balanso, nes tuomet neleistu ivykdyti
 
   const totalCost = amount * currentPrices?.lastPrice;
 
@@ -38,10 +45,10 @@ const BuyAsset = async () => {
     return;
   }
 
-  if (orderType === "market" && user?.balance < totalCost) {
+  if (orderType === 'market' && user?.balance < totalCost) {
     toast.error(`Insufficient balance to buy ${selectedCrypto}`);
     return;
   }
 };
 
-export default BuyAsset
+export default BuyAsset;
