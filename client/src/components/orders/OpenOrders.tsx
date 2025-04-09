@@ -9,6 +9,7 @@ import { DataExport } from "./DataExport";
 import CancelOrder from "./CancelOrder";
 import EditOrderPrice from "./EditPrice";
 import EditOrderAmount from "./EditAmount";
+import HelperService from "../../services/HelperService";
 
 export const OpenOrders = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,12 @@ export const OpenOrders = () => {
       dispatch(getOpenOrders({ userId: user.id }));
     }
   }, [dispatch, openOrders, user.id]);
+  const refreshOrders = () => {
+    if (user.id) {
+      dispatch(getOpenOrders({ userId: user.id }));
+    }
+  };
+  
 
   return (
     <div className="">
@@ -34,6 +41,7 @@ export const OpenOrders = () => {
             <th>Order Qty</th>
             <th>Entry Price</th>
             <th>Order Time</th>
+            <th>Order Value</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -61,25 +69,32 @@ export const OpenOrders = () => {
                 {order.ord_direct}
               </td>
               <td>
-                {parseFloat(Number(order.triggerPrice).toFixed(2))}{" "}
-                <span className="text-gray-400 text-[12px]">USDT</span>
+                {HelperService.formatCurrency(Number(order.triggerPrice))}
                 <EditOrderPrice
-                  orderId={order.id}
-                  triggerPrice={order.triggerPrice}
-                />
+  orderId={order.id}
+  triggerPrice={order.triggerPrice}
+  onSuccess={refreshOrders}
+/>
               </td>
               <td className="text-green-700">
                 {order.amount}
-                <EditOrderAmount orderId={order.id} amount={order.amount} />
+                <EditOrderAmount
+  orderId={order.id}
+  amount={order.amount}
+  onSuccess={refreshOrders}
+/>
+
               </td>
               <td>
-                {parseFloat(
-                  Number(order.amount * order.triggerPrice).toFixed(2)
-                )}
+                {HelperService.formatCurrency(Number(order.price))}
               </td>
               <td>{order.open_date}</td>
               <td>
-                <CancelOrder orderId={order.id} />
+              {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}
+              </td>
+              <td>
+              <CancelOrder orderId={order.id} onSuccess={refreshOrders} />
+
               </td>
             </tr>
           ))}

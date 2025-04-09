@@ -86,6 +86,7 @@ class UserService {
       id: activeUser.id,
       role: activeUser.role,
       balance: activeUser.wallet.balance,
+      first_name: activeUser.first_name,
     });
 
     await tokenService.saveRefreshToken(activeUser.id, tokens.refreshToken);
@@ -99,6 +100,7 @@ class UserService {
         id: activeUser.id,
         role: activeUser.role,
         balance: activeUser.wallet.balance,
+        first_name: activeUser.first_name,
       },
     };
   }

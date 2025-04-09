@@ -66,7 +66,7 @@ class AdminService {
     const monthlyIncome = parseFloat(monthlyIncomeData?.[0]?.dataValues?.monthly_total || 0);
 
     const monthlyOrdersValueData = await orders.findAll({
-      attributes: [[sequelize.fn('SUM', sequelize.col('price')), 'monthly_value']],
+      attributes: [[sequelize.literal('SUM(amount * price)'), 'monthly_value']],
       where: { closed_date: { [Op.gte]: date30DaysAgo } },
     });
 
@@ -108,7 +108,7 @@ class AdminService {
       attributes: [
         [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
         'ord_type',
-        [sequelize.fn('SUM', sequelize.col('price')), 'total_value'],
+        [sequelize.literal('SUM(amount * price)'), 'total_value'],
       ],
       where: { closed_date: { [Op.gte]: startMonth } },
       group: ['month', 'ord_type'],
@@ -155,7 +155,7 @@ class AdminService {
         [sequelize.fn('COUNT', sequelize.col('orders.id')), 'ordersCount'],
       ],
       where: {
-        closed_date: { [Op.gte]: date30DaysAgo }, // ✅ Only last 30 days
+        closed_date: { [Op.gte]: date30DaysAgo },
       },
       group: ['userId', 'user.id'],
       order: [[sequelize.fn('SUM', sequelize.col('fee')), 'DESC']],

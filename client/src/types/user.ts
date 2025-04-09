@@ -2,6 +2,7 @@ export interface IUser {
   id: string | null;
   role: string | null;
   balance: number | null;
+  first_name: string | null;
 }
 
 export interface IUserInfo {

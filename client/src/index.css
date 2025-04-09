@@ -63,15 +63,15 @@ input.hidden-password {
 /* Headings */
 h1,
 .heading-1 {
-  font-size: 2rem;
-  font-weight: normal;
+  font-size: 2.25rem;
+  font-weight: 600;
   color: var(--text-main);
   font-family: 'Montserrat', sans-serif;
 }
 
 h2,
 .heading-2 {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 600;
   font-style: normal;
   line-height: normal;
