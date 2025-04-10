@@ -211,5 +211,6 @@ const authSlice = createSlice({
 export const { resetAuthState, setStatusError, setUserBalance } =
   authSlice.actions;
 export const selectUser = (state: RootState) => state.auth.user;
+export const selectUserBalance = (state: RootState) => state.auth.user.balance;
 
 export default authSlice.reducer;

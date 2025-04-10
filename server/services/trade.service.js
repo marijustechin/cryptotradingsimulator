@@ -20,31 +20,28 @@ class TradeService {
     const transaction = await sequelize.transaction();
 
     try {
-      let cost;
-      if (ord_type === 'market') {
-        cost = price * amount;
-      } else if (ord_type === 'limit') {
-        cost = triggerPrice * amount;
-      }
-      let fee = 0;
-
-      // 1. Nuskaiciuojam kapeikas
+      const cost =
+        ord_type === 'market' ? price * amount : triggerPrice * amount;
+    
+      const fee = ord_type === 'market' ? cost * 0.045 : cost * 0.0015;
+    
       const userWallet = await wallet.findOne({
         where: { user_id: userId },
         transaction,
       });
-
+    
       if (!userWallet) {
         throw new Error('Wallet not found for user');
       }
-
-      // Jei viskas ok, atimam is balanso
-      // iskaitant ir mokesti
+    
       if (ord_direct === 'buy') {
-        fee = ord_type === 'market' ? cost * 0.045 : cost * 0.0015;
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
-        await userWallet.save({ transaction });
+      } else if (ord_direct === 'sell') {
+        userWallet.balance = parseFloat(userWallet.balance) + cost - fee;
       }
+    
+      await userWallet.save({ transaction });
+      console.log('Naujas balansas:', userWallet.balance);
 
       await userWallet.save({ transaction });
       // 2. Create order
@@ -100,7 +97,7 @@ class TradeService {
         return {
           message: `Order Submitted Succesfully\n${amount} ${assetId} will be bought at $${triggerPrice} price`,
         };
-      } else if (ord_type === 'market' && ord_direct === 'sell') {
+      } else if (ord_type === 'limit' && ord_direct === 'sell') {
         return {
           message: `Order Submitted Succesfully\n${amount} ${assetId} will be sold at $${triggerPrice} price`,
         };

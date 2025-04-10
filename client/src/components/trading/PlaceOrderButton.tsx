@@ -14,6 +14,8 @@ import HelperService from '../../services/HelperService';
 import {
   selectUser,
   setUserBalance,
+  selectUserBalance,
+  fetchUserInfo,
 } from '../../store/features/user/authSlice';
 import OrdersService from '../../services/OrdersService';
 import {
@@ -30,6 +32,7 @@ export const PlaceOrderButton = () => {
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
   const order = useAppSelector(selectUserAssets);
+  const balance = useAppSelector(selectUserBalance);
 
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
@@ -37,6 +40,8 @@ export const PlaceOrderButton = () => {
       toast.error('System error');
       return;
     }
+
+    console.log(user);
 
     // 1. Ar ivestas kiekis?
     if (tradingOptions.amount === 0) {
@@ -94,20 +99,14 @@ export const PlaceOrderButton = () => {
           tradingOptions.triggerPrice
         );
 
-        const cost =
-          tradingOptions.orderType === 'market'
-            ? tradingOptions.amount * currentPrices.lastPrice
-            : tradingOptions.amount * tradingOptions.triggerPrice;
-
-        let feePercent = tradingOptions.orderType === 'limit' ? 0.0015 : 0.045;
-        const feeAmount = cost * feePercent;
-
         toast.success(response);
         if (tradingOptions.orderType === 'market') {
-          dispatch(setUserBalance(user.balance - cost - feeAmount));
+          dispatch(setUserBalance(balance));
+          await dispatch(fetchUserInfo());
           return;
         } else if (tradingOptions.orderType === 'limit') {
-          dispatch(setUserBalance(user.balance - cost - feeAmount));
+          dispatch(setUserBalance(balance));
+          await dispatch(fetchUserInfo());
           return;
         }
         dispatch(getOpenOrders({ userId: user.id }));
