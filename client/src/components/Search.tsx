@@ -32,6 +32,7 @@ export const Search = ({ placeholderText, onSearch }: ISearchProps) => {
         type="text"
         autoComplete="off"
         placeholder={placeholderText}
+        aria-label={`Search for ${placeholderText}`}
       />
       <button
         onClick={handleClearSearch}
