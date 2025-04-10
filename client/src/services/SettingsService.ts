@@ -25,4 +25,16 @@ export default class SettingsService {
 
     return response.data;
   }
+
+  static async updateSystemFee(
+    limitFee?: number,
+    marketFee?: number
+  ): Promise<string> {
+    const response = await $api.patch('/settings/updatefee', {
+      limitFee,
+      marketFee,
+    });
+
+    return response.data;
+  }
 }

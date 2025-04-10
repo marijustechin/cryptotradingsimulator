@@ -34,6 +34,18 @@ class SettingsController {
       next(e);
     }
   }
+
+  async updateFees(req, res, next) {
+    try {
+      const { limitFee, marketFee } = req.body;
+
+      const result = await settingsService.updateFees(limitFee, marketFee);
+
+      return res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new SettingsController();
