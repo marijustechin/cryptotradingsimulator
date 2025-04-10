@@ -237,7 +237,28 @@ class SystemSettings {
       }
     }
 
-    return 'fake activity generated';
+    return 'Fake activity generated successfully';
+  }
+
+  async updateFees(limitFee = null, marketFee = null) {
+    const fees = await settings.findOne();
+    let message = '';
+    if (fees) {
+      if (limitFee) {
+        fees.limit_order_fee = limitFee;
+        message = 'Limit order fee updated';
+      }
+
+      if (marketFee) {
+        fees.market_order_fee = marketFee;
+        message = 'Market order fee updated';
+      }
+
+      fees.save();
+      return message;
+    } else {
+      return 'Settings table is empty';
+    }
   }
 }
 

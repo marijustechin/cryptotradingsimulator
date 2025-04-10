@@ -9,5 +9,6 @@ settingsRouter.post(
   '/generateactivity',
   settingsController.generateFakeActivity
 );
+settingsRouter.patch('/updatefee', settingsController.updateFees);
 
 module.exports = settingsRouter;

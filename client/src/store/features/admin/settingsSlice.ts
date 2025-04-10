@@ -67,11 +67,16 @@ export const generateUsers = createAsyncThunk<
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
-  reducers: {},
+  reducers: {
+    setSettingsMessage: (state, action) => {
+      state.message = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSettings.pending, (state) => {
         state.status = 'loading';
+        state.message = null;
       })
       .addCase(getSettings.fulfilled, (state, action) => {
         state.limit_order_fee = action.payload.limit_order_fee;
@@ -79,10 +84,12 @@ export const settingsSlice = createSlice({
         state.fake_users_count = action.payload.fake_users_count;
         state.status = 'idle';
         state.error = null;
+        state.message = null;
       })
       .addCase(getSettings.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
+        state.message = null;
       })
       .addCase(generateActivity.pending, (state) => {
         state.status = 'loading';
@@ -108,6 +115,8 @@ export const settingsSlice = createSlice({
       });
   },
 });
+
+export const { setSettingsMessage } = settingsSlice.actions;
 
 export const selectLimitFee = (state: RootState) =>
   state.settings.limit_order_fee;
