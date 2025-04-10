@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   LineChart,
   Line,
@@ -8,87 +8,116 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 import {
   getOrdersHistory,
   selectOrdersHistory,
-} from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice'; // adjust if user selector is different
-import HelperService from '../../services/HelperService';
+} from "../../store/features/orders/ordersSlice";
+import { selectUser } from "../../store/features/user/authSlice";
+import HelperService from "../../services/HelperService";
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-gray-900 border border-[#10B981] text-white p-3 rounded-lg shadow-lg">
+        <p className="text-sm text-[#10B981] font-semibold">{label}</p>
+        <p className="text-sm">
+          Balance: {HelperService.formatCurrency(payload[0].value)}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 const UserBalanceChart: React.FC = () => {
   const dispatch = useDispatch();
   const { data: orders } = useSelector(selectOrdersHistory);
-  const user = useSelector(selectUser); // get current logged-in user (assuming it has .balance)
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(getOrdersHistory({ page: 1 }));
   }, [dispatch]);
 
-  // Calculate the balance over time
   const balanceData = useMemo(() => {
     if (!orders || !user) return [];
-  
-    // Sort orders DESC by date (most recent first)
-    const sortedOrders = [...orders].sort((a, b) =>
-      new Date(b.closed_date || b.open_date).getTime() -
-      new Date(a.closed_date || a.open_date).getTime()
+
+    const sortedOrders = [...orders].sort(
+      (a, b) =>
+        new Date(b.closed_date || b.open_date).getTime() -
+        new Date(a.closed_date || a.open_date).getTime()
     );
-  
-    let balance = Number(user.balance); // Start from current balance
-  
+
+    let balance = Number(user.balance);
     const history: { date: string; balance: number }[] = [];
-  
+
     sortedOrders.forEach((order) => {
       const price = Number(order.price);
       const amount = Number(order.amount);
       const fee = Number(order.fee);
       const total = price * amount;
-  
-      const date = (order.closed_date || order.open_date || '').split('T')[0];
-  
-      // Push current balance for this point in time
+
+      const date = (order.closed_date || order.open_date || "").split("T")[0];
+
       history.push({
         date,
         balance: parseFloat(balance.toFixed(2)),
       });
-  
-      // Rewind balance: undo the transaction
-      if (order.ord_direct === 'buy') {
-        balance += total + fee; // user had more before the buy
-      } else if (order.ord_direct === 'sell') {
-        balance -= total - fee; // user had less before the sell
+
+      if (order.ord_direct === "buy") {
+        balance += total + fee;
+      } else if (order.ord_direct === "sell") {
+        balance -= total - fee;
       }
     });
-  
-    // Reverse back to ascending time order
+
     return history.reverse();
-  }, [orders, user]);  
-  
+  }, [orders, user]);
+
   return (
-    <div className="p-4">
-      <div className="mb-2">
-        <span className="text-[1.75rem] text-[#10B981] font-semibold">
-          Current Balance: {HelperService.formatCurrency(user.balance)}
-        </span>
-        <h3 className="text-gray-200">Your balance over time</h3>
+    <div className="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl border border-gray-700">
+      <div className="mb-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">
+          💰 Balance Overview
+        </h2>
+        <p className="text-md text-gray-400">
+          Current Balance:{" "}
+          <span className="text-[#10B981] font-medium">
+            {HelperService.formatCurrency(user.balance)}
+          </span>
+        </p>
       </div>
 
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer
+        width="100%"
+        height={300}
+      >
         <LineChart
           data={balanceData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 10, right: 30, left: 10, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis />
-          <Tooltip />
+          <CartesianGrid
+            stroke="#2d3748"
+            strokeDasharray="4 4"
+          />
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 12, fill: "#cbd5e1" }}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fontSize: 12, fill: "#cbd5e1" }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <Tooltip content={<CustomTooltip />} />
           <Line
             type="monotone"
             dataKey="balance"
             stroke="#10B981"
-            strokeWidth={2}
-            dot={false}
+            strokeWidth={3}
+            dot={{ r: 3, strokeWidth: 2, fill: "#10B981", stroke: "#1f2937" }}
+            activeDot={{ r: 6 }}
           />
         </LineChart>
       </ResponsiveContainer>

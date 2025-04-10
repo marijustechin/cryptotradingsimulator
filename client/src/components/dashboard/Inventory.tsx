@@ -1,8 +1,11 @@
-import { useEffect, useMemo } from 'react';
-import { useAppSelector, useAppDispatch } from '../../store/store';
-import { selectUserAssets, getUserAssets } from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice';
-import { Link } from 'react-router';
+import { useEffect, useMemo } from "react";
+import { useAppSelector, useAppDispatch } from "../../store/store";
+import {
+  selectUserAssets,
+  getUserAssets,
+} from "../../store/features/orders/ordersSlice";
+import { selectUser } from "../../store/features/user/authSlice";
+import { Link } from "react-router";
 
 const Inventory = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +15,7 @@ const Inventory = () => {
   // Fetch assets when the component mounts or when the page becomes visible
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         if (user.id) {
           dispatch(getUserAssets({ userId: user.id }));
         }
@@ -25,11 +28,11 @@ const Inventory = () => {
     }
 
     // Set up visibility change listener to refresh data when the page becomes visible
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Clean up the event listener when the component is unmounted
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [dispatch, user.id, userAssets]);
 
@@ -50,17 +53,17 @@ const Inventory = () => {
   }
 
   return (
-    <div className="mt-4 space-y-2">
-      <div>
-        <h1>Your Crypto's</h1>
-      </div>
+    <div className="mt-4 space-y-4">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-gray-200">
+        Your Crypto
+      </h1>
       {assets.map(({ asset, balance }) => (
         <Link
           to="orders"
           key={asset}
-          className="flex justify-between items-center bg-gray-800 hover:bg-gray-700 p-3 rounded-xl text-white shadow transition"
+          className="flex justify-between items-center bg-gray-800 hover:bg-gray-700 p-4 rounded-xl text-white shadow-md transition-all duration-300 transform hover:scale-105"
         >
-          <span className="font-semibold">{asset}</span>
+          <span className="font-semibold text-lg">{asset}</span>
           <span className="text-sm text-gray-300">{balance}</span>
         </Link>
       ))}
