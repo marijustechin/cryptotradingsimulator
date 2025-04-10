@@ -26,6 +26,7 @@ export const TickersN = () => {
   });
 
   return (
+    <main className="bg-gray-800 rounded-xl p-4 shadow">
     <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3 p-4 border-t border-b border-violet-800 text-center w-full">
       <div className="flex flex-col items-center min-w-[80px]">
         <p className="text-xs text-violet-400">24h high</p>
@@ -68,5 +69,6 @@ export const TickersN = () => {
         </p>
       </div>
     </section>
+    </main>
   );
 };

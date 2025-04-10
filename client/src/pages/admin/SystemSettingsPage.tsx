@@ -22,13 +22,12 @@ const SystemSettingsPage = () => {
 
   return (
     <div className='relative'>
+      <h1 className='text-center'>System Settings</h1>
       <div className='relative flex flex-col gap-5 z-30 p-2'>
-        <h1>System Settings</h1>
         <SystemFees />
         <SystemFakeUsers />
         <SystemFakeActivity />
       </div>
-      <div className='absolute top-0 left-0 w-full h-full bg-gray-900/70 z-0 rounded-2xl'></div>
     </div>
   );
 };

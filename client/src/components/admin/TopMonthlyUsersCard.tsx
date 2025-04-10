@@ -15,7 +15,7 @@ export const TopMonthlyUsersCard = ({ users }: { users: TopUser[] }) => {
   const sortedUsers = [...users].sort((a, b) => b.totalFee - a.totalFee);
 
   return (
-    <div className="bg-gray-700 p-6 rounded-xl shadow-md w-full mb-6">
+    <div className="bg-gray-800 p-6 rounded-xl shadow-md w-full mb-6">
       <h2 className="text-xl font-semibold text-gray-200 mb-5">Top 3 Users This Month</h2>
       {sortedUsers.length === 0 ? (
         <p className="text-gray-400">No data available.</p>

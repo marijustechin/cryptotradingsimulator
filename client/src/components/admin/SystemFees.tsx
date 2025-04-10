@@ -26,7 +26,7 @@ export const SystemFees = () => {
   }, [limitFeeFromStore, marketFeeFromStore]);
 
   return (
-    <>
+    <main className='bg-gray-800 rounded-xl p-4 shadow'>
       <h2>Fees</h2>
       <div className='flex gap-2'>
         <div className='flex flex-col border border-violet-700 rounded-lg p-2'>
@@ -73,6 +73,6 @@ export const SystemFees = () => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };

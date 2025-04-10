@@ -40,7 +40,7 @@ export const StackedBarChartCard = ({
   keys: string[];
   colors: string[];
 }) => (
-  <div className="bg-gray-700 p-6 rounded-xl shadow-md mb-6">
+  <div className="bg-gray-800 p-6 rounded-xl shadow-md mb-6">
     <div className="mb-2">
       <span className="text-[1.75rem] text-[#10B981] font-semibold">
         Total (Last 12 Months): {total}

@@ -84,6 +84,7 @@ const AllUsersPage = () => {
 
   return (
     <main>
+      <h1 className="text-center">All Platform Users </h1>
       <div className='flex gap-4 py-3 items-center'>
         <Search
           placeholderText='Search by First Name'

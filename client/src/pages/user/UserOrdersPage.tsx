@@ -23,6 +23,7 @@ const UserOrdersPage = () => {
 
   return (
     <main>
+      <h1 className="text-center">My Orders</h1>
       <nav className="flex justify-start gap-2 py-2">
         {buttons.map((button) => (
           <button

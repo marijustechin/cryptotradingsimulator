@@ -75,7 +75,7 @@ export const LightWeightChart = () => {
 
   return (
     <div className="rounded-xl overflow-hidden w-auto h-auto">
-      <div className="w-full h-full" ref={chartContainerRef}></div>
+      <div className="w-full h-full items-center" ref={chartContainerRef}></div>
     </div>
   );
 };
