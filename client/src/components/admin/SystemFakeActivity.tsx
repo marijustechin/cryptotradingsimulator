@@ -20,7 +20,7 @@ export const SystemFakeActivity = () => {
   };
 
   return (
-    <>
+    <main className='bg-gray-800 rounded-xl p-4 shadow'>
       <h2>Generate fake Activity</h2>
       {status === 'loading' && ref ? (
         <div className='p-3 border border-rose-500 rounded-2xl font-semibold text-emerald-500'>
@@ -40,6 +40,6 @@ export const SystemFakeActivity = () => {
           </button>
         </>
       )}
-    </>
+    </main>
   );
 };

@@ -12,7 +12,7 @@ class WalletBalanceService {
       raw: true,
     });
 
-    let newBalance = 0;
+    let newBalance = 10000;
 
     for (const order of userOrders) {
       const amount = parseFloat(order.amount || 0);

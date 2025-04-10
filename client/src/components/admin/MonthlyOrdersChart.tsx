@@ -66,7 +66,7 @@ import {
     const assetKeys = rawData.map((a) => a.assetId.slice(0, 3)); // ✅ short labels
   
     return (
-      <div className="bg-gray-700 p-6 rounded-xl shadow-md mb-6">
+      <div className="bg-gray-800 p-6 rounded-xl shadow-md mb-6">
         <div className="mb-2">
           <span className="text-[1.75rem] text-[#10B981] font-semibold">
             Total Orders (Last 12 Months): {totalOrders}

@@ -10,15 +10,13 @@ import { selectTradingOptions } from "../../store/features/trading/tradingOption
 export const TopCryptos = () => {
   const tradeOptions = useAppSelector(selectTradingOptions);
   return (
-    <div className="flex flex-col gap-4 p-4 bg-gray-900 rounded-xl w-full">
+    <div className="flex flex-col gap-4 rounded-xl w-full">
+      <h1 className="text-center">Spot Trading</h1>
       <TickersN />
 
       {/* Spot Trading Section */}
       <div className="flex flex-col gap-3 items-center text-center lg:flex-row lg:text-left">
-        <h3 className="text-lg lg:text-2xl text-violet-300 font-semibold">
-          Spot Trading
-        </h3>
-        <p className="text-xs lg:text-sm text-violet-400">
+        <p className="text-xs lg:text-sm text-violet-400 px-4">
           Selected order type:
           <span className="text-violet-50 ml-1">
             {tradeOptions.orderType.toUpperCase()}

@@ -112,7 +112,8 @@ export default function AdminOrdersPage() {
   }, [orders]);
 
   return (
-    <main className="p-4 space-y-6">
+    <main>
+      <h1 className="text-center">Platform Orders Summary </h1>
       {/* Dashboard cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="bg-gray-800 rounded-xl p-4 shadow">

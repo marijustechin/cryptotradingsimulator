@@ -66,7 +66,7 @@ export const DashboardCardUsers = () => {
   };
 
   return (
-    <div className='bg-gray-700 p-4 rounded-xl shadow-lg backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
+    <div className='bg-gray-800 p-4 rounded-xl shadow-lg backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full h-full'>
       {/* Left side: user stats and legend */}
       <div className='flex flex-col justify-center gap-4'>
         <div>
