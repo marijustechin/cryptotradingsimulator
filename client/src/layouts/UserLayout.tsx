@@ -43,7 +43,7 @@ const UserLayout = () => {
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={userLinks} />
-            <main className="flex-1 p-4">
+            <main>
               <Outlet />
             </main>
           </div>

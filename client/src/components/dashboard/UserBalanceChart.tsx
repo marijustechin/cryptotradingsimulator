@@ -1,77 +1,107 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
+  CartesianGrid,
   ResponsiveContainer,
 } from 'recharts';
 import {
   getOrdersHistory,
   selectOrdersHistory,
 } from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice'; // adjust if user selector is different
+import { selectUser } from '../../store/features/user/authSlice';
 import HelperService from '../../services/HelperService';
+
+type ViewRange = '1M' | '6M' | '1Y';
 
 const UserBalanceChart: React.FC = () => {
   const dispatch = useDispatch();
   const { data: orders } = useSelector(selectOrdersHistory);
-  const user = useSelector(selectUser); // get current logged-in user (assuming it has .balance)
+  const user = useSelector(selectUser);
+
+  const [viewRange, setViewRange] = useState<ViewRange>('1Y');
 
   useEffect(() => {
     dispatch(getOrdersHistory({ page: 1 }));
   }, [dispatch]);
 
-  // Calculate the balance over time
   const balanceData = useMemo(() => {
     if (!orders || !user) return [];
-  
-    // Sort orders DESC by date (most recent first)
-    const sortedOrders = [...orders].sort((a, b) =>
+
+    const now = new Date();
+    const startDate = new Date();
+
+    if (viewRange === '1M') startDate.setMonth(now.getMonth() - 1);
+    else if (viewRange === '6M') startDate.setMonth(now.getMonth() - 6);
+    else startDate.setFullYear(now.getFullYear() - 1);
+
+    const filteredOrders = orders.filter((order) => {
+      const date = new Date(order.closed_date || order.open_date);
+      return date >= startDate;
+    });
+
+    const sortedOrders = [...filteredOrders].sort((a, b) =>
       new Date(b.closed_date || b.open_date).getTime() -
       new Date(a.closed_date || a.open_date).getTime()
     );
-  
-    let balance = Number(user.balance); // Start from current balance
-  
-    const history: { date: string; balance: number }[] = [];
-  
-    sortedOrders.forEach((order) => {
-      const price = Number(order.price);
-      const amount = Number(order.amount);
-      const fee = Number(order.fee);
+
+    let balance = Number(user.balance);
+    const reversedHistory: { date: string; balance: number }[] = [];
+
+    for (const order of sortedOrders) {
+      const date = (order.closed_date || order.open_date)?.split('T')[0];
+      const price = parseFloat(order.price);
+      const amount = parseFloat(order.amount);
+      const fee = parseFloat(order.fee);
       const total = price * amount;
-  
-      const date = (order.closed_date || order.open_date || '').split('T')[0];
-  
-      // Push current balance for this point in time
-      history.push({
-        date,
-        balance: parseFloat(balance.toFixed(2)),
-      });
-  
-      // Rewind balance: undo the transaction
+
+      reversedHistory.push({ date, balance: parseFloat(balance.toFixed(2)) });
+
       if (order.ord_direct === 'buy') {
-        balance += total + fee; // user had more before the buy
+        balance += total + fee;
       } else if (order.ord_direct === 'sell') {
-        balance -= total - fee; // user had less before the sell
+        balance -= total - fee;
       }
+    }
+
+    reversedHistory.push({
+      date: startDate.toISOString().split('T')[0],
+      balance: parseFloat(balance.toFixed(2)),
     });
-  
-    // Reverse back to ascending time order
-    return history.reverse();
-  }, [orders, user]);  
-  
+
+    return reversedHistory.reverse();
+  }, [orders, user, viewRange]);
+
+  if (!user || !balanceData.length) return null;
+
   return (
-    <div className="p-4">
-      <div className="mb-2">
-        <span className="text-[1.75rem] text-[#10B981] font-semibold">
-          Current Balance: {HelperService.formatCurrency(user.balance)}
-        </span>
-        <h3 className="text-gray-200">Your balance over time</h3>
+    <div className="bg-gray-800 p-6 rounded-xl shadow-md mb-6">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+        <div>
+          <span className="text-[1.75rem] text-[#10B981] font-semibold">
+            Current Balance: {HelperService.formatCurrency(user.balance)}
+          </span>
+          <h3 className="text-gray-200">Your balance over time</h3>
+        </div>
+        <div className="space-x-2">
+          {(['1M', '6M', '1Y'] as ViewRange[]).map((range) => (
+            <button
+              key={range}
+              onClick={() => setViewRange(range)}
+              className={`px-3 py-1 rounded-md text-sm ${
+                viewRange === range
+                  ? 'bg-[#818cf8] text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {range}
+            </button>
+          ))}
+        </div>
       </div>
 
       <ResponsiveContainer width="100%" height={300}>
@@ -80,15 +110,32 @@ const UserBalanceChart: React.FC = () => {
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis />
-          <Tooltip />
+          <XAxis
+            dataKey="date"
+            stroke="#818cf8"
+            tickFormatter={(date) =>
+              new Date(date).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+              })
+            }
+          />
+          <YAxis stroke="#818cf8" />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#1f2937',
+              borderColor: '#6b7280',
+              color: '#10b981',
+            }}
+            labelStyle={{ color: 'white' }}
+          />
           <Line
             type="monotone"
             dataKey="balance"
             stroke="#10B981"
             strokeWidth={2}
             dot={false}
+            name="Balance"
           />
         </LineChart>
       </ResponsiveContainer>

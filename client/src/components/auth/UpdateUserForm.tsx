@@ -77,7 +77,7 @@ export const UpdateUserForm = () => {
 
   return (
     <form
-      className='bg-gray-900 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto'
+      className='bg-gray-800 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto'
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -97,7 +97,7 @@ export const UpdateUserForm = () => {
           </label>
           <input
             id='first_name'
-            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
             placeholder='Your name'
@@ -113,7 +113,7 @@ export const UpdateUserForm = () => {
           </label>
           <input
             id='last_name'
-            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
             placeholder='Last name'
@@ -129,7 +129,7 @@ export const UpdateUserForm = () => {
           </label>
           <input
             id='email'
-            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
             placeholder='Your email'
@@ -145,7 +145,7 @@ export const UpdateUserForm = () => {
           </label>
           <input
             id='address'
-            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
             placeholder='Address'
@@ -161,7 +161,7 @@ export const UpdateUserForm = () => {
           </label>
           <input
             id='phone_number'
-            className='w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
+            className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
             placeholder='Number example: 37012312345'
