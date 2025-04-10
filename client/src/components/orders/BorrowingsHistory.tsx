@@ -81,10 +81,6 @@ export default function BorrowingsHistory() {
         totalPages={totalPages}
         onChange={handlePageChange}
       />
-      {/* Total count */}
-      <p className="mt-6 p-2 rounded-lg bg-gray-900 text-gray-300 w-full">
-        Total Borrowings: {data.reduce((acc, item) => acc + item.amount, 0)}
-      </p>
     </div>
   );
 }

@@ -137,6 +137,7 @@ export const PlaceOrderButton = () => {
             type="number"
             value={tradingOptions.amount}
             min={0.01}
+            step={0.01}
           />
         </div>
         {tradingOptions.orderType === 'limit' && (
@@ -155,6 +156,7 @@ export const PlaceOrderButton = () => {
               className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
               type="number"
               min={0.01}
+              step={0.01}
               value={tradingOptions.triggerPrice}
             />
           </div>

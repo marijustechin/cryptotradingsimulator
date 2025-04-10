@@ -1,11 +1,14 @@
 import UserBalanceChart from "../../components/dashboard/UserBalanceChart";
-import Inventory from "../../components/dashboard/Inventory";
+import UserOrdersByCryptoChart from "../../components/dashboard/OrdersByCrypto";
+import UserCryptoHoldingsStackedBar from "../../components/dashboard/UserCryptoHoldingsStackedBar";
 
 const UserDashboardPage = () => {
   return (
-    <main className="mt-5">
+    <main>
+      <h1 className="text-center">Performance Summary</h1>
       <UserBalanceChart />
-      <Inventory />
+      <UserOrdersByCryptoChart/>
+      <UserCryptoHoldingsStackedBar/>
     </main>
   );
 };

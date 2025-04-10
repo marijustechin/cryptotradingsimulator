@@ -41,7 +41,7 @@ export const ChangePasswordForm = () => {
 
   return (
     <form
-      className="bg-gray-900 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto"
+      className="bg-gray-800 text-white p-4 rounded-2xl shadow-lg max-w-xs w-full mx-auto"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
@@ -61,7 +61,7 @@ export const ChangePasswordForm = () => {
           <input
             id="currentPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="Current password"
             autoComplete="off"
             {...register("currentPassword")}
@@ -82,7 +82,7 @@ export const ChangePasswordForm = () => {
           <input
             id="newPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="New password"
             autoComplete="off"
             {...register("newPassword")}
@@ -103,7 +103,7 @@ export const ChangePasswordForm = () => {
           <input
             id="repeatPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-800 text-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
             placeholder="Repeat password"
             autoComplete="off"
             {...register("repeatPassword")}

@@ -12,7 +12,7 @@ const UserProfilePage = () => {
   };
 
   return (
-    <main className='flex flex-col gap-3'>
+    <main>
       <h1 className='text-center'>User profile</h1>
 
       <div className='my-4 grid grid-cols-1 lg:grid-cols-2 gap-4'>
@@ -31,8 +31,8 @@ const UserProfilePage = () => {
           {showPasswordForm && <ChangePasswordForm />}
         </div>
       </div>
-      <section className="pt-10 px-20">
-        <h3>Borrowings</h3>
+      <section className="pt-10">
+        <h3>Total Borrowings:</h3>
         <article>
           <BorrowingsButton />
         </article>
