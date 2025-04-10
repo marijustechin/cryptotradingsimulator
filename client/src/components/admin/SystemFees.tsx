@@ -5,18 +5,25 @@ import {
   selectLimitFee,
   selectMarketFee,
 } from '../../store/features/admin/settingsSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SystemFees = () => {
   const dispatch = useAppDispatch();
-  const limitFee = useAppSelector(selectLimitFee);
-  const marketFee = useAppSelector(selectMarketFee);
+  const limitFeeFromStore = useAppSelector(selectLimitFee);
+  const marketFeeFromStore = useAppSelector(selectMarketFee);
+
+  const [limitFee, setLimitFee] = useState(0);
+  const [marketFee, setMarketFee] = useState(0);
 
   useEffect(() => {
-    if (!limitFee) {
-      dispatch(getSettings());
-    }
-  }, [dispatch, limitFee]);
+    dispatch(getSettings());
+  }, [dispatch]);
+
+  // Sync Redux -> local state when fetched
+  useEffect(() => {
+    if (limitFeeFromStore !== null) setLimitFee(limitFeeFromStore);
+    if (marketFeeFromStore !== null) setMarketFee(marketFeeFromStore);
+  }, [limitFeeFromStore, marketFeeFromStore]);
 
   return (
     <>
@@ -26,7 +33,8 @@ export const SystemFees = () => {
           <label htmlFor='limit_fee'>Limit order fee %</label>
           <div className='flex gap-2'>
             <input
-              defaultValue={limitFee ?? 0}
+              value={limitFee}
+              onChange={(e) => setLimitFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
               className='py-1 px-2 w-40 border border-violet-900 rounded-lg'
@@ -46,7 +54,8 @@ export const SystemFees = () => {
           <label htmlFor='market_fee'>Market order fee %</label>
           <div className='flex gap-2'>
             <input
-              defaultValue={marketFee ?? 0}
+              value={marketFee}
+              onChange={(e) => setMarketFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
               className='py-1 px-2 w-40 border border-violet-900 rounded-lg'

@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   generateUsers,
-  getSettingsMessage,
   getSettingsStatus,
   selectFakeUsers,
 } from '../../store/features/admin/settingsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import toast from 'react-hot-toast';
 
 export const SystemFakeUsers = () => {
   const dispatch = useAppDispatch();
-  const fakeUsers = useAppSelector(selectFakeUsers);
+  const fakeUsersFromStore = useAppSelector(selectFakeUsers);
   const status = useAppSelector(getSettingsStatus);
-  const message = useAppSelector(getSettingsMessage);
+  const [fakeUsers, setFakeUsers] = useState(0);
   const [ref, setRef] = useState(false);
+
+  useEffect(() => {
+    if (fakeUsersFromStore !== null) setFakeUsers(fakeUsersFromStore);
+  }, [fakeUsersFromStore]);
 
   const generateFakeUsers = async () => {
     setRef(true);
@@ -21,7 +23,6 @@ export const SystemFakeUsers = () => {
       generateUsers({ usersCount: fakeUsers ?? 100, defaultPassword: 'dddddd' })
     );
     setRef(false);
-    toast.success(message);
   };
 
   return (
@@ -36,7 +37,8 @@ export const SystemFakeUsers = () => {
           <label htmlFor='fake_users'>Number of users to generate</label>
           <div className='flex gap-2'>
             <input
-              defaultValue={fakeUsers ?? 0}
+              value={fakeUsers}
+              onChange={(e) => setFakeUsers(parseFloat(e.target.value))}
               type='number'
               step={1}
               className='py-1 px-2 w-40 border border-violet-900 rounded-lg'

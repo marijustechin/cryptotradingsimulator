@@ -1,23 +1,22 @@
-import toast from 'react-hot-toast';
 import {
   generateActivity,
-  getSettingsMessage,
   getSettingsStatus,
 } from '../../store/features/admin/settingsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useState } from 'react';
+import { getGeneralInfo } from '../../store/features/admin/adminSlice';
 
 export const SystemFakeActivity = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(getSettingsStatus);
-  const message = useAppSelector(getSettingsMessage);
+
   const [ref, setRef] = useState(false);
 
   const generateFakeActivity = async () => {
     setRef(true);
     await dispatch(generateActivity());
+    await dispatch(getGeneralInfo());
     setRef(false);
-    toast.success(message);
   };
 
   return (
