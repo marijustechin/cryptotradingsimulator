@@ -1,6 +1,8 @@
-import { UpdateUserForm } from '../../components/auth/UpdateUserForm';
-import { ChangePasswordForm } from '../../components/auth/ChangePassword';
-import { useState } from 'react';
+import { UpdateUserForm } from "../../components/auth/UpdateUserForm";
+import { ChangePasswordForm } from "../../components/auth/ChangePassword";
+import { useState } from "react";
+import BorrowingsButton from "../../components/orders/BorrowingsButton";
+import BorrowingsHistory from "../../components/orders/BorrowingsHistory";
 
 const UserProfilePage = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -18,17 +20,26 @@ const UserProfilePage = () => {
         <UpdateUserForm />
 
         {/* Right column: Password section */}
-        <div className='flex flex-col gap-4'>
+        <div className="flex flex-col gap-4">
           <button
             onClick={togglePasswordForm}
-            className='text-violet-400 cursor-pointer hover:text-violet-300 underline transition duration-150 text-left'
+            className="text-violet-400 cursor-pointer hover:text-violet-300 underline transition duration-150 text-left"
           >
-            {showPasswordForm ? 'Hide Change Password' : 'Change Password'}
+            {showPasswordForm ? "Hide Change Password" : "Change Password"}
           </button>
 
           {showPasswordForm && <ChangePasswordForm />}
         </div>
       </div>
+      <section className="pt-10 px-20">
+        <h3>Borrowings</h3>
+        <article>
+          <BorrowingsButton />
+        </article>
+        <article>
+          <BorrowingsHistory />
+        </article>
+      </section>
     </main>
   );
 };
