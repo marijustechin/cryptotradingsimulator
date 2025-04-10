@@ -23,7 +23,7 @@ class TradeService {
       let cost;
       if (ord_type === 'market') {
         cost = price * amount;
-      } else {
+      } else if (ord_type === 'limit') {
         cost = triggerPrice * amount;
       }
       let fee = 0;
@@ -41,7 +41,7 @@ class TradeService {
       // Jei viskas ok, atimam is balanso
       // iskaitant ir mokesti
       if (ord_direct === 'buy') {
-        fee = ord_type === 'market' ? cost * 0.015 : cost * 0.0045;
+        fee = ord_type === 'market' ? cost * 0.045 : cost * 0.0015;
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
         await userWallet.save({ transaction });
       }
