@@ -23,7 +23,7 @@ class TradeService {
       let cost;
       if (ord_type === 'market') {
         cost = price * amount;
-      } else {
+      } else if(ord_type === "limit") {
         cost = triggerPrice * amount;
       }
       let fee = 0;

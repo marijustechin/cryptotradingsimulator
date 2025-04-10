@@ -93,12 +93,21 @@ export const PlaceOrderButton = () => {
           user.id,
           tradingOptions.triggerPrice
         );
+
+        const cost =
+          tradingOptions.orderType === 'market'
+            ? tradingOptions.amount * currentPrices.lastPrice
+            : tradingOptions.amount * tradingOptions.triggerPrice;
+
+        let feePercent = tradingOptions.orderType === 'limit' ? 0.0015 : 0.0015;
+        const feeAmount = cost * feePercent;
+
         toast.success(response);
-        dispatch(
-          setUserBalance(
-            user.balance - tradingOptions.amount * currentPrices.lastPrice
-          )
-        );
+        if (tradingOptions.orderType === 'market') {
+          dispatch(setUserBalance(user.balance - cost - feeAmount));
+        } else if (tradingOptions.orderType === 'limit') {
+          dispatch(setUserBalance(user.balance - cost - feeAmount));
+        }
         dispatch(getOpenOrders({ userId: user.id }));
         dispatch(setAmount(0));
         dispatch(setTriggerPrice(0));
