@@ -84,6 +84,7 @@ export const Pagination = ({
         ))}
         {currentPage < totalPages && (
           <button
+          aria-label='Next page'
             onClick={() => onChange(currentPage + 1)}
             className='cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200'
           >

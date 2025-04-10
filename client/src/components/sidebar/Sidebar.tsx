@@ -27,6 +27,7 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
       {/* Mobile Toggle Button (Hidden when sidebar is open) */}
       {!isOpen && (
         <button
+        aria-label='Toggle sidebar'
           className='md:hidden p-3 text-white bg-black fixed top-[9vh] left-4 z-50 rounded-lg'
           onClick={() => setIsOpen(true)}
         >
