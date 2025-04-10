@@ -34,7 +34,6 @@ const AllUsersPage = lazy(() => import('./pages/admin/AllUsersPage'));
 const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
-const TestPage = lazy(() => import('./pages/user/TestPage'));
 
 function App() {
   const dispatch = useAppDispatch();
@@ -82,7 +81,6 @@ function App() {
             <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
             <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
             <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
-            <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
           </Route>
           <Route path="/404" element={<NotFoundPage />} />{' '}
           {/* Define explicit 404 page */}

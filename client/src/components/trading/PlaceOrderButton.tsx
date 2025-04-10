@@ -99,7 +99,7 @@ export const PlaceOrderButton = () => {
             ? tradingOptions.amount * currentPrices.lastPrice
             : tradingOptions.amount * tradingOptions.triggerPrice;
 
-        let feePercent = tradingOptions.orderType === 'limit' ? 0.0015 : 0.0015;
+        let feePercent = tradingOptions.orderType === 'limit' ? 0.0015 : 0.045;
         const feeAmount = cost * feePercent;
 
         toast.success(response);
@@ -138,6 +138,7 @@ export const PlaceOrderButton = () => {
             type="number"
             value={tradingOptions.amount}
             min={0.01}
+            step={0.01}
           />
         </div>
         {tradingOptions.orderType === 'limit' && (
@@ -156,6 +157,7 @@ export const PlaceOrderButton = () => {
               className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
               type="number"
               min={0.01}
+              step={0.01}
               value={tradingOptions.triggerPrice}
             />
           </div>
