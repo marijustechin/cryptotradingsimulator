@@ -1,7 +1,7 @@
 export interface IUser {
   id: string | null;
   role: string | null;
-  balance: number | null;
+  balance: number;
   first_name: string | null;
 }
 
@@ -12,6 +12,7 @@ export interface IUserInfo {
   email: string;
   phone_number: string;
   address: string;
+  balance: number;
 }
 
 export interface IUserExtended {
