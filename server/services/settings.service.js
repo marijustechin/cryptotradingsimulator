@@ -1,5 +1,5 @@
 const sequelize = require('../config/db');
-const { settings, instrument, user, orders } = sequelize.models;
+const { settings, instrument, user, orders, userLogs } = sequelize.models;
 
 const axios = require('axios');
 const { faker } = require('@faker-js/faker');
@@ -45,7 +45,7 @@ class SystemSettings {
   async getSettings() {
     let systemSettings = await settings.findOne();
 
-    if (systemSettings.length === 0) {
+    if (!systemSettings) {
       const defaultSettings = await settings.create({
         limit_order_fee: 0.0015,
         market_order_fee: 0.0045,
@@ -137,10 +137,12 @@ class SystemSettings {
     const fees = await this.getSettings();
 
     let counter = 0;
-    let number = Math.floor(Math.round() * (10 - 3) + 3);
 
     for (const uSer of fUsers) {
       if (uSer.role !== 'ADMIN') {
+        counter++;
+        if (counter % 7 === 0) continue;
+
         // pinigines likutis tarp 500-100
         const minBalance = Math.random() * (500 - 100) + 100;
 
@@ -175,6 +177,15 @@ class SystemSettings {
               uSer.wallet.balance -= amount * price + fee;
               uSer.wallet.save();
               userBalance -= amount * price + fee;
+              await userLogs.create({
+                userId: uSer.id,
+                ip: `${Math.floor(
+                  Math.random() * (255 - 10) + 10
+                )}.${Math.floor(Math.random() * (255 - 10) + 10)}.${Math.floor(
+                  Math.random() * (255 - 10) + 10
+                )}.${Math.floor(Math.random() * (255 - 10) + 10)}`,
+                lastLogin: closed_date,
+              });
             } else {
               console.log('Parduodam...');
             }
@@ -207,6 +218,15 @@ class SystemSettings {
               uSer.wallet.balance -= amount * price + fee;
               uSer.wallet.save();
               userBalance -= amount * price + fee;
+              await userLogs.create({
+                userId: uSer.id,
+                ip: `${Math.floor(
+                  Math.random() * (255 - 10) + 10
+                )}.${Math.floor(Math.random() * (255 - 10) + 10)}.${Math.floor(
+                  Math.random() * (255 - 10) + 10
+                )}.${Math.floor(Math.random() * (255 - 10) + 10)}`,
+                lastLogin: closed_date,
+              });
             } else {
               console.log('Parduodam...');
             }
