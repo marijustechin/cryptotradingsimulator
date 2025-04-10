@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { useEffect, lazy, Suspense } from 'react';
 import { useAppDispatch } from './store/store';
-import { restoreSession } from './store/features/user/authSlice';
+import { fetchUserInfo, restoreSession } from './store/features/user/authSlice';
 import { Loader } from './components/Loader';
-
 
 // Components
 
@@ -24,7 +23,7 @@ const SystemSettingsPage = lazy(
   () => import('./pages/admin/SystemSettingsPage')
 );
 const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'));
-<Route path='/dashboard/orders' element={<AdminOrdersPage />} />
+<Route path="/dashboard/orders" element={<AdminOrdersPage />} />;
 
 const HowToTradePage = lazy(() => import('./pages/HowToTradePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -37,16 +36,22 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
 const TestPage = lazy(() => import('./pages/user/TestPage'));
 
-
 function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(restoreSession());
+    const doRestore = async () => {
+      const result = await dispatch(restoreSession());
+      if (restoreSession.fulfilled.match(result)) {
+        dispatch(fetchUserInfo());
+      }
+    };
+
+    doRestore(); // pirmas kartas
 
     const interval = setInterval(() => {
-      dispatch(restoreSession());
-    }, 55 * 60 * 1000); // 55 min
+      doRestore(); // kas 55 min
+    }, 55 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [dispatch]);
@@ -55,33 +60,33 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path='/' element={<MainLayout />}>
+          <Route path="/" element={<MainLayout />}>
             <Route index element={<HomePage />} />
-            <Route path='login' element={<LoginPage />} />
-            <Route path='registration' element={<RegistrationPage />} />
-            <Route path='how-to-trade' element={<HowToTradePage />} />
-            <Route path='credits' element={<CreditsPage />} />
-            <Route path='restore-password' element={<RestorePasswordPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="registration" element={<RegistrationPage />} />
+            <Route path="how-to-trade" element={<HowToTradePage />} />
+            <Route path="credits" element={<CreditsPage />} />
+            <Route path="restore-password" element={<RestorePasswordPage />} />
           </Route>
-          <Route path='/dashboard' element={<AdminLayout />}>
+          <Route path="/dashboard" element={<AdminLayout />}>
             <Route index element={<AdminDashboardPage />} />
             <Route
-              path='/dashboard/settings'
+              path="/dashboard/settings"
               element={<SystemSettingsPage />}
             />
-            <Route path='/dashboard/users' element={<AllUsersPage />} />
-            <Route path='/dashboard/orders' element={<AdminOrdersPage />} />
+            <Route path="/dashboard/users" element={<AllUsersPage />} />
+            <Route path="/dashboard/orders" element={<AdminOrdersPage />} />
           </Route>
-          <Route path='/my-dashboard' element={<UserLayout />}>
+          <Route path="/my-dashboard" element={<UserLayout />}>
             <Route index element={<UserDashboardPage />} />
-            <Route path='/my-dashboard/trading' element={<UserTradingPage />} />
-            <Route path='/my-dashboard/profile' element={<UserProfilePage />} />
-            <Route path='/my-dashboard/orders' element={<UserOrdersPage />} />
-            <Route path='/my-dashboard/just-for-tests' element={<TestPage />} />
+            <Route path="/my-dashboard/trading" element={<UserTradingPage />} />
+            <Route path="/my-dashboard/profile" element={<UserProfilePage />} />
+            <Route path="/my-dashboard/orders" element={<UserOrdersPage />} />
+            <Route path="/my-dashboard/just-for-tests" element={<TestPage />} />
           </Route>
-          <Route path='/404' element={<NotFoundPage />} />{' '}
+          <Route path="/404" element={<NotFoundPage />} />{' '}
           {/* Define explicit 404 page */}
-          <Route path='*' element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

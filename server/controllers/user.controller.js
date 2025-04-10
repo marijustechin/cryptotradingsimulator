@@ -65,6 +65,7 @@ class UserController {
       const { email, password } = req.body;
 
       const loggedUser = await userService.login(email, password, req.ip);
+      console.log(loggedUser);
 
       // refreshToken dedam i cookies
       res.cookie('refreshToken', loggedUser.refreshToken, {
@@ -74,7 +75,11 @@ class UserController {
 
       return res
         .status(200)
-        .json({ accessToken: loggedUser.accessToken, user: loggedUser.user });
+        .json({
+          accessToken: loggedUser.accessToken,
+          user: loggedUser.user,
+          balance: loggedUser.balance,
+        });
     } catch (e) {
       next(e);
     }

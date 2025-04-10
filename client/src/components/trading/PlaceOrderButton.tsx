@@ -105,8 +105,10 @@ export const PlaceOrderButton = () => {
         toast.success(response);
         if (tradingOptions.orderType === 'market') {
           dispatch(setUserBalance(user.balance - cost - feeAmount));
+          return;
         } else if (tradingOptions.orderType === 'limit') {
           dispatch(setUserBalance(user.balance - cost - feeAmount));
+          return;
         }
         dispatch(getOpenOrders({ userId: user.id }));
         dispatch(setAmount(0));

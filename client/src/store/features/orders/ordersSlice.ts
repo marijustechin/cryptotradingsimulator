@@ -11,6 +11,7 @@ import {
 } from '../../../types/order';
 import { setCurrentPage } from '../user/allUsersSlice';
 import { Root } from 'react-dom/client';
+import { setUserBalance } from '../user/authSlice';
 
 // aprasom kaip atrodo state
 interface OrdersState {
@@ -91,7 +92,11 @@ export const getOrdersHistory = createAsyncThunk<
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {}, // jei reikia kokiu veiksmu su state
+  reducers: {
+    setUserBalance: (state, action) => {
+      state.balance = action.payload;
+    }
+  }, // jei reikia kokiu veiksmu su state
   // tvarkome asinchroninius veiksmus
   extraReducers: (builder) => {
     builder

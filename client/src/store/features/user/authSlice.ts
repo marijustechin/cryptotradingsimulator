@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../../services/AuthService';
 import { RootState } from '../../store';
 import { jwtDecode } from 'jwt-decode';
-import { IUser } from '../../../types/user';
+import { IUser, IUserInfo } from '../../../types/user';
 import HelperService from '../../../services/HelperService';
+import UserService from '../../../services/UserService';
 
 interface AuthState {
   user: IUser;
@@ -25,7 +26,12 @@ const isTokenValid = (token: string): boolean => {
 
 // Atstatom useri is local storage **with accessToken**
 const storedToken = localStorage.getItem('accessToken');
-let restoredUser: IUser = { id: null, role: null, balance: null, first_name: null };
+let restoredUser: IUser = {
+  id: null,
+  role: null,
+  balance: null,
+  first_name: null,
+};
 let restoredAccessToken: string | null = null;
 
 if (storedToken && isTokenValid(storedToken)) {
@@ -61,7 +67,10 @@ export const restoreSession = createAsyncThunk(
           balance: number;
           first_name: string;
         }>(oldToken);
-        return { accessToken: oldToken, user: { id, role, balance, first_name } };
+        return {
+          accessToken: oldToken,
+          user: { id, role, balance, first_name },
+        };
       } else if (oldToken) {
         const newToken = await AuthService.refresh();
         if (!newToken) throw new Error('Sesija baigėsi...');
@@ -73,7 +82,10 @@ export const restoreSession = createAsyncThunk(
           balance: number;
           first_name: string;
         }>(newToken);
-        return { accessToken: newToken, user: { id, role, balance, first_name } };
+        return {
+          accessToken: newToken,
+          user: { id, role, balance, first_name },
+        };
       } else {
         throw new Error('Session expired. Please login.');
       }
@@ -84,11 +96,31 @@ export const restoreSession = createAsyncThunk(
   }
 );
 
+// po restoreSession reikia pasikrauti naudotojo info
+export const fetchUserInfo = createAsyncThunk<
+  IUserInfo,
+  void,
+  { rejectValue: string }
+  >(
+  'auth/fetchUserInfo', // pavadinimas redux actionui
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await UserService.getUserInfo();
+      return response;
+    } catch (error) {
+      return rejectWithValue(HelperService.errorToString(error));
+    }
+  }
+);
+
 // Login ir dedam accessToken i Redux
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
-    { email, password }: { email: string; password: string; first_name: string },
+    {
+      email,
+      password,
+    }: { email: string; password: string; first_name: string },
     { rejectWithValue }
   ) => {
     try {
@@ -119,7 +151,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     resetAuthState: (state) => {
-      state.user = { id: null, role: null, balance: null, first_name: null  };
+      state.user = { id: null, role: null, balance: number, first_name: null };
       state.accessToken = null; // Pasalinam tokena
       state.status = 'idle';
       state.error = null;
@@ -149,7 +181,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = 'idle';
-        state.user = { id: null, role: null, balance: null, first_name: null  };
+        state.user = { id: null, role: null, balance: null, first_name: null };
         state.accessToken = null; // pasalinam tokena
         localStorage.removeItem('accessToken');
         state.error = null;
@@ -159,10 +191,20 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(restoreSession.rejected, (state) => {
-        state.user = { id: null, role: null, balance: null, first_name: null  };
+        state.user = { id: null, role: null, balance: null, first_name: null };
         state.accessToken = null;
         localStorage.removeItem('accessToken');
-      });
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.user = {
+          ...state.user,
+          ...action.payload, // perrašom tik tai ką gavom iš serverio
+        }
+      })
+      .addCase(fetchUserInfo.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
+      })
   },
 });
 
