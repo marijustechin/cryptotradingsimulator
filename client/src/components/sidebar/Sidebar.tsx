@@ -55,7 +55,7 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
           {user.balance && user.role === 'USER' && (
             <>
             <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
-            Stellar greetings, {user.first_name}
+            Back in action, {user.first_name}
             </h4>
             <h3>
               {HelperService.formatCurrency(user.balance)}

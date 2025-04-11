@@ -39,7 +39,6 @@ const UserBalanceChart = ({
       const date = new Date(order.closed_date || order.open_date);
       return date >= startDate;
     });
-    console.log(filteredOrders);
 
     const sortedOrders = [...filteredOrders].sort(
       (a, b) =>
