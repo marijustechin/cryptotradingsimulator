@@ -83,6 +83,7 @@ export const getOrdersHistory = createAsyncThunk<
       const query = `?page=${page}&limit=${limit}`;
       const response = await OrdersService.getOrdersHistory(userId, query);
       return response;
+      
     } catch (e) {
       return rejectWithValue(HelperService.errorToString(e));
     }

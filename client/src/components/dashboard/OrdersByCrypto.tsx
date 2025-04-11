@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo, useState } from 'react';
 import HelperService from '../../services/HelperService';
 import {
   LineChart,
@@ -11,10 +10,9 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import {
-  getOrdersHistory,
-  selectOrdersHistory,
-} from '../../store/features/orders/ordersSlice';
+import { IOrdersHistory } from '../../types/order';
+import { Link } from 'react-router';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 type ViewRange = '1M' | '6M' | '1Y';
 type OrderType = 'buy' | 'sell';
@@ -26,15 +24,10 @@ const assetColors: Record<string, string> = {
   ETC: '#a8a8a8',
 };
 
-const UserOrdersByCryptoChart: React.FC = () => {
-  const dispatch = useDispatch();
-  const { data: orders } = useSelector(selectOrdersHistory);
+const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
   const [viewRange, setViewRange] = useState<ViewRange>('1Y');
   const [orderType, setOrderType] = useState<OrderType>('buy');
 
-  useEffect(() => {
-    dispatch(getOrdersHistory({ page: 1 }));
-  }, [dispatch]);
 
   const { chartData, totalVolume } = useMemo(() => {
     if (!orders || orders.length === 0) return { chartData: [], totalVolume: 0 };
@@ -60,8 +53,8 @@ const UserOrdersByCryptoChart: React.FC = () => {
     filtered.forEach((order) => {
       const dateStr = (order.closed_date || order.open_date)?.split('T')[0];
       const asset = order.assetId?.slice(0, 3).toUpperCase();
-      const price = parseFloat(order.price || '0');
-      const amount = parseFloat(order.amount || '0');
+      const price = parseFloat(Number(order.price).toFixed(2) || '0');
+      const amount = parseFloat(Number(order.amount).toFixed(2) || '0');
       if (!dateStr || !asset || !price || !amount || isNaN(price) || isNaN(amount)) return;
 
       const total = price * amount;
@@ -127,6 +120,23 @@ const UserOrdersByCryptoChart: React.FC = () => {
           ))}
         </div>
       </div>
+      {!chartData.length ? (
+
+            <div className="grid grid-cols-2 justify-center items-center w-full">
+              <div className="flex flex-col justify-center items-center">
+                <h3 className="pb-10">Nothing to show</h3>
+                <Link to="/my-dashboard/trading" className="btn-generic my-6">
+                  Go to Trading
+                </Link>
+              </div>
+              <Player
+                autoplay
+                loop
+                src="/Animation.json"
+                style={{ height: "300px", width: "100%" }}
+              />
+            </div>
+      ) : (
 
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
@@ -164,6 +174,7 @@ const UserOrdersByCryptoChart: React.FC = () => {
           ))}
         </LineChart>
       </ResponsiveContainer>
+      )}
     </div>
   );
 };
