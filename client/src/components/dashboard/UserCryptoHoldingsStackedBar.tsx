@@ -10,11 +10,7 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
-import {
-  getOrdersHistory,
-  selectOrdersHistory,
-} from '../../store/features/orders/ordersSlice';
-import HelperService from '../../services/HelperService';
+import { IOrdersHistory } from '../../types/order';
 
 const assetColors: Record<string, string> = {
   BTC: '#f7931a',
@@ -40,13 +36,8 @@ const VioletGlowCursor = ({ x, y, width, height }: any) => (
   />
 );
 
-const UserCryptoHoldingsStackedBar: React.FC = () => {
-  const dispatch = useDispatch();
-  const { data: orders } = useSelector(selectOrdersHistory);
+const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) => {
 
-  useEffect(() => {
-    dispatch(getOrdersHistory({ page: 1 }));
-  }, [dispatch]);
 
   const { chartData, assetKeys, totalQty } = useMemo(() => {
     if (!orders || orders.length === 0) return { chartData: [], assetKeys: [], totalQty: 0 };
@@ -70,7 +61,7 @@ const UserCryptoHoldingsStackedBar: React.FC = () => {
 
       const month = orderDate.toLocaleString('en-US', { month: 'short' });
       const asset = order.assetId?.slice(0, 3).toUpperCase();
-      const amount = parseFloat(order.amount || '0');
+      const amount = parseFloat(Number(order.amount).toFixed(2) || '0');
 
       if (!month || !asset || isNaN(amount)) return;
 

@@ -54,8 +54,8 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
         <div className='flex flex-col items-center justify-center mb-8'>
           {user.balance && user.role === 'USER' && (
             <>
-            <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-              Sveiki, {user.first_name}
+            <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
+            Stellar greetings, {user.first_name}
             </h4>
             <h3>
               {HelperService.formatCurrency(user.balance)}

@@ -23,6 +23,8 @@ export interface IOrdersHistory {
   orderValue: number;
   open_date: string;
   closed_date: string;
+  fee: number;
+
 }
 
 export interface IUserAssets {

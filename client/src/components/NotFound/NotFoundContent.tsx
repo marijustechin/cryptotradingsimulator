@@ -18,8 +18,6 @@ export const NotFoundContent = () => {
       loop
       autoplay
     />
-              {/* <div className="h-[400px] bg-[url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')] bg-center bg-no-repeat rounded-3xl"></div> */}
-
               <div className="contant_box_404 mt-6">
                 <button
                   onClick={() => navigate(-1)}
