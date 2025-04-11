@@ -8,6 +8,7 @@ const {
   transactions,
   portfolio,
   instrument,
+  borrow,
 } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const tokenService = require('../services/token.service');
@@ -351,6 +352,105 @@ class UserService {
       throw new Error();
     }
   }
+
+  async getAllBorrow({ page, limit, sort, filter }) {
+    // Split the sort string into field and direction (e.g., 'borrow_date:asc' to ['borrow_date', 'asc'])
+    const [sortField, sortDirection] = sort;
+  
+    // Create a condition for filtering if provided
+    let whereCondition = {};
+    if (filter) {
+      const filterOptions = filter.split(':');
+      whereCondition = {
+        [filterOptions[0]]: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col(filterOptions[0])), // case-insensitive search
+          { [Op.like]: `%${filterOptions[1].toLowerCase()}%` }
+        ),
+      };
+    }
+  
+    // Fetch the borrows with pagination, sorting, and filter (if any)
+    const { count, rows } = await borrow.findAndCountAll({
+      where: whereCondition,
+      limit: limit,
+      offset: (page - 1) * limit, // Calculate the offset for pagination
+      order: [[sequelize.col(sortField), sortDirection]], // Apply sorting
+    });
+  
+    return { count, rows };
+  }
+
+  async getBorrowByUserId(userId, { page, limit, sort, filter }) {
+    const [sortField, sortDirection] = sort;
+  
+    // Create a condition for filtering if provided
+    let whereCondition = { user_id: userId };
+    if (filter) {
+      const filterOptions = filter.split(':');
+      whereCondition = {
+        ...whereCondition,
+        [filterOptions[0]]: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col(filterOptions[0])), // case-insensitive search
+          { [Op.like]: `%${filterOptions[1].toLowerCase()}%` }
+        ),
+      };
+    }
+  
+    // Fetch the borrows with pagination, sorting, and filter (if any)
+    const { count, rows } = await borrow.findAndCountAll({
+      where: whereCondition,
+      limit: limit,
+      offset: (page - 1) * limit, // Calculate the offset for pagination
+      order: [[sequelize.col(sortField), sortDirection]], // Apply sorting
+    });
+  
+    return { count, rows };
+  }
+
+  async postBorrow(userId, amount, reason) {
+    // Ensure the amount is valid and positive
+    if (isNaN(amount) || amount <= 0) {
+      throw ApiError.BadRequest('Amount must be a positive number');
+    }
+  
+    // Start a transaction to ensure both wallet update and borrow creation are atomic
+    const transaction = await sequelize.transaction();
+  
+    try {
+      // Find the user's wallet
+      const userWallet = await wallet.findOne({ where: { user_id: userId } }, { transaction });
+      if (!userWallet) {
+        throw ApiError.NotFound('Wallet not found for the user');
+      }
+  
+      // Create the borrow record
+      const newBorrow = await borrow.create({
+        user_id: userId,
+        amount: parseFloat(amount),
+        borrow_date: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, { transaction });
+  
+      // Update the wallet balance
+      userWallet.balance = parseFloat(userWallet.balance) + parseFloat(amount);
+      await userWallet.save({ transaction });
+  
+      // Commit the transaction
+      await transaction.commit();
+  
+      return {
+        message: 'Borrow created and wallet updated successfully',
+        borrow: newBorrow,
+        updatedWallet: userWallet,
+      };
+    } catch (error) {
+      // If any error occurs, rollback the transaction
+      await transaction.rollback();
+      throw error;
+    }
+  }  
+
 }
 
 module.exports = new UserService();

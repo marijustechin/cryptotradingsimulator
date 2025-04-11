@@ -50,4 +50,10 @@ userRouter.post(
   validator.changePassword,
   userController.changePassword
 );
+
+// borrows
+userRouter.get('/borrows', userController.getAllBorrow);
+userRouter.get('/borrows/:userId', userController.getBorrowByUserId);
+userRouter.post('/borrow', authMiddleware.isAuthenticatedUser, userController.postBorrow);
+
 module.exports = userRouter;

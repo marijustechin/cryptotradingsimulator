@@ -12,7 +12,7 @@ class UserController {
     }
 
     return errString;
-  }
+  } 
   /**
    * Naudotojo registracija
    * @param {*} req
@@ -275,6 +275,84 @@ class UserController {
       return res.status(200).json(getUserPortfolio);
     } catch (error) {
       next(error); // siunciam i middlewear;
+    }
+  }
+
+  async getAllBorrow(req, res, next) {
+    try {
+      const { page = 1, limit = 10, sort = 'borrow_date:asc', filter = '' } = req.query;
+  
+      // Parse the sort string (e.g., 'borrow_date:asc' to ['borrow_date', 'asc'])
+      const sortOptions = sort.split(':');
+      const paginationOptions = {
+        page: Number(page),
+        limit: Number(limit),
+        sort: sortOptions,
+        filter: filter,
+      };
+  
+      // Pass the pagination options to the service layer
+      const borrows = await userService.getAllBorrow(paginationOptions);
+  
+      if (!borrows.rows.length) throw ApiError.NoContent();
+  
+      return res.status(200).json({
+        totalBorrows: borrows.count,
+        totalPages: Math.ceil(borrows.count / limit),
+        currentPage: page,
+        borrows: borrows.rows,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+  
+
+  async getBorrowByUserId(req, res, next) {
+    try {
+      const userId = req.params.userId;
+      if (!userId) throw ApiError.BadRequest('User ID is required');
+  
+      // Extract pagination and sorting parameters from the query
+      const { page = 1, limit = 10, sort = 'borrow_date:asc', filter = '' } = req.query;
+  
+      // Parse the sort string (e.g., 'borrow_date:asc' to ['borrow_date', 'asc'])
+      const sortOptions = sort.split(':');
+  
+      // Pass the pagination and sorting options to the service
+      const userBorrows = await userService.getBorrowByUserId(userId, {
+        page: Number(page),
+        limit: Number(limit),
+        sort: sortOptions,
+        filter: filter,
+      });
+  
+      if (!userBorrows.rows.length) throw ApiError.NoContent();
+  
+      return res.status(200).json({
+        totalBorrows: userBorrows.count,
+        totalPages: Math.ceil(userBorrows.count / limit),
+        currentPage: +page,
+        borrows: userBorrows.rows,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }  
+
+  async postBorrow(req, res, next) {
+    try {
+      const userId = req.user.id; // From auth middleware
+      const { amount, reason } = req.body;
+
+      if (!amount || !reason) {
+        throw ApiError.BadRequest('Amount and reason are required');
+      }
+
+      const newBorrow = await userService.postBorrow(userId, amount, reason);
+      return res.status(201).json(newBorrow);
+    } catch (e) {
+      next(e);
     }
   }
 }
