@@ -31,12 +31,11 @@ export const OrdersHistory = () => {
     return date.toISOString().slice(0, 19).replace('T', ' ');
   };
 
-
   const filterOrders = orders?.filter((item) => item.ord_status === 'closed');
 
   return (
     <div>
-      <DataExport type='History' />
+      <DataExport ordersHistory={ordersHistory.data} />
       <table className='border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent '>
         <thead>
           <tr className='text-white bg-gray-800'>
@@ -74,11 +73,11 @@ export const OrdersHistory = () => {
                 {order.ord_direct}
               </td>
               <td>
-  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price: order.triggerPrice)}
-</td>
-              <td>
-                {order.amount}
+                {HelperService.formatCurrency(
+                  order.ord_type === 'market' ? order.price : order.triggerPrice
+                )}
               </td>
+              <td>{order.amount}</td>
               <td>
                 {formatDate(
                   order.ord_status === 'open'
@@ -87,17 +86,21 @@ export const OrdersHistory = () => {
                 )}
               </td>
               <td>
-  {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}
-</td>
+                {HelperService.formatCurrency(
+                  order.ord_type === 'market'
+                    ? order.price * order.amount
+                    : order.triggerPrice * order.amount
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onChange={handlePageChange}
-        />
-      </div>
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={handlePageChange}
+      />
+    </div>
   );
 };

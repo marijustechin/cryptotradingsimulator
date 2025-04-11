@@ -1,15 +1,15 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   getOpenOrders,
   selectOpenOrders,
-} from "../../store/features/orders/ordersSlice";
-import { selectUser } from "../../store/features/user/authSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { DataExport } from "./DataExport";
-import CancelOrder from "./CancelOrder";
-import EditOrderPrice from "./EditPrice";
-import EditOrderAmount from "./EditAmount";
-import HelperService from "../../services/HelperService";
+} from '../../store/features/orders/ordersSlice';
+import { selectUser } from '../../store/features/user/authSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { DataExport } from './DataExport';
+import CancelOrder from './CancelOrder';
+import EditOrderPrice from './EditPrice';
+import EditOrderAmount from './EditAmount';
+import HelperService from '../../services/HelperService';
 
 export const OpenOrders = () => {
   const dispatch = useAppDispatch();
@@ -26,14 +26,13 @@ export const OpenOrders = () => {
       dispatch(getOpenOrders({ userId: user.id }));
     }
   };
-  
 
   return (
-    <div className="">
-      <DataExport type="Open orders" />
-      <table className="border-separate border-spacing-y-2 w-full table">
+    <div className=''>
+      <DataExport openOrders={openOrders} />
+      <table className='border-separate border-spacing-y-2 w-full table'>
         <thead>
-          <tr className="text-white bg-gray-800">
+          <tr className='text-white bg-gray-800'>
             <th>Market</th>
             <th>Order Type</th>
             <th>Direction</th>
@@ -47,14 +46,14 @@ export const OpenOrders = () => {
         <tbody>
           {openOrders?.map((order, index) => (
             <tr
-              className={index % 2 ? "bg-gray-800" : "bg-gray-700"}
+              className={index % 2 ? 'bg-gray-800' : 'bg-gray-700'}
               key={order.assetName + order.id}
             >
               <td
                 className={
-                  order.ord_direct === "buy"
-                    ? "border-l-[2px] border-green-700"
-                    : "border-l-[2px] border-red-700"
+                  order.ord_direct === 'buy'
+                    ? 'border-l-[2px] border-green-700'
+                    : 'border-l-[2px] border-red-700'
                 }
               >
                 {order.assetName}
@@ -62,7 +61,7 @@ export const OpenOrders = () => {
               <td>{order.ord_type}</td>
               <td
                 className={
-                  order.ord_direct === "buy" ? "text-green-700" : "text-red-700"
+                  order.ord_direct === 'buy' ? 'text-green-700' : 'text-red-700'
                 }
               >
                 {order.ord_direct}
@@ -70,27 +69,29 @@ export const OpenOrders = () => {
               <td>
                 {HelperService.formatCurrency(Number(order.triggerPrice))}
                 <EditOrderPrice
-  orderId={order.id}
-  triggerPrice={order.triggerPrice}
-  onSuccess={refreshOrders}
-/>
+                  orderId={order.id}
+                  triggerPrice={order.triggerPrice}
+                  onSuccess={refreshOrders}
+                />
               </td>
-              <td className="text-green-700">
+              <td className='text-green-700'>
                 {order.amount}
                 <EditOrderAmount
-  orderId={order.id}
-  amount={order.amount}
-  onSuccess={refreshOrders}
-/>
-
+                  orderId={order.id}
+                  amount={order.amount}
+                  onSuccess={refreshOrders}
+                />
               </td>
               <td>{order.open_date}</td>
               <td>
-              {HelperService.formatCurrency(order.ord_type === 'market' ? order.price * order.amount : order.triggerPrice * order.amount)}
+                {HelperService.formatCurrency(
+                  order.ord_type === 'market'
+                    ? order.price * order.amount
+                    : order.triggerPrice * order.amount
+                )}
               </td>
               <td>
-              <CancelOrder orderId={order.id} onSuccess={refreshOrders} />
-
+                <CancelOrder orderId={order.id} onSuccess={refreshOrders} />
               </td>
             </tr>
           ))}

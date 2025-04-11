@@ -7,7 +7,6 @@ import { selectUser } from '../../store/features/user/authSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { WS_URL } from '../../api/ws';
 import { useEffect, useState, useMemo } from 'react';
-import { DataExport } from './DataExport';
 import HelperService from '../../services/HelperService';
 
 interface ILivePrices {
@@ -91,7 +90,6 @@ export const UserAssets = () => {
 
   return (
     <div>
-      <DataExport type='Assets' />
       <table className='table border-separate border-spacing-y-2 w-full'>
         <thead className='w-full'>
           <tr className='text-white bg-gray-800'>
@@ -122,12 +120,16 @@ export const UserAssets = () => {
               key={row.asset}
             >
               <td>{row.asset}</td>
-              <td className='w-1/6'>{HelperService.formatCurrency(Number(row.netAssetValue))}</td>
+              <td className='w-1/6'>
+                {HelperService.formatCurrency(Number(row.netAssetValue))}
+              </td>
               <td>{row.balance}</td>
               <td className='w-1/6'>
                 {HelperService.formatCurrency(Number(row.spotCost))}
               </td>
-              <td className='w-1/6'>{HelperService.formatCurrency(Number(row.lastPrice))}</td>
+              <td className='w-1/6'>
+                {HelperService.formatCurrency(Number(row.lastPrice))}
+              </td>
               <td
                 className={`w-1/6 ${
                   parseFloat(row.pnlAmount) >= 0

@@ -16,7 +16,7 @@ class SystemSettings {
       const firstName = faker.person.firstName();
       const email = faker.internet.email().toLowerCase();
       // visiems vienodas slaptažodis - jei norėtusi prisijungti ir patikrinti
-      const password = 'naudotojas123';
+      const password = defaultPassword;
       userPromises.push(this.registerUser(firstName, email, password));
       counter++;
     }
