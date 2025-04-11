@@ -1,6 +1,7 @@
 export interface IOpenOrder {
   triggerPrice: number;
   id: number;
+  assetName: string;
   assetId: string;
   ord_type: string;
   ord_direct: string;
@@ -36,6 +37,5 @@ export interface IOrdersHistoryResponse {
   totalPages: number;
   currentPage: number;
   limit: number;
-  orders: IOrdersHistory[]
+  orders: IOrdersHistory[];
 }
-
