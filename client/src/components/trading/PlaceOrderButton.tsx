@@ -3,6 +3,7 @@ import {
   selectTradingOptions,
   setAmount,
   setTriggerPrice,
+  setValue,
 } from '../../store/features/trading/tradingOptionsSlice';
 import {
   getChartSymbol,
@@ -21,7 +22,6 @@ import OrdersService from '../../services/OrdersService';
 import {
   getOpenOrders,
   getUserAssets,
-  selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
 
 export const PlaceOrderButton = () => {
@@ -31,7 +31,6 @@ export const PlaceOrderButton = () => {
   const currentPrices = useAppSelector(getCurrentPrices);
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
-  const order = useAppSelector(selectUserAssets);
   const balance = useAppSelector(selectUserBalance);
 
   const handlePlaceOrder = async () => {
@@ -40,8 +39,6 @@ export const PlaceOrderButton = () => {
       toast.error('System error');
       return;
     }
-
-    console.log(user);
 
     // 1. Ar ivestas kiekis?
     if (tradingOptions.amount === 0) {
@@ -118,32 +115,64 @@ export const PlaceOrderButton = () => {
     }
   };
 
+  const handleAmountChange = (amount: number) => {
+    dispatch(setAmount(amount));
+    const price = currentPrices?.lastPrice;
+    if (price) {
+      dispatch(setValue(Number(amount * price)));
+    }
+  };
+
+  const handleValueChange = (value: number) => {
+    dispatch(setValue(value));
+    const price = currentPrices?.lastPrice;
+    if (price) {
+      dispatch(setAmount(value / price));
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col sm:flex-row sm:gap-3 gap-2">
-        <div className="flex gap-2 items-center">
+    <div className='flex flex-col gap-2'>
+      <div className='flex flex-col sm:flex-row sm:gap-3 gap-2'>
+        <div className='flex gap-2 items-center'>
           <label
-            className="text-sm text-violet-300"
+            className='text-sm text-violet-300'
             htmlFor={'amount' + tradingOptions.orderType}
           >
             Amount:
           </label>
           <input
             id={'amount' + tradingOptions.orderType}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              dispatch(setAmount(Number(e.target.value)))
-            }
-            className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
-            type="number"
+            onChange={(e) => handleAmountChange(Number(e.target.value))}
+            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
+            type='number'
             value={tradingOptions.amount}
             min={0.01}
             step={0.01}
           />
         </div>
+
+        <div className='flex gap-2 items-center'>
+          <label
+            className='text-sm text-violet-300'
+            htmlFor={'amount' + tradingOptions.orderType}
+          >
+            Value:
+          </label>
+          <input
+            id={'value' + tradingOptions.orderType}
+            onChange={(e) => handleValueChange(Number(e.target.value))}
+            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
+            type='number'
+            value={tradingOptions.value}
+            min={0.01}
+            step={0.01}
+          />
+        </div>
         {tradingOptions.orderType === 'limit' && (
-          <div className="flex gap-2 items-center">
+          <div className='flex gap-2 items-center'>
             <label
-              className="text-sm text-violet-300"
+              className='text-sm text-violet-300'
               htmlFor={'triggerPrice' + 'xml'}
             >
               Trigger Price:
@@ -153,8 +182,8 @@ export const PlaceOrderButton = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
-              className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
-              type="number"
+              className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
+              type='number'
               min={0.01}
               step={0.01}
               value={tradingOptions.triggerPrice}
