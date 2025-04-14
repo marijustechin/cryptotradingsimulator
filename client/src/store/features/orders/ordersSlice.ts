@@ -65,6 +65,7 @@ export const getUserAssets = createAsyncThunk<
 >('orders/getUserAssets', async ({ userId }, { rejectWithValue }) => {
   try {
     const response = await OrdersService.getUserAssets(userId);
+
     return response;
   } catch (e) {
     return rejectWithValue(HelperService.errorToString(e));
@@ -83,7 +84,6 @@ export const getOrdersHistory = createAsyncThunk<
       const query = `?page=${page}&limit=${limit}`;
       const response = await OrdersService.getOrdersHistory(userId, query);
       return response;
-      
     } catch (e) {
       return rejectWithValue(HelperService.errorToString(e));
     }
@@ -96,7 +96,7 @@ export const ordersSlice = createSlice({
   reducers: {
     setUserBalance: (state, action) => {
       state.balance = action.payload;
-    }
+    },
   }, // jei reikia kokiu veiksmu su state
   // tvarkome asinchroninius veiksmus
   extraReducers: (builder) => {

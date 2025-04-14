@@ -1,7 +1,7 @@
 export interface IUser {
   id: string | null;
   role: string | null;
-  balance: number;
+  balance: number | null;
   first_name: string | null;
 }
 

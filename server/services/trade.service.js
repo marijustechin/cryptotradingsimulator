@@ -1,6 +1,6 @@
 const sequelize = require('../config/db');
 const { Op } = require('sequelize');
-const { orders, wallet, instrument, user } = sequelize.models;
+const { orders, wallet, instrument, settings, user } = sequelize.models;
 const ApiError = require('../exceptions/api.errors');
 const { nanoid } = require('nanoid');
 const ProfitService = require('./profit.service');
@@ -20,28 +20,31 @@ class TradeService {
     const transaction = await sequelize.transaction();
 
     try {
+      const systemSettings = await settings.findOne();
       const cost =
         ord_type === 'market' ? price * amount : triggerPrice * amount;
-    
-      const fee = ord_type === 'market' ? cost * 0.045 : cost * 0.0015;
-    
+
+      const fee =
+        ord_type === 'market'
+          ? cost * systemSettings.market_order_fee
+          : cost * systemSettings.limit_order_fee;
+
       const userWallet = await wallet.findOne({
         where: { user_id: userId },
         transaction,
       });
-    
+
       if (!userWallet) {
         throw new Error('Wallet not found for user');
       }
-    
+
       if (ord_direct === 'buy') {
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
       } else if (ord_direct === 'sell') {
         userWallet.balance = parseFloat(userWallet.balance) + cost - fee;
       }
-    
+
       await userWallet.save({ transaction });
-      console.log('Naujas balansas:', userWallet.balance);
 
       await userWallet.save({ transaction });
       // 2. Create order
@@ -255,6 +258,7 @@ class TradeService {
   }
 
   async cancelOrder(id, userId) {
+    const systemSettings = await settings.findOne();
     const transaction = await sequelize.transaction();
 
     // isgauname vartotojo orderi
@@ -276,16 +280,15 @@ class TradeService {
     });
     const currentBalance = parseFloat(userWallet.balance);
 
-    const refundedBalance = currentBalance + orderPrice;
+    const refundedBalance =
+      currentBalance + orderPrice + orderPrice * systemSettings.limit_order_fee;
 
     await userWallet.update(
       { balance: refundedBalance },
       { where: { user_id: userId }, transaction }
     );
 
-    console.log('Order Cancelled - Money refunded');
-
-    const deletedOrder = await orders.destroy({ where: { id } });
+    await orders.destroy({ where: { id } });
 
     await transaction.commit();
 
@@ -293,14 +296,6 @@ class TradeService {
   }
 
   async getUserOrders(userId, page = 1, limit = 10) {
-    const userOrder = await orders.findAll({ where: { userId } });
-
-    console.log({
-      where: { userId },
-      limit: Number(limit),
-      offset: (Number(page) - 1) * Number(limit),
-    });
-
     const { count, rows } = await orders.findAndCountAll({
       where: { userId: userId },
       limit: Number(limit),
@@ -387,8 +382,8 @@ class TradeService {
 
     // jei naujas triggerPrice mazesnis nei senas grazinam skirtuma
     if (tg < oldPrice) {
-      const difference = Number((oldPrice - tg).toFixed(5));
-      const updatedBalance = Number((balance + difference).toFixed(5));
+      const difference = Number(oldPrice - tg);
+      const updatedBalance = Number(balance + difference);
       await wallet.update(
         { balance: updatedBalance },
         { where: { user_id: userId } }
@@ -396,8 +391,8 @@ class TradeService {
 
       // jei naujas triggerPrice didesnis nei senas papildomai nuskaiciuojam
     } else if (tg > oldPrice) {
-      const difference = Number((tg - oldPrice).toFixed(5));
-      const updatedBalance = Number((balance - difference).toFixed(5));
+      const difference = Number(tg - oldPrice);
+      const updatedBalance = Number(balance - difference);
       await wallet.update(
         { balance: updatedBalance },
         { where: { user_id: userId } }
