@@ -77,7 +77,7 @@ export const OrdersHistory = () => {
                   order.ord_type === 'market' ? order.price : order.triggerPrice
                 )}
               </td>
-              <td>{order.amount}</td>
+              <td>{order.amount.toFixed(6)}</td>
               <td>
                 {formatDate(
                   order.ord_status === 'open'

@@ -95,7 +95,7 @@ export const UserAssets = () => {
           <tr className='text-white bg-gray-800'>
             <th className='w-1/6'>Asset</th>
             <th className='w-1/6'>Net Asset Value</th>
-            <th className='w-1/6'>Balance</th>
+            <th className='w-1/6'>Qty</th>
             <th className='w-1/6'>Spot Cost</th>
             <th className='w-1/6'>Last Price</th>
             <th className='w-1/6'>PnL</th>
@@ -107,9 +107,7 @@ export const UserAssets = () => {
             <td className='w-1/6'>
               {HelperService.formatCurrency(Number(user.balance))}
             </td>
-            <td className='w-1/6'>
-              {HelperService.formatCurrency(Number(user.balance))}
-            </td>
+            <td className='w-1/6'>{Number(user.balance).toFixed(2)}</td>
             <td className='w-1/6'>—</td>
             <td className='w-1/6'>—</td>
             <td className='w-1/6'>—</td>
@@ -123,7 +121,7 @@ export const UserAssets = () => {
               <td className='w-1/6'>
                 {HelperService.formatCurrency(Number(row.netAssetValue))}
               </td>
-              <td>{row.balance}</td>
+              <td>{row.balance.toFixed(6)}</td>
               <td className='w-1/6'>
                 {HelperService.formatCurrency(Number(row.spotCost))}
               </td>
@@ -131,14 +129,14 @@ export const UserAssets = () => {
                 {HelperService.formatCurrency(Number(row.lastPrice))}
               </td>
               <td
-                className={`w-1/6 ${
+                className={`w-1/6 flex flex-col ${
                   parseFloat(row.pnlAmount) >= 0
                     ? 'text-green-500'
                     : 'text-red-500'
                 }`}
               >
-                {HelperService.formatCurrency(Number(row.pnlAmount))} (
-                {row.pnlPercent}%)
+                <div>{HelperService.formatCurrency(Number(row.pnlAmount))}</div>
+                <div>({row.pnlPercent}%)</div>
               </td>
             </tr>
           ))}

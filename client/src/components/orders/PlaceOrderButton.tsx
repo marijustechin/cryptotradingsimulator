@@ -12,16 +12,12 @@ import {
 } from '../../store/features/trading/chartSlice';
 import { toast } from 'react-hot-toast';
 import HelperService from '../../services/HelperService';
-import {
-  selectUser,
-  setUserBalance,
-  selectUserBalance,
-  fetchUserInfo,
-} from '../../store/features/user/authSlice';
+import { selectUser, fetchUserInfo } from '../../store/features/user/authSlice';
 import OrdersService from '../../services/OrdersService';
 import {
   getOpenOrders,
   getUserAssets,
+  selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
 
 export const PlaceOrderButton = () => {
@@ -31,7 +27,7 @@ export const PlaceOrderButton = () => {
   const currentPrices = useAppSelector(getCurrentPrices);
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
-  const balance = useAppSelector(selectUserBalance);
+  const userAssets = useAppSelector(selectUserAssets);
 
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
@@ -68,17 +64,19 @@ export const PlaceOrderButton = () => {
     }
 
     // 4. Jei parduoda, ar turi tokia valiuta?
-    if (tradingOptions.orderDirection === 'sell') {
-      const assets = await dispatch(
-        getUserAssets({ userId: user.id })
-      ).unwrap();
+    if (tradingOptions.orderDirection === 'sell' && user.id) {
+      if (!userAssets) {
+        await dispatch(getUserAssets({ userId: user.id }));
+      }
 
-      const isHaveAsset = assets.some(
-        (asset) => asset.asset === selectedCrypto
-      );
-
-      if (!isHaveAsset) {
-        toast.error("You don't have this asset to sell");
+      if (userAssets && userAssets.length > 0) {
+        const userAsset = userAssets.find((a) => a.asset === selectedCrypto);
+        if (userAsset && userAsset.balance < tradingOptions.amount) {
+          toast.error('Trying to sell more than you have. Check the amount');
+          return;
+        }
+      } else {
+        toast.error("You don't have this asset");
         return;
       }
     }
@@ -97,16 +95,14 @@ export const PlaceOrderButton = () => {
         );
 
         toast.success(response);
-        if (tradingOptions.orderType === 'market') {
-          dispatch(setUserBalance(balance));
-          await dispatch(fetchUserInfo());
-          return;
-        } else if (tradingOptions.orderType === 'limit') {
-          dispatch(setUserBalance(balance));
-          await dispatch(fetchUserInfo());
-          return;
-        }
+        // 1. Atnaujinam naudotojo balansa
+        await dispatch(fetchUserInfo());
+
+        dispatch(getUserAssets({ userId: user.id }));
         dispatch(getOpenOrders({ userId: user.id }));
+
+        // Atnaujinam formos laukus
+        dispatch(setValue(0));
         dispatch(setAmount(0));
         dispatch(setTriggerPrice(0));
       }

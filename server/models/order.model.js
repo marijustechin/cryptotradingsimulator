@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       amount: {
-        type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.FLOAT(),
         allowNull: false,
         validate: {
           notNull: {
@@ -44,19 +44,19 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.DECIMAL(20, 5),
+        type: DataTypes.FLOAT,
         allowNull: true,
       },
       triggerPrice: {
-        type: DataTypes.DECIMAL(20, 5),
+        type: DataTypes.FLOAT,
         allowNull: true,
       },
       orderPrice: {
-        type: DataTypes.DECIMAL(20, 5),
+        type: DataTypes.FLOAT,
         allowNull: true,
       },
       fee: {
-        type: DataTypes.DECIMAL(20, 5),
+        type: DataTypes.FLOAT,
         allowNull: true,
       },
       open_date: {

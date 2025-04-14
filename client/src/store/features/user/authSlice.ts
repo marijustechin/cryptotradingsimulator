@@ -101,7 +101,7 @@ export const fetchUserInfo = createAsyncThunk<
   IUserInfo,
   void,
   { rejectValue: string }
-  >(
+>(
   'auth/fetchUserInfo', // pavadinimas redux actionui
   async (_, { rejectWithValue }) => {
     try {
@@ -151,7 +151,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     resetAuthState: (state) => {
-      state.user = { id: null, role: null, balance: number, first_name: null };
+      state.user = { id: null, role: null, balance: null, first_name: null };
       state.accessToken = null; // Pasalinam tokena
       state.status = 'idle';
       state.error = null;
@@ -199,12 +199,12 @@ const authSlice = createSlice({
         state.user = {
           ...state.user,
           ...action.payload, // perrašom tik tai ką gavom iš serverio
-        }
+        };
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
-      })
+      });
   },
 });
 

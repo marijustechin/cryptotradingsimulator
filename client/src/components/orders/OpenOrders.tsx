@@ -67,20 +67,24 @@ export const OpenOrders = () => {
                 {order.ord_direct}
               </td>
               <td>
-                {HelperService.formatCurrency(Number(order.triggerPrice))}
-                <EditOrderPrice
-                  orderId={order.id}
-                  triggerPrice={order.triggerPrice}
-                  onSuccess={refreshOrders}
-                />
+                <div className='flex items-center'>
+                  {HelperService.formatCurrency(Number(order.triggerPrice))}
+                  <EditOrderPrice
+                    orderId={order.id}
+                    triggerPrice={order.triggerPrice}
+                    onSuccess={refreshOrders}
+                  />
+                </div>
               </td>
-              <td className='text-green-700'>
-                {order.amount}
-                <EditOrderAmount
-                  orderId={order.id}
-                  amount={order.amount}
-                  onSuccess={refreshOrders}
-                />
+              <td>
+                <div className='text-green-700 flex items-center'>
+                  {order.amount.toFixed(6)}
+                  <EditOrderAmount
+                    orderId={order.id}
+                    amount={order.amount}
+                    onSuccess={refreshOrders}
+                  />
+                </div>
               </td>
               <td>{order.open_date}</td>
               <td>

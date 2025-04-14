@@ -95,7 +95,7 @@ module.exports = (sequelize) => {
         autoIncrement: true,
       },
       balance: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.FLOAT,
       },
       user_id: {
         type: DataTypes.INTEGER,
@@ -106,28 +106,25 @@ module.exports = (sequelize) => {
   );
 
   // user Borrow model
-  sequelize.models.borrow = sequelize.define(
-    'borrow',
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      amount: {
-        type: DataTypes.DECIMAL,
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      borrow_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-    }
-  )
+  sequelize.models.borrow = sequelize.define('borrow', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    amount: {
+      type: DataTypes.DECIMAL,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    borrow_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+  });
 
   // token model
   sequelize.models.token = sequelize.define('token', {
