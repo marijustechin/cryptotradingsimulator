@@ -55,9 +55,10 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
       const asset = order.assetId?.slice(0, 3).toUpperCase();
       const price = parseFloat(Number(order.price).toFixed(2) || '0');
       const amount = parseFloat(Number(order.amount).toFixed(2) || '0');
+      const fee = parseFloat(Number(order.fee).toFixed(2) || '0');
       if (!dateStr || !asset || !price || !amount || isNaN(price) || isNaN(amount)) return;
 
-      const total = price * amount;
+      const total = (price * amount) + fee;
       totalVolume += total;
 
       if (!grouped[dateStr]) grouped[dateStr] = {};
