@@ -47,7 +47,7 @@ export const TopCryptos = () => {
       </div>
 
       {/* Place Order Button Section */}
-      <div className='flex justify-center mt-3 lg:mt-4 w-full'>
+      <div className='flex justify-center mt-3 lg:mt-4 w-full pb-4'>
         <PlaceOrderButton />
       </div>
     </div>

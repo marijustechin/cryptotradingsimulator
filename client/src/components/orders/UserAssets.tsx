@@ -89,7 +89,7 @@ export const UserAssets = () => {
   }, [userAssets, priceMap]);
 
   return (
-    <div>
+    <div className='overflow-x-auto'>
       <table className='table border-separate border-spacing-y-2 w-full'>
         <thead className='w-full'>
           <tr className='text-white bg-gray-800'>

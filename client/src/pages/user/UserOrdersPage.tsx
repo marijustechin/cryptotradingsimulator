@@ -31,8 +31,8 @@ const UserOrdersPage = () => {
             onClick={() => setActiveTab(button.tabCode)}
             className={`${
               activeTab === button.tabCode
-                ? "border-b-2 text-violet-200"
-                : "text-violet-500"
+                ? "border-b-2 text-blue-200"
+                : "text-violet-300"
             } p-2 cursor-pointer `}
           >
             {button.text}

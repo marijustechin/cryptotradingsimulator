@@ -34,7 +34,7 @@ export const OrdersHistory = () => {
   const filterOrders = orders?.filter((item) => item.ord_status === 'closed');
 
   return (
-    <div>
+    <div className='overflow-x-auto'>
       <DataExport ordersHistory={ordersHistory.data} />
       <table className='border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent '>
         <thead>
