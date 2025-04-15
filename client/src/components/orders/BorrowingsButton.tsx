@@ -19,7 +19,7 @@ export default function BorrowingsButton() {
     }
   };
 
-  const canBorrow = user?.balance <= 3000;
+  const canBorrow = user?.balance <= 300;
 
   return (
     <div>
@@ -32,7 +32,7 @@ export default function BorrowingsButton() {
       </button>
       {!canBorrow && (
         <p className="text-sm text-red-500">
-          You can only borrow if your balance is 3000$ or less.
+          You can only borrow if your balance is 300$ or less.
         </p>
       )}
     </div>
