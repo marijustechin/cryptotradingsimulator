@@ -107,7 +107,7 @@ export const Header = () => {
           </div>
 
           {isOpen && (
-            <button className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
+            <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
                 .filter((link) => user.id ?? link.title !== 'My Dashboard')
                 .map((link) => {
@@ -124,7 +124,7 @@ export const Header = () => {
                     </button>
                   );
                 })}
-            </button>
+            </div>
           )}
 
           {/* Sign Buttons */}

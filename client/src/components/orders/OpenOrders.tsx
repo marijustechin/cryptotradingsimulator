@@ -28,9 +28,9 @@ export const OpenOrders = () => {
   };
 
   return (
-    <div className=''>
+    <div className='overflow-x-auto'>
       <DataExport openOrders={openOrders} />
-      <table className='border-separate border-spacing-y-2 w-full table'>
+      <table className='border-separate border-spacing-y-2 table'>
         <thead>
           <tr className='text-white bg-gray-800'>
             <th>Market</th>

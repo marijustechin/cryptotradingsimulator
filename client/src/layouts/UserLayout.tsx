@@ -21,7 +21,7 @@ const UserLayout = () => {
   // Handle window resize event to detect desktop size
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768); // Adjust this breakpoint as needed (1280px for xl)
+      setIsDesktop(window.innerWidth >= 1280); // Adjust this breakpoint as needed (1280px for xl)
     };
 
     handleResize(); // Check initial screen size
@@ -43,7 +43,7 @@ const UserLayout = () => {
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={userLinks} />
-            <main>
+            <main className="flex-1 overflow-x-auto p-4">
               <Outlet />
             </main>
           </div>
