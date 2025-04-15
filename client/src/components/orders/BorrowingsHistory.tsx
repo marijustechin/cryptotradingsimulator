@@ -82,7 +82,7 @@ export default function BorrowingsHistory() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <tr key={item.id} className={index % 2 ? "bg-gray-800" : "bg-gray-700"}>
               <td>{item.id}</td>
               <td>{item.amount}</td>
