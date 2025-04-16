@@ -148,6 +148,10 @@ class UserService {
     return new UserInfoDto(userInfo);
   }
 
+  async findUserByEmail(email) {
+    return await user.findOne({ where: { email: email.toLowerCase().trim() } });
+  }
+  
   /**
    *
    * @param {*} page
