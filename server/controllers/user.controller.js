@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const userService = require('../services/user.service');
 const ApiError = require('../exceptions/api.errors');
 const helperService = require('../services/helper.service');
+const EmailService = require('../services/email.service');
 
 class UserController {
   errorToString(errorsArray) {
@@ -256,6 +257,36 @@ class UserController {
       next(e);
     }
   }
+
+  async sendPasswordResetEmail(req, res, next) {
+    try {
+      const { email } = req.body;
+  
+      if (!email) {
+        throw ApiError.BadRequest("Email is required.");
+      }
+  
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw ApiError.BadRequest("Invalid email format.");
+      }
+  
+      const foundUser = await userService.findUserByEmail(email);
+  
+      if (!foundUser) {
+        throw ApiError.BadRequest("User with this email not found.");
+      }
+  
+      // Send reset link to the user's email
+      await EmailService.sendMailerPass(foundUser.id);
+  
+      return res.status(200).json({ message: `Password reset link sent to ${email}` });
+    } catch (e) {
+      next(e);
+    }
+  }
+   
 
   async getUserPortfolio(req, res, next) {
     try {

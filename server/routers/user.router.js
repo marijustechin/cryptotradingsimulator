@@ -50,6 +50,7 @@ userRouter.post(
   validator.changePassword,
   userController.changePassword
 );
+userRouter.post("/send-reset-link", userController.sendPasswordResetEmail);
 
 // borrows
 userRouter.get('/borrows', userController.getAllBorrow);

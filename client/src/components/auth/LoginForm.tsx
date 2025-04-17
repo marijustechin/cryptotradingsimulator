@@ -119,7 +119,7 @@ export const LoginForm = () => {
           </div>
         </div>
         <p className="text-right">
-          <Link className="text-sm text-violet-300" to={'/restore-password'}>
+          <Link className="text-sm text-violet-300" to={'/restore-password-email'}>
             Forgot password?
           </Link>
         </p>
