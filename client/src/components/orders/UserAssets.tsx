@@ -90,8 +90,8 @@ export const UserAssets = () => {
 
   return (
     <div className='overflow-x-auto'>
-      <table className='table border-separate border-spacing-y-2 w-full'>
-        <thead className='w-full'>
+      <table className='table border-spacing-y-2 min-w-full table-auto border-separate'>
+        <thead>
           <tr className='text-white bg-gray-800'>
             <th className='w-1/6'>Asset</th>
             <th className='w-1/6'>Net Asset Value</th>
@@ -101,7 +101,7 @@ export const UserAssets = () => {
             <th className='w-1/6'>PnL</th>
           </tr>
         </thead>
-        <tbody className='w-full'>
+        <tbody>
           <tr className='bg-gray-700'>
             <td className='w-1/6'>USD</td>
             <td className='w-1/6'>

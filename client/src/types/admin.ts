@@ -30,4 +30,19 @@ export interface IAdminOrderInfo {
   yearlyIncomeByMonth: { month: string; limit: number; market: number }[];
   yearlyOrdersValueByMonth: { month: string; limit: number; market: number }[];
   yearlyOrdersValueTotal: number;
+ AllOrdersWithUsers: {
+  total: number;
+  orders: {
+    id: number;
+    amount: number;
+    assetId: string;
+    status: string;
+    type: string;
+    fee: number;
+    createdAt: string;
+    userName: string;
+    closedAt: string;
+    price: number;
+  }[]
+};
 }
