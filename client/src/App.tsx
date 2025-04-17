@@ -3,10 +3,8 @@ import { useEffect, lazy, Suspense } from 'react';
 import { useAppDispatch } from './store/store';
 import { fetchUserInfo, restoreSession } from './store/features/user/authSlice';
 import { Loader } from './components/Loader';
+import { useTranslation } from 'react-i18next';
 
-// Components
-
-// Layouts
 // Layouts
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
@@ -23,7 +21,6 @@ const SystemSettingsPage = lazy(
   () => import('./pages/admin/SystemSettingsPage')
 );
 const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'));
-<Route path="/dashboard/orders" element={<AdminOrdersPage />} />;
 
 const HowToTradePage = lazy(() => import('./pages/HowToTradePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -32,7 +29,9 @@ const CreditsPage = lazy(() => import('./pages/CreditsPage'));
 const UserOrdersPage = lazy(() => import('./pages/user/UserOrdersPage'));
 const AllUsersPage = lazy(() => import('./pages/admin/AllUsersPage'));
 const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
-const RestorePasswordConfirmation = lazy(() => import('./pages/RestorePasswordConfirmation'));
+const RestorePasswordConfirmation = lazy(
+  () => import('./pages/RestorePasswordConfirmation')
+);
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
 
@@ -56,6 +55,15 @@ function App() {
     return () => clearInterval(interval);
   }, [dispatch]);
 
+  const { i18n } = useTranslation();
+  // atstatom kalbą
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [i18n]);
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
@@ -67,7 +75,10 @@ function App() {
             <Route path="how-to-trade" element={<HowToTradePage />} />
             <Route path="credits" element={<CreditsPage />} />
             <Route path="restore-password" element={<RestorePasswordPage />} />
-            <Route path="restore-password-email" element={< RestorePasswordConfirmation/>} />
+            <Route
+              path="restore-password-email"
+              element={<RestorePasswordConfirmation />}
+            />
           </Route>
           <Route path="/dashboard" element={<AdminLayout />}>
             <Route index element={<AdminDashboardPage />} />

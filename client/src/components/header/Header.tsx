@@ -6,6 +6,7 @@ import { selectUser } from '../../store/features/user/authSlice';
 import { useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { Logout } from '../header/Logout';
+import { LanguageSelector } from './LanguageSelector';
 
 export const Header = () => {
   const user = useAppSelector(selectUser);
@@ -20,10 +21,10 @@ export const Header = () => {
 
   const links = isAdmin
     ? {
-        Dashboard: '/dashboard'
+        Dashboard: '/dashboard',
       }
     : {
-        Dashboard: '/my-dashboard'
+        Dashboard: '/my-dashboard',
       };
 
   const allLinks = Object.values(links);
@@ -50,10 +51,15 @@ export const Header = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex text-center justify-center text-white gap-5 text-[14px] font-semibold">
           {mainNavLinks
-            .filter((link) => !isDashboardPage && user.id || link.title !== 'My Dashboard')
+            .filter(
+              (link) =>
+                (!isDashboardPage && user.id) || link.title !== 'My Dashboard'
+            )
             .map((link) => {
               const correctedHref =
-                link.title === 'My Dashboard' && isAdmin ? '/dashboard' : link.href;
+                link.title === 'My Dashboard' && isAdmin
+                  ? '/dashboard'
+                  : link.href;
 
               return (
                 <div className="" key={link.title}>
@@ -112,7 +118,9 @@ export const Header = () => {
                 .filter((link) => user.id ?? link.title !== 'My Dashboard')
                 .map((link) => {
                   const correctedHref =
-                    link.title === 'My Dashboard' && isAdmin ? '/dashboard' : link.href;
+                    link.title === 'My Dashboard' && isAdmin
+                      ? '/dashboard'
+                      : link.href;
 
                   return (
                     <button
@@ -129,6 +137,9 @@ export const Header = () => {
 
           {/* Sign Buttons */}
           <div className="hidden md:flex flex-1 justify-center md:justify-end items-center gap-3">
+            <div>
+              <LanguageSelector />
+            </div>
             {user.id ? (
               <Logout />
             ) : (

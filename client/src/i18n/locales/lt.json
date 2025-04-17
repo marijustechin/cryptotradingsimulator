@@ -1,0 +1,9 @@
+{
+  "form_input_label_name": "Vardas",
+  "form_input_label_email": "El. paštas",
+  "form_input_label_password": "Slaptažodis",
+  "form_input_label_confirm_password": "Pakartokite slaptažodį",
+  "form_forgot_password": "Pamiršote slaptažodį?",
+  "form_button_login": "Prisijungti",
+  "form_button_register": "Užsiregistruoti"
+}
