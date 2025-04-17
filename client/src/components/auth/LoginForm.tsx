@@ -12,10 +12,11 @@ import {
 import { useEffect } from 'react';
 import logo from '/logo.png';
 import { getInfo } from '../../store/features/user/userInfoSlice';
-
-
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const { status, error } = useAppSelector((state: RootState) => state.auth);
@@ -80,7 +81,7 @@ export const LoginForm = () => {
 
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="email">
-            Email
+            {t('form_input_label_email')}
           </label>
           <input
             onKeyUp={() => clearError()}
@@ -100,7 +101,7 @@ export const LoginForm = () => {
         </div>
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="password">
-            Password
+            {t('form_input_label_password')}
           </label>
           <input
             onKeyUp={() => clearError()}
@@ -119,13 +120,16 @@ export const LoginForm = () => {
           </div>
         </div>
         <p className="text-right">
-          <Link className="text-sm text-violet-300" to={'/restore-password-email'}>
-            Forgot password?
+          <Link
+            className="text-sm text-violet-300"
+            to={'/restore-password-email'}
+          >
+            {t('form_forgot_password')}
           </Link>
         </p>
         <div>
           <button type="submit" className="btn-generic">
-            Login
+            {t('form_button_login')}
           </button>
         </div>
       </div>

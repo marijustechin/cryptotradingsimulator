@@ -1,0 +1,9 @@
+{
+  "form_input_label_name": "First name",
+  "form_input_label_email": "Email",
+  "form_input_label_password": "Password",
+  "form_input_label_confirm_password": "Confirm password",
+  "form_forgot_password": "Forgot password?",
+  "form_button_login": "Login",
+  "form_button_register": "Register"
+}

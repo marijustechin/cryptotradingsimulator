@@ -8,8 +8,10 @@ import AuthService from '../../services/AuthService';
 import HelperService from '../../services/HelperService';
 import toast from 'react-hot-toast';
 import Logo from '/logo.png';
+import { useTranslation } from 'react-i18next';
 
 export const SignupForm = () => {
+  const { t } = useTranslation();
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const {
@@ -54,7 +56,7 @@ export const SignupForm = () => {
         </div>
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="first_name">
-            First Name
+            {t('form_input_label_name')}
           </label>
           <input
             id="first_name"
@@ -73,7 +75,7 @@ export const SignupForm = () => {
         </div>
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="email">
-            Email
+            {t('form_input_label_email')}
           </label>
           <input
             id="email"
@@ -92,7 +94,7 @@ export const SignupForm = () => {
         </div>
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="password">
-            Password
+            {t('form_input_label_password')}
           </label>
           <input
             id="password"
@@ -112,7 +114,7 @@ export const SignupForm = () => {
 
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="confirmPassword">
-            Confirm Password
+            {t('form_input_label_confirm_password')}
           </label>
           <input
             id="confirmPassword"
@@ -131,7 +133,7 @@ export const SignupForm = () => {
         </div>
 
         <button type="submit" className="btn-generic mt-6">
-          Register
+          {t('form_button_register')}
         </button>
       </div>
     </form>
