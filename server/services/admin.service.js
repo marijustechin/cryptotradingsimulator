@@ -11,7 +11,7 @@ class AdminService {
     const date30DaysAgo = new Date();
     date30DaysAgo.setDate(date30DaysAgo.getDate() - 30);
 
-    // 🟪 Orders grouped by asset (last 12 months)
+    // Orders grouped by asset
     const rawOrdersByCryptoMonthly = await orders.findAll({
       attributes: [
         'assetId',
@@ -45,7 +45,7 @@ class AdminService {
 
     const ordersByCrypto = Object.values(ordersByCryptoMonthlyMap);
 
-    // 🟩 Total income by order type (last 12 months)
+    // Total income by type
     const totalIncomeByType = await orders.findAll({
       attributes: [
         'ord_type',
@@ -57,7 +57,7 @@ class AdminService {
       group: ['ord_type'],
     });
 
-    // 🟨 Monthly income & turnover (last 30 days)
+    // Monthly income and orders value
     const monthlyIncomeData = await orders.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('fee')), 'monthly_total']],
       where: { closed_date: { [Op.gte]: date30DaysAgo } },
@@ -72,7 +72,7 @@ class AdminService {
 
     const monthlyOrdersValue = parseFloat(monthlyOrdersValueData?.[0]?.dataValues?.monthly_value || 0);
 
-    // 🟦 Yearly income by month/type (last 12 months)
+    // Yearly income by month
     const rawYearlyIncome = await orders.findAll({
       attributes: [
         [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
@@ -103,7 +103,7 @@ class AdminService {
 
     const yearlyIncomeByMonth = Object.values(incomeByMonthMap);
 
-    // 🟥 Yearly order value by type (last 12 months)
+    // Yearly orders value
     const rawYearlyOrdersValue = await orders.findAll({
       attributes: [
         [sequelize.fn('DATE_TRUNC', 'month', sequelize.col('closed_date')), 'month'],
@@ -138,7 +138,7 @@ class AdminService {
       0
     );
 
-    // 👤 Active users (last 30 days)
+    // Active users
     const activeUsers = await userLogs.count({
       distinct: true,
       col: 'userId',
@@ -147,7 +147,7 @@ class AdminService {
       },
     });
 
-    // 🏆 Top users by fee (last 30 days)
+    // Top users by fees
     const topUsersRaw = await orders.findAll({
       attributes: [
         'userId',
@@ -170,6 +170,41 @@ class AdminService {
       orderCount: parseInt(entry.dataValues.ordersCount, 10),
     }));
 
+    // 🆕 Fetch real order data with user names
+    const allOrdersWithUsers = await orders.findAll({
+      attributes: [
+        'id',
+        'amount',
+        'assetId',
+        'fee',
+        'ord_type',
+        'ord_status',
+        'open_date',
+        'closed_date',
+        'price',
+      ],
+      include: [
+        {
+          model: user,
+          attributes: ['first_name'],
+        },
+      ],
+      order: [['open_date', 'DESC']],
+    });
+
+    const formattedOrders = allOrdersWithUsers.map(order => ({
+      id: order.id,
+      amount: order.amount,
+      assetId: order.assetId,
+      status: order.ord_status,
+      type: order.ord_type,
+      fee: order.fee,
+      createdAt: order.open_date,
+      userName: order.user?.first_name || 'Unknown',
+      closedAt: order.closed_date,
+      price: order.price
+    }));
+
     return {
       orderInfo: {
         income: totalIncomeByType,
@@ -179,6 +214,10 @@ class AdminService {
         yearlyIncomeByMonth,
         yearlyOrdersValueByMonth,
         yearlyOrdersValueTotal,
+        AllOrdersWithUsers: {
+          total: formattedOrders.length,
+          orders: formattedOrders,
+        },
       },
       userInfo: {
         userCount,

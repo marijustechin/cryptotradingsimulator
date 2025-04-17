@@ -43,7 +43,7 @@ const AdminLayout = () => {
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={adminLinks} />
-            <main className="flex-1 p-4">
+            <main className="flex-1 p-4 overflow-x-auto">
               <Outlet />
             </main>
           </div>
