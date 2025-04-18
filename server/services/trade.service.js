@@ -269,7 +269,7 @@ class TradeService {
     if (!getOrder) {
       throw new Error('Order does not exist');
     }
-    const getOrderPrice = parseFloat(getOrder.price);
+    const getOrderPrice = parseFloat(getOrder.triggerPrice);
     const getOrderedAmount = getOrder.amount;
 
     const orderPrice = getOrderPrice * getOrderedAmount;
@@ -342,29 +342,26 @@ class TradeService {
     if (triggerPrice !== undefined) fieldsToUpdate.triggerPrice = triggerPrice;
     if (amount !== undefined) fieldsToUpdate.amount = amount;
 
-    // kai vartotojas keicia amount - perskaiciuojame orderio kaina
-    // kai vartotojas uzsisako orderPrice pvz : 50$
-    // keiciant kieki i 2 orderValue pasikeicia i 100$
-    // kai vartotojas nori pakeisti kieki i 1 turetu pasikeisti i pradine kiekio reiksme
+    // kai vartotojas keicia amount arba triggerPrice - perskaiciuojame orderPrice
     const getTriggerPrice = findOrder.triggerPrice;
-    const newPrice = getTriggerPrice * amount;
-    const getOrderPrice = findOrder.orderPrice;
     const parsedAmount = Number(amount);
-    if (parsedAmount === 1) {
-      // jei amount = 1 atstatome i pradine pirkimo kaina;
-      const startingPrice = getOrderPrice;
-      console.log('Pradine kaina', startingPrice);
-      await orders.update(
-        { triggerPrice: startingPrice },
-        { where: { id }, transaction }
-      );
-    } else if (amount) {
-      // jei keičiamas amount apskaičiuojame automatiškai triggerPrice
-      await orders.update(
-        { triggerPrice: newPrice },
-        { where: { id }, transaction }
-      );
-    }
+    const newTriggerPrice = triggerPrice !== undefined ? parseFloat(triggerPrice) : getTriggerPrice;
+    const newAmount = amount !== undefined ? parsedAmount : parseFloat(findOrder.amount);
+
+    // Apskaičiuojame naują orderPrice (kaina * kiekis)
+    const newOrderPrice = newTriggerPrice * newAmount;
+
+    // Atnaujiname orderPrice lauką
+    await orders.update(
+      { orderPrice: newOrderPrice },
+      { where: { id }, transaction }
+    );
+
+    // Recalculate the fee based on the new order details
+    const systemSettings = await settings.findOne();
+    const cost = newTriggerPrice * newAmount;
+    const fee = newAmount > 0 ? cost * systemSettings.limit_order_fee : 0;
+
     await orders.update(fieldsToUpdate, {
       where: { id },
       transaction,
@@ -375,32 +372,33 @@ class TradeService {
     // jei naudotojas pakeite kaina i mazesne nei buvo nustatyta pradine kaina
     // grazinam i balansa
     // jei pasikeite triggerPrice nuskaiciuojame balansa
-    const userWallet = await wallet.findOne({ where: { user_id: userId } });
+    const userWallet = await wallet.findOne({ where: { user_id: userId }, transaction });
     const balance = parseFloat(userWallet.balance);
-    const oldPrice = parseFloat(getTriggerPrice);
-    const tg = parseFloat(triggerPrice);
 
-    // jei naujas triggerPrice mazesnis nei senas grazinam skirtuma
-    if (tg < oldPrice) {
-      const difference = Number(oldPrice - tg);
-      const updatedBalance = Number(balance + difference);
-      await wallet.update(
-        { balance: updatedBalance },
-        { where: { user_id: userId } }
-      );
+    // Gauname senus ir naujus užsakymo kiekius bei kainas
+    const oldAmount = parseFloat(findOrder.amount);
+    const oldTriggerPrice = parseFloat(findOrder.triggerPrice);
 
-      // jei naujas triggerPrice didesnis nei senas papildomai nuskaiciuojam
-    } else if (tg > oldPrice) {
-      const difference = Number(tg - oldPrice);
-      const updatedBalance = Number(balance - difference);
-      await wallet.update(
-        { balance: updatedBalance },
-        { where: { user_id: userId } }
-      );
-    }
+    // Apskaičiuojame senos ir naujos užsakymo vertes bei jų skirtumą
+    const oldOrderValue = oldAmount * oldTriggerPrice;
+    const newOrderValue = newAmount * newTriggerPrice;
+    const difference = newOrderValue - oldOrderValue;
 
-    await transaction.commit();
-    return `Order was updated succesfully!`;
+    // Jei užsakymo vertė padidėjo, tikriname likutį ir nuskaityme skirtumą
+    if (difference > 0) {
+      if (balance < difference + fee) {
+          throw new Error('Nepakanka lėšų atnaujinti užsakymą');
+      }
+      userWallet.balance = balance - (difference + fee);
+      await userWallet.save({ transaction });
+  } else if (difference < 0) {
+      // Jei užsakymo vertė sumažėjo, grąžiname skirtumą į piniginę
+      userWallet.balance = balance + Math.abs(difference);
+      await userWallet.save({ transaction });
+  }
+
+  await transaction.commit();
+  return `Order was updated successfully!`;
   }
 }
 
