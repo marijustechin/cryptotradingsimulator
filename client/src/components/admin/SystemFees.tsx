@@ -6,6 +6,7 @@ import {
   selectMarketFee,
 } from '../../store/features/admin/settingsSlice';
 import { useEffect, useState } from 'react';
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 export const SystemFees = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +15,11 @@ export const SystemFees = () => {
 
   const [limitFee, setLimitFee] = useState(0);
   const [marketFee, setMarketFee] = useState(0);
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [feeType, setFeeType] = useState(''); // To determine which fee is being updated
 
   useEffect(() => {
     dispatch(getSettings());
@@ -24,6 +30,25 @@ export const SystemFees = () => {
     if (limitFeeFromStore !== null) setLimitFee(limitFeeFromStore);
     if (marketFeeFromStore !== null) setMarketFee(marketFeeFromStore);
   }, [limitFeeFromStore, marketFeeFromStore]);
+
+  // Function to handle the update action
+  const handleUpdateFee = async () => {
+    if (feeType === 'limit') {
+      // Logic to update limit fee (e.g., dispatch action)
+      toast.success('Limit order fee successfully updated');
+    } else if (feeType === 'market') {
+      // Logic to update market fee (e.g., dispatch action)
+      toast.success('Market order fee successfully updated');
+    }
+    setIsModalOpen(false); // Close the modal after the update
+  };
+
+  // Function to open modal for confirming fee update
+  const handleModalOpen = (fee: string) => {
+    setFeeType(fee); // Set the fee type to update
+    setModalMessage(`Are you sure you want to update the ${fee} fee?`);
+    setIsModalOpen(true); // Open the confirmation modal
+  };
 
   return (
     <main className='bg-gray-800 rounded-xl p-4 shadow'>
@@ -42,9 +67,8 @@ export const SystemFees = () => {
             />
             <button
               className='btn-generic'
-              onClick={() =>
-                toast.success('Limit order fee successfully updated')
-              }
+              type='button'
+              onClick={() => handleModalOpen('limit')} // Open modal for limit fee
             >
               Update
             </button>
@@ -64,15 +88,22 @@ export const SystemFees = () => {
             <button
               className='btn-generic'
               type='button'
-              onClick={() =>
-                toast.success('Market order fee successfully updated')
-              }
+              onClick={() => handleModalOpen('market')} // Open modal for market fee
             >
               Update
             </button>
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        title='Confirm Action'
+        message={modalMessage}
+        onConfirm={handleUpdateFee} // Proceed with the update if confirmed
+        onCancel={() => setIsModalOpen(false)} // Close the modal on cancel
+      />
     </main>
   );
 };

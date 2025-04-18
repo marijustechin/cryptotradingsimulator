@@ -5,6 +5,7 @@ import {
   selectFakeUsers,
 } from '../../store/features/admin/settingsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 export const SystemFakeUsers = () => {
   const dispatch = useAppDispatch();
@@ -14,16 +15,34 @@ export const SystemFakeUsers = () => {
   const [ref, setRef] = useState(false);
   const [password, setPassword] = useState('password1');
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [orderId, setOrderId] = useState(null); // You can remove or repurpose this if needed
+
   useEffect(() => {
     if (fakeUsersFromStore !== null) setFakeUsers(fakeUsersFromStore);
   }, [fakeUsersFromStore]);
 
+  // Function to trigger fake users generation
   const generateFakeUsers = async () => {
     setRef(true);
     await dispatch(
       generateUsers({ usersCount: fakeUsers ?? 100, defaultPassword: password })
     );
     setRef(false);
+  };
+
+  // Modal open handler
+  const handleModalOpen = () => {
+    setModalMessage('Are you sure you want to generate fake users?');
+    setIsModalOpen(true);
+  };
+
+  // Confirm modal action
+  const confirmGenerate = async () => {
+    setIsModalOpen(false); // Close modal
+    await generateFakeUsers(); // Proceed with generating fake users
   };
 
   return (
@@ -59,7 +78,7 @@ export const SystemFakeUsers = () => {
               <button
                 className='btn-generic'
                 type='button'
-                onClick={() => generateFakeUsers()}
+                onClick={handleModalOpen} // Open modal on button click
               >
                 Generate Fake Users
               </button>
@@ -67,6 +86,15 @@ export const SystemFakeUsers = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        title='Confirm Action'
+        message={modalMessage}
+        onConfirm={confirmGenerate} // Generate users when confirmed
+        onCancel={() => setIsModalOpen(false)} // Close the modal on cancel
+      />
     </main>
   );
 };
