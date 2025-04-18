@@ -45,16 +45,16 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 min-h-[85vh] rounded-xl text-white bg-gray-900 p-6 w-64 transform transition-transform duration-300 z-40 
+        className={`fixed left-0 h-[90vh] rounded-xl text-white bg-gray-900 p-3 w-64 transform transition-transform duration-300 z-40 
     ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
     md:translate-x-0 md:relative md:flex md:flex-col
    top-[9vh] md:top-0 border-r border-t border-violet-900 shadow-[2px_-2px_8px_rgba(138,43,226,0.6)]`}
       >
         {/* Balance Display */}
-        <div className='flex flex-col items-center justify-center mb-8'>
+        <div className='flex flex-col items-center justify-center mb-4'>
           {user.balance && user.role === 'USER' && (
             <>
-            <h4 className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
+            <h4 className="text-xlmd:text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
             Back in action, {user.first_name}
             </h4>
             <h3>
