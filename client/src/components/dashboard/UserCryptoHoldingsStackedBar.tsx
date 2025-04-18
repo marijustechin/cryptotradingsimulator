@@ -41,9 +41,11 @@ const VioletGlowCursor = ({ x, y, width, height }: any) => (
 
 const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) => {
   const [orderType, setOrderType] = useState<OrderType>('buy');
+  const [selectedAsset, setSelectedAsset] = useState<string>('all');
 
-  const { chartData, assetKeys, totalQty } = useMemo(() => {
-    if (!orders || orders.length === 0) return { chartData: [], assetKeys: [], totalQty: 0 };
+  const { chartData, assetKeys, totalQty, uniqueAssets } = useMemo(() => {
+    if (!orders || orders.length === 0)
+      return { chartData: [], assetKeys: [], totalQty: 0, uniqueAssets: [] };
 
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
@@ -79,7 +81,6 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
     });
 
     const assetKeys = Array.from(allAssets);
-
     const chartData = months.map((month) => {
       const entry: any = { month };
       assetKeys.forEach((asset) => {
@@ -88,15 +89,22 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
       return entry;
     });
 
-    return { chartData, assetKeys, totalQty };
+    return {
+      chartData,
+      assetKeys,
+      totalQty,
+      uniqueAssets: assetKeys,
+    };
   }, [orders, orderType]);
 
-  // ✅ Check if chart is visually empty (all values zero)
+  const visibleKeys = useMemo(() => {
+    if (selectedAsset === 'all') return assetKeys;
+    return assetKeys.includes(selectedAsset) ? [selectedAsset] : [];
+  }, [assetKeys, selectedAsset]);
+
   const isChartEmpty = useMemo(() => {
-    return chartData.every(row =>
-      assetKeys.every(asset => row[asset] === 0)
-    );
-  }, [chartData, assetKeys]);
+    return chartData.every((row) => visibleKeys.every((asset) => row[asset] === 0));
+  }, [chartData, visibleKeys]);
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-md mb-6">
@@ -107,7 +115,7 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
           </span>
           <h3 className="text-gray-200">Crypto Holdings by Month</h3>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           {(['buy', 'sell'] as OrderType[]).map((type) => (
             <button
               key={type}
@@ -121,6 +129,20 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
               {type}
             </button>
           ))}
+
+          {/* 🔽 Dropdown for asset filter */}
+          <select
+            value={selectedAsset}
+            onChange={(e) => setSelectedAsset(e.target.value)}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-md text-sm"
+          >
+            <option value="all">All</option>
+            {uniqueAssets.map((asset) => (
+              <option key={asset} value={asset}>
+                {asset}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -136,7 +158,7 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
             autoplay
             loop
             src="/Animation.json"
-            style={{ height: "300px", width: "100%" }}
+            style={{ height: '300px', width: '100%' }}
           />
         </div>
       ) : (
@@ -156,7 +178,7 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
               labelStyle={{ color: 'white' }}
             />
             <Legend />
-            {assetKeys.map((key) => (
+            {visibleKeys.map((key) => (
               <Bar
                 key={key}
                 dataKey={key}

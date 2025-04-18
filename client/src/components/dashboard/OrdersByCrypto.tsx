@@ -27,10 +27,10 @@ const assetColors: Record<string, string> = {
 const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
   const [viewRange, setViewRange] = useState<ViewRange>('1Y');
   const [orderType, setOrderType] = useState<OrderType>('buy');
+  const [selectedAsset, setSelectedAsset] = useState<string>('all');
 
-
-  const { chartData, totalVolume } = useMemo(() => {
-    if (!orders || orders.length === 0) return { chartData: [], totalVolume: 0 };
+  const { chartData, totalVolume, uniqueAssets } = useMemo(() => {
+    if (!orders || orders.length === 0) return { chartData: [], totalVolume: 0, uniqueAssets: [] };
 
     const now = new Date();
     const startDate = new Date();
@@ -53,12 +53,12 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
     filtered.forEach((order) => {
       const dateStr = (order.closed_date || order.open_date)?.split('T')[0];
       const asset = order.assetId?.slice(0, 3).toUpperCase();
-      const price = parseFloat(Number(order.price).toFixed(2) || '0');
-      const amount = parseFloat(Number(order.amount).toFixed(2) || '0');
-      const fee = parseFloat(Number(order.fee).toFixed(2) || '0');
-      if (!dateStr || !asset || !price || !amount || isNaN(price) || isNaN(amount)) return;
+      const price = parseFloat(Number(order.price).toFixed(2));
+      const amount = parseFloat(Number(order.amount).toFixed(2));
+      const fee = parseFloat(Number(order.fee).toFixed(2));
+      if (!dateStr || !asset || isNaN(price) || isNaN(amount)) return;
 
-      const total = (price * amount) + fee;
+      const total = price * amount + fee;
       totalVolume += total;
 
       if (!grouped[dateStr]) grouped[dateStr] = {};
@@ -75,13 +75,14 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
       return row;
     });
 
-    return { chartData, totalVolume };
+    return { chartData, totalVolume, uniqueAssets };
   }, [orders, viewRange, orderType]);
 
   const assetKeys = useMemo(() => {
     if (!chartData.length) return [];
-    return Object.keys(chartData[0]).filter((key) => key !== 'date');
-  }, [chartData]);
+    const all = Object.keys(chartData[0]).filter((key) => key !== 'date');
+    return selectedAsset === 'all' ? all : [selectedAsset];
+  }, [chartData, selectedAsset]);
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-md mb-6">
@@ -92,7 +93,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
           </span>
           <h3 className="text-gray-200 capitalize">{orderType} Order Volume by Crypto</h3>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2 items-center">
           {(['1M', '6M', '1Y'] as ViewRange[]).map((range) => (
             <button
               key={range}
@@ -119,62 +120,65 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
               {type}
             </button>
           ))}
+          <select
+            value={selectedAsset}
+            onChange={(e) => setSelectedAsset(e.target.value)}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-md text-sm"
+          >
+            <option value="all">All</option>
+            {uniqueAssets.map((asset) => (
+              <option key={asset} value={asset}>
+                {asset}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
+
       {!chartData.length ? (
-
-            <div className="grid grid-cols-2 justify-center items-center w-full">
-              <div className="flex flex-col justify-center items-center">
-                <h3 className="pb-10">Nothing to show</h3>
-                <Link to="/my-dashboard/trading" className="btn-generic my-6">
-                  Go to Trading
-                </Link>
-              </div>
-              <Player
-                autoplay
-                loop
-                src="/Animation.json"
-                style={{ height: "300px", width: "100%" }}
-              />
-            </div>
+        <div className="grid grid-cols-2 justify-center items-center w-full">
+          <div className="flex flex-col justify-center items-center">
+            <h3 className="pb-10">Nothing to show</h3>
+            <Link to="/my-dashboard/trading" className="btn-generic my-6">
+              Go to Trading
+            </Link>
+          </div>
+          <Player autoplay loop src="/Animation.json" style={{ height: '300px', width: '100%' }} />
+        </div>
       ) : (
-
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            stroke="#818cf8"
-            tickFormatter={(date) =>
-              new Date(date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              })
-            }
-          />
-          <YAxis stroke="#818cf8" />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: '#1f2937',
-              borderColor: '#6b7280',
-            }}
-            labelStyle={{ color: 'white' }}
-            formatter={(value: number) => HelperService.formatCurrency(value)}
-          />
-          <Legend />
-          {assetKeys.map((asset) => (
-            <Line
-              key={asset}
-              type="monotone"
-              dataKey={asset}
-              name={`${asset} Volume`}
-              stroke={assetColors[asset] || '#8884d8'}
-              strokeWidth={2}
-              dot={false}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="date"
+              stroke="#818cf8"
+              tickFormatter={(date) =>
+                new Date(date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                })
+              }
             />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+            <YAxis stroke="#818cf8" />
+            <Tooltip
+              contentStyle={{ backgroundColor: '#1f2937', borderColor: '#6b7280' }}
+              labelStyle={{ color: 'white' }}
+              formatter={(value: number) => HelperService.formatCurrency(value)}
+            />
+            <Legend />
+            {assetKeys.map((asset) => (
+              <Line
+                key={asset}
+                type="monotone"
+                dataKey={asset}
+                name={`${asset} Volume`}
+                stroke={assetColors[asset] || '#8884d8'}
+                strokeWidth={2}
+                dot={false}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
       )}
     </div>
   );
