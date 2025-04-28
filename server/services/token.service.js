@@ -76,6 +76,21 @@ class TokenService {
   async removeTokenByUserId(userId) {
     return token.destroy({ where: { user_id: userId } });
   }
+
+  generatePasswordResetToken(userId) {
+    return jwt.sign({ userId }, process.env.JWT_RESET_SECRET, {
+      expiresIn: process.env.JWT_RESET_EXPIRES || '2m',
+    });
+  }
+  
+  validatePasswordResetToken(token) {
+    try {
+      return jwt.verify(token, process.env.JWT_RESET_SECRET);
+    } catch (e) {
+      return null;
+    }
+  }
+  
 }
 
 module.exports = new TokenService();

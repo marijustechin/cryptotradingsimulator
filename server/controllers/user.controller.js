@@ -3,6 +3,8 @@ const userService = require('../services/user.service');
 const ApiError = require('../exceptions/api.errors');
 const helperService = require('../services/helper.service');
 const EmailService = require('../services/email.service');
+const TokenService = require('../services/token.service');
+const sequelize = require('../config/db');
 
 class UserController {
   errorToString(errorsArray) {
@@ -286,7 +288,37 @@ class UserController {
       next(e);
     }
   }
-   
+
+  async restorePassword(req, res, next) {
+    try {
+      const { token, newPassword } = req.body;
+
+      if (!token || !newPassword) {
+        throw ApiError.BadRequest('Missing token or password.');
+      }
+
+      const decoded = TokenService.validatePasswordResetToken(token);
+      if (!decoded) {
+        throw ApiError.UnauthorizedError('Invalid or expired token.');
+      }
+
+      const { userId } = decoded;
+
+      const userSecret = await sequelize.models.user_secret.findOne({ where: { user_id: userId } });
+      if (!userSecret) {
+        throw ApiError.BadRequest('User secret not found.');
+      }
+
+      userSecret.password = newPassword; // Hook will hash it
+      await userSecret.save();
+
+      await TokenService.removeTokenByUserId(userId);
+
+      return res.status(200).json({ message: 'Password successfully changed!' });
+    } catch (e) {
+      next(e);
+    }
+  }
 
   async getUserPortfolio(req, res, next) {
     try {
