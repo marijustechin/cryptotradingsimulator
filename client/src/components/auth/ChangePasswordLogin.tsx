@@ -1,114 +1,83 @@
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangePasswordSchema } from "../../schemas/ChangePassword";
-import * as z from "zod";
-import UserService from "../../services/UserService";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import HelperService from "../../services/HelperService";
-import { useAppDispatch } from "../../store/store";
-import { logoutUser } from "../../store/features/user/authSlice";
-import logo from '/logo.png';
-import { Link } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import UserService from "../../services/UserService"; // Assuming the UserService is correctly imported
+
+const schema = z.object({
+  newPassword: z.string().min(6, "Minimum 6 characters"), // Password validation
+});
 
 export const ChangePasswordLoginForm = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [searchParams] = useSearchParams(); // Get the token from the URL
+  const token = searchParams.get("token");
+  const navigate = useNavigate(); // Navigation helper
+  const [loading, setLoading] = useState(false); // Loading state to disable the button during API calls
+
+  // Check if the token exists when the component mounts
+  useEffect(() => {
+    if (!token) {
+      toast.error("Reset token not found or expired.");
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    clearErrors,
-  } = useForm<z.infer<typeof ChangePasswordSchema>>({
-    resolver: zodResolver(ChangePasswordSchema),
+  } = useForm<{ newPassword: string }>({
+    resolver: zodResolver(schema), // Using Zod for validation
   });
 
-  const onSubmit = async (data: z.infer<typeof ChangePasswordSchema>) => {
-    try {
-      const response = await UserService.changePassword(
-        data.newPassword,
-        data.repeatPassword
-      );
-      toast.success(response.message);
+  // Function to handle form submission
+  const onSubmit = async ({ newPassword }: { newPassword: string }) => {
+    if (!token) {
+      toast.error("Reset token not found or expired.");
+      return;
+    }
 
-      await dispatch(logoutUser());
-      navigate("/login");
-    } catch (e) {
-      setError(HelperService.errorToString(e));
+    try {
+      setLoading(true); // Start loading animation
+      // Sending the token and newPassword to the backend
+      const response = await UserService.restorePassword(token!, newPassword);
+      toast.success(response.message); // Show success message
+      navigate("/login"); // Redirect to login page
+    } catch (err) {
+      setLoading(false); // Stop loading animation
+      const errorMessage = err?.response?.data?.message || "Something went wrong.";
+      toast.error(errorMessage); // Show error message if API call fails
     }
   };
 
   return (
-    <form
-      className="form-basic"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="flex gap-2 items-center justify-center">
-        <img src={logo} alt="logo" className="w-[2rem] h-[2rem]" />
-        <h2>Crypto Hills</h2>
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="form-basic">
+      <h2>Reset Your Password</h2>
 
-      <div className="h-10 flex items-center justify-center">
-        {error && <span className="text-xs text-rose-500">{error}</span>}
-      </div>
+      <label className="form-label" htmlFor="newPassword">
+        New Password
+      </label>
+      <input
+        className="form-input"
+        type="password"
+        {...register("newPassword")}
+        placeholder="Enter new password"
+      />
+      {errors.newPassword && (
+        <span className="text-red-500 text-sm">{errors.newPassword.message}</span>
+      )}
 
-      <div className="flex flex-col gap-2 my-3">
-        <label className="form-label" htmlFor="newPassword">
-          New Password
-        </label>
-        <input
-          onKeyUp={() => clearErrors("newPassword")}
-          id="newPassword"
-          className="form-input"
-          type="password"
-          autoComplete="off"
-          placeholder="New password"
-          {...register("newPassword")}
-        />
-        <div className="relative">
-          {errors.newPassword && (
-            <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-              {errors.newPassword.message}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 my-3">
-        <label className="form-label" htmlFor="repeatPassword">
-          Repeat New Password
-        </label>
-        <input
-          onKeyUp={() => clearErrors("repeatPassword")}
-          id="repeatPassword"
-          className="form-input"
-          type="password"
-          autoComplete="off"
-          placeholder="Repeat new password"
-          {...register("repeatPassword")}
-        />
-        <div className="relative">
-          {errors.repeatPassword && (
-            <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-              {errors.repeatPassword.message}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <button type="submit" className="btn-generic mt-8">
-        Change Password
+      <button
+        type="submit"
+        className="btn-generic mt-4"
+        disabled={loading} // Disable the button while loading
+      >
+        {loading ? "Resetting..." : "Reset Password"} {/* Show loading text if the button is disabled */}
       </button>
-
-      <p className="text-center text-sm mt-4">
-        <Link className="text-violet-300 hover:underline" to="/login">
-          ← Back to Login
-        </Link>
-      </p>
     </form>
   );
 };
+
+export default ChangePasswordLoginForm;

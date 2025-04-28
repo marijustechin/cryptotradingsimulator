@@ -1,6 +1,7 @@
 const transporter = require('../config/nodemailer');
 const sequelize = require('../config/db');
 const { user } = sequelize.models;
+const TokenService = require('./token.service');
 
 class EmailService {
   //in Trading page
@@ -33,15 +34,17 @@ class EmailService {
   
     const email = findUserEmail.email;
   
-    const info = await transporter.sendMail({
+    const resetToken = TokenService.generatePasswordResetToken(userId);
+    const resetLink = `http://localhost:5173/restore-password?token=${resetToken}`;
+  
+    await transporter.sendMail({
       from: '"CryptoHill Simulator" <cryptohillsimulator@gmail.com>',
       to: email,
       subject: 'Change Password - CryptoHill Simulator',
-      text: 'Click the following link to change your password: http://localhost:5173/restore-password',
       html: `
         <p>Hello,</p>
         <p>We received a request to reset your password.</p>
-        <p>You can change it by clicking <a href="http://localhost:5173/restore-password" style="color:#7c3aed;text-decoration:none;">Here</a>.</p>
+        <p>You can change it by clicking <a href="${resetLink}" style="color:#7c3aed;text-decoration:none;">here</a>.</p>
         <p>If you didn’t request this, you can ignore this email.</p>
         <br/>
         <p>– The CryptoHill Team</p>

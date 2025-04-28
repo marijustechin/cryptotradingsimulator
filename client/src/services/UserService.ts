@@ -59,4 +59,11 @@ static async changePassword(
   return response.data;
 }
 
+static async restorePassword(token: string, newPassword: string) {
+  const response = await $api.post("/users/restore-password", {
+    token,
+    newPassword,
+  });
+  return response.data;
+}
 }

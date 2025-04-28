@@ -51,6 +51,7 @@ userRouter.post(
   userController.changePassword
 );
 userRouter.post("/send-reset-link", userController.sendPasswordResetEmail);
+userRouter.post("/restore-password", userController.restorePassword);
 
 // borrows
 userRouter.get('/borrows', userController.getAllBorrow);
