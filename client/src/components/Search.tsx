@@ -22,7 +22,7 @@ export const Search = ({ placeholderText, onSearch }: ISearchProps) => {
   };
 
   return (
-    <div className="border border-violet-800 rounded-lg">
+    <div className="border border-violet-800 rounded-lg md:w-1/2">
       <input
         className="p-2 focus:outline-none"
         value={searchText}

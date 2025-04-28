@@ -53,8 +53,8 @@ export const SystemFees = () => {
   return (
     <main className='bg-gray-800 rounded-xl p-4 shadow'>
       <h2>Fees</h2>
-      <div className='flex gap-2'>
-        <div className='flex flex-col border border-violet-700 rounded-lg p-2'>
+      <div className='flex flex-col gap-2 lg:flex-row lg:justify-around border border-violet-700 rounded-lg p-2'>
+        <div className='flex flex-col'>
           <label htmlFor='limit_fee'>Limit order fee %</label>
           <div className='flex gap-2'>
             <input
@@ -62,7 +62,7 @@ export const SystemFees = () => {
               onChange={(e) => setLimitFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
-              className='py-1 px-2 w-40 border border-violet-900 rounded-lg'
+              className='py-1 px-2 w-35 md:w-45 border border-violet-900 rounded-lg'
               id='limit_fee'
             />
             <button
@@ -74,7 +74,7 @@ export const SystemFees = () => {
             </button>
           </div>
         </div>
-        <div className='flex flex-col border border-violet-700 rounded-lg p-2'>
+        <div className='flex flex-col'>
           <label htmlFor='market_fee'>Market order fee %</label>
           <div className='flex gap-2'>
             <input
@@ -82,7 +82,7 @@ export const SystemFees = () => {
               onChange={(e) => setMarketFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
-              className='py-1 px-2 w-40 border border-violet-900 rounded-lg'
+              className='py-1 px-2 w-35 md:w-45 border border-violet-900 rounded-lg'
               id='market_fee'
             />
             <button

@@ -83,9 +83,9 @@ const AllUsersPage = () => {
   };
 
   return (
-    <main>
+    <main className='w-full'>
       <h1 className="text-center">All Platform Users </h1>
-      <div className='flex gap-4 py-3 items-center'>
+      <div className='flex gap-2 py-3 items-center flex-col md:flex-row'>
         <Search
           placeholderText='Search by First Name'
           onSearch={(searchText) => handleFilter(searchText, 'first_name')}
@@ -96,8 +96,8 @@ const AllUsersPage = () => {
         />
       </div>
       {/* nauja lentele ========================================= */}
-      <div className='overflow-x-auto'>
-        <table className='table border-separate border-spacing-y-2'>
+      <div className="w-full overflow-x-auto">
+        <table className='table border-separate border-spacing-y-2 w-full min-w-[1000px]'>
           <thead>
             <tr className='bg-gray-800 text-white'>
               <th>ID</th>

@@ -36,7 +36,7 @@ const UserProfilePage = () => {
         <article>
           <BorrowingsButton />
         </article>
-        <article>
+        <article className="w-full">
           <BorrowingsHistory />
         </article>
       </section>

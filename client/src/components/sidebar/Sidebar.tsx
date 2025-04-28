@@ -54,7 +54,7 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
         <div className='flex flex-col items-center justify-center mb-4'>
           {user.balance && user.role === 'USER' && (
             <>
-            <h4 className="text-xlmd:text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
+            <h4 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
             Back in action, {user.first_name}
             </h4>
             <h3>

@@ -41,8 +41,8 @@ export const SystemFakeActivity = () => {
           Generating fake activity. Please wait...
         </div>
       ) : (
-        <>
-          <p>
+        <div className='gap-3 border border-violet-700 rounded-lg p-2'>
+          <p className='py-5'>
             Here you can generate fake users trading activity during the period of
             the last year.
           </p>
@@ -52,7 +52,7 @@ export const SystemFakeActivity = () => {
           >
             Generate Fake Activity
           </button>
-        </>
+        </div>
       )}
 
       {/* Confirmation Modal */}

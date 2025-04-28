@@ -3,7 +3,7 @@ import {
   getOpenOrders,
   selectOpenOrders,
 } from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice';
+import { selectUser, fetchUserInfo } from '../../store/features/user/authSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { DataExport } from './DataExport';
 import CancelOrder from './CancelOrder';
@@ -24,12 +24,14 @@ export const OpenOrders = () => {
   const refreshOrders = () => {
     if (user.id) {
       dispatch(getOpenOrders({ userId: user.id }));
+      dispatch(fetchUserInfo());
     }
   };
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='w-full'>
       <DataExport openOrders={openOrders} />
+      <div className='overflow-x-auto'>
       <table className='border-separate border-spacing-y-2 table'>
         <thead>
           <tr className='text-white bg-gray-800'>
@@ -38,8 +40,8 @@ export const OpenOrders = () => {
             <th>Direction</th>
             <th>Entry Price</th>
             <th>Order Qty</th>
-            <th>Order Time</th>
             <th>Order Value</th>
+            <th>Order Time</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -86,14 +88,10 @@ export const OpenOrders = () => {
                   />
                 </div>
               </td>
-              <td>{order.open_date}</td>
               <td>
-                {HelperService.formatCurrency(
-                  order.ord_type === 'market'
-                    ? order.price * order.amount
-                    : order.triggerPrice * order.amount
-                )}
+                {HelperService.formatCurrency(order.triggerPrice * order.amount)}
               </td>
+              <td>{order.open_date}</td>
               <td>
                 <CancelOrder orderId={order.id} onSuccess={refreshOrders} />
               </td>
@@ -101,6 +99,7 @@ export const OpenOrders = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

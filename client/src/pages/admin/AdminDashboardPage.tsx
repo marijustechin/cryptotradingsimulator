@@ -38,7 +38,7 @@ const AdminDashboardPage = () => {
   return (
     <>
       <h1 className="text-center">Platform Performance Summary</h1>
-      <main className="flex-1 bg-gray-800 md:bg-transparent">
+      <main className="flex-1 bg-transparent">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center">
           <DashboardCardUsers />
           <div className="w-full space-y-2">
