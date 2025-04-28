@@ -21,7 +21,7 @@ const UserLayout = () => {
   // Handle window resize event to detect desktop size
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1280); // Adjust this breakpoint as needed (1280px for xl)
+      setIsDesktop(window.innerWidth >= 768); // Adjust this breakpoint as needed (1280px for xl)
     };
 
     handleResize(); // Check initial screen size
@@ -38,12 +38,12 @@ const UserLayout = () => {
         <UserTextures />
       ) : (
         // Layout for mobile/tablet screens
-        <>
-          <div className="flex flex-col min-h-screen container">
+        <div className="flex flex-col min-h-screen justify-center items-center">
+          <div className="container">
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={userLinks} />
-            <main className="flex-1 overflow-x-auto p-4">
+            <main className="flex-1 p-4 w-full min-w-0 overflow-x-auto">
               <Outlet />
             </main>
           </div>
@@ -51,7 +51,7 @@ const UserLayout = () => {
         <div className="w-full border-t border-[#636363]">
           <Footer />
         </div>
-        </>
+        </div>
       )}
     </>
   );

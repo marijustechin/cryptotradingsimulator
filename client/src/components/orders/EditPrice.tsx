@@ -29,22 +29,33 @@ export default function EditOrderPrice({
   };
 
   const confirmEdit = async () => {
-    setIsModalOpen(false);
-    if (editOrder?.orderId) {
-      try {
-        await OrdersService.editOrderPrice(
-          editOrder.orderId,
-          editOrder.triggerPrice
-        );
-        toast.success("Price successfully changed");
-
-        if (onSuccess) onSuccess(); // ✅ refresh parent
-      } catch (error) {
-        toast.error("Failed to change the price");
-      }
+    if (!editOrder?.orderId) return;
+  
+    try {
+      await OrdersService.editOrderPrice(
+        editOrder.orderId,
+        editOrder.triggerPrice
+      );
+  
+      toast.success("Amount successfully changed");
+  
+      if (onSuccess) onSuccess();
+    } catch (error: any) {
+      console.error("Edit order failed:", error);
+  
+      // Safe extraction of server error message
+      const message =
+        error?.response?.data?.error ??
+        error?.message ??
+        "Failed to change the amount";
+  
+      toast.error(message);
+    } finally {
+      // ✅ Always close modal, whether success or failure
+      setIsModalOpen(false);
+      setEditOrder({ orderId: editOrder.orderId, triggerPrice });
+      setModalMessage("");
     }
-    setEditOrder({ orderId: editOrder.orderId, triggerPrice });
-    setModalMessage("");
   };
 
   return (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import logo from '/logo.png';
 import { Logout } from '../header/Logout';
+import { LanguageSelector } from '../header/LanguageSelector';
 
 export const AdminHeader = () => {
 
@@ -21,8 +22,8 @@ export const AdminHeader = () => {
           </Link>
         </div>
 
-
-        <div className="block p-4 text-white text-center justify-self-end">
+        <div className="flex p-4 text-white text-center justify-self-end gap-4">
+        <LanguageSelector/>
           <Logout />
         </div>
     </div>

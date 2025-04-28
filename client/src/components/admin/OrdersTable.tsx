@@ -15,92 +15,85 @@ export interface AdminOrder {
 }
 
 interface OrdersTableProps {
-    paginatedOrders: AdminOrder[];
-    sortField: "user" | "amount";
-    sortOrder: "asc" | "desc";
-    setSortField: React.Dispatch<React.SetStateAction<"user" | "amount">>;
-    setSortOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
-  }
-  
-  export const OrdersTable = ({
-    paginatedOrders,
-    sortField,
-    sortOrder,
-    setSortField,
-    setSortOrder,
-  }: OrdersTableProps) => {
-    return (
-      <div>
-        <table className="table border-separate border-spacing-y-2 w-full">
-          <thead className="text-white bg-gray-700">
-            <tr>
-              <th
-                className="cursor-pointer w-1/7"
-                onClick={() => {
-                  setSortField("user");
-                  setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-                }}
-              >
-                <div className="flex gap-1 items-center">
-                  <span>User</span>
-                  {sortField === "user" && (
-                    <span className="ml-2 text-violet-300">
-                      {sortOrder === "asc" ? (
-                        <FaLongArrowAltDown />
-                      ) : (
-                        <FaLongArrowAltUp />
-                      )}
-                    </span>
-                  )}
-                </div>
-              </th>
-              <th
-                className="cursor-pointer w-1/7"
-                onClick={() => {
-                  setSortField("amount");
-                  setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-                }}
-              >
-                <div className="flex gap-1 items-center">
-                  <span>Amount</span>
-                  {sortField === "amount" && (
-                    <span className="ml-2 text-violet-300">
-                      {sortOrder === "asc" ? (
-                        <FaLongArrowAltDown />
-                      ) : (
-                        <FaLongArrowAltUp />
-                      )}
-                    </span>
-                  )}
-                </div>
-              </th>
-              <th className="w-1/7">Currency</th>
-              <th className="w-1/7">Status</th>
-              <th className="w-1/7">Type</th>
-              <th className="w-1/7">Fee</th>
-              <th className="w-1/7">Order Value</th>
+  paginatedOrders: AdminOrder[];
+  sortField: "user" | "amount";
+  sortOrder: "asc" | "desc";
+  setSortField: React.Dispatch<React.SetStateAction<"user" | "amount">>;
+  setSortOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
+}
+
+export const OrdersTable = ({
+  paginatedOrders,
+  sortField,
+  sortOrder,
+  setSortField,
+  setSortOrder,
+}: OrdersTableProps) => {
+  return (
+    <div className="w-full overflow-x-auto">
+      <table className="min-w-[1000px] border-separate border-spacing-y-2 w-full">
+        <thead className="text-white bg-gray-700">
+          <tr>
+            <th
+              className="cursor-pointer whitespace-nowrap px-4 py-2"
+              onClick={() => {
+                setSortField("user");
+                setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+              }}
+            >
+              <div className="flex gap-1 items-center">
+                <span>User</span>
+                {sortField === "user" && (
+                  <span className="ml-2 text-violet-300">
+                    {sortOrder === "asc" ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />}
+                  </span>
+                )}
+              </div>
+            </th>
+            <th
+              className="cursor-pointer whitespace-nowrap px-4 py-2"
+              onClick={() => {
+                setSortField("amount");
+                setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+              }}
+            >
+              <div className="flex gap-1 items-center">
+                <span>Amount</span>
+                {sortField === "amount" && (
+                  <span className="ml-2 text-violet-300">
+                    {sortOrder === "asc" ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />}
+                  </span>
+                )}
+              </div>
+            </th>
+            <th className="whitespace-nowrap px-4 py-2">Currency</th>
+            <th className="whitespace-nowrap px-4 py-2">Status</th>
+            <th className="whitespace-nowrap px-4 py-2">Type</th>
+            <th className="whitespace-nowrap px-4 py-2">Fee</th>
+            <th className="whitespace-nowrap px-4 py-2">Order Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {paginatedOrders.map((order, index) => (
+            <tr
+              key={order.id}
+              className={index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"}
+            >
+              <td className="whitespace-nowrap px-4 py-2">{order.userName}</td>
+              <td className="whitespace-nowrap px-4 py-2">{Number(order.amount).toFixed(6)}</td>
+              <td className="whitespace-nowrap px-4 py-2">{order.assetId.slice(0, 3)}</td>
+              <td className="whitespace-nowrap px-4 py-2">{order.status}</td>
+              <td className="whitespace-nowrap px-4 py-2">{order.type}</td>
+              <td className="whitespace-nowrap px-4 py-2">
+                {HelperService.formatCurrency(order.fee)}
+              </td>
+              <td className="whitespace-nowrap px-4 py-2">
+                {HelperService.formatCurrency(order.amount * order.price)}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {paginatedOrders.map((order, index) => (
-              <tr
-                key={order.id}
-                className={index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"}
-              >
-                <td className="w-1/7">{order.userName}</td>
-                <td className="w-1/7">{order.amount}</td>
-                <td className="w-1/7">{order.assetId.slice(0, 3)}</td>
-                <td className="w-1/7">{order.status}</td>
-                <td className="w-1/7">{order.type}</td>
-                <td className="w-1/7">{HelperService.formatCurrency(order.fee)}</td>
-                <td className="w-1/7">
-                  {HelperService.formatCurrency(order.amount * order.price)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-  
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};

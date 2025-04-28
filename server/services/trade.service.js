@@ -246,6 +246,7 @@ class TradeService {
 
           order.ord_status = 'closed';
           order.closed_date = new Date();
+          order.price = order.triggerPrice;
           await order.save({ transaction });
 
           await transaction.commit();
@@ -321,85 +322,94 @@ class TradeService {
   }
 
   async editUserOrder(id, userId, triggerPrice, amount) {
-    // jei zmogus nori keisti price - keiciasi tik price
-    // kai keiciasi price atiduoda arba atiima balansa
-    // jei zmogus nori keisti amount - keiciasi tik amount
-
-    // *** CIA REIKS DAPILDYTI VALIDACIJAS, WALLET ATNAUJINIMUS ir t.t *** //
     const transaction = await sequelize.transaction();
-
-    const findOrder = await orders.findOne({
-      where: { id, userId: userId },
-      transaction,
-    });
-
-    if (!findOrder) {
-      throw new Error("Order does not exist or it doesn't belong to this user");
-    }
-
-    let fieldsToUpdate = {};
-
-    if (triggerPrice !== undefined) fieldsToUpdate.triggerPrice = triggerPrice;
-    if (amount !== undefined) fieldsToUpdate.amount = amount;
-
-    // kai vartotojas keicia amount arba triggerPrice - perskaiciuojame orderPrice
-    const getTriggerPrice = findOrder.triggerPrice;
-    const parsedAmount = Number(amount);
-    const newTriggerPrice = triggerPrice !== undefined ? parseFloat(triggerPrice) : getTriggerPrice;
-    const newAmount = amount !== undefined ? parsedAmount : parseFloat(findOrder.amount);
-
-    // Apskaičiuojame naują orderPrice (kaina * kiekis)
-    const newOrderPrice = newTriggerPrice * newAmount;
-
-    // Atnaujiname orderPrice lauką
-    await orders.update(
-      { orderPrice: newOrderPrice },
-      { where: { id }, transaction }
-    );
-
-    // Recalculate the fee based on the new order details
-    const systemSettings = await settings.findOne();
-    const cost = newTriggerPrice * newAmount;
-    const fee = newAmount > 0 ? cost * systemSettings.limit_order_fee : 0;
-
-    await orders.update(fieldsToUpdate, {
-      where: { id },
-      transaction,
-    });
-
-    // jei naudotojas pakeite kaina i didesne nei buvo nustatyta pradine kaina
-    // atimam is balanso
-    // jei naudotojas pakeite kaina i mazesne nei buvo nustatyta pradine kaina
-    // grazinam i balansa
-    // jei pasikeite triggerPrice nuskaiciuojame balansa
-    const userWallet = await wallet.findOne({ where: { user_id: userId }, transaction });
-    const balance = parseFloat(userWallet.balance);
-
-    // Gauname senus ir naujus užsakymo kiekius bei kainas
-    const oldAmount = parseFloat(findOrder.amount);
-    const oldTriggerPrice = parseFloat(findOrder.triggerPrice);
-
-    // Apskaičiuojame senos ir naujos užsakymo vertes bei jų skirtumą
-    const oldOrderValue = oldAmount * oldTriggerPrice;
-    const newOrderValue = newAmount * newTriggerPrice;
-    const difference = newOrderValue - oldOrderValue;
-
-    // Jei užsakymo vertė padidėjo, tikriname likutį ir nuskaityme skirtumą
-    if (difference > 0) {
-      if (balance < difference + fee) {
-          throw new Error('Nepakanka lėšų atnaujinti užsakymą');
+  
+    try {
+      const findOrder = await orders.findOne({
+        where: { id, userId: userId },
+        transaction,
+      });
+  
+      if (!findOrder) {
+        throw new Error("Order does not exist or doesn't belong to this user");
       }
-      userWallet.balance = balance - (difference + fee);
+  
+      // Current values
+      const currentTriggerPrice = parseFloat(findOrder.triggerPrice);
+      const currentAmount = parseFloat(findOrder.amount);
+      const oldOrderValue = currentTriggerPrice * currentAmount;
+  
+      const newTriggerPrice =
+        triggerPrice !== undefined ? parseFloat(triggerPrice) : currentTriggerPrice;
+      const newAmount =
+        amount !== undefined ? parseFloat(amount) : currentAmount;
+  
+      // ✅ Validation
+      if (isNaN(newTriggerPrice) || newTriggerPrice <= 0) {
+        throw new Error("Invalid trigger price");
+      }
+      if (isNaN(newAmount) || newAmount <= 0) {
+        throw new Error("Invalid amount");
+      }
+  
+      const systemSettings = await settings.findOne();
+      const feeRate = systemSettings.limit_order_fee;
+  
+      const newOrderValue = newTriggerPrice * newAmount;
+  
+      // 🔄 Fee calculation
+      const oldFee = oldOrderValue * feeRate;
+      const newFee = newOrderValue * feeRate;
+      const feeDifference = newFee - oldFee;
+  
+      const userWallet = await wallet.findOne({
+        where: { user_id: userId },
+        transaction,
+      });
+  
+      const balance = parseFloat(userWallet.balance);
+  
+      // 💰 Wallet balance logic
+      if (feeDifference > 0) {
+        // Order became more expensive, need to deduct extra fee + value
+        const totalRequired = (newOrderValue - oldOrderValue) + feeDifference;
+  
+        if (balance < totalRequired) {
+          throw new Error("Not enough balance to apply order changes");
+        }
+  
+        userWallet.balance = balance - totalRequired;
+      } else if (feeDifference < 0) {
+        // Order became cheaper, refund value + fee difference
+        const totalRefund = Math.abs(newOrderValue - oldOrderValue) + Math.abs(feeDifference);
+        userWallet.balance = balance + totalRefund;
+      }
+  
       await userWallet.save({ transaction });
-  } else if (difference < 0) {
-      // Jei užsakymo vertė sumažėjo, grąžiname skirtumą į piniginę
-      userWallet.balance = balance + Math.abs(difference);
-      await userWallet.save({ transaction });
+  
+      // 📝 Update order fields (including fee!)
+      const fieldsToUpdate = {
+        fee: newFee,
+      };
+  
+      if (triggerPrice !== undefined) fieldsToUpdate.triggerPrice = newTriggerPrice;
+      if (amount !== undefined) fieldsToUpdate.amount = newAmount;
+  
+      await orders.update(fieldsToUpdate, {
+        where: { id },
+        transaction,
+      });
+  
+      await transaction.commit();
+      return "Order was updated successfully!";
+    } catch (error) {
+      await transaction.rollback();
+      console.error("Failed to edit user order:", error);
+      throw error;
+    }
   }
-
-  await transaction.commit();
-  return `Order was updated successfully!`;
-  }
+  
+  
 }
 
 module.exports = new TradeService();

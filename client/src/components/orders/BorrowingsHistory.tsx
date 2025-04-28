@@ -72,32 +72,32 @@ export default function BorrowingsHistory() {
   }
 
   return (
-    <div>
-      <table className="border-separate border-spacing-y-2 w-full table">
-        <thead>
-          <tr className="text-white bg-gray-800">
-            <th>ID</th>
-            <th>Borrowing amount</th>
-            <th>Date borrowed</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.map((item, index) => (
-            <tr key={item.id} className={index % 2 ? "bg-gray-800" : "bg-gray-700"}>
-              <td>{item.id}</td>
-              <td>{item.amount}</td>
-              <td>{item.borrow_date.slice(0, 10)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="w-full">
+  <table className="w-full table-auto border-separate border-spacing-y-2">
+    <thead>
+      <tr className="text-white bg-gray-800">
+        <th className="px-4 py-2 text-left">ID</th>
+        <th className="px-4 py-2 text-left">Borrowing amount</th>
+        <th className="px-4 py-2 text-left">Date borrowed</th>
+      </tr>
+    </thead>
+    <tbody>
+      {data?.map((item, index) => (
+        <tr key={item.id} className={index % 2 ? "bg-gray-800" : "bg-gray-700"}>
+          <td className="px-4 py-2">{item.id}</td>
+          <td className="px-4 py-2">{item.amount}</td>
+          <td className="px-4 py-2">{item.borrow_date.slice(0, 10)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 
-      {/* Pagination Component */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onChange={handlePageChange}
-      />
-    </div>
+  {/* Pagination Component */}
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    onChange={handlePageChange}
+  />
+</div>
   );
 }

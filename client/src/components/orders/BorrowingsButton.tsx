@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../store/store";
 import { selectUser } from "../../store/features/user/authSlice";
 import $api from "../../api/axios";
+import { toast } from "react-hot-toast";
 
 export default function BorrowingsButton() {
   const user = useAppSelector(selectUser);
@@ -11,10 +12,10 @@ export default function BorrowingsButton() {
         amount: 10000,
         reason: "Personal use",
       });
-      alert("Borrow successful!");
+      toast.success("Borrow successful!");
       window.location.reload();
     } catch (err) {
-      alert("Borrow failed. Check your balance or try again.");
+      toast.error("Borrow failed. Check your balance or try again.");
       console.error(err);
     }
   };

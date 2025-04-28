@@ -104,13 +104,15 @@ export const UserTextures = () => {
       <div className="texture-oval2 z-9"></div>
       <div className="texture-oval3 z-9"></div>
       <div className="relative z-20">
-        <div className="flex flex-col min-h-screen container ">
+      <div className="flex flex-col min-h-screen justify-center items-center">
+      <div className="container">
           <AdminHeader />
           <div className="flex">
             <Sidebar navLinks={userLinks} />
-            <main className="flex-1 p-4 overflow-x-auto">
+            <main className="flex-1 p-4 w-full min-w-0 overflow-x-auto">
               <Outlet />
             </main>
+          </div>
           </div>
         </div>
         <div className="w-full border-t border-[#636363]">

@@ -89,7 +89,7 @@ export const UserAssets = () => {
   }, [userAssets, priceMap]);
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='w-full overflow-x-auto'>
       <table className='table border-spacing-y-2 min-w-full table-auto border-separate'>
         <thead>
           <tr className='text-white bg-gray-800'>
@@ -107,7 +107,7 @@ export const UserAssets = () => {
             <td className='w-1/6'>
               {HelperService.formatCurrency(Number(user.balance))}
             </td>
-            <td className='w-1/6'>{Number(user.balance).toFixed(2)}</td>
+            <td className='w-1/6'>—</td>
             <td className='w-1/6'>—</td>
             <td className='w-1/6'>—</td>
             <td className='w-1/6'>—</td>
@@ -117,7 +117,7 @@ export const UserAssets = () => {
               className={index % 2 ? 'bg-gray-700' : 'bg-gray-800'}
               key={row.asset}
             >
-              <td>{row.asset}</td>
+              <td>{row.asset.slice(0, 3)}</td>
               <td className='w-1/6'>
                 {HelperService.formatCurrency(Number(row.netAssetValue))}
               </td>

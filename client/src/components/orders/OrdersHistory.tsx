@@ -34,18 +34,19 @@ export const OrdersHistory = () => {
   const filterOrders = orders?.filter((item) => item.ord_status === 'closed');
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='w-full'>
       <DataExport ordersHistory={ordersHistory.data} />
+      <div className='overflow-x-auto'>
       <table className='border-separate border-spacing-y-2 w-full table bg-gray-900 md:bg-transparent '>
         <thead>
           <tr className='text-white bg-gray-800'>
             <th>Market</th>
             <th>Order type</th>
             <th>Direction</th>
-            <th>Order Price</th>
             <th>Order Quantity</th>
-            <th>Order Time</th>
             <th>Order Value</th>
+            <th>Fee Payed</th>
+            <th>Order Time</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +63,7 @@ export const OrdersHistory = () => {
                 }
                 key={order.id}
               >
-                {order.assetId}
+                {(order.assetId).slice(0, 3)}
               </td>
               <td>{order.ord_type}</td>
               <td
@@ -72,30 +73,21 @@ export const OrdersHistory = () => {
               >
                 {order.ord_direct}
               </td>
-              <td>
-                {HelperService.formatCurrency(
-                  order.ord_type === 'market' ? order.price : order.triggerPrice
-                )}
-              </td>
               <td>{order.amount.toFixed(6)}</td>
               <td>
-                {formatDate(
-                  order.ord_status === 'open'
-                    ? order.open_date
-                    : order.closed_date
-                )}
+                {HelperService.formatCurrency(order.price*order.amount)}
               </td>
               <td>
-                {HelperService.formatCurrency(
-                  order.ord_type === 'market'
-                    ? order.price * order.amount
-                    : order.triggerPrice * order.amount
-                )}
+                {HelperService.formatCurrency(order.fee)}
+              </td>
+              <td>
+                {formatDate( order.closed_date)}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

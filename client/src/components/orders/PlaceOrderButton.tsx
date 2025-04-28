@@ -129,7 +129,7 @@ export const PlaceOrderButton = () => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex flex-col sm:flex-row sm:gap-3 gap-2'>
+      <div className='flex flex-col lg:flex-row sm:gap-3 gap-2'>
         <div className='flex gap-2 items-center'>
           <label
             className='text-sm text-violet-300'

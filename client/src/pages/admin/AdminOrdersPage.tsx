@@ -65,7 +65,7 @@ export default function AdminOrdersPage() {
     const uniqueUsers = new Set(orders.map((o) => o.userName)).size;
 
     const averageOrderSize = orders.length
-      ? (totalAmount / orders.length).toFixed(2)
+      ? (totalAmount / orders.length).toFixed(6)
       : "0";
     const totalFees = orders.reduce((acc, o) => acc + Number(o.fee), 0);
     const averageFee = orders.length
@@ -112,7 +112,7 @@ export default function AdminOrdersPage() {
   };
 
   return (
-    <main className="overflow-x-auto">
+    <main>
       <h1 className="text-center">Platform Orders Summary</h1>
 
       {/* Dashboard cards */}
@@ -124,12 +124,12 @@ export default function AdminOrdersPage() {
         <DashboardOrdersCard
           title="Total Fees"
           value={helperService.formatCurrency(
-            Number(stats.totalFees.toFixed(4))
+            Number(stats.totalFees)
           )}
         />
         <DashboardOrdersCard
           title="Total Amount"
-          value={stats.totalAmount.toFixed(4)}
+          value={stats.totalAmount.toFixed(6)}
         />
         <DashboardOrdersCard title="Unique Users" value={stats.uniqueUsers} />
         <DashboardOrdersCard
@@ -159,7 +159,7 @@ export default function AdminOrdersPage() {
         />
         <DashboardOrdersCard
           title="Biggest Order Amount"
-          value={stats.biggestAmount.toFixed(4)}
+          value={stats.biggestAmount.toFixed(6)}
         />
         <DashboardOrdersCard title="Open Orders" value={stats.activeOrders} />
       </div>
@@ -175,15 +175,15 @@ export default function AdminOrdersPage() {
           onSearch={handleSearch}
         />
       </div>
-
-      <OrdersTable
-        paginatedOrders={paginatedOrders}
-        sortField={sortField}
-        sortOrder={sortOrder}
-        setSortField={setSortField}
-        setSortOrder={setSortOrder}
-      />
-
+      <div className="w-full">
+  <OrdersTable
+    paginatedOrders={paginatedOrders}
+    sortField={sortField}
+    sortOrder={sortOrder}
+    setSortField={setSortField}
+    setSortOrder={setSortOrder}
+  />
+</div>
       {/* Pagination */}
       <Pagination
         onChange={(page) => setCurrentPage(page)}
