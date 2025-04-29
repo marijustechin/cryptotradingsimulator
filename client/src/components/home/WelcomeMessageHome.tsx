@@ -5,11 +5,14 @@ import { lazy, Suspense } from 'react';
 import { Loader } from '../Loader';
 const CoinTable = lazy(() => import('../home/CoinTable'));
 
+import { useTranslation } from 'react-i18next';
+
 export const WelcomeMessageHome = () => {
+  const { t } = useTranslation();
   return (
     <main className='flex flex-col items-center min-h-screen max-w-4xl p-1'>
       <div className='text-white text-center md:mt-32 mt-12'>
-        <h1 className='title-first'>We make crypto clear and simple</h1>
+        <h1 className='title-first'>{t('home_headline')}</h1>
       </div>
       <Suspense fallback={<Loader />}>
         <CoinTable />
@@ -17,11 +20,11 @@ export const WelcomeMessageHome = () => {
       <div className='grid md:grid-cols-[1fr_1fr] text-white gap-3 relative mt-20 md:mt-40'>
         <div className='text-white text-center md:text-left p-2'>
           <p className='title-first'>
-            Take your first step into safe, secure crypto investing
+          {t('home_subheadline')}
           </p>
           <div className='mt-6'>
             <Link to='/registration' className='btn-generic'>
-              Get Started
+            {t('home_cta_get_started')}
             </Link>
           </div>
         </div>

@@ -5,6 +5,7 @@ import useWebSocket from 'react-use-websocket';
 import { WS_URL } from '../../api/ws';
 import { useState } from 'react';
 import { ITicker } from '../../types/tradingN';
+import { useTranslation } from 'react-i18next';
 
 interface ICoinProps {
   assetId: string;
@@ -13,6 +14,7 @@ interface ICoinProps {
 
 const Coin = ({ assetId, assetCode }: ICoinProps) => {
   const [ticker, setTicker] = useState<ITicker>();
+  const { t } = useTranslation();
 
   // gaunam istorija ////////////////////////////////
   const { sendJsonMessage } = useWebSocket(WS_URL, {
@@ -50,7 +52,7 @@ const Coin = ({ assetId, assetCode }: ICoinProps) => {
         to='/registration'
         className='text-white hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 hover:text-transparent bg-clip-text transition text-center'
       >
-        Trade Now →
+        {t('home_cta_trade_now')} →
       </Link>
     </div>
   );

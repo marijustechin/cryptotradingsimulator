@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export const Footer = () => {
+  const { t } = useTranslation();
   return (
     <>
       <footer className="flex mx-5 gap-10 text-white mb-10 pt-10 justify-between flex-col md:flex-row lg:flex-row">
@@ -6,9 +9,7 @@ export const Footer = () => {
           {/* Introduction */}
           <div>
             <p className="pb-3">
-              CryptoHill, the world's leading bitcoin ATM operator, makes it so
-              flippin' easy to buy and sell bitcoin via cash, card or bank
-              transfer.
+            {t('footer_about_cryptohill')}
             </p>
           </div>
  

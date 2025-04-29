@@ -2,6 +2,7 @@ import { useAppSelector } from "../../store/store";
 import { selectUser } from "../../store/features/user/authSlice";
 import $api from "../../api/axios";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function BorrowingsButton() {
   const user = useAppSelector(selectUser);
@@ -12,15 +13,17 @@ export default function BorrowingsButton() {
         amount: 10000,
         reason: "Personal use",
       });
-      toast.success("Borrow successful!");
+      toast.success(t('borrow_success'));
       window.location.reload();
     } catch (err) {
-      toast.error("Borrow failed. Check your balance or try again.");
+      toast.error(t('borrow_error'));
       console.error(err);
     }
   };
 
   const canBorrow = user?.balance <= 300;
+
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -29,11 +32,11 @@ export default function BorrowingsButton() {
         className="btn-generic my-6"
         disabled={!canBorrow}
       >
-        Borrow 10000$
+        {t('borrow_amount_example')}
       </button>
       {!canBorrow && (
         <p className="text-sm text-red-500">
-          You can only borrow if your balance is 300$ or less.
+          {t('borrow_condition')}
         </p>
       )}
     </div>

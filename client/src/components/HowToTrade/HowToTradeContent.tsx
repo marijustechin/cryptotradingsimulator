@@ -1,34 +1,32 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import StepsComponent from "../Steps";
+import { useTranslation } from "react-i18next";
 
 export const HowToTradeContent = () => {
+  const { t } = useTranslation();
   const faqs = [
     {
-      question: "Which is the best cryptocurrency to trade?",
-      answer:
-        "Bitcoin may be the best-known cryptocurrency, but there are literally hundreds of others to choose from. And with new cryptos launching every week, choosing the best one to trade isn't an easy decision. Read our helpful guides and articles, then choose cryptocurrencies to trade using our simulated exchange. It's just like trading with real crypto, but with absolutely none of the risk!",
+      question: t('faq_q1'),
+      answer: t('faq_a1'),
     },
     {
-      question: "How much should I invest in cryptocurrency?",
-      answer:
-        "The amount to invest in cryptocurrency depends on your financial goals and risk tolerance. It's essential to do thorough research and consider diversifying your investments.",
+      question: t('faq_q2'),
+      answer: t('faq_a2'),
     },
     {
-      question: "Will I make a profit from cryptocurrency trading?",
-      answer:
-        "Although it's definitely possible to see some big returns from crypto trading, profits aren't guaranteed. Crypto markets are hugely volatile, so unwary traders can lose big sums of cash in a very short time if they don't read the signs.",
+      question: t('faq_q3'),
+      answer: t('faq_a3'),
     },
     {
-      question: "Is it safe to trade cryptocurrency?",
-      answer:
-        "Yes, it's safe to trade cryptocurrency. The only way to lose money is to gamble with crypto. Crypto trading is a risk-free way to make money.",
+      question: t('faq_q4'),
+      answer: t('faq_a4'),
     },
   ];
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden flex flex-col items-center justify-start mb-10 z-10">
       <div className="text-white text-center md:my-32 my-12">
-        <h1 className="title-first"> Steps For Trading on CryptoHill</h1>
+        <h1 className="title-first">{t('howto_title')}</h1>
       </div>
       <StepsComponent />
       <div className="w-full max-w-[1440px] px-4 sm:px-6 md:px-10 my-10 flex flex-col">
@@ -38,19 +36,12 @@ export const HowToTradeContent = () => {
             <Player src="/Coin_City.json" loop autoplay className="max-w-50 md:max-w-100" />
           </div>
           <article className="grid place-content-center">
-            <h3 className="text-lg md:text-4xl pb-5">What is Crypto Trading</h3>
+            <h3 className="text-lg md:text-4xl pb-5">{t('howto_what_is')}</h3>
             <p className="pb-5">
-              Crypto trading is all about buying and selling digital currencies,
-              such as Bitcoin(BTC) or Ethereum (ETH), to make a profit. Unlike
-              traditional finance markets, the crypto market is open 24 hours.
-              To get started, you need a wallet and an exchange to trade on.
+            {t('howto_what_is_p1')}
             </p>
             <p>
-              If you want to trade crypto, you will have to speculate on the
-              price of a digital currency to make a profit. The goal is to buy
-              low and sell high, or vice versa, by taking advantage of price
-              movements in the cryptocurrency market. Understanding the market's
-              dynamics can help minimize losses and maximize profits.
+            {t('howto_what_is_p2')}
             </p>
           </article>
         </section>
@@ -59,22 +50,12 @@ export const HowToTradeContent = () => {
         <section className="pb-10">
           <article className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-center gap-6">
             <div>
-              <h3 className="text-lg md:text-4xl pb-5">How Does Crypto Work?</h3>
+              <h3 className="text-lg md:text-4xl pb-5">{t('howto_how_works')}</h3>
               <p className="pb-5">
-                Cryptocurrencies operate on blockchain networks. Think of a
-                blockchain network as a series of blocks that contain
-                transaction data. If person A sends crypto to person B, all of
-                that information is secured on a block. If person B sends crypto
-                to person C, that information is secured on another block and so
-                on. All of these blocks are linked together.
+              {t('howto_how_works_p1')}
               </p>
               <p className="pb-5">
-                Just like you deposit money into your bank account and your bank
-                keeps a record of it, all the crypto you deposit into your
-                crypto account is recorded on the blockchain. And just like
-                regular money can be broken down into smaller parts—for example,
-                there can be a fiat paper currency for $1, $100, and so on—
-                cryptocurrencies can also be broken down into smaller parts.
+              {t('howto_how_works_p2')}
               </p>
             </div>
             <div className="flex justify-center">
@@ -87,12 +68,12 @@ export const HowToTradeContent = () => {
               <Player src="/Server2.json" loop autoplay className="max-w-50 md:max-w-100" />
             </div>
             <div>
-              <h3 className="text-base md:text-2xl pb-2">Steps in a Typical Crypto Transaction:</h3>
-              <ol className="list-decimal pl-6">
-                <li><strong>Initiate Transfer:</strong> Sender enters recipient's wallet address and amount.</li>
-                <li><strong>Verification:</strong> Network nodes confirm the transaction's validity.</li>
-                <li><strong>Confirmation:</strong> Transaction is added to the blockchain.</li>
-                <li><strong>Settlement:</strong> Funds are available in the recipient's wallet.</li>
+              <h3 className="text-base md:text-2xl pb-2">{t('howto_steps')}</h3>
+              <ol className="list-decimal pl-6 text-start">
+                <li><strong>{t('howto_steps_1_1')}</strong> {t('howto_steps_1_2')}</li>
+                <li><strong>{t('howto_steps_2_1')}</strong> {t('howto_steps_2_2')}</li>
+                <li><strong>{t('howto_steps_3_1')}</strong> {t('howto_steps_3_2')}</li>
+                <li><strong>{t('howto_steps_4_1')}</strong> {t('howto_steps_4_2')}</li>
               </ol>
             </div>
           </article>
@@ -100,12 +81,12 @@ export const HowToTradeContent = () => {
 
         {/* Long and short term trading */}
         <section className="pb-10">
-          <h3 className="text-lg md:text-4xl pb-5 text-center">Long-term or Short-term Trading</h3>
+          <h3 className="text-lg md:text-4xl pb-5 text-center">{t('howto_strategy_title')}</h3>
           <div className="flex flex-col md:flex-row gap-10">
             <div className="border rounded-2xl w-full">
               <div className="p-5">
                 <div className="flex flex-col items-center pb-3">
-                  <h6 className="text-lg md:text-2xl text-center pb-2">Long-term trading</h6>
+                  <h6 className="text-lg md:text-2xl text-center pb-2">{t('howto_strategy_long')}</h6>
                   <figure>
                     <img
                       src="/textures/bitcoin-piggy-bank.svg"
@@ -115,15 +96,10 @@ export const HowToTradeContent = () => {
                   </figure>
                 </div>
                 <p className="pb-5">
-                  Long-term traders buy and hold cryptocurrencies for weeks,
-                  months or even years, with the intention of selling at a
-                  profit or using it later.
+                {t('howto_strategy_long_1')}
                 </p>
                 <p>
-                  If you believe the value of a cryptocurrency will grow in the
-                  long run and don't want the stress of actively trading, then
-                  this might be your style. A good first step is learning how to
-                  safely buy and hold cryptocurrency.
+                {t('howto_strategy_long_2')}
                 </p>
               </div>
             </div>
@@ -131,7 +107,7 @@ export const HowToTradeContent = () => {
             <div className="border rounded-2xl w-full">
               <div className="p-5">
                 <div className="flex flex-col items-center pb-3">
-                  <h6 className="text-lg md:text-2xl text-center pb-2">Short-term trading</h6>
+                  <h6 className="text-lg md:text-2xl text-center pb-2">{t('howto_strategy_short')}</h6>
                   <figure>
                     <img
                       src="/textures/bitcoin-trading.svg"
@@ -141,15 +117,10 @@ export const HowToTradeContent = () => {
                   </figure>
                 </div>
                 <p className="pb-5">
-                  Short-term trading is about taking advantage of short-term
-                  cryptocurrency price swings by creating and executing a
-                  trading strategy.
+                {t('howto_strategy_short_1')}
                 </p>
                 <p>
-                  It's more active, stressful and risky than long-term trading,
-                  but it also offers faster and larger potential returns for
-                  those who do it right. It also lets you profit from
-                  cryptocurrency prices dropping as well as rising.
+                {t('howto_strategy_short_2')}
                 </p>
               </div>
             </div>
@@ -158,25 +129,16 @@ export const HowToTradeContent = () => {
 
         {/* Common Mistakes Beginners Should Avoid */}
         <section className="pb-10">
-          <h3 className="text-lg md:text-4xl py-6 text-center">Common Mistakes Beginners Should Avoid</h3>
+          <h3 className="text-lg md:text-4xl py-6 text-center">{t('howto_mistakes_title')}</h3>
 
           <article className="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
             <div>
-              <h4 className="font-bold pb-5 text-base md:text-lg">Lack of Research:</h4>
+              <h4 className="font-bold pb-5 text-base md:text-lg">{t('howto_mistake_1')}</h4>
               <p className="pb-3">
-              The single greatest mistake that we have seen a lot of beginners
-              make is blindly following someone in hopes of getting rich quick.
-              You must acknowledge the fact that it's a marathon not a race. If
-              you follow a random influencer or buy a random crypto coin just
-              because someone is saying so, there is a huge chance that you will
-              end up regretting it.
+              {t('howto_mistake_1_desc_1')}
             </p>
             <p className="pb-5">
-              Always do your own research, polish your trading skills and trust
-              yourself more than anyone else if you want to consistently make
-              money. Whenever you hear FUD (Fear, Uncertainty, Doubt) or read
-              about it, make sure to double check it with reputable resources
-              before believing it.
+            {t('howto_mistake_1_desc_2')}
             </p>
             </div>
             <div className="flex justify-center">
@@ -189,43 +151,24 @@ export const HowToTradeContent = () => {
               <img src="/emotions.png" alt="emotions" className="max-w-80 object-cover" />
             </div>
             <div>
-              <h4 className="font-bold pb-5 text-base md:text-lg">Emotional Trading:</h4>
+              <h4 className="font-bold pb-5 text-base md:text-lg">{t('howto_mistake_2')}</h4>
               <p className="pb-3">
-              When trading with your hard-earned money and seeing it wash away,
-              a common mistake lots of traders make is trying to win it all back
-              in one trade. While it sounds good and might sometimes work, it
-              isn't a net positive strategy. Emotional or revenge trading is a
-              bane of countless traders which is why you should keep your
-              emotions in check.
+              {t('howto_mistake_2_desc_1')}
             </p>
             <p className="pb-5">
-              Never let a bad trade get to your head. Treat it as a learning
-              curve and study what you did wrong in hopes of never repeating the
-              same mistake again. Allowing emotions like fear and greed to drive
-              your decisions can lead to impulsive buys or panic selling. Stick
-              to your plan and avoid making trades based on short-term market
-              movements.
+            {t('howto_mistake_2_desc_2')}
             </p>
             </div>
           </article>
 
           <article className="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] items-center gap-6">
             <div>
-              <h4 className="font-bold pb-5 text-base md:text-lg">Overtrading:</h4>
+              <h4 className="font-bold pb-5 text-base md:text-lg">{t('howto_mistake_3')}</h4>
               <p className="pb-3">
-              Lastly, you need to remember that taking breaks to recharge every
-              once in a while is not only good for your mental health but will
-              also help you become a better trader. Trying to capitalize on
-              every price movement can be exhausting and costly. You need to
-              give yourself enough time to recover so that you are in good shape
-              to trade.
+              {t('howto_mistake_3_desc_1')}
             </p>
             <p className="pb-5">
-              It is also a good strategy to distance yourself from the market
-              for a bit if you are on a losing streak in terms of your trades.
-              Some time away from the market and reflecting on what you are
-              doing wrong will help you freshen your mind and get back in your
-              groove much faster.
+            {t('howto_mistake_3_desc_2')}
             </p>
             </div>
             <div className="flex justify-center">
@@ -234,8 +177,7 @@ export const HowToTradeContent = () => {
           </article>
           <article>
             <p>
-              Remember, trading is a journey of constant learning, and every
-              mistake is an opportunity to grow and improve.
+            {t('howto_reminder')}
             </p>
           </article>
         </section>
@@ -243,7 +185,7 @@ export const HowToTradeContent = () => {
         {/* FAQ */}
         <section className="flex flex-col md:flex-row gap-10 justify-between border border-white/47 bg-black/50 rounded-2xl p-5">
           <div className="flex flex-col justify-between">
-          <h2 className="faq-title">Frequently Asked Questions</h2>
+          <h2 className="faq-title">{t('howto_faq_title')}</h2>
             <figure>
               <img
                 src="/textures/bitcoin-tag.svg"
@@ -271,11 +213,9 @@ export const HowToTradeContent = () => {
 
         {/* Disclaimer */}
         <section className="text-sm pt-5">
-          <p>This page is for educational and informational purposes only.</p>
+          <p>{t('howto_disclaimer_1')}</p>
           <p>
-            Our website provides a demo version of a crypto trading platform
-            where you can simulate buying and selling cryptocurrencies without
-            any actual risks or transactions.
+          {t('howto_disclaimer_2')}
           </p>
         </section>
       </div>
