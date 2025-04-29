@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Link } from 'react-router';
-import $api from '../api/axios';
+import $api from '../../api/axios';
 import logo from '/logo.png';
 
 const RestorePasswordSchema = z.object({
@@ -12,7 +12,7 @@ const RestorePasswordSchema = z.object({
 
 type FormData = z.infer<typeof RestorePasswordSchema>;
 
-const RestorePasswordConfirmation = () => {
+export const RestorePasswordConfirmation = () => {
   const {
     register,
     handleSubmit,
@@ -38,7 +38,7 @@ const RestorePasswordConfirmation = () => {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0d0c1d] to-[#15132b] text-white px-4">
+    // <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0d0c1d] to-[#15132b] text-white px-4">
       <form className="form-basic" noValidate onSubmit={handleSubmit(onSubmit)}>
         <div className="flex gap-2 items-center justify-center">
           <img src={logo} alt="logo" className="w-[2rem] h-[2rem]" />
@@ -68,6 +68,7 @@ const RestorePasswordConfirmation = () => {
                 className="form-input"
                 type="email"
                 autoComplete="on"
+                placeholder='Enter your email'
                 {...register('email')}
               />
               <div className="relative">
@@ -93,7 +94,7 @@ const RestorePasswordConfirmation = () => {
           </Link>
         </p>
       </form>
-    </main>
+    // </main>
   );
 };
 

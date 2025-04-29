@@ -29,8 +29,8 @@ const CreditsPage = lazy(() => import('./pages/CreditsPage'));
 const UserOrdersPage = lazy(() => import('./pages/user/UserOrdersPage'));
 const AllUsersPage = lazy(() => import('./pages/admin/AllUsersPage'));
 const RestorePasswordPage = lazy(() => import('./pages/RestorePasswordPage'));
-const RestorePasswordConfirmation = lazy(
-  () => import('./pages/RestorePasswordConfirmation')
+const RestoreConfirmationPage = lazy(
+  () => import('./pages/RestoreConfirmationPage')
 );
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const UserTradingPage = lazy(() => import('./pages/user/UserTradingPage'));
@@ -77,7 +77,7 @@ function App() {
             <Route path="restore-password" element={<RestorePasswordPage />} />
             <Route
               path="restore-password-email"
-              element={<RestorePasswordConfirmation />}
+              element={<RestoreConfirmationPage />}
             />
           </Route>
           <Route path="/dashboard" element={<AdminLayout />}>
