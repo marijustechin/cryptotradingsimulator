@@ -38,7 +38,7 @@ const UserLayout = () => {
         <UserTextures />
       ) : (
         // Layout for mobile/tablet screens
-        <div className="flex flex-col min-h-screen justify-center items-center">
+        <div className="flex flex-col min-h-screen justify-between items-center">
           <div className="container">
           <AdminHeader />
           <div className="flex">

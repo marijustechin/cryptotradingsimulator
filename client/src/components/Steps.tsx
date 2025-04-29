@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 const StepsComponent = () => {
+  const { t } = useTranslation();
   const steps = [
-    { icon: "📝", text: "Sign up and get initial funds" },
-    { icon: "📊", text: "Use tools and pick a crypto to invest in" },
-    { icon: "📈", text: "Start trading" },
-    { icon: "💰", text: "Keep track of your trading and portfolio" }
+    { icon: "📝", text: t('howto_step_1') },
+    { icon: "📊", text: t('howto_step_2') },
+    { icon: "📈", text: t('howto_step_3') },
+    { icon: "💰", text: t('howto_step_4') }
   ];
 
   return (

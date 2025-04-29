@@ -1,5 +1,6 @@
 // components/ContributorCard.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Contributor {
   name: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const ContributorCard: React.FC<Props> = ({ contributor }) => {
+  const { t } = useTranslation();
   return (
     <article className="bg-gradient-to-r from-black to-gray-800 rounded-2xl mx-10 mb-10 hover:bg-gradient-to-r hover:from-gray-950 hover:to-violet-950 transition duration-300 shadow-lg hover:shadow-[0_0_20px_10px_rgba(138,43,226,0.7)] max-w-xl grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr]">
       <figure className="p-4 flex justify-center">{contributor.profilepic}</figure>
@@ -33,7 +35,7 @@ const ContributorCard: React.FC<Props> = ({ contributor }) => {
                 alt="github logo"
                 className="w-5 mr-2"
               />
-              Github profile
+              {t('contributor_github_link')}
             </a>
           </button>
         </div>

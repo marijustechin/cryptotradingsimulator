@@ -3,6 +3,7 @@ import $api from "../../api/axios"; // Assuming this is the axios instance for A
 import { Pagination } from "../Pagination"; // Assuming you have a Pagination component
 import { useAppSelector } from "../../store/store"; // Assuming you use Redux
 import { selectUserInfo } from "../../store/features/user/userInfoSlice"; // Assuming this selector gets user info
+import { useTranslation } from "react-i18next";
 
 interface Borrowing {
   id: number;
@@ -11,6 +12,7 @@ interface Borrowing {
 }
 
 export default function BorrowingsHistory() {
+  const { t } = useTranslation();
   const [data, setData] = useState<Borrowing[]>([]); // State to store the borrowings data
   const [currentPage, setCurrentPage] = useState(1); // Current page number
   const [totalPages, setTotalPages] = useState(1); // Total number of pages
@@ -64,7 +66,7 @@ export default function BorrowingsHistory() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   if (error) {
@@ -77,8 +79,8 @@ export default function BorrowingsHistory() {
     <thead>
       <tr className="text-white bg-gray-800">
         <th className="px-4 py-2 text-left">ID</th>
-        <th className="px-4 py-2 text-left">Borrowing amount</th>
-        <th className="px-4 py-2 text-left">Date borrowed</th>
+        <th className="px-4 py-2 text-left">{t('borrowing_amount')}</th>
+        <th className="px-4 py-2 text-left">{t('date_borrowed')}</th>
       </tr>
     </thead>
     <tbody>

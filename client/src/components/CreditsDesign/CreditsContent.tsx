@@ -1,5 +1,8 @@
 import ContributorCard from "./ContributorCard";
+import { useTranslation } from "react-i18next";
+
 export const CreditsContent = () => {
+  const { t } = useTranslation();
   const contributors = [
     {
       name: "Marijus Šmiginas",
@@ -54,7 +57,7 @@ export const CreditsContent = () => {
   return (
     <main className="min-h-screen container mb-10">
       <section className="flex flex-col items-center text-2xl md:text-3xl lg:text-4xl pt-10 pb-20">
-        <h1 className="text-center title-first">The People Behind The Magic</h1>
+        <h1 className="text-center title-first">{t('credits_page_title')}</h1>
       </section>
 
       {/* cards using component */}
@@ -67,11 +70,10 @@ export const CreditsContent = () => {
 
       <section className="mx-10 mb-10">
         <p>
-          This website is the result of collaboration, creativity, and determination. 
-          It serves as a reminder that great things happen when people come together.
+        {t('credits_about_1')}
         </p>
         <p>
-          Built with love, coffee, and countless lines of code. Thank you for visiting ♡
+        {t('credits_about_2')} ♡
         </p>
       </section>
     </main>

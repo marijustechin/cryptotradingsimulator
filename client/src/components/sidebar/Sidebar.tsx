@@ -6,12 +6,14 @@ import { NavLink, useLocation } from 'react-router';
 import { ISSidebar } from '../../types/sidebar';
 import { FiMenu } from 'react-icons/fi';
 import { mainNavLinks } from '../header/mainNavLinks';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarProps {
   navLinks: ISSidebar[];
 }
 
 export const Sidebar = ({ navLinks }: SidebarProps) => {
+  const { t } = useTranslation();
   const user = useAppSelector(selectUser);
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +57,7 @@ export const Sidebar = ({ navLinks }: SidebarProps) => {
           {user.balance && user.role === 'USER' && (
             <>
             <h4 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent text-center">
-            Back in action, {user.first_name}
+            {t('dashboard_sidebar_welcome')}, {user.first_name}
             </h4>
             <h3>
               {HelperService.formatCurrency(user.balance)}

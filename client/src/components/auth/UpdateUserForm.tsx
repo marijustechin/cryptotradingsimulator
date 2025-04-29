@@ -13,8 +13,10 @@ import {
 } from '../../store/features/user/userInfoSlice';
 import { useCallback, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 export const UpdateUserForm = () => {
+ const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectUserInfo);
   const infoStatus = useAppSelector(getUserInfoStatus);
@@ -83,24 +85,24 @@ export const UpdateUserForm = () => {
     >
       <div className='text-center'>
         {infoStatus === 'loading' && (
-          <span className='text-sm text-emerald-500'>Saving data...</span>
+          <span className='text-sm text-emerald-500'>{t('user_profile_saving_data')}</span>
         )}
         {infoError && <span className='form-error-span'>{infoError}</span>}
       </div>
       <div className='flex flex-col gap-3'>
       <h4 className="text-center font-semibold text-white-300 mb-4">
-        Update your information
+      {t('user_profile_update_info')}
       </h4>
         <div>
           <label className='text-sm text-violet-700' htmlFor='first_name'>
-            First name
+          {t('form_input_label_name')}
           </label>
           <input
             id='first_name'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Your name'
+            placeholder={t('user_profile_your_name')}
             {...register('first_name', { onChange: handleChange })}
           />
           {errors.first_name && (
@@ -109,14 +111,14 @@ export const UpdateUserForm = () => {
         </div>
         <div>
           <label className='text-sm text-violet-700' htmlFor='last_name'>
-            Last name
+          {t('user_profile_last_name')}
           </label>
           <input
             id='last_name'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Last name'
+            placeholder={t('user_profile_last_name')}
             {...register('last_name', { onChange: handleChange })}
           />
           {errors.last_name && (
@@ -125,14 +127,14 @@ export const UpdateUserForm = () => {
         </div>
         <div>
           <label className='text-sm text-violet-700' htmlFor='email'>
-            Email
+          {t('form_input_label_email')}
           </label>
           <input
             id='email'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Your email'
+            placeholder={t('user_profile_your_email')}
             {...register('email', { onChange: handleChange })}
           />
           {errors.email && (
@@ -141,14 +143,14 @@ export const UpdateUserForm = () => {
         </div>
         <div>
           <label className='text-violet-700 text-sm' htmlFor='address'>
-            Address
+          {t('user_profile_address')}
           </label>
           <input
             id='address'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Address'
+            placeholder={t('user_profile_address')}
             {...register('address', { onChange: handleChange })}
           />
           {errors.address && (
@@ -157,14 +159,14 @@ export const UpdateUserForm = () => {
         </div>
         <div>
           <label className='text-sm text-violet-700' htmlFor='phone_number'>
-            Phone number
+          {t('user_profile_phone_number')}
           </label>
           <input
             id='phone_number'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
             type='text'
             autoComplete='on'
-            placeholder='Number example: 37012312345'
+            placeholder={t('user_profile_number_example')}
             {...register('phone_number', { onChange: handleChange })}
           />
           {errors.phone_number && (
@@ -178,7 +180,7 @@ export const UpdateUserForm = () => {
       {/* Taip mes rodome mygtuka tik tada, kai kurio nors lauko duomenys keiciasi */}
       {isFormChanged && (
         <button type='submit' className='btn-generic mt-6'>
-          Update
+          {t('user_profile_update_button')}
         </button>
       )}
     </form>
