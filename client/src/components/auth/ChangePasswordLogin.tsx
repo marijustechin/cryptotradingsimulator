@@ -4,70 +4,73 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 import { useSearchParams, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import UserService from '../../services/UserService'; // Assuming the UserService is correctly imported
+import UserService from '../../services/UserService';
 import { isAxiosError } from 'axios';
 import HelperService from '../../services/HelperService';
-
-const schema = z.object({
-  newPassword: z.string().min(6, 'Minimum 6 characters'), // Password validation
-});
+import { useTranslation } from 'react-i18next';
 
 export const ChangePasswordLoginForm = () => {
-  const [searchParams] = useSearchParams(); // Get the token from the URL
+  const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  const navigate = useNavigate(); // Navigation helper
-  const [loading, setLoading] = useState(false); // Loading state to disable the button during API calls
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
-  // Check if the token exists when the component mounts
+  // 🧩 Inline schema with i18n
+  const schema = z.object({
+    newPassword: z
+      .string()
+      .min(6, { message: t('form_validation_minimum_characters', { count: 6 }) }),
+  });
+
   useEffect(() => {
     if (!token) {
-      toast.error('Reset token not found or expired.');
+      toast.error(t('restore_password_token_missing'));
       navigate('/login');
     }
-  }, [token, navigate]);
+  }, [token, navigate, t]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ newPassword: string }>({
-    resolver: zodResolver(schema), // Using Zod for validation
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
 
-  // Function to handle form submission
   const onSubmit = async ({ newPassword }: { newPassword: string }) => {
     if (!token) {
-      toast.error('Reset token not found or expired.');
+      toast.error(t('restore_password_token_missing'));
       return;
     }
 
     try {
-      setLoading(true); // Start loading animation
-      // Sending the token and newPassword to the backend
+      setLoading(true);
       const response = await UserService.restorePassword(token!, newPassword);
-      toast.success(response.message); // Show success message
-      navigate('/login'); // Redirect to login page
+      toast.success(t('restore_password_success'));
+      navigate('/login');
     } catch (err) {
-      setLoading(false); // Stop loading animation
-      if (isAxiosError(err)) {
-        toast.error(HelperService.errorToString(err)); // Show error message if API call fails
-      }
-      toast.error('Deividai, pasitaisyk'); // Show error message if API call fails
+      setLoading(false);
+      toast.error(
+        isAxiosError(err)
+          ? HelperService.errorToString(err)
+          : t('restore_password_failed')
+      );
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-basic">
-      <h2>Reset Your Password</h2>
+      <h2>{t('restore_password_title')}</h2>
 
       <label className="form-label" htmlFor="newPassword">
-        New Password
+        {t('form_input_label_password')}
       </label>
       <input
         className="form-input"
         type="password"
         {...register('newPassword')}
-        placeholder="Enter new password"
+        placeholder={t('restore_password_placeholder')}
       />
       {errors.newPassword && (
         <span className="text-red-500 text-sm">
@@ -78,10 +81,9 @@ export const ChangePasswordLoginForm = () => {
       <button
         type="submit"
         className="btn-generic mt-4"
-        disabled={loading} // Disable the button while loading
+        disabled={loading}
       >
-        {loading ? 'Resetting...' : 'Reset Password'}{' '}
-        {/* Show loading text if the button is disabled */}
+        {loading ? t('restore_password_resetting') : t('restore_password_submit')}
       </button>
     </form>
   );

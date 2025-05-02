@@ -17,7 +17,7 @@ const SystemSettingsPage = () => {
 
   useEffect(() => {
     if (message) {
-      toast.success(message);
+      toast.success(t(message));
       dispatch(setSettingsMessage(null));
     }
   }, [message, dispatch]);

@@ -15,32 +15,33 @@ export const ChangePasswordForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const { t } = useTranslation();
+
+  const schema = ChangePasswordSchema(t);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof ChangePasswordSchema>>({
-    resolver: zodResolver(ChangePasswordSchema),
+  } = useForm<z.infer<ReturnType<typeof ChangePasswordSchema>>>({
+    resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: z.infer<typeof ChangePasswordSchema>) => {
+  const onSubmit = async (data: z.infer<ReturnType<typeof ChangePasswordSchema>>) => {
     try {
       const response = await UserService.changePassword(
         data.currentPassword,
         data.newPassword,
         data.repeatPassword
       );
-      toast.success(response.message);
 
+      toast.success(t("user_profile_password_changed")); // translated toast
       await dispatch(logoutUser());
       navigate("/login");
     } catch (e) {
       setError(HelperService.errorToString(e));
     }
   };
-
-  const { t } = useTranslation();
 
   return (
     <form
@@ -49,7 +50,7 @@ export const ChangePasswordForm = () => {
       noValidate
     >
       <h4 className="text-center font-semibold text-white-300 mb-4">
-      {t('user_profile_change_password')}
+        {t("user_profile_change_password")}
       </h4>
 
       <div className="text-center">
@@ -57,72 +58,63 @@ export const ChangePasswordForm = () => {
       </div>
 
       <div className="flex flex-col gap-5">
+        {/* Current Password */}
         <div>
           <label className="text-sm text-violet-700" htmlFor="currentPassword">
-          {t('user_profile_current_password')}
+            {t("user_profile_current_password")}
           </label>
           <input
             id="currentPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
-            placeholder={t('user_profile_current_password')}
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            placeholder={t("user_profile_current_password")}
             autoComplete="off"
             {...register("currentPassword")}
           />
-          <div className="relative">
           {errors.currentPassword && (
-            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
-              {errors.currentPassword.message}
-            </span>
+            <span className="text-xs text-red-500">{errors.currentPassword.message}</span>
           )}
-          </div>
         </div>
 
+        {/* New Password */}
         <div>
           <label className="text-sm text-violet-700" htmlFor="newPassword">
-          {t('user_profile_new_password')}
+            {t("user_profile_new_password")}
           </label>
           <input
             id="newPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
-            placeholder={t('user_profile_new_password')}
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            placeholder={t("user_profile_new_password")}
             autoComplete="off"
             {...register("newPassword")}
           />
-          <div className="relative">
           {errors.newPassword && (
-            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
-              {errors.newPassword.message}
-            </span>
+            <span className="text-xs text-red-500">{errors.newPassword.message}</span>
           )}
-          </div>
         </div>
 
+        {/* Repeat Password */}
         <div>
           <label className="text-sm text-violet-700" htmlFor="repeatPassword">
-          {t('user_profile_repeat_password')}
+            {t("user_profile_repeat_password")}
           </label>
           <input
             id="repeatPassword"
             type="password"
-            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none autofill:transition-colors autofill:duration-[999999999s]"
-            placeholder={t('user_profile_repeat_password')}
+            className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+            placeholder={t("user_profile_repeat_password")}
             autoComplete="off"
             {...register("repeatPassword")}
           />
-          <div className="relative">
           {errors.repeatPassword && (
-            <span className="absolute bottom-[-1.2rem] text-xs text-red-500">
-              {errors.repeatPassword.message}
-            </span>
+            <span className="text-xs text-red-500">{errors.repeatPassword.message}</span>
           )}
-          </div>
         </div>
       </div>
 
       <button type="submit" className="btn-generic mt-8">
-      {t('user_profile_change_password')}
+        {t("user_profile_change_password")}
       </button>
     </form>
   );

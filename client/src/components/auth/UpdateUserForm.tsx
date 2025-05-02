@@ -16,14 +16,12 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 export const UpdateUserForm = () => {
- const { t } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectUserInfo);
   const infoStatus = useAppSelector(getUserInfoStatus);
   const infoError = useAppSelector(getUserInfoError);
 
-  // saugom pradines reiksmes, kad veliau
-  // galetume sulyginti su formos laukais
   const initialValues = useRef({
     first_name: userData?.first_name ?? '',
     last_name: userData?.last_name ?? '',
@@ -38,12 +36,11 @@ export const UpdateUserForm = () => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<z.infer<typeof UpdateUserSchema>>({
-    resolver: zodResolver(UpdateUserSchema),
+  } = useForm<z.infer<ReturnType<typeof UpdateUserSchema>>>({
+    resolver: zodResolver(UpdateUserSchema(t)),
     defaultValues: initialValues.current,
   });
 
-  // atstatom reiksmes
   useEffect(() => {
     if (userData) {
       reset(userData);
@@ -51,29 +48,22 @@ export const UpdateUserForm = () => {
     }
   }, [userData, reset]);
 
-  // Load user info on mount
   useEffect(() => {
     dispatch(getInfo());
   }, [dispatch]);
 
-  // stebim visu lauku paketimuas
   const watchedFields = watch();
-
-  // palyginam fomos laukus su pradiniais duomenimis
   const isFormChanged =
     JSON.stringify(watchedFields) !== JSON.stringify(initialValues.current);
 
-  // Isvalom klaidas, jei naudotojas keicia lauku reiksmes
   const handleChange = useCallback(() => {
     if (infoError) dispatch(setInfoError(''));
   }, [infoError, dispatch]);
 
-  const onSubmit: SubmitHandler<z.infer<typeof UpdateUserSchema>> = async (
-    formData
-  ) => {
+  const onSubmit: SubmitHandler<z.infer<ReturnType<typeof UpdateUserSchema>>> = async (formData) => {
     await dispatch(updateUserInfo(formData));
     if (infoStatus === 'succeeded') {
-      toast.success('Profile data updated successfully');
+      toast.success(t('user_profile_updated_success'));
     }
   };
 
@@ -83,101 +73,89 @@ export const UpdateUserForm = () => {
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className='text-center'>
+      <div className='text-center mb-2'>
         {infoStatus === 'loading' && (
           <span className='text-sm text-emerald-500'>{t('user_profile_saving_data')}</span>
         )}
         {infoError && <span className='form-error-span'>{infoError}</span>}
       </div>
-      <div className='flex flex-col gap-3'>
-      <h4 className="text-center font-semibold text-white-300 mb-4">
-      {t('user_profile_update_info')}
+
+      <h4 className='text-center font-semibold mb-4'>
+        {t('user_profile_update_info')}
       </h4>
+
+      <div className='flex flex-col gap-3'>
         <div>
-          <label className='text-sm text-violet-700' htmlFor='first_name'>
-          {t('form_input_label_name')}
+          <label htmlFor='first_name' className='form-label'>
+            {t('form_input_label_name')}
           </label>
           <input
             id='first_name'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
-            type='text'
-            autoComplete='on'
-            placeholder={t('user_profile_your_name')}
             {...register('first_name', { onChange: handleChange })}
+            placeholder={t('user_profile_your_name')}
+            autoComplete='on'
           />
-          {errors.first_name && (
-            <span className='form-error-span'>{errors.first_name.message}</span>
-          )}
+          {errors.first_name && <span className='form-error-span'>{errors.first_name.message}</span>}
         </div>
+
         <div>
-          <label className='text-sm text-violet-700' htmlFor='last_name'>
-          {t('user_profile_last_name')}
+          <label htmlFor='last_name' className='form-label'>
+            {t('user_profile_last_name')}
           </label>
           <input
             id='last_name'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
-            type='text'
-            autoComplete='on'
-            placeholder={t('user_profile_last_name')}
             {...register('last_name', { onChange: handleChange })}
+            placeholder={t('user_profile_last_name')}
+            autoComplete='on'
           />
-          {errors.last_name && (
-            <span className='form-error-span'>{errors.last_name.message}</span>
-          )}
+          {errors.last_name && <span className='form-error-span'>{errors.last_name.message}</span>}
         </div>
+
         <div>
-          <label className='text-sm text-violet-700' htmlFor='email'>
-          {t('form_input_label_email')}
+          <label htmlFor='email' className='form-label'>
+            {t('form_input_label_email')}
           </label>
           <input
             id='email'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
-            type='text'
-            autoComplete='on'
-            placeholder={t('user_profile_your_email')}
             {...register('email', { onChange: handleChange })}
+            placeholder={t('user_profile_your_email')}
+            autoComplete='on'
           />
-          {errors.email && (
-            <span className='form-error-span'>{errors.email.message}</span>
-          )}
+          {errors.email && <span className='form-error-span'>{errors.email.message}</span>}
         </div>
+
         <div>
-          <label className='text-violet-700 text-sm' htmlFor='address'>
-          {t('user_profile_address')}
+          <label htmlFor='address' className='form-label'>
+            {t('user_profile_address')}
           </label>
           <input
             id='address'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
-            type='text'
-            autoComplete='on'
-            placeholder={t('user_profile_address')}
             {...register('address', { onChange: handleChange })}
+            placeholder={t('user_profile_address')}
+            autoComplete='on'
           />
-          {errors.address && (
-            <span className='form-error-span'>{errors.address.message}</span>
-          )}
+          {errors.address && <span className='form-error-span'>{errors.address.message}</span>}
         </div>
+
         <div>
-          <label className='text-sm text-violet-700' htmlFor='phone_number'>
-          {t('user_profile_phone_number')}
+          <label htmlFor='phone_number' className='form-label'>
+            {t('user_profile_phone_number')}
           </label>
           <input
             id='phone_number'
             className='w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none'
-            type='text'
-            autoComplete='on'
-            placeholder={t('user_profile_number_example')}
             {...register('phone_number', { onChange: handleChange })}
+            placeholder={t('user_profile_number_example')}
+            autoComplete='on'
           />
-          {errors.phone_number && (
-            <span className='form-error-span'>
-              {errors.phone_number.message}
-            </span>
-          )}
+          {errors.phone_number && <span className='form-error-span'>{errors.phone_number.message}</span>}
         </div>
       </div>
 
-      {/* Taip mes rodome mygtuka tik tada, kai kurio nors lauko duomenys keiciasi */}
       {isFormChanged && (
         <button type='submit' className='btn-generic mt-6'>
           {t('user_profile_update_button')}

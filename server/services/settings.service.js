@@ -22,7 +22,7 @@ class SystemSettings {
     }
 
     await Promise.all(userPromises);
-    return `Registered fake users: ${counter}`;
+    return `Registered fake users`;
   }
 
   async registerUser(firstName, email, password) {
