@@ -33,7 +33,7 @@ export const SignupForm = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof schema>> = async (formData) => {
     try {
-      const response = await AuthService.register(
+      await AuthService.register(
         formData.first_name,
         formData.email,
         formData.password

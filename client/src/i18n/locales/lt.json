@@ -294,6 +294,99 @@
   "restore_password_send_link": "Siųsti atstatymo nuorodą",
   "restore_password_email_placeholder": "Įveskite savo el. paštą",
   "restore_password_confirmation_success": "Atstatymo nuoroda išsiųsta! Patikrinkite el. paštą.",
-  "form_validation_invalid_email": "Neteisingas el. pašto formatas"
+  "form_validation_invalid_email": "Neteisingas el. pašto formatas",
 
+  "spotTrading": "Vietinė prekyba",
+  "selectedOrderType": "Pasirinktas užsakymo tipas",
+  "orderDirections": "Užsakymo kryptis",
+
+  "orderType": {
+    "limit": "Limitinis",
+    "market": "Rinkos"
+  },
+  "orderDirection": {
+    "buy": "Pirkti",
+    "sell": "Parduoti"
+  },
+
+  "cryptoSelector-noData": "Nėra duomenų",
+
+  "ticker": {
+    "24hHigh": "24h aukščiausia",
+    "24hLow": "24h žemiausia",
+    "24hChange": "24h pokytis",
+    "lastPrice": "Paskutinė kaina",
+    "index": "Indeksas",
+    "turnover24h": "24h apyvarta",
+    "volume": "Tūris"
+  },
+
+  "tradingOptions": {
+    "limit": "Limitinis",
+    "market": "Rinkos",
+    "buy": "Pirkti",
+    "sell": "Parduoti"
+  },
+
+  "form": {
+    "amount": "Kiekis",
+    "value": "Vertė",
+    "triggerPrice": "Trigerio kaina"
+  },
+  "button": {
+    "buy": "Pirkti {{name}}",
+    "sell": "Parduoti {{name}}",
+    "buyLong": "Ilga pozicija: pirkti {{name}} ({{code}})",
+    "sellShort": "Trumpa pozicija: parduoti {{name}} ({{code}})"
+  },
+  "error": {
+    "system": "Sistemos klaida",
+    "amountRequired": "Kiekis negali būti tuščias",
+    "insufficientFundsLimit": "Nepakanka lėšų ribotam pavedimui",
+    "sellMoreThanOwned": "Bandoma parduoti daugiau nei turite. Patikrinkite kiekį",
+    "noAsset": "Neturite šio turto"
+  },
+
+  "dashboard": {
+    "nothingToShow": "Nėra ką rodyti",
+    "goToTrading": "Eiti į prekybą",
+    "tradingSummary": "Prekybos suvestinė"
+  },
+
+  "balanceChart": {
+    "currentBalance": "Dabartinis balansas:",
+    "balanceOverTime": "Jūsų balansas laikui bėgant",
+    "balance": "Balansas",
+    "range": {
+      "1M": "1 mėn.",
+      "6M": "6 mėn.",
+      "1Y": "1 metai"
+    }
+  },
+
+  "ordersByCrypto": {
+    "totalVolume": "Bendra apimtis",
+    "volumeByCrypto": "Užsakymų apimtis pagal kriptovaliutą",
+    "buy": "Pirkimas",
+    "sell": "Pardavimas",
+    "all": "Visos",
+    "volume": "Apimtis",
+    "nothingToShow": "Nėra ką rodyti",
+    "goToTrading": "Eiti į prekybą",
+    "range": {
+      "1M": "1 mėn.",
+      "6M": "6 mėn.",
+      "1Y": "1 metai"
+    }
+  },
+
+  "totalCrypto": "Bendra kriptovaliuta",
+  "bought": "Nupirkta",
+  "sold": "Parduota",
+  "cryptoHoldingsByMonth": "Kriptovaliutų turėjimas pagal mėnesį",
+  "all": "Visos",
+  "nothingToShow": "Nėra ką rodyti",
+  "goToTrading": "Eiti į prekybą",
+  "buy": "Pirkti",
+  "sell": "Parduoti"
 }

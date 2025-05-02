@@ -294,5 +294,99 @@
   "restore_password_send_link": "Send Reset Link",
   "restore_password_email_placeholder": "Enter your email",
   "restore_password_confirmation_success": "Reset link sent! Check your inbox.",
-  "form_validation_invalid_email": "Please enter a valid email"
+  "form_validation_invalid_email": "Please enter a valid email",
+
+  "spotTrading": "Spot Trading",
+  "selectedOrderType": "Selected order type",
+  "orderDirections": "Order direction",
+
+  "orderType": {
+    "limit": "Limit",
+    "market": "Market"
+  },
+  "orderDirection": {
+    "buy": "Buy",
+    "sell": "Sell"
+  },
+
+  "cryptoSelector-noData": "No data",
+
+  "ticker": {
+    "24hHigh": "24h high",
+    "24hLow": "24h low",
+    "24hChange": "24h change",
+    "lastPrice": "Last price",
+    "index": "Index",
+    "turnover24h": "24h turnover",
+    "volume": "Volume"
+  },
+
+  "tradingOptions": {
+    "limit": "Limit",
+    "market": "Market",
+    "buy": "Buy",
+    "sell": "Sell"
+  },
+
+  "form": {
+    "amount": "Amount",
+    "value": "Value",
+    "triggerPrice": "Trigger Price"
+  },
+  "button": {
+    "buy": "Buy {{name}}",
+    "sell": "Sell {{name}}",
+    "buyLong": "Buy Long {{name}} ({{code}})",
+    "sellShort": "Sell Short {{name}} ({{code}})"
+  },
+  "error": {
+    "system": "System error",
+    "amountRequired": "Amount cannot be empty",
+    "insufficientFundsLimit": "Insufficient funds for limit order",
+    "sellMoreThanOwned": "Trying to sell more than you have. Check the amount",
+    "noAsset": "You don't have this asset"
+  },
+
+  "dashboard": {
+    "nothingToShow": "Nothing to show",
+    "goToTrading": "Go to Trading",
+    "tradingSummary": "Trading Summary"
+  },
+
+  "balanceChart": {
+    "currentBalance": "Current Balance:",
+    "balanceOverTime": "Your balance over time",
+    "balance": "Balance",
+    "range": {
+      "1M": "1M",
+      "6M": "6M",
+      "1Y": "1Y"
+    }
+  },
+
+  "ordersByCrypto": {
+    "totalVolume": "Total Volume",
+    "volumeByCrypto": "Order Volume by Crypto",
+    "buy": "Buy",
+    "sell": "Sell",
+    "all": "All",
+    "volume": "Volume",
+    "nothingToShow": "Nothing to show",
+    "goToTrading": "Go to Trading",
+    "range": {
+      "1M": "1M",
+      "6M": "6M",
+      "1Y": "1Y"
+    }
+  },
+
+  "totalCrypto": "Total Crypto",
+  "bought": "Bought",
+  "sold": "Sold",
+  "cryptoHoldingsByMonth": "Crypto Holdings by Month",
+  "all": "All",
+  "nothingToShow": "Nothing to show",
+  "goToTrading": "Go to Trading",
+  "buy": "Buy",
+  "sell": "Sell"
 }
