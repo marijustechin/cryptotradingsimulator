@@ -29,7 +29,7 @@ export const ChangePasswordForm = () => {
 
   const onSubmit = async (data: z.infer<ReturnType<typeof ChangePasswordSchema>>) => {
     try {
-      const response = await UserService.changePassword(
+      await UserService.changePassword(
         data.currentPassword,
         data.newPassword,
         data.repeatPassword

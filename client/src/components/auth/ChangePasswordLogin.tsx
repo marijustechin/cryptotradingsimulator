@@ -46,7 +46,7 @@ export const ChangePasswordLoginForm = () => {
 
     try {
       setLoading(true);
-      const response = await UserService.restorePassword(token!, newPassword);
+      await UserService.restorePassword(token!, newPassword);
       toast.success(t('restore_password_success'));
       navigate('/login');
     } catch (err) {
