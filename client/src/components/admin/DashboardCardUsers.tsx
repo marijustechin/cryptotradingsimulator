@@ -6,6 +6,15 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 
+interface RenderLabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+}
+
 export const DashboardCardUsers = () => {
   const dispatch = useAppDispatch();
   const usersInfo = useAppSelector(selectAdminUserInfo);
@@ -32,9 +41,12 @@ export const DashboardCardUsers = () => {
     }
   }, [dispatch, usersInfo]);
 
+  const activeUsers = usersInfo ? usersInfo.activeUsers : 0;
+  const inactiveUsers = usersInfo ? usersInfo.userCount - activeUsers : 0;
+
   const data = [
-    { name: 'Active', value: usersInfo?.activeUsers },
-    { name: 'Inactive', value: usersInfo?.userCount - usersInfo?.activeUsers },
+    { name: 'Active', value: activeUsers },
+    { name: 'Inactive', value: inactiveUsers },
   ];
 
   const COLORS = ['#4ade80', '#818cf8'];
@@ -47,7 +59,7 @@ export const DashboardCardUsers = () => {
     innerRadius,
     outerRadius,
     percent,
-  }) => {
+  }: RenderLabelProps) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -56,9 +68,9 @@ export const DashboardCardUsers = () => {
       <text
         x={x}
         y={y}
-        fill='white'
+        fill="white"
         textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline='central'
+        dominantBaseline="central"
       >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
@@ -66,44 +78,44 @@ export const DashboardCardUsers = () => {
   };
 
   return (
-    <div className='bg-gray-800 p-4 rounded-xl shadow-lg backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full h-full'>
+    <div className="bg-gray-800 p-4 rounded-xl shadow-lg backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full h-full">
       {/* Left side: user stats and legend */}
-      <div className='flex flex-col justify-center gap-4'>
+      <div className="flex flex-col justify-center gap-4">
         <div>
           <h3>Monthly Activity</h3>
-          <h5 className='mt-2 font-semibold text-emerald-500'>
+          <h5 className="mt-2 font-semibold text-emerald-500">
             Total users: {usersInfo?.userCount}
           </h5>
         </div>
 
-        <div className='flex items-center gap-2'>
-          <div className='bg-[#10B981] w-4 h-4 rounded-sm'></div>
-          <p className='text-white'>Active users</p>
+        <div className="flex items-center gap-2">
+          <div className="bg-[#10B981] w-4 h-4 rounded-sm"></div>
+          <p className="text-white">Active users</p>
         </div>
 
-        <div className='flex items-center gap-2'>
-          <div className='bg-[#818cf8] w-4 h-4 rounded-sm'></div>
-          <p className='text-white'>Inactive users</p>
+        <div className="flex items-center gap-2">
+          <div className="bg-[#818cf8] w-4 h-4 rounded-sm"></div>
+          <p className="text-white">Inactive users</p>
         </div>
       </div>
 
       {/* Right side: Pie Chart */}
-      <div className='w-full h-50'>
-        <ResponsiveContainer width='100%' height='100%'>
+      <div className="w-full h-50">
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
-              cx='50%'
-              cy='50%'
+              cx="50%"
+              cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={outerRadius}
-              fill='#4ade80'
-              dataKey='value'
+              fill="#4ade80"
+              dataKey="value"
             >
               {data.map((entry, index) => (
                 <Cell
-                  key={`cell-${index}`}
+                  key={`cell-${index + entry.value}`}
                   fill={COLORS[index % COLORS.length]}
                 />
               ))}
