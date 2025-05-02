@@ -20,43 +20,41 @@ export const LoginForm = () => {
   const user = useAppSelector(selectUser);
   const { status, error } = useAppSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+
+  const schema = LoginSchema(t);
+
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  } = useForm<z.infer<ReturnType<typeof LoginSchema>>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof LoginSchema>> = (formData) => {
+  const onSubmit: SubmitHandler<z.infer<ReturnType<typeof LoginSchema>>> = (formData) => {
     dispatch(loginUser({ email: formData.email, password: formData.password }));
   };
 
-  // redux klaidas sinchronizuojam su formos klaidomis
+  // sync redux error into form error
   useEffect(() => {
     if (error) {
       setError('root', { message: error });
     }
   }, [error, setError]);
 
-  // jei viskas ok, redirectinam
+  // redirect on success
   useEffect(() => {
     if (status === 'succeeded') {
       dispatch(getInfo());
-      // ar useris, ar adminas
       if (user.role === 'ADMIN') {
         navigate('/dashboard');
-        return;
-      }
-
-      if (user.role === 'USER') {
+      } else if (user.role === 'USER') {
         navigate('/my-dashboard');
-        return;
       }
     }
   }, [status, user, navigate, dispatch]);
@@ -78,54 +76,48 @@ export const LoginForm = () => {
           {error && <span className="text-xs text-rose-500">{error}</span>}
         </div>
 
+        {/* Email */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="email">
             {t('form_input_label_email')}
           </label>
           <input
-            onKeyUp={() => clearError()}
+            onKeyUp={clearError}
             id="email"
             className="form-input"
             type="email"
             autoComplete="on"
             {...register('email')}
           />
-          <div className="relative">
-            {errors.email && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
+          {errors.email && (
+            <span className="text-xs text-red-500">{errors.email.message}</span>
+          )}
         </div>
+
+        {/* Password */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="password">
             {t('form_input_label_password')}
           </label>
           <input
-            onKeyUp={() => clearError()}
+            onKeyUp={clearError}
             id="password"
             className="form-input"
             type="password"
             autoComplete="off"
             {...register('password')}
           />
-          <div className="relative">
-            {errors.password && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
+          {errors.password && (
+            <span className="text-xs text-red-500">{errors.password.message}</span>
+          )}
         </div>
+
         <p className="text-right">
-          <Link
-            className="text-sm text-violet-300"
-            to={'/restore-password-email'}
-          >
+          <Link className="text-sm text-violet-300" to="/restore-password-email">
             {t('form_forgot_password')}
           </Link>
         </p>
+
         <div>
           <button type="submit" className="btn-generic">
             {t('form_button_login')}

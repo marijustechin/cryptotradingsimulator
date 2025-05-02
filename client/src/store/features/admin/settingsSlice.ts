@@ -21,6 +21,14 @@ const initialState: SettingsSliceState = {
   error: null,
   message: null,
 };
+export const mapMessageToKey = (raw: string): string => {
+  const map: Record<string, string> = {
+    "Registered fake users": "settings.fake_users_generated",
+    "Fake activity generated successfully": "settings.activity_generated"
+  };
+
+  return map[raw] || raw;
+};
 
 export const getSettings = createAsyncThunk<ISettings>(
   'settings/getSettings',
@@ -95,7 +103,7 @@ export const settingsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(generateActivity.fulfilled, (state, action) => {
-        state.message = action.payload;
+        state.message = mapMessageToKey(action.payload);
         state.status = 'idle';
         state.error = null;
       })
@@ -106,7 +114,7 @@ export const settingsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(generateUsers.fulfilled, (state, action) => {
-        state.message = action.payload;
+        state.message = mapMessageToKey(action.payload);
         state.status = 'idle';
         state.error = null;
       })

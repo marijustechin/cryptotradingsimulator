@@ -14,29 +14,31 @@ export const SignupForm = () => {
   const { t } = useTranslation();
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const schema = SignupSchema(t);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof SignupSchema>>({
-    resolver: zodResolver(SignupSchema),
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
       first_name: '',
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof SignupSchema>> = async (
-    formData
-  ) => {
+  const onSubmit: SubmitHandler<z.infer<typeof schema>> = async (formData) => {
     try {
       const response = await AuthService.register(
         formData.first_name,
         formData.email,
         formData.password
       );
-      toast.success(response.message);
+      toast.success(t('form_toast_account_created'));
       navigate('/login');
     } catch (error) {
       setError(HelperService.errorToString(error));
@@ -54,6 +56,8 @@ export const SignupForm = () => {
         <div className="h-10">
           {error && <span className="text-sm text-rose-500">{error}</span>}
         </div>
+
+        {/* First Name */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="first_name">
             {t('form_input_label_name')}
@@ -65,14 +69,14 @@ export const SignupForm = () => {
             autoComplete="on"
             {...register('first_name')}
           />
-          <div className="relative">
-            {errors.first_name && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500 whitespace-nowrap">
-                {errors.first_name.message}
-              </span>
-            )}
-          </div>
+          {errors.first_name && (
+            <span className="text-xs text-red-500">
+              {errors.first_name.message}
+            </span>
+          )}
         </div>
+
+        {/* Email */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="email">
             {t('form_input_label_email')}
@@ -84,14 +88,14 @@ export const SignupForm = () => {
             autoComplete="on"
             {...register('email')}
           />
-          <div className="relative">
-            {errors.email && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
+          {errors.email && (
+            <span className="text-xs text-red-500">
+              {errors.email.message}
+            </span>
+          )}
         </div>
+
+        {/* Password */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="password">
             {t('form_input_label_password')}
@@ -103,15 +107,14 @@ export const SignupForm = () => {
             autoComplete="off"
             {...register('password')}
           />
-          <div className="relative">
-            {errors.password && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
+          {errors.password && (
+            <span className="text-xs text-red-500">
+              {errors.password.message}
+            </span>
+          )}
         </div>
 
+        {/* Confirm Password */}
         <div className="flex flex-col gap-2 my-3">
           <label className="form-label" htmlFor="confirmPassword">
             {t('form_input_label_confirm_password')}
@@ -123,13 +126,11 @@ export const SignupForm = () => {
             autoComplete="off"
             {...register('confirmPassword')}
           />
-          <div className="relative">
-            {errors.confirmPassword && (
-              <span className="absolute bottom-[-0.7rem] text-xs text-red-500">
-                {errors.confirmPassword.message}
-              </span>
-            )}
-          </div>
+          {errors.confirmPassword && (
+            <span className="text-xs text-red-500">
+              {errors.confirmPassword.message}
+            </span>
+          )}
         </div>
 
         <button type="submit" className="btn-generic mt-6">

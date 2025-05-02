@@ -160,6 +160,8 @@
   "pagination_previous": "Ankstesnis puslapis",
   "pagination_next": "Kitas puslapis",
   "pagination_no_content": "Nėra ką rodyti",
+  "not_found_title": "Oi... Puslapis, kurio ieškote, nerastas",
+  "not_found_go_back": "Grįžti atgal",
 
   "admin_all_users_title": "Visi platformos naudotojai",
   "admin_all_users_search_first_name": "Ieškoti pagal vardą",
@@ -220,5 +222,78 @@
   "qty": "Kiekis",
   "spot_cost": "Momentinė kaina",
   "last_price": "Paskutinė kaina",
-  "pnl": "Pelnas/Nuostolis"
+  "pnl": "Pelnas/Nuostolis",
+
+  "settings": {
+    "fake_users_generated": "Netikri naudotojai sėkmingai sugeneruoti",
+    "activity_generated": "Netikra veikla sėkmingai sugeneruota"
+  },
+  "change_password": {
+    "current_required": "Įveskite dabartinį slaptažodį",
+    "new_required": "Įveskite naują slaptažodį",
+    "min_length": "Slaptažodis turi būti bent 6 simbolių",
+    "letters_digits_only": "Slaptažodis turi būti tik iš raidžių ir skaičių",
+    "must_include_both": "Slaptažodyje turi būti raidės ir skaičiai",
+    "repeat_required": "Pakartokite slaptažodį",
+    "mismatch": "Slaptažodžiai nesutampa"
+  },
+   "user_profile_password_changed": "Slaptažodis sėkmingai pakeistas",
+
+   "auth_login": {
+    "email_required": "El. paštas yra privalomas",
+    "email_invalid": "Neteisingas el. pašto formatas",
+    "password_required": "Slaptažodis yra privalomas"
+  },
+  "auth_register": {
+    "first_name_required": "Vardas yra privalomas",
+    "first_name_min": "Vardas turi būti bent 2 simbolių",
+    "first_name_max": "Vardas turi būti ne ilgesnis kaip 30 simbolių",
+    "first_name_invalid": "Netinkamas simbolių išdėstymas varde",
+
+    "email_required": "El. paštas yra privalomas",
+    "email_invalid": "Neteisingas el. pašto formatas",
+
+    "password_required": "Slaptažodis yra privalomas",
+    "password_min": "Slaptažodis turi būti bent 6 simbolių",
+    "password_invalid": "Slaptažodis turi turėti raides ir skaičius",
+
+    "confirm_password_required": "Pakartotinis slaptažodis yra būtinas",
+    "passwords_do_not_match": "Slaptažodžiai nesutampa"
+  },
+
+  "form_error_first_name_required": "Vardas yra privalomas",
+  "form_error_first_name_min": "Vardas turi būti bent 2 simbolių ilgio",
+  "form_error_first_name_max": "Vardas turi būti ne ilgesnis nei 30 simbolių",
+  "form_error_first_name_regex": "Varde negali būti pasikartojančių simbolių",
+
+  "form_error_last_name_required": "Pavardė yra privaloma",
+  "form_error_last_name_min": "Pavardė turi būti bent 2 simbolių ilgio",
+  "form_error_last_name_max": "Pavardė turi būti ne ilgesnė nei 30 simbolių",
+  "form_error_last_name_regex": "Pavardėje negali būti pasikartojančių simbolių",
+
+  "form_error_address_required": "Adresas yra privalomas",
+
+  "form_error_phone_required": "Telefono numeris yra privalomas",
+  "form_error_phone_minmax": "Telefono numeris turi būti sudarytas iš 11 skaitmenų (be \"+\")",
+  "form_error_phone_digits": "Leidžiami tik skaičiai",
+
+  "form_error_email_required": "El. paštas yra privalomas",
+  "form_error_email_invalid": "Neteisingas el. pašto formatas",
+
+  "restore_password_title": "Atstatykite savo slaptažodį",
+  "restore_password_placeholder": "Įveskite naują slaptažodį",
+  "restore_password_submit": "Atstatyti slaptažodį",
+  "restore_password_resetting": "Atstatoma...",
+  "restore_password_token_missing": "Atstatymo nuoroda nerasta arba pasibaigė galiojimo laikas.",
+  "restore_password_success": "Slaptažodis sėkmingai pakeistas!",
+  "restore_password_failed": "Nepavyko atstatyti slaptažodžio.",
+  "form_validation_minimum_characters": "Mažiausiai {{count}} simboliai",
+
+  "form_back_to_login": "Grįžti į prisijungimą",
+  "form_generic_error": "Įvyko klaida. Bandykite dar kartą.",
+  "restore_password_send_link": "Siųsti atstatymo nuorodą",
+  "restore_password_email_placeholder": "Įveskite savo el. paštą",
+  "restore_password_confirmation_success": "Atstatymo nuoroda išsiųsta! Patikrinkite el. paštą.",
+  "form_validation_invalid_email": "Neteisingas el. pašto formatas"
+
 }

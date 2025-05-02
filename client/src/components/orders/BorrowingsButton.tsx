@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function BorrowingsButton() {
   const user = useAppSelector(selectUser);
+  const { t } = useTranslation();
 
   const handleBorrow = async () => {
     try {
@@ -30,18 +31,17 @@ export default function BorrowingsButton() {
     }
   };
 
-  const { t } = useTranslation();
 
   return (
     <div>
       <button
         onClick={handleBorrow}
         className="btn-generic my-6"
-        disabled={!canBorrow}
+        disabled={!canBorrow()}
       >
         {t('borrow_amount_example')}
       </button>
-      {!canBorrow && (
+      {!canBorrow() && (
         <p className="text-sm text-red-500">{t('borrow_condition')}</p>
       )}
     </div>
