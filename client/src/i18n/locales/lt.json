@@ -6,7 +6,7 @@
   "form_forgot_password": "Pamiršote slaptažodį?",
   "form_button_login": "Prisijungti",
   "form_button_register": "Užsiregistruoti",
- 
+
   "nav_home": "Pradžia",
   "nav_how_to_trade": "Kaip prekiauti",
   "nav_my_dashboard": "Mano portfelis",
@@ -38,7 +38,7 @@
   "howto_step_2": "Naudokite įrankius ir pasirinkite kriptovaliutą investavimui",
   "howto_step_3": "Pradėkite prekiauti",
   "howto_step_4": "Sekite savo prekybą ir portfelį",
-  
+
   "howto_what_is": "Kas yra prekyba kriptovaliutomis?",
   "howto_what_is_p1": "Kriptovaliutų prekyba – tai skaitmeninių valiutų, tokių kaip Bitcoin (BTC) ar Ethereum (ETH), pirkimas ir pardavimas siekiant pelno. Skirtingai nei tradicinės finansų rinkos, kriptovaliutų rinka veikia 24 valandas per parą. Norėdami pradėti, jums reikės piniginės ir biržos prekybai.",
   "howto_what_is_p2": "Jei norite prekiauti kriptovaliutomis, turėsite spėlioti skaitmeninės valiutos kainą, kad gautumėte pelno. Tikslas – pirkti pigiai ir parduoti brangiai arba atvirkščiai – pasinaudojant kriptovaliutų rinkos kainų svyravimais. Rinkos dinamikos supratimas gali padėti sumažinti nuostolius ir padidinti pelną.",
@@ -112,12 +112,12 @@
 
   "dashboard_sidebar_welcome": "Sveiki atvykę",
 
-    "admin_dashboard_title": "Platformos veiklos suvestinė",
-    "admin_dashboard_monthly_turnover": "Mėnesio apyvarta",
-    "admin_dashboard_monthly_income": "Mėnesio pajamos",
-    "admin_dashboard_yearly_income": "Metinės pajamos pagal mėnesius",
-    "admin_dashboard_yearly_order_value": "Metinė užsakymų vertė pagal mėnesius",
-    "admin_card_monthly_activity": "Mėnesio aktyvumas",
+  "admin_dashboard_title": "Platformos veiklos suvestinė",
+  "admin_dashboard_monthly_turnover": "Mėnesio apyvarta",
+  "admin_dashboard_monthly_income": "Mėnesio pajamos",
+  "admin_dashboard_yearly_income": "Metinės pajamos pagal mėnesius",
+  "admin_dashboard_yearly_order_value": "Metinė užsakymų vertė pagal mėnesius",
+  "admin_card_monthly_activity": "Mėnesio aktyvumas",
   "admin_card_total_users": "Iš viso naudotojų",
   "admin_card_active_users": "Aktyvūs naudotojai",
   "admin_card_inactive_users": "Neaktyvūs naudotojai",
@@ -128,7 +128,7 @@
   "admin_chart_limit": "Limito",
   "admin_chart_market": "Rinkos",
   "admin_chart_orders": "Užsakymai",
-   "admin_chart_total_orders_last_12_months": "Bendras užsakymų skaičius (per paskutinius 12 mėnesių)",
+  "admin_chart_total_orders_last_12_months": "Bendras užsakymų skaičius (per paskutinius 12 mėnesių)",
   "admin_chart_yearly_orders_by_month": "Metiniai užsakymai pagal mėnesius",
   "admin_system_settings_title": "Sistemos nustatymai",
   "admin_fees_title": "Mokesčiai",
@@ -163,7 +163,7 @@
   "not_found_title": "Oi... Puslapis, kurio ieškote, nerastas",
   "not_found_go_back": "Grįžti atgal",
 
-"admin_all_users_title": "Visi platformos naudotojai",
+  "admin_all_users_title": "Visi platformos naudotojai",
   "admin_all_users_search_first_name": "Ieškoti pagal vardą",
   "admin_all_users_search_email": "Ieškoti pagal el. paštą",
   "admin_all_users_table_first_name": "Vardas",
@@ -198,6 +198,31 @@
   "admin_orders_table_type": "Tipas",
   "admin_orders_table_fee": "Mokestis",
   "admin_orders_table_order_value": "Užsakymo vertė",
+
+  "orders_title": "Mano užsakymai",
+
+  "open_orders": "Aktyvus užsakymai",
+  "order_history": "Užsakymų istorija",
+  "assets": "Turtas",
+
+  "export_orders": "Eksportuoti:",
+
+  "order_market": "Rinka",
+  "order_type": "Užsakymo tipas",
+  "direction": "Kryptis",
+  "entry_price": "Įejimo kaina",
+  "order_qty": "Užsakymo kiekis",
+  "order_value": "Užsakymo vertė",
+  "order_time": "Užsakymo laikas",
+  "action": "Veiksmas",
+  "fee_payed": "Sumokėti mokesčiai",
+
+  "asset": "Turtas",
+  "net_asset_value": "Grynoji turto vertė",
+  "qty": "Kiekis",
+  "spot_cost": "Momentinė kaina",
+  "last_price": "Paskutinė kaina",
+  "pnl": "Pelnas/Nuostolis",
 
   "settings": {
     "fake_users_generated": "Netikri naudotojai sėkmingai sugeneruoti",
