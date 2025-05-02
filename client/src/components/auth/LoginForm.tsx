@@ -12,7 +12,6 @@ import {
 import { useEffect } from 'react';
 import logo from '/logo.png';
 import { getInfo } from '../../store/features/user/userInfoSlice';
-// import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 export const LoginForm = () => {

@@ -11,8 +11,10 @@ import HelperService from "../../services/HelperService";
 import { StackedBarChartCard } from "../../components/StackedBarChartCard";
 import { TopMonthlyUsersCard } from "../../components/admin/TopMonthlyUsersCard";
 import MonthlyOrdersChart from "../../components/admin/MonthlyOrdersChart";
+import { useTranslation } from "react-i18next";
 
 const AdminDashboardPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector(selectAdminUserInfo);
   const orderInfo = useAppSelector(selectAdminOrderInfo);
@@ -37,20 +39,20 @@ const AdminDashboardPage = () => {
 
   return (
     <>
-      <h1 className="text-center">Platform Performance Summary</h1>
+      <h1 className="text-center">{t('admin_dashboard_title')}</h1>
       <main className="flex-1 bg-transparent">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-4 mb-6 place-items-center">
           <DashboardCardUsers />
           <div className="w-full space-y-2">
             <Card
-              title="Monthly Turnover"
+              title={t('admin_dashboard_monthly_turnover')}
               value={
                 monthlyOrdersValue &&
                 HelperService.formatCurrency(monthlyOrdersValue)
               }
             />
             <Card
-              title="Monthly Income"
+              title={t('admin_dashboard_monthly_income')}
               value={
                 monthlyIncome && HelperService.formatCurrency(monthlyIncome)
               }
@@ -59,7 +61,7 @@ const AdminDashboardPage = () => {
         </div>
         <TopMonthlyUsersCard users={topUsers} />
         <StackedBarChartCard
-          title="Yearly Income by Month"
+          title={t('admin_dashboard_yearly_income')}
           total={HelperService.formatCurrency(Income ?? 0)}
           data={yearlyIncomeByMonth}
           keys={["limit", "market"]}
@@ -67,7 +69,7 @@ const AdminDashboardPage = () => {
         />
         <MonthlyOrdersChart rawData={ordersByCryptoData ?? []} />
         <StackedBarChartCard
-          title="Yearly Order Value by Month"
+          title={t('admin_dashboard_yearly_order_value')}
           total={HelperService.formatCurrency(totalOrderValue ?? 0)}
           data={yearlyOrdersValue}
           keys={["limit", "market"]}

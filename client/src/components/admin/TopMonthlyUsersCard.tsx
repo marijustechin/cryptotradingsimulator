@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import './TopMonthlyUsersCard.css';
+import { useTranslation } from 'react-i18next';
 
 interface TopUser {
   userId: number;
@@ -8,17 +9,20 @@ interface TopUser {
   orderCount?: number;
 }
 
-const medalIcons = ['🥇', '🥈', '🥉'];
+const medalIcons = ['\ud83e\udd47', '\ud83e\udd48', '\ud83e\udd49'];
 const shimmerClasses = ['gold-shimmer', 'silver-shimmer', 'bronze-shimmer'];
 
 export const TopMonthlyUsersCard = ({ users }: { users: TopUser[] }) => {
+  const { t } = useTranslation();
   const sortedUsers = [...users].sort((a, b) => b.totalFee - a.totalFee);
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-md w-full mb-6">
-      <h2 className="text-xl font-semibold text-gray-200 mb-5">Top 3 Users This Month</h2>
+      <h2 className="text-xl font-semibold text-gray-200 mb-5">
+        {t('admin_card_top_users_title')}
+      </h2>
       {sortedUsers.length === 0 ? (
-        <p className="text-gray-400">No data available.</p>
+        <p className="text-gray-400">{t('admin_card_top_users_empty')}</p>
       ) : (
         <ul className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {sortedUsers.map((user, index) => (
@@ -36,7 +40,9 @@ export const TopMonthlyUsersCard = ({ users }: { users: TopUser[] }) => {
                   ${user.totalFee.toFixed(2)}
                 </p>
                 {user.orderCount !== undefined && (
-                  <p className="text-sm text-gray-400">Orders: {user.orderCount}</p>
+                  <p className="text-sm text-gray-400">
+                    {t('admin_card_top_users_orders')}: {user.orderCount}
+                  </p>
                 )}
               </div>
             </motion.li>

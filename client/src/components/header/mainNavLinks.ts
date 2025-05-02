@@ -1,11 +1,12 @@
+
 export const mainNavLinks = [
-  { title: 'Home', href: '/' },
-  { title: 'How To Trade', href: '/how-to-trade' },
-  { title: 'My Dashboard', href: '/my-dashboard' }, 
-  { title: 'Credits', href: '/credits' },
+  { title: 'nav_home', href: '/' },
+  { title: 'nav_how_to_trade', href: '/how-to-trade' },
+  { title: 'nav_my_dashboard', href: '/my-dashboard' },
+  { title: 'nav_credits', href: '/credits' },
 ];
 
 export const registerLinks = [
-  { title: "Login", href: '/login' },
-  { title: "Register", href: '/registration' }
-]
+  { title:'nav_login', href: '/login' },
+    { title:'nav_register', href: '/registration' },
+];

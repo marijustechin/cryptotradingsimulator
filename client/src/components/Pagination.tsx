@@ -1,8 +1,5 @@
-// universalus komponentas
-// priima currentPage, totalPages
-// grazina currentPage
-
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 interface PaginationProps {
   currentPage: number;
@@ -15,18 +12,16 @@ export const Pagination = ({
   totalPages,
   onChange,
 }: PaginationProps) => {
+  const { t } = useTranslation();
+
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
-
-    // Always show first page
     pages.push(1);
 
-    // Show left "..." if needed
     if (currentPage > 4) {
       pages.push('...');
     }
 
-    // Show neighbors (up to 2 before and after)
     const start = Math.max(2, currentPage - 1);
     const end = Math.min(totalPages - 1, currentPage + 1);
 
@@ -36,12 +31,10 @@ export const Pagination = ({
       }
     }
 
-    // Show right "..." if needed
     if (currentPage < totalPages - 3) {
       pages.push('...');
     }
 
-    // Always show last page
     if (totalPages > 1) {
       pages.push(totalPages);
     }
@@ -54,7 +47,7 @@ export const Pagination = ({
   return totalPages > 0 ? (
     <div className='py-3'>
       <p className='text-center py-2'>
-        Page:{' '}
+        {t('pagination_page_label')}{' '}
         <span className='text-white'>
           {currentPage}/{totalPages}{' '}
         </span>
@@ -64,6 +57,7 @@ export const Pagination = ({
           <button
             onClick={() => onChange(currentPage - 1)}
             className='cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200'
+            aria-label={t('pagination_previous')}
           >
             <FaLongArrowAltLeft size={24} />
           </button>
@@ -84,7 +78,7 @@ export const Pagination = ({
         ))}
         {currentPage < totalPages && (
           <button
-          aria-label='Next page'
+            aria-label={t('pagination_next')}
             onClick={() => onChange(currentPage + 1)}
             className='cursor-pointer flex items-center justify-center p-2 text-violet-400 hover:text-violet-200'
           >
@@ -94,6 +88,6 @@ export const Pagination = ({
       </div>
     </div>
   ) : (
-    <p className='text-center pt-5'>No content to display</p>
+    <p className='text-center pt-5'>{t('pagination_no_content')}</p>
   );
 };
