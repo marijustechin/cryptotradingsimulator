@@ -13,6 +13,7 @@ import {
 import { IOrdersHistory } from '../../types/order';
 import { Link } from 'react-router';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useTranslation } from 'react-i18next';
 
 type ViewRange = '1M' | '6M' | '1Y';
 type OrderType = 'buy' | 'sell';
@@ -28,6 +29,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
   const [viewRange, setViewRange] = useState<ViewRange>('1Y');
   const [orderType, setOrderType] = useState<OrderType>('buy');
   const [selectedAsset, setSelectedAsset] = useState<string>('all');
+  const { t } = useTranslation();
 
   const { chartData, totalVolume, uniqueAssets } = useMemo(() => {
     if (!orders || orders.length === 0) return { chartData: [], totalVolume: 0, uniqueAssets: [] };
@@ -89,9 +91,11 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
       <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <div>
           <span className="text-[1.5rem] text-[#10B981] font-semibold">
-            Total Volume: {HelperService.formatCurrency(totalVolume)}
+            {t('ordersByCrypto.totalVolume')}: {HelperService.formatCurrency(totalVolume)}
           </span>
-          <h3 className="text-gray-200 capitalize">{orderType} Order Volume by Crypto</h3>
+          <h3 className="text-gray-200 capitalize">
+            {t(`ordersByCrypto.${orderType}`)} {t('ordersByCrypto.volumeByCrypto')}
+          </h3>
         </div>
         <div className="flex flex-wrap gap-2 items-center">
           {(['1M', '6M', '1Y'] as ViewRange[]).map((range) => (
@@ -104,7 +108,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              {range}
+              {t(`ordersByCrypto.range.${range}`)}
             </button>
           ))}
           {(['buy', 'sell'] as OrderType[]).map((type) => (
@@ -117,7 +121,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              {type}
+              {t(`ordersByCrypto.${type}`)}
             </button>
           ))}
           <select
@@ -125,7 +129,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
             onChange={(e) => setSelectedAsset(e.target.value)}
             className="bg-gray-700 text-gray-300 px-3 py-1 rounded-md text-sm"
           >
-            <option value="all">All</option>
+            <option value="all">{t('ordersByCrypto.all')}</option>
             {uniqueAssets.map((asset) => (
               <option key={asset} value={asset}>
                 {asset}
@@ -138,9 +142,9 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
       {!chartData.length ? (
         <div className="grid grid-cols-2 justify-center items-center w-full">
           <div className="flex flex-col justify-center items-center">
-            <h3 className="pb-10">Nothing to show</h3>
+            <h3 className="pb-10">{t('ordersByCrypto.nothingToShow')}</h3>
             <Link to="/my-dashboard/trading" className="btn-generic my-6">
-              Go to Trading
+              {t('ordersByCrypto.goToTrading')}
             </Link>
           </div>
           <Player autoplay loop src="/Animation.json" style={{ height: '300px', width: '100%' }} />
@@ -171,7 +175,7 @@ const UserOrdersByCryptoChart = ({ orders }: { orders: IOrdersHistory[] }) => {
                 key={asset}
                 type="monotone"
                 dataKey={asset}
-                name={`${asset} Volume`}
+                name={`${asset} ${t('ordersByCrypto.volume')}`}
                 stroke={assetColors[asset] || '#8884d8'}
                 strokeWidth={2}
                 dot={false}

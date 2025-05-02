@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-
 import {
   LineChart,
   Line,
@@ -9,10 +8,10 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from 'recharts';
-
 import HelperService from '../../services/HelperService';
 import { IUser } from '../../types/user';
 import { IOrdersHistory } from '../../types/order';
+import { useTranslation } from 'react-i18next';
 
 type ViewRange = '1M' | '6M' | '1Y';
 
@@ -24,6 +23,7 @@ const UserBalanceChart = ({
   orders: IOrdersHistory[];
 }) => {
   const [viewRange, setViewRange] = useState<ViewRange>('1Y');
+  const { t } = useTranslation();
 
   const balanceData = useMemo(() => {
     if (!orders || !user) return [];
@@ -78,10 +78,12 @@ const UserBalanceChart = ({
       <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <div>
           <span className="text-[1.75rem] text-[#10B981] font-semibold">
-            Current Balance:{' '}
+            {t('balanceChart.currentBalance')}{' '}
             {user.balance && HelperService.formatCurrency(user.balance)}
           </span>
-          <h3 className="text-gray-200">Your balance over time</h3>
+          <h3 className="text-gray-200">
+            {t('balanceChart.balanceOverTime')}
+          </h3>
         </div>
         <div className="space-x-2">
           {(['1M', '6M', '1Y'] as ViewRange[]).map((range) => (
@@ -94,7 +96,7 @@ const UserBalanceChart = ({
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              {range}
+              {t(`balanceChart.range.${range}`)}
             </button>
           ))}
         </div>
@@ -130,7 +132,7 @@ const UserBalanceChart = ({
             stroke="#10B981"
             strokeWidth={2}
             dot={false}
-            name="Balance"
+            name={t('balanceChart.balance')}
           />
         </LineChart>
       </ResponsiveContainer>

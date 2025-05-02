@@ -19,8 +19,10 @@ import {
   getUserAssets,
   selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
+import { useTranslation } from 'react-i18next';
 
 export const PlaceOrderButton = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const tradingOptions = useAppSelector(selectTradingOptions);
   const selectedCrypto = useAppSelector(getChartSymbol);
@@ -32,13 +34,13 @@ export const PlaceOrderButton = () => {
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
     if (user?.balance === undefined || user?.balance === null) {
-      toast.error('System error');
+      toast.error(t('error.system'));
       return;
     }
 
     // 1. Ar ivestas kiekis?
     if (tradingOptions.amount === 0) {
-      toast.error('Amount cannot be empty');
+      toast.error(t('error.amountRequired'));
       return;
     }
 
@@ -50,7 +52,7 @@ export const PlaceOrderButton = () => {
       user?.balance !== undefined &&
       user?.balance < tradingOptions.amount * tradingOptions.triggerPrice
     ) {
-      toast.error('Insufficient funds for limit order');
+      toast.error(t('error.insufficientFundsLimit'));
       return;
     }
 
@@ -72,11 +74,11 @@ export const PlaceOrderButton = () => {
       if (userAssets && userAssets.length > 0) {
         const userAsset = userAssets.find((a) => a.asset === selectedCrypto);
         if (userAsset && userAsset.balance < tradingOptions.amount) {
-          toast.error('Trying to sell more than you have. Check the amount');
+          toast.error(t('error.sellMoreThanOwned'));
           return;
         }
       } else {
-        toast.error("You don't have this asset");
+        toast.error(t('error.noAsset'));
         return;
       }
     }
@@ -135,7 +137,7 @@ export const PlaceOrderButton = () => {
             className='text-sm text-violet-300'
             htmlFor={'amount' + tradingOptions.orderType}
           >
-            Amount:
+            {t('form.amount')}:
           </label>
           <input
             id={'amount' + tradingOptions.orderType}
@@ -153,7 +155,7 @@ export const PlaceOrderButton = () => {
             className='text-sm text-violet-300'
             htmlFor={'amount' + tradingOptions.orderType}
           >
-            Value:
+            {t('form.value')}:
           </label>
           <input
             id={'value' + tradingOptions.orderType}
@@ -171,7 +173,7 @@ export const PlaceOrderButton = () => {
               className='text-sm text-violet-300'
               htmlFor={'triggerPrice' + 'xml'}
             >
-              Trigger Price:
+              {t('form.triggerPrice')}:
             </label>
             <input
               id={'triggerPrice' + 'xml'}
@@ -202,8 +204,8 @@ export const PlaceOrderButton = () => {
   `}
       >
         {tradingOptions.orderDirection === 'buy'
-          ? `Buy ${cryptoData?.name}`
-          : `Sell ${cryptoData?.name}`}
+          ? t('button.buy', { name: cryptoData?.name })
+          : t('button.sell', { name: cryptoData?.name })}
       </button>
 
       {/* <!-- Desktop Button --> */}
@@ -220,8 +222,8 @@ export const PlaceOrderButton = () => {
   `}
       >
         {tradingOptions.orderDirection === 'buy'
-          ? `Buy Long ${cryptoData?.name} (${cryptoData?.code})`
-          : `Sell Short ${cryptoData?.name} (${cryptoData?.code})`}
+          ? t('button.buyLong', { name: cryptoData?.name, code: cryptoData?.code })
+          : t('button.sellShort', { name: cryptoData?.name, code: cryptoData?.code })}
       </button>
     </div>
   );

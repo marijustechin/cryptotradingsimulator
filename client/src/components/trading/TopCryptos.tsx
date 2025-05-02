@@ -6,22 +6,24 @@ import { PlaceOrderButton } from '../orders/PlaceOrderButton';
 import { TradingOptions } from './TradingOptions';
 import { useAppSelector } from '../../store/store';
 import { selectTradingOptions } from '../../store/features/trading/tradingOptionsSlice';
+import { useTranslation } from 'react-i18next';
 
 export const TopCryptos = () => {
   const tradeOptions = useAppSelector(selectTradingOptions);
+  const { t } = useTranslation();
   return (
     <div className='flex flex-col gap-4 rounded-xl w-full'>
-      <h1 className='text-center'>Spot Trading</h1>
+      <h1 className='text-center'>{t('spotTrading')}</h1>
       <TickersN />
 
       {/* Spot Trading Section */}
       <div className='flex flex-col gap-3 items-center text-center lg:flex-row lg:text-left'>
         <p className='text-xs lg:text-sm text-violet-400 px-4'>
-          Selected order type:{' '}
+        {t('selectedOrderType')}:{' '}
           <span className='text-violet-50 ml-1'>
-            {tradeOptions.orderType.toUpperCase()}
+          {t(`orderType.${tradeOptions.orderType}`)}
           </span>{' '}
-          , order direction:
+          , {t('orderDirections')}:
           <span
             className={`ml-1 font-bold ${
               tradeOptions.orderDirection === 'buy'
@@ -29,7 +31,7 @@ export const TopCryptos = () => {
                 : 'text-rose-500'
             }`}
           >
-            {tradeOptions.orderDirection.toUpperCase()}
+            {t(`orderDirection.${tradeOptions.orderDirection}`)}
           </span>
         </p>
       </div>

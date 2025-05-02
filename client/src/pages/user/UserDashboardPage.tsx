@@ -10,9 +10,11 @@ import UserOrdersByCryptoChart from "../../components/dashboard/OrdersByCrypto";
 import UserCryptoHoldingsStackedBar from "../../components/dashboard/UserCryptoHoldingsStackedBar";
 import { Link } from "react-router";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { useTranslation } from "react-i18next";
 
 const UserDashboardPage = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getOrdersHistory({ page: 1 }));
@@ -28,9 +30,9 @@ const UserDashboardPage = () => {
           <div>
             <div className="flex flex-col justify-center items-center w-full">
               <div className="pb-4 flex flex-col justify-center items-center">
-                <h3 className="pb-4">Nothing to show</h3>
+                <h3 className="pb-4">{t("dashboard.nothingToShow")}</h3>
                 <Link to="/my-dashboard/trading" className="btn-generic my-6">
-                  Go to Trading
+                {t("dashboard.goToTrading")}
                 </Link>
               </div>
               <Player
@@ -44,7 +46,7 @@ const UserDashboardPage = () => {
         </div>
       ) : (
         <main>
-          <h1 className="text-center">Trading Summary</h1>
+          <h1 className="text-center">{t("dashboard.tradingSummary")}</h1>
           <UserBalanceChart orders={orders} user={user} />
           <UserOrdersByCryptoChart orders={orders} />
           <UserCryptoHoldingsStackedBar orders={orders} />
