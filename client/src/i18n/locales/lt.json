@@ -188,6 +188,13 @@
   "admin_orders_card_biggest_order_amount": "Didžiausias kiekis",
   "admin_orders_card_open_orders": "Atviri užsakymai",
   "admin_orders_last_operations": "Naujausios operacijos",
-  "admin_orders_search_placeholder": "Ieškoti pagal naudotoją ar valiutą"
+  "admin_orders_search_placeholder": "Ieškoti pagal naudotoją ar valiutą",
+  "admin_orders_table_user": "Naudotojas",
+  "admin_orders_table_amount": "Kiekis",
+  "admin_orders_table_currency": "Valiuta",
+  "admin_orders_table_status": "Būsena",
+  "admin_orders_table_type": "Tipas",
+  "admin_orders_table_fee": "Mokestis",
+  "admin_orders_table_order_value": "Užsakymo vertė"
 
 }

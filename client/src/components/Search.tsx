@@ -22,9 +22,9 @@ export const Search = ({ placeholderText, onSearch }: ISearchProps) => {
   };
 
   return (
-    <div className="border border-violet-800 rounded-lg md:w-1/2">
+    <div className="flex items-center border border-violet-800 rounded-lg md:w-1/2 w-full">
       <input
-        className="p-2 focus:outline-none"
+        className="p-2 flex-grow bg-transparent focus:outline-none text-white"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         onKeyUp={handleSearch}

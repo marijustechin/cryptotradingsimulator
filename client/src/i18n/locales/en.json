@@ -189,6 +189,13 @@
   "admin_orders_card_biggest_order_amount": "Biggest Order Amount",
   "admin_orders_card_open_orders": "Open Orders",
   "admin_orders_last_operations": "Last Operations",
-  "admin_orders_search_placeholder": "Search by User or Currency"
+  "admin_orders_search_placeholder": "Search by User or Currency",
+  "admin_orders_table_user": "User",
+  "admin_orders_table_amount": "Amount",
+  "admin_orders_table_currency": "Currency",
+  "admin_orders_table_status": "Status",
+  "admin_orders_table_type": "Type",
+  "admin_orders_table_fee": "Fee",
+  "admin_orders_table_order_value": "Order Value"
   
 }
