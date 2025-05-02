@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   generateUsers,
   getSettingsStatus,
   selectFakeUsers,
-} from "../../store/features/admin/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
+} from '../../store/features/admin/settingsSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { ConfirmationModal } from '../../components/ConfirmationModal';
 
 export const SystemFakeUsers = () => {
   const dispatch = useAppDispatch();
@@ -13,12 +13,11 @@ export const SystemFakeUsers = () => {
   const status = useAppSelector(getSettingsStatus);
   const [fakeUsers, setFakeUsers] = useState(0);
   const [ref, setRef] = useState(false);
-  const [password, setPassword] = useState("password1");
+  const [password, setPassword] = useState('password1');
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [orderId, setOrderId] = useState(null); // You can remove or repurpose this if needed
+  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     if (fakeUsersFromStore !== null) setFakeUsers(fakeUsersFromStore);
@@ -35,7 +34,7 @@ export const SystemFakeUsers = () => {
 
   // Modal open handler
   const handleModalOpen = () => {
-    setModalMessage("Are you sure you want to generate fake users?");
+    setModalMessage('Are you sure you want to generate fake users?');
     setIsModalOpen(true);
   };
 
@@ -48,7 +47,7 @@ export const SystemFakeUsers = () => {
   return (
     <main className="bg-gray-800 rounded-xl p-4 shadow">
       <h2>Generate fake Users</h2>
-      {status === "loading" && ref ? (
+      {status === 'loading' && ref ? (
         <div className="p-3 border border-rose-500 rounded-2xl font-semibold text-emerald-500">
           Generating fake users. Just a moment, please...
         </div>

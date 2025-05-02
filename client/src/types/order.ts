@@ -24,7 +24,6 @@ export interface IOrdersHistory {
   open_date: string;
   closed_date: string;
   fee: number;
-
 }
 
 export interface IUserAssets {
@@ -32,6 +31,7 @@ export interface IUserAssets {
   balance: number;
   spotCost: number;
   avgBuyPrice: number;
+  amount: number;
 }
 
 export interface IOrdersHistoryResponse {

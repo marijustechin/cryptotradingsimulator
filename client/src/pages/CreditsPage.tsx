@@ -1,7 +1,6 @@
-import { CreditsTextures } from "../components/creditsDesign/CreditsTextures";
+import { CreditsTextures } from '../components/CreditsDesign/CreditsTextures';
+
 const CreditsPage = () => {
-  return (
-      <CreditsTextures />
-  );
+  return <CreditsTextures />;
 };
 export default CreditsPage;
