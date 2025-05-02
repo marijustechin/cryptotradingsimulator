@@ -6,8 +6,10 @@ import {
 } from '../../store/features/admin/settingsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { ConfirmationModal } from '../../components/ConfirmationModal';
+import { useTranslation } from "react-i18next";
 
 export const SystemFakeUsers = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const fakeUsersFromStore = useAppSelector(selectFakeUsers);
   const status = useAppSelector(getSettingsStatus);
@@ -15,7 +17,6 @@ export const SystemFakeUsers = () => {
   const [ref, setRef] = useState(false);
   const [password, setPassword] = useState('password1');
 
-  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
@@ -23,7 +24,6 @@ export const SystemFakeUsers = () => {
     if (fakeUsersFromStore !== null) setFakeUsers(fakeUsersFromStore);
   }, [fakeUsersFromStore]);
 
-  // Function to trigger fake users generation
   const generateFakeUsers = async () => {
     setRef(true);
     await dispatch(
@@ -32,29 +32,27 @@ export const SystemFakeUsers = () => {
     setRef(false);
   };
 
-  // Modal open handler
   const handleModalOpen = () => {
-    setModalMessage('Are you sure you want to generate fake users?');
+    setModalMessage(t("admin_fake_users_confirm"));
     setIsModalOpen(true);
   };
 
-  // Confirm modal action
   const confirmGenerate = async () => {
-    setIsModalOpen(false); // Close modal
-    await generateFakeUsers(); // Proceed with generating fake users
+    setIsModalOpen(false);
+    await generateFakeUsers();
   };
 
   return (
     <main className="bg-gray-800 rounded-xl p-4 shadow">
-      <h2>Generate fake Users</h2>
-      {status === 'loading' && ref ? (
+      <h2>{t("admin_fake_users_title")}</h2>
+      {status === "loading" && ref ? (
         <div className="p-3 border border-rose-500 rounded-2xl font-semibold text-emerald-500">
-          Generating fake users. Just a moment, please...
+          {t("admin_fake_users_generating")}
         </div>
       ) : (
-        <div className=" flex flex-col gap-3 border border-violet-700 rounded-lg p-2 lg:flex-row lg:justify-around">
+        <div className="flex flex-col gap-3 border border-violet-700 rounded-lg p-2 lg:flex-row lg:justify-around">
           <div className="flex flex-col">
-            <label htmlFor="defaultPassword">Default password</label>
+            <label htmlFor="defaultPassword">{t("admin_fake_users_default_password")}</label>
             <input
               id="defaultPassword"
               value={password}
@@ -64,7 +62,7 @@ export const SystemFakeUsers = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="fake_users">Number of users to generate</label>
+            <label htmlFor="fake_users">{t("admin_fake_users_count")}</label>
             <div className="flex gap-2">
               <input
                 value={fakeUsers}
@@ -80,21 +78,20 @@ export const SystemFakeUsers = () => {
             <button
               className="btn-generic"
               type="button"
-              onClick={handleModalOpen} // Open modal on button click
+              onClick={handleModalOpen}
             >
-              Generate Fake Users
+              {t("admin_fake_users_generate_button")}
             </button>
           </div>
         </div>
       )}
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         isOpen={isModalOpen}
-        title="Confirm Action"
+        title={t("admin_fake_users_modal_title")}
         message={modalMessage}
-        onConfirm={confirmGenerate} // Generate users when confirmed
-        onCancel={() => setIsModalOpen(false)} // Close the modal on cancel
+        onConfirm={confirmGenerate}
+        onCancel={() => setIsModalOpen(false)}
       />
     </main>
   );

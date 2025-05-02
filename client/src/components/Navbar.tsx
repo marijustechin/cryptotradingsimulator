@@ -6,6 +6,7 @@ import { RiBankFill } from "react-icons/ri";
 import { NavLink } from "react-router";
 import SevenDuck from "/logo.png";
 
+
 export const Navbar = () => {
   return (
     <div className="flex flex-col h-screen bg-black text-white p-4 w-60">

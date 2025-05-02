@@ -7,8 +7,10 @@ import { useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { Logout } from '../header/Logout';
 import { LanguageSelector } from './LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
+  const { t } = useTranslation();
   const user = useAppSelector(selectUser);
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,11 +55,11 @@ export const Header = () => {
           {mainNavLinks
             .filter(
               (link) =>
-                (!isDashboardPage && user.id) || link.title !== 'My Dashboard'
+                (!isDashboardPage && user.id) || link.title !== 'nav_my_dashboard'
             )
             .map((link) => {
               const correctedHref =
-                link.title === 'My Dashboard' && isAdmin
+                link.title === 'nav_my_dashboard' && isAdmin
                   ? '/dashboard'
                   : link.href;
 
@@ -71,7 +73,7 @@ export const Header = () => {
                         : ''
                     }`}
                   >
-                    {link.title}
+                    {t(link.title)}
                   </Link>
                 </div>
               );
@@ -93,7 +95,7 @@ export const Header = () => {
                       : ''
                   }`}
                 >
-                  {link.title}
+                  {t(link.title)}
                 </Link>
               </div>
             ))
@@ -115,10 +117,10 @@ export const Header = () => {
           {isOpen && (
             <div className="md:hidden bg-gray-900 absolute top-15 right-3 border-1 border-gray-600 p-4 text-center rounded-[7px] z-50">
               {mainNavLinks
-                .filter((link) => user.id ?? link.title !== 'My Dashboard')
+                .filter((link) => user.id ?? link.title !== 'nav_my_dashboard')
                 .map((link) => {
                   const correctedHref =
-                    link.title === 'My Dashboard' && isAdmin
+                    link.title === 'nav_my_dashboard' && isAdmin
                       ? '/dashboard'
                       : link.href;
 
@@ -128,7 +130,7 @@ export const Header = () => {
                       onClick={() => menuOpenOrClose()}
                       key={link.href}
                     >
-                      <Link to={correctedHref}>{link.title}</Link>
+                      <Link to={correctedHref}>{t(link.title)}</Link>
                     </button>
                   );
                 })}
@@ -151,7 +153,7 @@ export const Header = () => {
                       index === registerLinks.length - 1 ? 'btn-generic' : ''
                     }`}
                   >
-                    {link.title}
+                    {t(link.title)}
                   </Link>
                 </div>
               ))

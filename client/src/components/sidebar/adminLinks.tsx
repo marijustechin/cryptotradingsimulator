@@ -3,8 +3,9 @@ import { ISSidebar } from '../../types/sidebar';
 import { FaCog, FaRegUser, FaMoneyBillWave } from 'react-icons/fa';
 
 export const adminLinks: ISSidebar[] = [
-  { title: 'Dashboard', href: '/dashboard', icon: <MdOutlineSpaceDashboard /> },
-  { title: 'Settings', href: '/dashboard/settings', icon: <FaCog /> },
-  { title: 'Users', href: '/dashboard/users', icon: <FaRegUser /> },
-  { title: 'Orders', href: '/dashboard/orders', icon: <FaMoneyBillWave /> }, 
+  { title: 'nav_dashboard', href: '/dashboard', icon: <MdOutlineSpaceDashboard /> },
+  { title: 'nav_settings', href: '/dashboard/settings', icon: <FaCog /> },
+  { title: 'nav_users', href: '/dashboard/users', icon: <FaRegUser /> },
+  { title: 'nav_orders', href: '/dashboard/orders', icon: <FaMoneyBillWave /> },
 ];
+

@@ -5,6 +5,7 @@ import {
 } from '../../store/features/admin/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 interface RenderLabelProps {
   cx: number;
@@ -16,21 +17,21 @@ interface RenderLabelProps {
 }
 
 export const DashboardCardUsers = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const usersInfo = useAppSelector(selectAdminUserInfo);
 
   const [outerRadius, setOuterRadius] = useState(90);
 
-  // Responsive outerRadius based on screen width
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 766) setOuterRadius(80); // sm
-      else if (width < 1000) setOuterRadius(60); // md
-      else setOuterRadius(90); // lg and up
+      if (width < 766) setOuterRadius(80);
+      else if (width < 1000) setOuterRadius(60);
+      else setOuterRadius(90);
     };
 
-    handleResize(); // Initial setup
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -45,8 +46,11 @@ export const DashboardCardUsers = () => {
   const inactiveUsers = usersInfo ? usersInfo.userCount - activeUsers : 0;
 
   const data = [
-    { name: 'Active', value: activeUsers },
-    { name: 'Inactive', value: inactiveUsers },
+    { name: t('admin_card_active_users'), value: activeUsers },
+    {
+      name: t('admin_card_inactive_users'),
+      value: inactiveUsers,
+    },
   ];
 
   const COLORS = ['#4ade80', '#818cf8'];
@@ -79,27 +83,25 @@ export const DashboardCardUsers = () => {
 
   return (
     <div className="bg-gray-800 p-4 rounded-xl shadow-lg backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full h-full">
-      {/* Left side: user stats and legend */}
       <div className="flex flex-col justify-center gap-4">
         <div>
-          <h3>Monthly Activity</h3>
-          <h5 className="mt-2 font-semibold text-emerald-500">
-            Total users: {usersInfo?.userCount}
+          <h3>{t('admin_card_monthly_activity')}</h3>
+          <h5 className='mt-2 font-semibold text-emerald-500'>
+            {t('admin_card_total_users')}: {usersInfo?.userCount}
           </h5>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="bg-[#10B981] w-4 h-4 rounded-sm"></div>
-          <p className="text-white">Active users</p>
+          <p className="text-white">{t('admin_card_active_users')}</p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="bg-[#818cf8] w-4 h-4 rounded-sm"></div>
-          <p className="text-white">Inactive users</p>
+          <p className="text-white">{t('admin_card_inactive_users')}</p>
         </div>
       </div>
 
-      {/* Right side: Pie Chart */}
       <div className="w-full h-50">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>

@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -14,14 +15,16 @@ interface ConfirmationModalProps {
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isOpen,
-  title = 'Confirm Action',
+  title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   onConfirm,
   onCancel,
   children,
 }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
@@ -37,22 +40,22 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           className="bg-violet-700 p-6 rounded-2xl shadow-lg w-96 text-center"
-          // reikia sustabdyti is tevo
-          // paveldeta onclik funkcija
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-xl font-semibold mb-2">{title}</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            {title || t('modal_confirm_title')}
+          </h2>
 
           <p className="text-violet-100 mb-4">{message}</p>
 
           {children}
-          
+
           <div className="flex justify-center gap-4">
             <Button onClick={onCancel} className="btn-generic">
-              {cancelText}
+              {cancelText || t('modal_cancel')}
             </Button>
             <Button onClick={onConfirm} className="btn-red">
-              {confirmText}
+              {confirmText || t('modal_confirm')}
             </Button>
           </div>
         </motion.div>

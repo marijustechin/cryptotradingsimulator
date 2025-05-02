@@ -1,7 +1,9 @@
 import { useAppDispatch } from '../../store/store';
 import { logoutUser } from '../../store/features/user/authSlice';
+import { useTranslation } from 'react-i18next';
 
 export const Logout = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const logout = () => {
@@ -14,7 +16,7 @@ export const Logout = () => {
 
   return (
     <button onClick={logout} className="btn-generic">
-      Logout
+      {t('nav_logout')}
     </button>
   );
 };

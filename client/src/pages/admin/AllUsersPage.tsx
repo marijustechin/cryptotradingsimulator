@@ -17,8 +17,10 @@ import { Search } from '../../components/Search';
 import { ConfirmationModal } from '../../components/ConfirmationModal';
 import toast from 'react-hot-toast';
 import HelperService from '../../services/HelperService';
+import { useTranslation } from 'react-i18next';
 
 const AllUsersPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const allUsers = useAppSelector(selectAllUsers);
   const totalPages = useAppSelector(getTotalPages);
@@ -42,10 +44,6 @@ const AllUsersPage = () => {
   };
 
   const handleSorting = (newOptions: string) => {
-    // busenos atnaujinimas yra asinchroninis!!!
-    // 1. todel setSortOrder neatsinaujina is karto
-    //    t.y. kitoje kodo eiluteje update nesimato
-    // 2. taip uztikrinam, kad pries dispatch butu naujausia busena
     setSortOrder((prevOrder) => {
       const newOrder = prevOrder === 'asc' ? 'desc' : 'asc';
       setSortField(newOptions);
@@ -60,14 +58,12 @@ const AllUsersPage = () => {
     dispatch(setFilter({ filter: newFilter }));
   };
 
-  // einam duomenu visada,
-  // kai atnaujinamas `filter`
   useEffect(() => {
     dispatch(getAllUsersInfo());
   }, [filter, dispatch]);
 
   const handleModalOpen = (id: string, name: string) => {
-    setModalMessage(`Do you want to delete user "${name}"?`);
+    setModalMessage(t('admin_all_users_confirm_delete', { name }));
     setDelUser({ id: id, name: name });
     setIsModalOpen(true);
   };
@@ -79,23 +75,22 @@ const AllUsersPage = () => {
     }
     setDelUser({ id: '', name: '' });
     setModalMessage('');
-    toast.success('User deleted');
+    toast.success(t('admin_all_users_deleted'));
   };
 
   return (
     <main className='w-full'>
-      <h1 className="text-center">All Platform Users </h1>
+      <h1 className="text-center">{t('admin_all_users_title')}</h1>
       <div className='flex gap-2 py-3 items-center flex-col md:flex-row'>
         <Search
-          placeholderText='Search by First Name'
+          placeholderText={t('admin_all_users_search_first_name')}
           onSearch={(searchText) => handleFilter(searchText, 'first_name')}
         />
         <Search
-          placeholderText='Search by Email'
+          placeholderText={t('admin_all_users_search_email')}
           onSearch={(searchText) => handleFilter(searchText, 'email')}
         />
       </div>
-      {/* nauja lentele ========================================= */}
       <div className="w-full overflow-x-auto">
         <table className='table border-separate border-spacing-y-2 w-full min-w-[1000px]'>
           <thead>
@@ -107,7 +102,7 @@ const AllUsersPage = () => {
                 scope='col'
               >
                 <span className='flex gap-1 items-center'>
-                  <span>First name</span>
+                  <span>{t('admin_all_users_table_first_name')}</span>
                   <span className='ml-2 text-violet-300'>
                     {sortField === 'first_name' &&
                       (sortOrder === 'asc' ? (
@@ -124,7 +119,7 @@ const AllUsersPage = () => {
                 scope='col'
               >
                 <span className='flex gap-1 items-center'>
-                  <span>Email</span>
+                  <span>{t('admin_all_users_table_email')}</span>
                   <span className='ml-2 text-violet-300'>
                     {sortField === 'email' &&
                       (sortOrder === 'asc' ? (
@@ -135,9 +130,9 @@ const AllUsersPage = () => {
                   </span>
                 </span>
               </th>
-              <th>Balance</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th>{t('admin_all_users_table_balance')}</th>
+              <th>{t('admin_all_users_table_role')}</th>
+              <th>{t('admin_all_users_table_actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -156,7 +151,7 @@ const AllUsersPage = () => {
                     onClick={() => handleModalOpen(user.id, user.first_name)}
                     className='cursor-pointer text-violet-500 hover:text-violet-400'
                   >
-                    ❌ Delete
+                    ❌ {t('admin_all_users_delete_button')}
                   </button>
                 </td>
               </tr>
@@ -164,7 +159,6 @@ const AllUsersPage = () => {
           </tbody>
         </table>
       </div>
-      {/* naujos lenteles pagaiga ========================================= */}
 
       <Pagination
         onChange={(current) => handlePageChange(current)}
@@ -173,7 +167,7 @@ const AllUsersPage = () => {
       />
       <ConfirmationModal
         isOpen={isModalOpen}
-        title='Delete user'
+        title={t('admin_all_users_modal_title')}
         message={modalMessage}
         onConfirm={confirmDelete}
         onCancel={() => setIsModalOpen(false)}
@@ -181,4 +175,5 @@ const AllUsersPage = () => {
     </main>
   );
 };
+
 export default AllUsersPage;

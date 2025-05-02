@@ -9,8 +9,10 @@ import { OrdersTable } from "../../components/admin/OrdersTable";
 import { Search } from "../../components/Search";
 import helperService from "../../services/HelperService";
 import { DashboardOrdersCard } from "../../components/admin/DasboardOrdersCard";
+import { useTranslation } from "react-i18next";
 
 export default function AdminOrdersPage() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const orderInfo = useAppSelector(selectAdminOrderInfo);
   const orders = orderInfo?.AllOrdersWithUsers?.orders ?? [];
@@ -113,78 +115,79 @@ export default function AdminOrdersPage() {
 
   return (
     <main>
-      <h1 className="text-center">Platform Orders Summary</h1>
+      <h1 className="text-center">{t('admin_orders_title')}</h1>
 
-      {/* Dashboard cards */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
         <DashboardOrdersCard
-          title="Total Value"
+          title={t('admin_orders_card_total_value')}
           value={helperService.formatCurrency(Number(stats.totalValue))}
         />
         <DashboardOrdersCard
-          title="Total Fees"
-          value={helperService.formatCurrency(
-            Number(stats.totalFees)
-          )}
+          title={t('admin_orders_card_total_fees')}
+          value={helperService.formatCurrency(Number(stats.totalFees))}
         />
         <DashboardOrdersCard
-          title="Total Amount"
+          title={t('admin_orders_card_total_amount')}
           value={stats.totalAmount.toFixed(6)}
         />
-        <DashboardOrdersCard title="Unique Users" value={stats.uniqueUsers} />
         <DashboardOrdersCard
-          title="Avg. Order Value"
+          title={t('admin_orders_card_unique_users')}
+          value={stats.uniqueUsers}
+        />
+        <DashboardOrdersCard
+          title={t('admin_orders_card_avg_order_value')}
           value={helperService.formatCurrency(Number(stats.averageValue))}
         />
         <DashboardOrdersCard
-          title="Avg. Order Fee"
+          title={t('admin_orders_card_avg_order_fee')}
           value={helperService.formatCurrency(Number(stats.averageFee))}
         />
         <DashboardOrdersCard
-          title="Avg. Order Amount"
+          title={t('admin_orders_card_avg_order_amount')}
           value={stats.averageOrderSize}
         />
-
         <DashboardOrdersCard
-          title="Most Active Currency"
+          title={t('admin_orders_card_most_active_currency')}
           value={stats.mostActiveCurrency.slice(0, 3)}
         />
         <DashboardOrdersCard
-          title="Biggest Order Value"
+          title={t('admin_orders_card_biggest_order_value')}
           value={helperService.formatCurrency(stats.biggestValue)}
         />
         <DashboardOrdersCard
-          title="Biggest Fee Paid"
+          title={t('admin_orders_card_biggest_fee_paid')}
           value={helperService.formatCurrency(stats.biggestFee)}
         />
         <DashboardOrdersCard
-          title="Biggest Order Amount"
+          title={t('admin_orders_card_biggest_order_amount')}
           value={stats.biggestAmount.toFixed(6)}
         />
-        <DashboardOrdersCard title="Open Orders" value={stats.activeOrders} />
+        <DashboardOrdersCard
+          title={t('admin_orders_card_open_orders')}
+          value={stats.activeOrders}
+        />
       </div>
 
       <h2 className="text-2xl font-semibold text-white mb-2">
-        Last Operations
+        {t('admin_orders_last_operations')}
       </h2>
 
-      {/* Search */}
       <div className="flex gap-4 items-center mb-4">
         <Search
-          placeholderText="Search by User or Currency"
+          placeholderText={t('admin_orders_search_placeholder')}
           onSearch={handleSearch}
         />
       </div>
       <div className="w-full">
-  <OrdersTable
-    paginatedOrders={paginatedOrders}
-    sortField={sortField}
-    sortOrder={sortOrder}
-    setSortField={setSortField}
-    setSortOrder={setSortOrder}
-  />
-</div>
-      {/* Pagination */}
+        <OrdersTable
+          paginatedOrders={paginatedOrders}
+          sortField={sortField}
+          sortOrder={sortOrder}
+          setSortField={setSortField}
+          setSortOrder={setSortOrder}
+        />
+      </div>
+
       <Pagination
         onChange={(page) => setCurrentPage(page)}
         totalPages={Math.ceil(sortedAndFilteredOrders.length / ordersPerPage)}

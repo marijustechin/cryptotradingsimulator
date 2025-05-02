@@ -1,5 +1,6 @@
 import { FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa";
 import HelperService from "../../services/HelperService";
+import { useTranslation } from "react-i18next";
 
 export interface AdminOrder {
   id: number;
@@ -29,6 +30,8 @@ export const OrdersTable = ({
   setSortField,
   setSortOrder,
 }: OrdersTableProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full overflow-x-auto">
       <table className="min-w-[1000px] border-separate border-spacing-y-2 w-full">
@@ -42,7 +45,7 @@ export const OrdersTable = ({
               }}
             >
               <div className="flex gap-1 items-center">
-                <span>User</span>
+                <span>{t('admin_orders_table_user')}</span>
                 {sortField === "user" && (
                   <span className="ml-2 text-violet-300">
                     {sortOrder === "asc" ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />}
@@ -58,7 +61,7 @@ export const OrdersTable = ({
               }}
             >
               <div className="flex gap-1 items-center">
-                <span>Amount</span>
+                <span>{t('admin_orders_table_amount')}</span>
                 {sortField === "amount" && (
                   <span className="ml-2 text-violet-300">
                     {sortOrder === "asc" ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />}
@@ -66,11 +69,11 @@ export const OrdersTable = ({
                 )}
               </div>
             </th>
-            <th className="whitespace-nowrap px-4 py-2">Currency</th>
-            <th className="whitespace-nowrap px-4 py-2">Status</th>
-            <th className="whitespace-nowrap px-4 py-2">Type</th>
-            <th className="whitespace-nowrap px-4 py-2">Fee</th>
-            <th className="whitespace-nowrap px-4 py-2">Order Value</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left">{t('admin_orders_table_currency')}</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left">{t('admin_orders_table_status')}</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left">{t('admin_orders_table_type')}</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left">{t('admin_orders_table_fee')}</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left">{t('admin_orders_table_order_value')}</th>
           </tr>
         </thead>
         <tbody>

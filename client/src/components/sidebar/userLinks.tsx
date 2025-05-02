@@ -5,17 +5,24 @@ import { RiBankFill } from 'react-icons/ri';
 
 export const userLinks: ISSidebar[] = [
   {
-    title: 'Dashboard',
+    title: 'nav_dashboard',
     href: '/my-dashboard',
     icon: <MdOutlineSpaceDashboard />,
   },
-  { title: 'Trading', href: '/my-dashboard/trading', icon: <RiBankFill /> },
   {
-    title: 'Orders',
+    title: 'nav_trading',
+    href: '/my-dashboard/trading',
+    icon: <RiBankFill />,
+  },
+  {
+    title: 'nav_orders',
     href: '/my-dashboard/orders',
     icon: <FaMoneyBillWave />,
   },
-  // { title: 'Kol kas neaisku', href: '/my-dashboard', icon: <FaShoppingCart /> },
-  // { title: 'Sugalvosim', href: '/my-dashboard', icon: <FaCog /> },
-  { title: 'Profile', href: '/my-dashboard/profile', icon: <FaRegUser /> },
+  {
+    title: 'nav_profile',
+    href: '/my-dashboard/profile',
+    icon: <FaRegUser />,
+  },
 ];
+
