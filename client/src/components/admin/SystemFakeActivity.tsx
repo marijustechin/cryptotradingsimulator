@@ -5,7 +5,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { useState } from 'react';
 import { getGeneralInfo } from '../../store/features/admin/adminSlice';
-import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { ConfirmationModal } from '../../components/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 
 export const SystemFakeActivity = () => {
@@ -14,9 +14,8 @@ export const SystemFakeActivity = () => {
   const status = useAppSelector(getSettingsStatus);
 
   const [ref, setRef] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const [orderId, setOrderId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [modalMessage, setModalMessage] = useState(''); // Modal message
 
   const generateFakeActivity = async () => {
     setRef(true);
@@ -36,10 +35,10 @@ export const SystemFakeActivity = () => {
   };
 
   return (
-    <main className='bg-gray-800 rounded-xl p-4 shadow'>
+    <main className="bg-gray-800 rounded-xl p-4 shadow">
       <h2>{t('admin_fake_activity_title')}</h2>
       {status === 'loading' && ref ? (
-        <div className='p-3 border border-rose-500 rounded-2xl font-semibold text-emerald-500'>
+        <div className="p-3 border border-rose-500 rounded-2xl font-semibold text-emerald-500">
           {t('admin_fake_activity_generating')}
         </div>
       ) : (
@@ -48,8 +47,8 @@ export const SystemFakeActivity = () => {
             {t('admin_fake_activity_description')}
           </p>
           <button
-            onClick={handleModalOpen}
-            className='btn-generic'
+            onClick={handleModalOpen} // Open modal when button is clicked
+            className="btn-generic"
           >
             {t('admin_fake_activity_button')}
           </button>

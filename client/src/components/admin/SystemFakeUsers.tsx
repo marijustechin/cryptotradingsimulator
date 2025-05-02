@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   generateUsers,
   getSettingsStatus,
   selectFakeUsers,
-} from "../../store/features/admin/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
+} from '../../store/features/admin/settingsSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { ConfirmationModal } from '../../components/ConfirmationModal';
 import { useTranslation } from "react-i18next";
 
 export const SystemFakeUsers = () => {
@@ -15,11 +15,10 @@ export const SystemFakeUsers = () => {
   const status = useAppSelector(getSettingsStatus);
   const [fakeUsers, setFakeUsers] = useState(0);
   const [ref, setRef] = useState(false);
-  const [password, setPassword] = useState("password1");
+  const [password, setPassword] = useState('password1');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [orderId, setOrderId] = useState(null);
+  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     if (fakeUsersFromStore !== null) setFakeUsers(fakeUsersFromStore);

@@ -9,9 +9,6 @@ import {
   IOrdersHistory,
   IUserAssets,
 } from '../../../types/order';
-import { setCurrentPage } from '../user/allUsersSlice';
-import { Root } from 'react-dom/client';
-import { setUserBalance } from '../user/authSlice';
 
 // aprasom kaip atrodo state
 interface OrdersState {
@@ -79,8 +76,9 @@ export const getOrdersHistory = createAsyncThunk<
 >(
   'orders/getOrdersHistory',
   async ({ page, limit = 10 }, { getState, rejectWithValue }) => {
+    const userId = getState().auth.user.id;
+    if (!userId) return rejectWithValue('No active user');
     try {
-      const userId = getState().auth.user.id;
       const query = `?page=${page}&limit=${limit}`;
       const response = await OrdersService.getOrdersHistory(userId, query);
       return response;
@@ -93,11 +91,7 @@ export const getOrdersHistory = createAsyncThunk<
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {
-    setUserBalance: (state, action) => {
-      state.balance = action.payload;
-    },
-  }, // jei reikia kokiu veiksmu su state
+  reducers: {}, // jei reikia kokiu veiksmu su state
   // tvarkome asinchroninius veiksmus
   extraReducers: (builder) => {
     builder
@@ -131,8 +125,7 @@ export const ordersSlice = createSlice({
         state.ordersHistory.data = action.payload.orders;
         state.ordersHistory.limit =
           action.payload.limit ?? state.ordersHistory.limit;
-        (state.ordersHistory.totalPages = action.payload.totalPages),
-          (state.ordersHistory.totalOrders = action.payload.totalOrders);
+
         state.status = 'succeeded';
       })
       .addCase(getOrdersHistory.rejected, (state, action) => {
@@ -145,7 +138,5 @@ export const selectOpenOrders = (state: RootState) => state.orders.openOrders;
 export const selectOrdersHistory = (state: RootState) =>
   state.orders.ordersHistory;
 export const selectUserAssets = (state: RootState) => state.orders.userAssets;
-export const selectCurrentPage = (state: RootState) =>
-  state.orders.ordersHistory.currentPage;
 
 export default ordersSlice.reducer;

@@ -1,9 +1,6 @@
 import { MdOutlineSpaceDashboard } from 'react-icons/md';
 import { ISSidebar } from '../../types/sidebar';
-import {
-  FaMoneyBillWave,
-  FaRegUser,
-} from 'react-icons/fa';
+import { FaMoneyBillWave, FaRegUser } from 'react-icons/fa';
 import { RiBankFill } from 'react-icons/ri';
 
 export const userLinks: ISSidebar[] = [

@@ -1,8 +1,6 @@
-import { HowToTradeTextures } from "../components/howToTrade/HowToTradeTextures";
+import { HowToTradeTextures } from '../components/HowToTrade/HowToTradeTextures';
 
 const HowToTradePage = () => {
-  return (
-      <HowToTradeTextures />
-  );
+  return <HowToTradeTextures />;
 };
 export default HowToTradePage;

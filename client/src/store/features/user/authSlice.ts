@@ -117,10 +117,7 @@ export const fetchUserInfo = createAsyncThunk<
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
-    {
-      email,
-      password,
-    }: { email: string; password: string; first_name: string },
+    { email, password }: { email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
