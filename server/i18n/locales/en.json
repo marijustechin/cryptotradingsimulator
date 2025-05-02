@@ -1,0 +1,7 @@
+{
+"wallet_not_found": "Wallet not found",
+"order_filled_buy": "Your entire order has been filled\nBought {{amount}} {{assetId}} at ${{price}}",
+"order_filled_sell": "Your entire order has been filled\nSold {{amount}} {{assetId}} contracts at ${{price}}",
+"order_submitted_buy": "Order submitted successfully\n{{amount}} {{assetId}} will be bought at ${{price}}",
+"order_submitted_sell": "Order submitted successfully\n{{amount}} {{assetId}} will be sold at ${{price}}"
+}

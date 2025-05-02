@@ -6,6 +6,7 @@ const { nanoid } = require('nanoid');
 const ProfitService = require('./profit.service');
 const helperService = require('./helper.service');
 const EmailService = require('./email.service');
+const i18n = require('../i18n/i18n');
 
 class TradeService {
   async buyCrypto(
@@ -35,7 +36,11 @@ class TradeService {
       });
 
       if (!userWallet) {
-        throw new Error('Wallet not found for user');
+        throw new ApiError.NotFound(
+          404,
+          'wallet_not_found',
+          i18n.t('wallet_not_found')
+        );
       }
 
       if (ord_direct === 'buy') {
@@ -88,21 +93,29 @@ class TradeService {
 
       if (ord_type === 'market' && ord_direct === 'buy') {
         return {
-          message: `Your entire order has been filled\nBought ${amount} ${assetId} at $${price}`,
+          message: i18n.t('order_filled_buy', { amount, assetId, price }),
         };
       } else if (ord_type === 'market' && ord_direct === 'sell') {
         return {
-          message: `Your entire order has been filled\nSold ${amount} ${assetId} contracts at $${price}`,
+          message: i18n.t('order_filled_sell', { amount, assetId, price }),
         };
       }
 
       if (ord_type === 'limit' && ord_direct === 'buy') {
         return {
-          message: `Order Submitted Succesfully\n${amount} ${assetId} will be bought at $${triggerPrice} price`,
+          message: i18n.t('order_submitted_buy', {
+            amount,
+            assetId,
+            price: triggerPrice,
+          }),
         };
       } else if (ord_type === 'limit' && ord_direct === 'sell') {
         return {
-          message: `Order Submitted Succesfully\n${amount} ${assetId} will be sold at $${triggerPrice} price`,
+          message: i18n.t('order_submitted_sell', {
+            amount,
+            assetId,
+            price: triggerPrice,
+          }),
         };
       }
     } catch (err) {
@@ -323,93 +336,95 @@ class TradeService {
 
   async editUserOrder(id, userId, triggerPrice, amount) {
     const transaction = await sequelize.transaction();
-  
+
     try {
       const findOrder = await orders.findOne({
         where: { id, userId: userId },
         transaction,
       });
-  
+
       if (!findOrder) {
         throw new Error("Order does not exist or doesn't belong to this user");
       }
-  
+
       // Current values
       const currentTriggerPrice = parseFloat(findOrder.triggerPrice);
       const currentAmount = parseFloat(findOrder.amount);
       const oldOrderValue = currentTriggerPrice * currentAmount;
-  
+
       const newTriggerPrice =
-        triggerPrice !== undefined ? parseFloat(triggerPrice) : currentTriggerPrice;
+        triggerPrice !== undefined
+          ? parseFloat(triggerPrice)
+          : currentTriggerPrice;
       const newAmount =
         amount !== undefined ? parseFloat(amount) : currentAmount;
-  
+
       // ✅ Validation
       if (isNaN(newTriggerPrice) || newTriggerPrice <= 0) {
-        throw new Error("Invalid trigger price");
+        throw new Error('Invalid trigger price');
       }
       if (isNaN(newAmount) || newAmount <= 0) {
-        throw new Error("Invalid amount");
+        throw new Error('Invalid amount');
       }
-  
+
       const systemSettings = await settings.findOne();
       const feeRate = systemSettings.limit_order_fee;
-  
+
       const newOrderValue = newTriggerPrice * newAmount;
-  
+
       // 🔄 Fee calculation
       const oldFee = oldOrderValue * feeRate;
       const newFee = newOrderValue * feeRate;
       const feeDifference = newFee - oldFee;
-  
+
       const userWallet = await wallet.findOne({
         where: { user_id: userId },
         transaction,
       });
-  
+
       const balance = parseFloat(userWallet.balance);
-  
+
       // 💰 Wallet balance logic
       if (feeDifference > 0) {
         // Order became more expensive, need to deduct extra fee + value
-        const totalRequired = (newOrderValue - oldOrderValue) + feeDifference;
-  
+        const totalRequired = newOrderValue - oldOrderValue + feeDifference;
+
         if (balance < totalRequired) {
-          throw new Error("Not enough balance to apply order changes");
+          throw new Error('Not enough balance to apply order changes');
         }
-  
+
         userWallet.balance = balance - totalRequired;
       } else if (feeDifference < 0) {
         // Order became cheaper, refund value + fee difference
-        const totalRefund = Math.abs(newOrderValue - oldOrderValue) + Math.abs(feeDifference);
+        const totalRefund =
+          Math.abs(newOrderValue - oldOrderValue) + Math.abs(feeDifference);
         userWallet.balance = balance + totalRefund;
       }
-  
+
       await userWallet.save({ transaction });
-  
+
       // 📝 Update order fields (including fee!)
       const fieldsToUpdate = {
         fee: newFee,
       };
-  
-      if (triggerPrice !== undefined) fieldsToUpdate.triggerPrice = newTriggerPrice;
+
+      if (triggerPrice !== undefined)
+        fieldsToUpdate.triggerPrice = newTriggerPrice;
       if (amount !== undefined) fieldsToUpdate.amount = newAmount;
-  
+
       await orders.update(fieldsToUpdate, {
         where: { id },
         transaction,
       });
-  
+
       await transaction.commit();
-      return "Order was updated successfully!";
+      return 'Order was updated successfully!';
     } catch (error) {
       await transaction.rollback();
-      console.error("Failed to edit user order:", error);
+      console.error('Failed to edit user order:', error);
       throw error;
     }
   }
-  
-  
 }
 
 module.exports = new TradeService();
