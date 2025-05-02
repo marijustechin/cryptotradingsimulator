@@ -1,13 +1,14 @@
-import useWebSocket from 'react-use-websocket';
+import useWebSocket from "react-use-websocket";
 import {
   getUserAssets,
   selectUserAssets,
-} from '../../store/features/orders/ordersSlice';
-import { selectUser } from '../../store/features/user/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { WS_URL } from '../../api/ws';
-import { useEffect, useState, useMemo } from 'react';
-import HelperService from '../../services/HelperService';
+} from "../../store/features/orders/ordersSlice";
+import { selectUser } from "../../store/features/user/authSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { WS_URL } from "../../api/ws";
+import { useEffect, useState, useMemo } from "react";
+import HelperService from "../../services/HelperService";
+import { useTranslation } from "react-i18next";
 
 interface ILivePrices {
   symbol: string;
@@ -19,6 +20,7 @@ export const UserAssets = () => {
   const userAssets = useAppSelector(selectUserAssets);
   const user = useAppSelector(selectUser);
   const [livePrices, setLivePrices] = useState<ILivePrices[]>([]);
+  const { t } = useTranslation();
 
   // Fetch user's asset summary
   useEffect(() => {
@@ -32,7 +34,7 @@ export const UserAssets = () => {
     share: false,
     shouldReconnect: () => true,
     onOpen: () => {
-      sendJsonMessage({ type: 'subscribe', role: 'live' });
+      sendJsonMessage({ type: "subscribe", role: "live" });
     },
     onMessage: (event) => {
       const parsedData = JSON.parse(event.data);
@@ -89,50 +91,50 @@ export const UserAssets = () => {
   }, [userAssets, priceMap]);
 
   return (
-    <div className='w-full overflow-x-auto'>
-      <table className='table border-spacing-y-2 min-w-full table-auto border-separate'>
+    <div className="w-full overflow-x-auto">
+      <table className="table border-spacing-y-2 min-w-full table-auto border-separate">
         <thead>
-          <tr className='text-white bg-gray-800'>
-            <th className='w-1/6'>Asset</th>
-            <th className='w-1/6'>Net Asset Value</th>
-            <th className='w-1/6'>Qty</th>
-            <th className='w-1/6'>Spot Cost</th>
-            <th className='w-1/6'>Last Price</th>
-            <th className='w-1/6'>PnL</th>
+          <tr className="text-white bg-gray-800">
+            <th className="w-1/6">{t("asset")}</th>
+            <th className="w-1/6">{t("net_asset_value")}</th>
+            <th className="w-1/6">{t("qty")}</th>
+            <th className="w-1/6">{t("spot_cost")}</th>
+            <th className="w-1/6">{t("last_price")}</th>
+            <th className="w-1/6">{t("pnl")}</th>
           </tr>
         </thead>
         <tbody>
-          <tr className='bg-gray-700'>
-            <td className='w-1/6'>USD</td>
-            <td className='w-1/6'>
+          <tr className="bg-gray-700">
+            <td className="w-1/6">USD</td>
+            <td className="w-1/6">
               {HelperService.formatCurrency(Number(user.balance))}
             </td>
-            <td className='w-1/6'>—</td>
-            <td className='w-1/6'>—</td>
-            <td className='w-1/6'>—</td>
-            <td className='w-1/6'>—</td>
+            <td className="w-1/6">—</td>
+            <td className="w-1/6">—</td>
+            <td className="w-1/6">—</td>
+            <td className="w-1/6">—</td>
           </tr>
           {assetRows.map((row, index) => (
             <tr
-              className={index % 2 ? 'bg-gray-700' : 'bg-gray-800'}
+              className={index % 2 ? "bg-gray-700" : "bg-gray-800"}
               key={row.asset}
             >
               <td>{row.asset.slice(0, 3)}</td>
-              <td className='w-1/6'>
+              <td className="w-1/6">
                 {HelperService.formatCurrency(Number(row.netAssetValue))}
               </td>
               <td>{row.balance.toFixed(6)}</td>
-              <td className='w-1/6'>
+              <td className="w-1/6">
                 {HelperService.formatCurrency(Number(row.spotCost))}
               </td>
-              <td className='w-1/6'>
+              <td className="w-1/6">
                 {HelperService.formatCurrency(Number(row.lastPrice))}
               </td>
               <td
                 className={`w-1/6 flex flex-col ${
                   parseFloat(row.pnlAmount) >= 0
-                    ? 'text-green-500'
-                    : 'text-red-500'
+                    ? "text-green-500"
+                    : "text-red-500"
                 }`}
               >
                 <div>{HelperService.formatCurrency(Number(row.pnlAmount))}</div>

@@ -1,11 +1,12 @@
-import { FaRegFileExcel, FaRegFilePdf } from 'react-icons/fa';
-import { IOpenOrder, IOrdersHistory } from '../../types/order';
-import { jsPDF } from 'jspdf';
-import { autoTable } from 'jspdf-autotable';
-import toast from 'react-hot-toast';
-import HelperService from '../../services/HelperService';
-import { saveAs } from 'file-saver';
-import ExcelJS from 'exceljs';
+import { FaRegFileExcel, FaRegFilePdf } from "react-icons/fa";
+import { IOpenOrder, IOrdersHistory } from "../../types/order";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
+import toast from "react-hot-toast";
+import HelperService from "../../services/HelperService";
+import { saveAs } from "file-saver";
+import ExcelJS from "exceljs";
+import { useTranslation } from "react-i18next";
 
 interface DataExportProps {
   openOrders?: IOpenOrder[] | null;
@@ -13,35 +14,37 @@ interface DataExportProps {
 }
 
 export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
+  const { t } = useTranslation();
+
   const exportToPdf = async () => {
     const pdf = new jsPDF();
 
     if (openOrders) {
       if (openOrders.length === 0) {
-        toast.error('No data to export');
+        toast.error("No data to export");
         return;
       }
 
-      pdf.setProperties({ title: 'Open Orders' });
+      pdf.setProperties({ title: "Open Orders" });
       pdf.setFontSize(18);
-      pdf.text('Orders History', 14, 20);
+      pdf.text("Orders History", 14, 20);
       pdf.setFontSize(12);
       pdf.text(`Date: ${new Date().toLocaleString()}`, 14, 28);
 
       const logoBase64 = await HelperService.getBase64FromUrl(
-        'http://localhost:5173/logo.png'
+        "http://localhost:5173/logo.png"
       );
 
-      pdf.addImage(logoBase64, 'PNG', 170, 10, 20, 20);
+      pdf.addImage(logoBase64, "PNG", 170, 10, 20, 20);
 
       const tableHead = [
-        'Market',
-        'Order Type',
-        'Direction',
-        'Entry Price',
-        'Order Qty',
-        'Order Time',
-        'Order Value',
+        "Market",
+        "Order Type",
+        "Direction",
+        "Entry Price",
+        "Order Qty",
+        "Order Time",
+        "Order Value",
       ];
 
       const tableBody = openOrders.map((order) => [
@@ -67,29 +70,29 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
     // order history
     if (ordersHistory) {
       if (ordersHistory.length === 0) {
-        toast.error('No data to export');
+        toast.error("No data to export");
       }
 
-      pdf.setProperties({ title: 'Orders History' });
+      pdf.setProperties({ title: "Orders History" });
       pdf.setFontSize(18);
-      pdf.text('Orders History', 14, 20);
+      pdf.text("Orders History", 14, 20);
       pdf.setFontSize(12);
       pdf.text(`Date: ${new Date().toLocaleString()}`, 14, 28);
 
       const logoBase64 = await HelperService.getBase64FromUrl(
-        'http://localhost:5173/logo.png'
+        "http://localhost:5173/logo.png"
       );
 
-      pdf.addImage(logoBase64, 'PNG', 170, 10, 20, 20);
+      pdf.addImage(logoBase64, "PNG", 170, 10, 20, 20);
 
       const tableHead = [
-        'Market', // assetId
-        'Order type', // ord_type
-        'Direction', // ord_direct
-        'Order Price', // orderPrice
-        'Order Qty', // amount
-        'Order Time', // open_date
-        'Order Value', // calculated: orderPrice * amount
+        "Market", // assetId
+        "Order type", // ord_type
+        "Direction", // ord_direct
+        "Order Price", // orderPrice
+        "Order Qty", // amount
+        "Order Time", // open_date
+        "Order Value", // calculated: orderPrice * amount
       ];
 
       const tableBody = ordersHistory.map((order) => [
@@ -116,21 +119,21 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
   const exportToXls = async () => {
     if (openOrders) {
       if (openOrders.length === 0) {
-        toast.error('No data to export');
+        toast.error("No data to export");
         return;
       }
 
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Open Orders');
+      const worksheet = workbook.addWorksheet("Open Orders");
 
       worksheet.columns = [
-        { header: 'Market', key: 'market', width: 15 },
-        { header: 'Order Type', key: 'ord_type', width: 15 },
-        { header: 'Direction', key: 'ord_direct', width: 12 },
-        { header: 'Entry Price', key: 'price', width: 15 },
-        { header: 'Order Qty', key: 'qty', width: 12 },
-        { header: 'Order Time', key: 'time', width: 22 },
-        { header: 'Order Value', key: 'value', width: 15 },
+        { header: "Market", key: "market", width: 15 },
+        { header: "Order Type", key: "ord_type", width: 15 },
+        { header: "Direction", key: "ord_direct", width: 12 },
+        { header: "Entry Price", key: "price", width: 15 },
+        { header: "Order Qty", key: "qty", width: 12 },
+        { header: "Order Time", key: "time", width: 22 },
+        { header: "Order Value", key: "value", width: 15 },
       ];
 
       openOrders.forEach((order) => {
@@ -151,27 +154,27 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
 
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       saveAs(blob, `open-orders-${new Date().toISOString()}.xlsx`);
     }
     if (ordersHistory) {
       if (ordersHistory.length === 0) {
-        toast.error('No data to export');
+        toast.error("No data to export");
         return;
       }
 
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Orders History');
+      const worksheet = workbook.addWorksheet("Orders History");
 
       worksheet.columns = [
-        { header: 'Market', key: 'market', width: 15 },
-        { header: 'Order Type', key: 'orderType', width: 15 },
-        { header: 'Direction', key: 'direction', width: 12 },
-        { header: 'Order Price', key: 'orderPrice', width: 15 },
-        { header: 'Order Qty', key: 'amount', width: 12 },
-        { header: 'Order Time', key: 'orderTime', width: 22 },
-        { header: 'Order Value', key: 'orderValue', width: 18 },
+        { header: "Market", key: "market", width: 15 },
+        { header: "Order Type", key: "orderType", width: 15 },
+        { header: "Direction", key: "direction", width: 12 },
+        { header: "Order Price", key: "orderPrice", width: 15 },
+        { header: "Order Qty", key: "amount", width: 12 },
+        { header: "Order Time", key: "orderTime", width: 22 },
+        { header: "Order Value", key: "orderValue", width: 18 },
       ];
 
       ordersHistory.forEach((order) => {
@@ -190,31 +193,31 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
 
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       saveAs(blob, `orders-history-${new Date().toISOString()}.xlsx`);
     }
   };
 
   return (
-    <div className='flex items-center gap-3'>
-      <p>Export data to:</p>
+    <div className="flex items-center gap-3">
+      <p>{t("export_orders")}</p>
       <button
         onClick={exportToXls}
-        className='cursor-pointer'
-        aria-label='Export to XLS'
+        className="cursor-pointer"
+        aria-label="Export to XLS"
       >
         <FaRegFileExcel
-          className='text-emerald-500 hover:text-emerald-400'
+          className="text-emerald-500 hover:text-emerald-400"
           size={24}
         />
       </button>
       <button
         onClick={exportToPdf}
-        className='cursor-pointer'
-        aria-label='Export to PDF'
+        className="cursor-pointer"
+        aria-label="Export to PDF"
       >
-        <FaRegFilePdf className='text-rose-600 hover:text-rose-500' size={24} />
+        <FaRegFilePdf className="text-rose-600 hover:text-rose-500" size={24} />
       </button>
     </div>
   );
