@@ -1,7 +1,8 @@
-import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import OrdersService from "../../services/OrdersService";
+import { ConfirmationModal } from '../../components/ConfirmationModal';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import OrdersService from '../../services/OrdersService';
+import { useTranslation } from 'react-i18next';
 
 interface EditOrderAmountProps {
   orderId: number;
@@ -12,14 +13,15 @@ interface EditOrderAmountProps {
 export default function EditOrderAmount({
   orderId,
   amount,
-  onSuccess
+  onSuccess,
 }: Readonly<EditOrderAmountProps>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState<string>("");
+  const [modalMessage, setModalMessage] = useState<string>('');
   const [editOrder, setEditOrder] = useState({ orderId, amount });
+  const { t } = useTranslation();
 
   const handleModalOpen = (orderId: number) => {
-    setModalMessage(`Select new amount for order ${orderId}`);
+    setModalMessage(`${t('edit_amount_description')} ${orderId}`);
     setEditOrder({ orderId, amount });
     setIsModalOpen(true);
   };
@@ -30,31 +32,28 @@ export default function EditOrderAmount({
 
   const confirmEdit = async () => {
     if (!editOrder?.orderId) return;
-  
+
     try {
-      await OrdersService.editOrderAmount(
-        editOrder.orderId,
-        editOrder.amount
-      );
-  
-      toast.success("Amount successfully changed");
-  
+      await OrdersService.editOrderAmount(editOrder.orderId, editOrder.amount);
+
+      toast.success('Amount successfully changed');
+
       if (onSuccess) onSuccess();
     } catch (error: any) {
-      console.error("Edit order failed:", error);
-  
+      console.error('Edit order failed:', error);
+
       // Safe extraction of server error message
       const message =
         error?.response?.data?.error ??
         error?.message ??
-        "Failed to change the amount";
-  
+        'Failed to change the amount';
+
       toast.error(message);
     } finally {
       // ✅ Always close modal, whether success or failure
       setIsModalOpen(false);
       setEditOrder({ orderId: editOrder.orderId, amount });
-      setModalMessage("");
+      setModalMessage('');
     }
   };
 
@@ -63,13 +62,13 @@ export default function EditOrderAmount({
       <button
         onClick={() => handleModalOpen(orderId)}
         className="btn btn-ghost ml-1 px-1 rounded-2xl"
-        title="Edit amount"
+        title={t('edit_amount')}
       >
         <img src="/edit-order.svg" alt="pen icon for edit" className="w-5" />
       </button>
       <ConfirmationModal
         isOpen={isModalOpen}
-        title="Edit order amount"
+        title={t('edit_amount')}
         message={modalMessage}
         onConfirm={confirmEdit}
         onCancel={() => setIsModalOpen(false)}
@@ -79,7 +78,7 @@ export default function EditOrderAmount({
           type="number"
           step={0.01}
           className="form-input mb-5"
-          value={editOrder.amount || ""}
+          value={editOrder.amount || ''}
           onChange={handleAmountChange}
           placeholder="Enter new amount"
           required

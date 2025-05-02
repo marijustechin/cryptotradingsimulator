@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AuthService from '../services/AuthService';
+const lang = localStorage.getItem('selectedLanguage') || 'lt';
 
 export const API_URL = 'http://localhost:3003/api/v1';
 
@@ -8,6 +9,9 @@ const $api = axios.create({
   // prisikabintų slapukai
   withCredentials: true,
   baseURL: API_URL,
+  headers: {
+    'Accept-Language': lang,
+  },
 });
 
 // prie kiekvienos uzklausos pridedamas tokenas
@@ -18,6 +22,11 @@ $api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  const lang = localStorage.getItem('selectedLanguage');
+  config.headers['Accept-Language'] = lang;
+
+  console.log('Lang:', localStorage.getItem('selectedLanguage'));
 
   return config;
 });

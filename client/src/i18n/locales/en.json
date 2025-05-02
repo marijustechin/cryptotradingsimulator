@@ -199,7 +199,16 @@
   "admin_orders_table_fee": "Fee",
   "admin_orders_table_order_value": "Order Value",
 
+  "edit_amount": "Edit order amount",
+
+  "edit_order_description": "Select a new price for order",
+  "edit_order_price": "Edit order price",
+
   "orders_title": "My Orders",
+
+  "cancel_title": "Cancel Order",
+  "cancel_description": "Do you want to cancel order",
+
   "open_orders": "Open orders",
   "order_history": "Order history",
   "assets": "Assets",

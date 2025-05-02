@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import OrdersService from '../../services/OrdersService';
 import { useAppDispatch } from '../../store/store';
 import { fetchUserInfo } from '../../store/features/user/authSlice';
+import { useTranslation } from 'react-i18next';
 
 interface CancelOrderProps {
   orderId: number;
@@ -18,9 +19,10 @@ export default function CancelOrder({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>('');
   const [delOrder, setDelOrder] = useState<{ orderId: number } | null>(null);
+  const { t } = useTranslation();
 
   const handleModalOpen = (orderId: number) => {
-    setModalMessage(`Do you want to cancel order ${orderId}?`);
+    setModalMessage(`${t('cancel_description')} ${orderId}`);
     setDelOrder({ orderId });
     setIsModalOpen(true);
   };
@@ -47,14 +49,14 @@ export default function CancelOrder({
     <>
       <button
         onClick={() => handleModalOpen(orderId)}
-        className='btn btn-ghost px-2 rounded-2xl'
-        title='Cancel order'
+        className="btn btn-ghost px-2 rounded-2xl"
+        title={t('cancel_title')}
       >
         ❌
       </button>
       <ConfirmationModal
         isOpen={isModalOpen}
-        title='Cancel order'
+        title={t('cancel_title')}
         message={modalMessage}
         onConfirm={confirmDelete}
         onCancel={() => setIsModalOpen(false)}
