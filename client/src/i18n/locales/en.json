@@ -160,6 +160,8 @@
   "pagination_previous": "Previous page",
   "pagination_next": "Next page",
   "pagination_no_content": "No content to display",
+  "not_found_title": "Oops...The page you are looking for is not found",
+  "not_found_go_back": "Go back",
 
   "admin_all_users_title": "All Platform Users",
   "admin_all_users_search_first_name": "Search by First Name",
@@ -219,5 +221,78 @@
   "qty": "Qty",
   "spot_cost": "Spot Cost",
   "last_price": "Last Price",
-  "pnl": "PnL"
+  "pnl": "PnL",
+
+  "settings": {
+    "fake_users_generated": "Fake users successfully generated",
+    "activity_generated": "Fake activity successfully generated"
+  },
+  "change_password": {
+    "current_required": "Current password is required",
+    "new_required": "New password is required",
+    "min_length": "Password must be at least 6 characters",
+    "letters_digits_only": "Password should contain only letters and digits",
+    "must_include_both": "Password should contain letters and digits",
+    "repeat_required": "Repeat password is required",
+    "mismatch": "Passwords do not match"
+  },
+  "user_profile_password_changed": "Password changed successfully",
+
+  "auth_login": {
+    "email_required": "Email is required",
+    "email_invalid": "Invalid email format",
+    "password_required": "Password is required"
+  },
+
+  "auth_register": {
+    "first_name_required": "First name is required",
+    "first_name_min": "First name must be at least 2 characters",
+    "first_name_max": "First name must be at most 30 characters",
+    "first_name_invalid": "First name contains excessive stacked characters",
+
+    "email_required": "Email is required",
+    "email_invalid": "Invalid email format",
+
+    "password_required": "Password is required",
+    "password_min": "Password must be at least 6 characters",
+    "password_invalid": "Password should contain letters and digits",
+
+    "confirm_password_required": "Please confirm your password",
+    "passwords_do_not_match": "Passwords do not match"
+  },
+
+  "form_error_first_name_required": "First name is required",
+  "form_error_first_name_min": "First name must be at least 2 characters long",
+  "form_error_first_name_max": "First name must be at most 30 characters long",
+  "form_error_first_name_regex": "First name contains excessive stacked characters",
+
+  "form_error_last_name_required": "Last name is required",
+  "form_error_last_name_min": "Last name must be at least 2 characters long",
+  "form_error_last_name_max": "Last name must be at most 30 characters long",
+  "form_error_last_name_regex": "Last name contains excessive stacked characters",
+
+  "form_error_address_required": "Address is required",
+
+  "form_error_phone_required": "Phone number is required",
+  "form_error_phone_minmax": "Phone number must be 11 digits (without '+')",
+  "form_error_phone_digits": "Only digits allowed",
+
+  "form_error_email_required": "Email is required",
+  "form_error_email_invalid": "Invalid email format",
+
+  "restore_password_title": "Reset Your Password",
+  "restore_password_placeholder": "Enter new password",
+  "restore_password_submit": "Reset Password",
+  "restore_password_resetting": "Resetting...",
+  "restore_password_token_missing": "Reset token not found or expired.",
+  "restore_password_success": "Password changed successfully!",
+  "restore_password_failed": "Failed to reset password.",
+  "form_validation_minimum_characters": "Minimum {{count}} characters",
+
+  "form_back_to_login": "Back to Login",
+  "form_generic_error": "Something went wrong. Please try again.",
+  "restore_password_send_link": "Send Reset Link",
+  "restore_password_email_placeholder": "Enter your email",
+  "restore_password_confirmation_success": "Reset link sent! Check your inbox.",
+  "form_validation_invalid_email": "Please enter a valid email"
 }

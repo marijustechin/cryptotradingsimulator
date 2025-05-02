@@ -12,6 +12,7 @@ import {
 import { IOrdersHistory } from '../../types/order';
 import { Link } from 'react-router';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useTranslation } from 'react-i18next';
 
 type OrderType = 'buy' | 'sell';
 
@@ -40,6 +41,7 @@ const VioletGlowCursor = ({ x, y, width, height }: any) => (
 );
 
 const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) => {
+  const { t } = useTranslation();
   const [orderType, setOrderType] = useState<OrderType>('buy');
   const [selectedAsset, setSelectedAsset] = useState<string>('all');
 
@@ -111,9 +113,10 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
       <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <div>
           <span className="text-[1.5rem] text-[#10B981] font-semibold">
-            Total Crypto {orderType === 'buy' ? 'Bought' : 'Sold'} (Qty): {totalQty.toFixed(2)}
+            {t('totalCrypto')} {t(orderType === 'buy' ? 'bought' : 'sold')} (Qty):{' '}
+            {totalQty.toFixed(2)}
           </span>
-          <h3 className="text-gray-200">Crypto Holdings by Month</h3>
+          <h3 className="text-gray-200">{t('cryptoHoldingsByMonth')}</h3>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {(['buy', 'sell'] as OrderType[]).map((type) => (
@@ -126,17 +129,16 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              {type}
+              {t(type)}
             </button>
           ))}
 
-          {/* 🔽 Dropdown for asset filter */}
           <select
             value={selectedAsset}
             onChange={(e) => setSelectedAsset(e.target.value)}
             className="bg-gray-700 text-gray-300 px-3 py-1 rounded-md text-sm"
           >
-            <option value="all">All</option>
+            <option value="all">{t('all')}</option>
             {uniqueAssets.map((asset) => (
               <option key={asset} value={asset}>
                 {asset}
@@ -149,9 +151,9 @@ const UserCryptoHoldingsStackedBar = ({ orders }: { orders: IOrdersHistory[] }) 
       {isChartEmpty ? (
         <div className="grid grid-cols-2 justify-center items-center w-full">
           <div className="flex flex-col justify-center items-center">
-            <h3 className="pb-10">Nothing to show</h3>
+            <h3 className="pb-10">{t('nothingToShow')}</h3>
             <Link to="/my-dashboard/trading" className="btn-generic my-6">
-              Go to Trading
+              {t('goToTrading')}
             </Link>
           </div>
           <Player

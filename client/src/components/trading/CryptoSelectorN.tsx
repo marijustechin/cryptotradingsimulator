@@ -6,8 +6,10 @@ import {
   setSymbol,
 } from '../../store/features/trading/chartSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useTranslation } from 'react-i18next';
 
 export const CryptoSelector = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const allSymbols = useAppSelector(allActiveSymbols);
   const symbolData = useAppSelector(getSelectedSymbolData);
@@ -46,7 +48,7 @@ export const CryptoSelector = () => {
             </option>
           ))
         ) : (
-          <option>Nodata</option>
+          <option>{t('cryptoSelector-noData')}</option>
         )}
       </select>
     </div>

@@ -4,8 +4,10 @@ import {
   setOrderType,
 } from "../../store/features/trading/tradingOptionsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useTranslation } from 'react-i18next';
 
 export const TradingOptions = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const tradeOptions = useAppSelector(selectTradingOptions);
 
@@ -21,7 +23,7 @@ export const TradingOptions = () => {
               : "bg-transparent border-violet-900"
           } border px-2 py-1 cursor-pointer rounded-lg hover:bg-violet-800/20`}
         >
-          Limit
+          {t('tradingOptions.limit')}
         </button>
         <button
           onClick={() => dispatch(setOrderType("market"))}
@@ -31,7 +33,7 @@ export const TradingOptions = () => {
               : "bg-transparent border-violet-900"
           } border px-2 py-1 cursor-pointer rounded-lg hover:bg-violet-800/20`}
         >
-          Market
+          {t('tradingOptions.market')}
         </button>
       </div>
 
@@ -45,7 +47,7 @@ export const TradingOptions = () => {
               : ""
           } min-w-20 px-2 py-1 border border-emerald-500 rounded-lg cursor-pointer`}
         >
-          Buy
+          {t('tradingOptions.buy')}
         </button>
         <button
           onClick={() => dispatch(setOrderDirection("sell"))}
@@ -55,7 +57,7 @@ export const TradingOptions = () => {
               : ""
           } min-w-20 px-2 py-1 border border-rose-500 rounded-lg cursor-pointer`}
         >
-          Sell
+          {t('tradingOptions.sell')}
         </button>
       </div>
     </div>
