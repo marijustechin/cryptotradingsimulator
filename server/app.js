@@ -14,6 +14,7 @@ const settingsRouter = require('./routers/settings.router');
 
 // Importuojam klaidu midlvare
 const errorsMiddleware = require('./middlewares/error.middleware');
+const languageMiddleware = require('./middlewares/language.middleware');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
+app.use(languageMiddleware);
 
 ///////// servinam public aplanka
 app.use(
