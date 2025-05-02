@@ -1,0 +1,7 @@
+{
+  "wallet_not_found": "Piniginė nerasta",
+  "order_filled_buy": "Jūsų užsakymas pilnai įvykdytas\nNupirkta {{amount}} {{assetId}} po ${{price}}",
+  "order_filled_sell": "Jūsų užsakymas pilnai įvykdytas\nParduota {{amount}} {{assetId}} kontraktų po ${{price}}",
+  "order_submitted_buy": "Užsakymas pateiktas sėkmingai\n{{amount}} {{assetId}} bus nupirkta po ${{price}}",
+  "order_submitted_sell": "Užsakymas pateiktas sėkmingai\n{{amount}} {{assetId}} bus parduota po ${{price}}"
+}
