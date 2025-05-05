@@ -96,6 +96,7 @@ export const PlaceOrderButton = () => {
           tradingOptions.triggerPrice
         );
 
+        console.log(response);
         toast.success(response);
         // 1. Atnaujinam naudotojo balansa
         await dispatch(fetchUserInfo());
@@ -130,11 +131,11 @@ export const PlaceOrderButton = () => {
   };
 
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex flex-col lg:flex-row sm:gap-3 gap-2'>
-        <div className='flex gap-2 items-center'>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col lg:flex-row sm:gap-3 gap-2">
+        <div className="flex gap-2 items-center">
           <label
-            className='text-sm text-violet-300'
+            className="text-sm text-violet-300"
             htmlFor={'amount' + tradingOptions.orderType}
           >
             {t('form.amount')}:
@@ -142,17 +143,17 @@ export const PlaceOrderButton = () => {
           <input
             id={'amount' + tradingOptions.orderType}
             onChange={(e) => handleAmountChange(Number(e.target.value))}
-            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
-            type='number'
+            className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
+            type="number"
             value={tradingOptions.amount}
             min={0.01}
             step={0.01}
           />
         </div>
 
-        <div className='flex gap-2 items-center'>
+        <div className="flex gap-2 items-center">
           <label
-            className='text-sm text-violet-300'
+            className="text-sm text-violet-300"
             htmlFor={'amount' + tradingOptions.orderType}
           >
             {t('form.value')}:
@@ -160,17 +161,17 @@ export const PlaceOrderButton = () => {
           <input
             id={'value' + tradingOptions.orderType}
             onChange={(e) => handleValueChange(Number(e.target.value))}
-            className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
-            type='number'
+            className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
+            type="number"
             value={tradingOptions.value}
             min={0.01}
             step={0.01}
           />
         </div>
         {tradingOptions.orderType === 'limit' && (
-          <div className='flex gap-2 items-center'>
+          <div className="flex gap-2 items-center">
             <label
-              className='text-sm text-violet-300'
+              className="text-sm text-violet-300"
               htmlFor={'triggerPrice' + 'xml'}
             >
               {t('form.triggerPrice')}:
@@ -180,8 +181,8 @@ export const PlaceOrderButton = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setTriggerPrice(Number(e.target.value)))
               }
-              className='py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30'
-              type='number'
+              className="py-1 px-2 border border-violet-700 rounded-lg focus:outline-none max-w-30"
+              type="number"
               min={0.01}
               step={0.01}
               value={tradingOptions.triggerPrice}
@@ -222,8 +223,14 @@ export const PlaceOrderButton = () => {
   `}
       >
         {tradingOptions.orderDirection === 'buy'
-          ? t('button.buyLong', { name: cryptoData?.name, code: cryptoData?.code })
-          : t('button.sellShort', { name: cryptoData?.name, code: cryptoData?.code })}
+          ? t('button.buyLong', {
+              name: cryptoData?.name,
+              code: cryptoData?.code,
+            })
+          : t('button.sellShort', {
+              name: cryptoData?.name,
+              code: cryptoData?.code,
+            })}
       </button>
     </div>
   );
