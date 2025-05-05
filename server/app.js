@@ -20,12 +20,24 @@ const app = express();
 
 // o cia panaudojamos importuotos midlvares visokios
 app.use(express.json());
+
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',')
+  : [];
+
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   })
 );
+
 app.use(cookieParser());
 app.use(
   helmet({

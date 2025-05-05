@@ -2,7 +2,8 @@ import axios from 'axios';
 import AuthService from '../services/AuthService';
 const lang = localStorage.getItem('selectedLanguage') || 'lt';
 
-export const API_URL = 'http://localhost:3003/api/v1';
+export const API_URL =
+  import.meta.env.VITE_API_URL ?? 'http://localhost:3003/api/v1';
 
 const $api = axios.create({
   // kad prie kiekvienos užklausos automatiškai
@@ -59,7 +60,7 @@ $api.interceptors.response.use(
     return Promise.reject(
       error instanceof Error
         ? error
-        : new Error(error.message || 'Unknown error')
+        : new Error(error.message ?? 'Unknown error')
     );
   }
 );
