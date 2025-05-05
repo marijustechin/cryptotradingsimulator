@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 interface EditOrderAmountProps {
   orderId: number;
   amount: number;
-  onSuccess?: () => void; // ✅ callback for refresh
+  onSuccess?: () => void;
 }
 
 export default function EditOrderAmount({
@@ -35,22 +35,15 @@ export default function EditOrderAmount({
 
     try {
       await OrdersService.editOrderAmount(editOrder.orderId, editOrder.amount);
-
-      toast.success('Amount successfully changed');
+      toast.success(t('edit_amount_success'));
 
       if (onSuccess) onSuccess();
     } catch (error: any) {
       console.error('Edit order failed:', error);
-
-      // Safe extraction of server error message
       const message =
-        error?.response?.data?.error ??
-        error?.message ??
-        'Failed to change the amount';
-
+        error?.response?.data?.error ?? error?.message ?? t('edit_amount_error');
       toast.error(message);
     } finally {
-      // ✅ Always close modal, whether success or failure
       setIsModalOpen(false);
       setEditOrder({ orderId: editOrder.orderId, amount });
       setModalMessage('');
@@ -66,6 +59,7 @@ export default function EditOrderAmount({
       >
         <img src="/edit-order.svg" alt="pen icon for edit" className="w-5" />
       </button>
+
       <ConfirmationModal
         isOpen={isModalOpen}
         title={t('edit_amount')}
@@ -80,7 +74,7 @@ export default function EditOrderAmount({
           className="form-input mb-5"
           value={editOrder.amount || ''}
           onChange={handleAmountChange}
-          placeholder="Enter new amount"
+          placeholder={t('edit_amount_placeholder')}
           required
         />
       </ConfirmationModal>

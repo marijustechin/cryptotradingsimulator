@@ -6,6 +6,7 @@
   "form_forgot_password": "Forgot password?",
   "form_button_login": "Login",
   "form_button_register": "Register",
+  "form_toast_account_created": "Account successfully created!",
 
   "nav_home": "Home",
   "nav_how_to_trade": "How To Trade",
@@ -208,6 +209,8 @@
 
   "cancel_title": "Cancel Order",
   "cancel_description": "Do you want to cancel order",
+  "cancel_success": "Order cancelled successfully",
+  "cancel_error": "Failed to cancel the order",
 
   "open_orders": "Open orders",
   "order_history": "Order history",
@@ -397,5 +400,14 @@
   "nothingToShow": "Nothing to show",
   "goToTrading": "Go to Trading",
   "buy": "Buy",
-  "sell": "Sell"
+  "sell": "Sell",
+
+  "edit_amount_success": "Amount successfully changed",
+  "edit_amount_error": "Failed to change the amount",
+  "edit_price_success": "Price successfully changed",
+  "edit_price_error": "Failed to change the price",
+  "edit_amount_placeholder": "Enter new amount",
+  "edit_price_placeholder": "Enter new price",
+  "not_enough_balance": "You do not have enough balance to complete this order.",
+  "not_enough_assets_balance": "You do not have enough assets to complete this order."
 }
