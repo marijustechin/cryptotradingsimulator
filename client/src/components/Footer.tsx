@@ -13,17 +13,17 @@ export const Footer = () => {
             </p>
           </div>
  
-          {/* Copyright */}
-          <div className="text-zinc-400">
-            <p>&#169; Crypto Wallet (Community) From Figma.com </p>
-            <p>By cupid20103</p>
+          {/* Brand */}
+          <div>
+          <p className="text-3xl">By Seven Duck Alliance</p>
+          <p className="text-zinc-400">Project 2025</p>
           </div>
         </div>
  
-        {/* Brand */}
-        <div className="flex flex-col text-right">
-          <p className="text-3xl">By Seven Duck Alliance</p>
-          <p className="text-zinc-400">Project 2025</p>
+        {/* Copyright */}
+        <div className="flex flex-col text-right text-zinc-400">
+          <p>&#169; Crypto Wallet (Community) From Figma.com </p>
+            <p>By cupid20103</p>
         </div>
       </footer>
     </>
