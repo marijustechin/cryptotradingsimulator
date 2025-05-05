@@ -197,9 +197,18 @@
   "admin_orders_table_status": "Būsena",
   "admin_orders_table_type": "Tipas",
   "admin_orders_table_fee": "Mokestis",
-  "admin_orders_table_order_value": "Pavedimo suma",
+  "admin_orders_table_order_value": "Užsakymo vertė",
 
-  "orders_title": "Mano pavedimai",
+  "edit_amount": "Redaguoti užsakymo kieki",
+  "edit_amount_description": "Įrašykite norimą kiekį užsakymui",
+
+  "edit_order_description": "Įrašykite nauja kainą užsakymui",
+  "edit_order_price": "Redaguoti užsakymo kaina",
+
+  "orders_title": "Mano užsakymai",
+
+  "cancel_title": "Atšaukti užsakyma",
+  "cancel_description": "Ar tikrai norite atšaukti užsakyma",
 
   "open_orders": "Aktyvūs pavedimai",
   "order_history": "Pavedimų istorija",
