@@ -1,94 +1,92 @@
-# 📌 Projekto apžvalga
+# 📌 Project Overview
+![image](https://github.com/user-attachments/assets/1bb7beb7-0c41-4c24-9816-1a9a2ca09f2f)
 
-Web platforma, kur naudotojai gali:
-Užsiregistruoti/Prisijungti: ir gauti virtualius kreditus (pavyzdžiui, 10,000).
-Matyti realius kripto valiutų kursus: kripto valiutų indeksai (BTC, ETH ir t.t.) gaunamus iš CoinCap.
-Pirkti/Parduoti (simuliavimas): naudotojai gali išbandyti įvairias prekybos strategijas.
-Portfelio valdymas: naudotojai gali matyti savo sandorių pelningumą ir nuostolius, prekybos istoriją ir turimus aktyvus.
+**(EN) A web platform where users can:**
+- Register/Login: and receive virtual credits (e.g., 10,000).
+- View real cryptocurrency prices: cryptocurrency indices (BTC, ETH, etc.) fetched from CoinCap.
+- Buy/Sell (simulated): users can try out different trading strategies.
+- Portfolio management: users can view the profitability and losses of their transactions, trading history, and owned assets.
+  
+**(LT) Web platforma, kur naudotojai gali:**
+- Užsiregistruoti/Prisijungti: ir gauti virtualius kreditus (pavyzdžiui, 10,000).
+- Matyti realius kripto valiutų kursus: kripto valiutų indeksai (BTC, ETH ir t.t.) gaunamus iš CoinCap.
+- Pirkti/Parduoti (simuliavimas): naudotojai gali išbandyti įvairias prekybos strategijas.
+- Portfelio valdymas: naudotojai gali matyti savo sandorių pelningumą ir nuostolius, prekybos istoriją ir turimus aktyvus.
 
-# 🚀Technologijos
+# 🚀 Tech Stack
 
-## Frontas:
+## Frontend
 
-React  
-Redux
-Axios
-Tailwind CSS, Daisy UI
-Recharts arba Chart.js
+- TypeScript
+- React + Vite
+- Redux
+- Axios
+- Tailwind CSS + Daisy UI + LottieFiles
+- Recharts
+- Zod
 
-## Backas:
+## Backend
 
-Node.js (Express.js)  
-Sequelize + PostgreSQL
-JWT (JSON Web Tokens)  
-CoinCap API (nemokama) – kripto valiutų kursai
+- Node.js
+- Express.js  
+- Sequelize
+- JWT (JSON Web Token) + bcryptjs
+- Axios, CORS, Nodemon
+- WebSocket
+  
+ ## Other
+ - CoinCap API
+ - PostgreSQL
+ - i18next (lithuanian language translation)
 
-# 🛠️ Savybės ir architektūra
+# 🛠️ Features & Architecture
 
-### Authentikavimas ir autorizavimas:
+### Authentication & Authorization:
 
-Registracija ir prisijungimas su JWT.
-Apsaugoti endpointai su middleware.
+User registration and login with JWT-based authentication. Protected routes using middleware.
 
-### Pirkėjo „kabinetas“:
+### User Dashboard:
 
-Portfelio verte ir virtualios piniginės balansas.
-Pirkėjo sandorių našumo grafikas.
+Displays portfolio value and virtual wallet balance. Visual performance chart of the user's transactions.
 
-### Valiutos puslapis:
+### Currency Page:
 
-Kripto indeksai ir trendai.
-Gaimybė pirkti/parduoti valiutas.
+Shows crypto indices and trends. Allows users to buy/sell currencies.
 
-### Prekyba:
+### Trading:
 
-Naudotojai vykdo virtualius sandorius.
-Backendas atnaujina automatiškai portfelį.
-Tikrina (validuoja) sandorius – pvz. jei depozitas pakankamas.
+Users execute virtual trades. The backend automatically updates the portfolio and validates transactions (e.g., checks if the balance is sufficient).
 
-### Portfelio valdymas:
+### Portfolio Management:
 
-Esamų investiciijų ir istorijos peržiūros galimybės.
-Pelno/nuostolio skaičiavimai.
+View current investments and transaction history. Calculates profits and losses.
 
-# 🎯 Projekto įgyvendinimas
+# 🎯 Project Implementation
 
-1: Pradinis setupas
+**1. Initial Setup**
 
-React Vite (ir t.t.).
-Node.js (Express, Sequelize ir t.t.).
-Viskas važiuoja į GitHub
+React with Vite (and related tools). Node.js with Express, Sequelize, etc. Everything is hosted on GitHub.
 
-2: API integravimas
+**2. API Integration**
 
-CoinCap API dokumentacijos skaitymas ir parengimas.
-Gaunam duomenis ir atvaizduojam.
+Read and prepare CoinCap API documentation. Fetch data and display it on the frontend.
 
-3: Autentifikavimo sistema
+**3. Authentication System**
 
-Auth realizuojamas su JWT backende Node.js.
-Apsaugoti API endpointai.
+Implement authentication using JWT on the Node.js backend. Secure API endpoints accordingly.
 
-4: Prekybos logika
+**4. Trading Logic**
 
-Pirkimo/pardavimo logikos realizavimas, virtualaus portfelio ir pirkėjo balanso atnaujinimas.
+Develop the logic for buying and selling, updating the virtual portfolio and user balance.
 
-5: Portfelio puslapis
+**5. Portfolio Page**
 
-Frontendo komponentai, atvaizduojantys balansą, transakcijas, pelną/nuostolį.
-Prekybos diagramos.
+Create frontend components to display balance, transactions, profits/losses. Include trading charts.
 
-6: UI/UX tobulinimas
+**6. UI/UX Enhancements**
 
-Padarom patrauklią sąsają – stiliai, spalvos, šriftai ir t.t.
-Intuityvi navigacija ir interaktyvūs elementai (modaliniai langai, tostai ir t.t.).
+Design an attractive interface – styles, colors, fonts, etc. Add intuitive navigation and interactive elements (modals, toasts, etc.).
 
-# 💡 Gaimi patobulinimai
-
-Geriausių prekybininkų garbės lenta, našiausios valiutos ir pan.
-Social sharing of results.
-Mokomoji medžiaga (patarimai, kaip prekiauiiti, strategijos...).
-
-# 🦆 Seven Duck Aliance logotipas
-
-Nepamirštam realizuoti Seven Dudck Aliance brendingo :D
+# ⭐️ Support
+If you find this project useful or interesting, consider giving it a star!
+Your support helps the project grow and reach more developers. 😊
