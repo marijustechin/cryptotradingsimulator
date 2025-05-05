@@ -20,6 +20,7 @@ import {
   selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 export const PlaceOrderButton = () => {
   const { t } = useTranslation();
@@ -31,6 +32,9 @@ export const PlaceOrderButton = () => {
   const user = useAppSelector(selectUser);
   const userAssets = useAppSelector(selectUserAssets);
 
+  useEffect(() => {
+    console.log(userAssets);
+  }, []);
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
     if (user?.balance === undefined || user?.balance === null) {
@@ -65,8 +69,8 @@ export const PlaceOrderButton = () => {
       dispatch(setTriggerPrice(currentPrices?.lastPrice));
     }
 
-    // 4. Jei parduoda, ar turi tokia valiuta?
     if (tradingOptions.orderDirection === 'sell' && user.id) {
+      // 4. Jei parduoda, ar turi tokia valiuta?
       if (!userAssets) {
         await dispatch(getUserAssets({ userId: user.id }));
       }
@@ -98,7 +102,7 @@ export const PlaceOrderButton = () => {
 
         toast.success(response);
         console.log(response);
-        
+
         // 1. Atnaujinam naudotojo balansa
         await dispatch(fetchUserInfo());
 
@@ -127,7 +131,9 @@ export const PlaceOrderButton = () => {
     dispatch(setValue(value));
     const price = currentPrices?.lastPrice;
     if (price) {
-      dispatch(setAmount(value / price));
+      const rawAmount = value / price;
+      const roundedAmount = Math.floor(rawAmount * 1e6) / 1e6;
+      dispatch(setAmount(roundedAmount));
     }
   };
 
