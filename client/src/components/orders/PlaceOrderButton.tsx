@@ -96,7 +96,6 @@ export const PlaceOrderButton = () => {
           tradingOptions.triggerPrice
         );
 
-        console.log(response);
         toast.success(response);
         // 1. Atnaujinam naudotojo balansa
         await dispatch(fetchUserInfo());
