@@ -6,6 +6,7 @@
   "form_forgot_password": "Pamiršote slaptažodį?",
   "form_button_login": "Prisijungti",
   "form_button_register": "Užsiregistruoti",
+  "form_toast_account_created": "Paskyra sėkmgingai sukurta!",
 
   "nav_home": "Pradžia",
   "nav_how_to_trade": "Kaip prekiauti",
@@ -209,6 +210,8 @@
 
   "cancel_title": "Atšaukti užsakyma",
   "cancel_description": "Ar tikrai norite atšaukti užsakyma",
+   "cancel_success": "Užsakymas sėkmingai atšauktas",
+  "cancel_error": "Nepavyko atšaukti užsakymo",
 
   "open_orders": "Aktyvūs pavedimai",
   "order_history": "Pavedimų istorija",
@@ -375,7 +378,7 @@
 
   "ordersByCrypto": {
     "totalVolume": "Bendras kiekis",
-    "volumeByCrypto": "Sandoorių kiekis pagal kriptovaliutą",
+    "volumeByCrypto": "Sandorių kiekis pagal kriptovaliutą",
     "buy": "Pirkimas",
     "sell": "Pardavimas",
     "all": "Visos",
@@ -392,10 +395,19 @@
   "totalCrypto": "Bendra kriptovaliuta",
   "bought": "Nupirkta",
   "sold": "Parduota",
-  "cryptoHoldingsByMonth": "Kriptovaliutų turėjimas pagal mėnesį",
+  "cryptoHoldingsByMonth": "Kriptovaliutų kiekis pagal mėnesį",
   "all": "Visos",
   "nothingToShow": "Nėra ką rodyti",
   "goToTrading": "Eiti į prekybą",
   "buy": "Pirkti",
-  "sell": "Parduoti"
+  "sell": "Parduoti",
+
+   "edit_amount_success": "Kiekis sėkmingai pakeistas",
+  "edit_amount_error": "Nepavyko pakeisti kiekio",
+  "edit_price_success": "Kaina sėkmingai pakeista",
+  "edit_price_error": "Nepavyko pakeisti kainos",
+  "edit_amount_placeholder": "Įveskite naują kiekį",
+  "edit_price_placeholder": "Įveskite naują kainą",
+  "not_enough_balance": "Nepakanka lėšų šiam užsakymui įvykdyti.",
+   "not_enough_assets_balance": "Nepakanka turto šio užsakymo įvykdyti."
 }

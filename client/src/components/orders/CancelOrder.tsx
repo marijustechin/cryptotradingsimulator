@@ -33,12 +33,12 @@ export default function CancelOrder({
       try {
         await OrdersService.cancelOrder(delOrder.orderId);
         await dispatch(fetchUserInfo());
-        toast.success('Order cancelled');
+        toast.success(t('cancel_success'));
 
-        if (onSuccess) onSuccess(); // ✅ trigger refresh from parent
+        if (onSuccess) onSuccess();
       } catch (error) {
         console.log(error);
-        toast.error('Failed to cancel order');
+        toast.error(t('cancel_error'));
       }
     }
     setDelOrder(null);

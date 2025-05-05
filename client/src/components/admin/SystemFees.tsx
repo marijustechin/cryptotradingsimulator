@@ -58,7 +58,7 @@ export const SystemFees = () => {
               onChange={(e) => setLimitFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
-              className='py-1 px-2 w-35 md:w-45 border border-violet-900 rounded-lg'
+              className='py-1 px-2 w-25 md:w-45 border border-violet-900 rounded-lg'
               id='limit_fee'
             />
             <button
@@ -78,7 +78,7 @@ export const SystemFees = () => {
               onChange={(e) => setMarketFee(parseFloat(e.target.value))}
               type='number'
               step={0.001}
-              className='py-1 px-2 w-35 md:w-45 border border-violet-900 rounded-lg'
+              className='py-1 px-2 w-25 md:w-45 border border-violet-900 rounded-lg'
               id='market_fee'
             />
             <button

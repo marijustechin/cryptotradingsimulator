@@ -39,7 +39,7 @@ export default function EditOrderPrice({
         editOrder.triggerPrice
       );
 
-      toast.success('Amount successfully changed');
+      toast.success(t('edit_price_success'));
 
       if (onSuccess) onSuccess();
     } catch (error: any) {
@@ -49,7 +49,7 @@ export default function EditOrderPrice({
       const message =
         error?.response?.data?.error ??
         error?.message ??
-        'Failed to change the amount';
+        t('edit_price_error');
 
       toast.error(message);
     } finally {
@@ -83,7 +83,7 @@ export default function EditOrderPrice({
           className="form-input mb-5"
           value={editOrder.triggerPrice || ''}
           onChange={handlePriceChange}
-          placeholder="Enter new price"
+          placeholder={t('edit_price_placeholder')}
           required
         />
       </ConfirmationModal>

@@ -97,6 +97,8 @@ export const PlaceOrderButton = () => {
         );
 
         toast.success(response);
+        console.log(response);
+        
         // 1. Atnaujinam naudotojo balansa
         await dispatch(fetchUserInfo());
 
