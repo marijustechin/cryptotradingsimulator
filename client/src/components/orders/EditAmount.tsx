@@ -7,18 +7,31 @@ import { useTranslation } from 'react-i18next';
 interface EditOrderAmountProps {
   orderId: number;
   amount: number;
+  assets: any;
+  assetId: string;
+  orderDirection: string;
+  balance: number;
+  limit: number;
+  orderPrice: number;
   onSuccess?: () => void;
 }
 
 export default function EditOrderAmount({
   orderId,
   amount,
+  assets,
+  assetId,
+  orderDirection,
+  balance,
+  limit,
+  orderPrice,
   onSuccess,
 }: Readonly<EditOrderAmountProps>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>('');
   const [editOrder, setEditOrder] = useState({ orderId, amount });
   const { t } = useTranslation();
+
 
   const handleModalOpen = (orderId: number) => {
     setModalMessage(`${t('edit_amount_description')} ${orderId}`);
@@ -27,9 +40,28 @@ export default function EditOrderAmount({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditOrder({ ...editOrder, amount: parseFloat(e.target.value) });
+    const newAmount = parseFloat(e.target.value);
+  
+    // Find the asset object matching the assetName
+    const asset = assets?.find((a: any) => a.asset === assetId);
+    const userHoldings = asset?.balance ?? 0;
+  
+    if (orderDirection === 'sell' && newAmount > userHoldings) {
+      toast.error(t('not_enough_assets_balance'));
+      return;
+    }
+  
+    // BUY order: total cost can't exceed account balance
+    const totalCost = (newAmount * orderPrice);
+    const fee = totalCost * limit;
+    const totalValue= totalCost + fee;
+    if (orderDirection === 'buy' && totalValue > balance) {
+      toast.error(t('not_enough_balance'));
+      return;
+    }
+  
+    setEditOrder({ ...editOrder, amount: newAmount });
   };
-
   const confirmEdit = async () => {
     if (!editOrder?.orderId) return;
 

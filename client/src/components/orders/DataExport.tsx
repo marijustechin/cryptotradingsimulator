@@ -31,9 +31,13 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
       pdf.setFontSize(12);
       pdf.text(`Date: ${new Date().toLocaleString()}`, 14, 28);
 
-      const logoBase64 = await HelperService.getBase64FromUrl(
-        "http://localhost:5173/logo.png"
-      );
+      const isLocalhost = window.location.hostname === "localhost";
+
+const logoUrl = isLocalhost
+  ? "http://localhost:5173/logo.png" // adjust port/path as needed
+  : "https://www.cryptohills.online/logo.png";
+
+const logoBase64 = await HelperService.getBase64FromUrl(logoUrl);
 
       pdf.addImage(logoBase64, "PNG", 170, 10, 20, 20);
 
@@ -79,9 +83,13 @@ export const DataExport = ({ openOrders, ordersHistory }: DataExportProps) => {
       pdf.setFontSize(12);
       pdf.text(`Date: ${new Date().toLocaleString()}`, 14, 28);
 
-      const logoBase64 = await HelperService.getBase64FromUrl(
-        "http://localhost:5173/logo.png"
-      );
+      const isLocalhost = window.location.hostname === "localhost";
+
+const logoUrl = isLocalhost
+  ? "http://localhost:5173/logo.png" // adjust port/path as needed
+  : "https://www.cryptohills.online/logo.png";
+
+const logoBase64 = await HelperService.getBase64FromUrl(logoUrl);
 
       pdf.addImage(logoBase64, "PNG", 170, 10, 20, 20);
 
