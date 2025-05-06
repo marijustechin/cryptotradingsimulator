@@ -48,6 +48,8 @@ class TradeService {
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
       } else if (ord_direct === 'sell') {
         userWallet.balance = parseFloat(userWallet.balance) + cost - fee;
+
+        
       }
 
       await userWallet.save({ transaction });
@@ -174,31 +176,32 @@ class TradeService {
   }
 
   async getUserAssets(userId) {
-    const orders = await sequelize.models.orders.findAll({
+    const closedOrders = await orders.findAll({
       where: {
         userId,
         ord_status: 'closed',
       },
       raw: true,
     });
-
+  
     const assets = {};
-
-    for (const order of orders) {
+  
+    for (const order of closedOrders) {
       const asset = order.assetId;
-
+  
       if (!assets[asset]) {
         assets[asset] = {
           balance: 0,
-          totalBuyCost: 0, // USD spent
+          totalBuyCost: 0,
           totalBuyAmount: 0,
           totalSellAmount: 0,
+          reserved: 0,
         };
       }
-
+  
       const amount = parseFloat(order.amount);
-      const price = parseFloat(order.price || 0); // fallback if null
-
+      const price = parseFloat(order.price || 0);
+  
       if (order.ord_direct === 'buy') {
         assets[asset].balance += amount;
         assets[asset].totalBuyAmount += amount;
@@ -208,20 +211,55 @@ class TradeService {
         assets[asset].totalSellAmount += amount;
       }
     }
-
-    // Final result per asset
+  
+    const openOrders = await orders.findAll({
+      where: {
+        userId,
+        ord_status: 'open',
+        ord_type: 'limit',
+        ord_direct: 'sell',
+      },
+      raw: true,
+    });
+  
+    for (const order of openOrders) {
+      const asset = order.assetId;
+      const amount = parseFloat(order.amount);
+  
+      if (!assets[asset]) {
+        assets[asset] = {
+          balance: 0,
+          totalBuyCost: 0,
+          totalBuyAmount: 0,
+          totalSellAmount: 0,
+          reserved: 0,
+        };
+      }
+  
+      assets[asset].reserved += amount;
+    }
+  
+    // Final result
     const result = Object.entries(assets).map(([asset, data]) => {
       const avgBuyPrice =
-        data.totalBuyAmount > 0 ? data.totalBuyCost / data.totalBuyAmount : 0;
-
+        data.totalBuyAmount > 0
+          ? data.totalBuyCost / data.totalBuyAmount
+          : 0;
+  
+      const available = this.normalizeBalance(
+        data.balance - (data.reserved || 0)
+      );
+  
       return {
         asset,
         balance: this.normalizeBalance(data.balance),
-        spotCost: data.totalBuyCost, // total spent
+        reserved: this.normalizeBalance(data.reserved || 0),
+        available,
+        spotCost: data.totalBuyCost,
         avgBuyPrice: avgBuyPrice.toFixed(2),
       };
     });
-
+  
     return result;
   }
 

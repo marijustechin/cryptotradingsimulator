@@ -28,6 +28,7 @@ export interface IOrdersHistory {
 
 export interface IUserAssets {
   asset: string;
+  available: number;
   balance: number;
   spotCost: number;
   amount: number;

@@ -58,7 +58,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getSettings());
-  });
+  }, [dispatch]);
 
   const { i18n } = useTranslation();
   // atstatom kalbą
