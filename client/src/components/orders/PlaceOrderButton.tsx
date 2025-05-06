@@ -107,7 +107,7 @@ export const PlaceOrderButton = () => {
       // 6.jei bandoma parduoti daugiau nei turi
       if (userAssets && userAssets.length > 0) {
         const userAsset = userAssets.find((a) => a.asset === selectedCrypto);
-        if (userAsset && userAsset.balance < tradingOptions.amount) {
+        if (userAsset && userAsset.available < tradingOptions.amount) {
           toast.error(t('error.sellMoreThanOwned'));
           return;
         }
