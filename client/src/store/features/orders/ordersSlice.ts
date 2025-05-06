@@ -62,7 +62,6 @@ export const getUserAssets = createAsyncThunk<
 >('orders/getUserAssets', async ({ userId }, { rejectWithValue }) => {
   try {
     const response = await OrdersService.getUserAssets(userId);
-    console.log('Ar ateina kazkas?', response);
     return response;
   } catch (e) {
     return rejectWithValue(HelperService.errorToString(e));
@@ -115,7 +114,6 @@ export const ordersSlice = createSlice({
         state.status = 'idle';
       })
       .addCase(getUserAssets.rejected, (state, action) => {
-        console.error('getUserAssets ERROR:', action.payload);
         state.error = action.payload as string;
       })
       // orders history //////////////////////
