@@ -30,8 +30,8 @@ export interface IUserAssets {
   asset: string;
   balance: number;
   spotCost: number;
-  avgBuyPrice: number;
   amount: number;
+  avgBuyPrice: number;
 }
 
 export interface IOrdersHistoryResponse {

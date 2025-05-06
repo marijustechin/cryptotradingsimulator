@@ -166,6 +166,11 @@ class TradeService {
     return result;
   }
 
+  normalizeBalance(balance) {
+    const rounded = Number(balance.toFixed(6));
+    return rounded < 0.000001 ? 0 : rounded;
+  }
+
   async getUserAssets(userId) {
     const orders = await sequelize.models.orders.findAll({
       where: {
@@ -209,7 +214,7 @@ class TradeService {
 
       return {
         asset,
-        balance: data.balance,
+        balance: this.normalizeBalance(data.balance),
         spotCost: data.totalBuyCost, // total spent
         avgBuyPrice: avgBuyPrice.toFixed(2),
       };

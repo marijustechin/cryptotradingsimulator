@@ -1,14 +1,14 @@
-import useWebSocket from "react-use-websocket";
+import useWebSocket from 'react-use-websocket';
 import {
   getUserAssets,
   selectUserAssets,
-} from "../../store/features/orders/ordersSlice";
-import { selectUser } from "../../store/features/user/authSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { WS_URL } from "../../api/ws";
-import { useEffect, useState, useMemo } from "react";
-import HelperService from "../../services/HelperService";
-import { useTranslation } from "react-i18next";
+} from '../../store/features/orders/ordersSlice';
+import { selectUser } from '../../store/features/user/authSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { WS_URL } from '../../api/ws';
+import { useEffect, useState, useMemo } from 'react';
+import HelperService from '../../services/HelperService';
+import { useTranslation } from 'react-i18next';
 
 interface ILivePrices {
   symbol: string;
@@ -34,7 +34,7 @@ export const UserAssets = () => {
     share: false,
     shouldReconnect: () => true,
     onOpen: () => {
-      sendJsonMessage({ type: "subscribe", role: "live" });
+      sendJsonMessage({ type: 'subscribe', role: 'live' });
     },
     onMessage: (event) => {
       const parsedData = JSON.parse(event.data);
@@ -95,12 +95,12 @@ export const UserAssets = () => {
       <table className="table border-spacing-y-2 min-w-full table-auto border-separate">
         <thead>
           <tr className="text-white bg-gray-800">
-            <th className="w-1/6">{t("asset")}</th>
-            <th className="w-1/6">{t("net_asset_value")}</th>
-            <th className="w-1/6">{t("qty")}</th>
-            <th className="w-1/6">{t("spot_cost")}</th>
-            <th className="w-1/6">{t("last_price")}</th>
-            <th className="w-1/6">{t("pnl")}</th>
+            <th className="w-1/6">{t('asset')}</th>
+            <th className="w-1/6">{t('net_asset_value')}</th>
+            <th className="w-1/6">{t('qty')}</th>
+            <th className="w-1/6">{t('spot_cost')}</th>
+            <th className="w-1/6">{t('last_price')}</th>
+            <th className="w-1/6">{t('pnl')}</th>
           </tr>
         </thead>
         <tbody>
@@ -116,7 +116,7 @@ export const UserAssets = () => {
           </tr>
           {assetRows.map((row, index) => (
             <tr
-              className={index % 2 ? "bg-gray-700" : "bg-gray-800"}
+              className={index % 2 ? 'bg-gray-700' : 'bg-gray-800'}
               key={row.asset}
             >
               <td>{row.asset.slice(0, 3)}</td>
@@ -133,8 +133,8 @@ export const UserAssets = () => {
               <td
                 className={`w-1/6 flex flex-col ${
                   parseFloat(row.pnlAmount) >= 0
-                    ? "text-green-500"
-                    : "text-red-500"
+                    ? 'text-green-500'
+                    : 'text-red-500'
                 }`}
               >
                 <div>{HelperService.formatCurrency(Number(row.pnlAmount))}</div>
