@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import {
   getOpenOrders,
+  getUserAssets,
   selectOpenOrders,
+  selectUserAssets,
 } from "../../store/features/orders/ordersSlice";
 import { selectUser, fetchUserInfo } from "../../store/features/user/authSlice";
+import { selectLimitFee } from "../../store/features/admin/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { DataExport } from "./DataExport";
 import CancelOrder from "./CancelOrder";
@@ -17,15 +20,19 @@ export const OpenOrders = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const openOrders = useAppSelector(selectOpenOrders);
+  const assets = useAppSelector(selectUserAssets);
+  const limitFee = useAppSelector(selectLimitFee);
 
   useEffect(() => {
-    if (!openOrders && user.id) {
+    if (!openOrders && !assets && user.id) {
       dispatch(getOpenOrders({ userId: user.id }));
+      dispatch(getUserAssets({ userId: user.id }));
     }
-  }, [dispatch, openOrders, user.id]);
+  }, [dispatch, openOrders, assets, user.id]);
   const refreshOrders = () => {
     if (user.id) {
       dispatch(getOpenOrders({ userId: user.id }));
+      dispatch(getUserAssets({ userId: user.id }));
       dispatch(fetchUserInfo());
     }
   };
@@ -87,8 +94,14 @@ export const OpenOrders = () => {
                     {order.amount.toFixed(6)}
                     <EditOrderAmount
                       orderId={order.id}
+                      assetId={order.assetId}
                       amount={order.amount}
                       onSuccess={refreshOrders}
+                      assets={assets}
+                      balance={user.balance ?? 0}
+                      orderDirection={order.ord_direct}
+                      limit={limitFee ?? 0}
+                      orderPrice={order.triggerPrice}
                     />
                   </div>
                 </td>

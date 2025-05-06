@@ -33,7 +33,6 @@ export const PlaceOrderButton = () => {
   const userAssets = useAppSelector(selectUserAssets);
 
   useEffect(() => {
-    console.log(userAssets);
   }, []);
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
@@ -101,7 +100,6 @@ export const PlaceOrderButton = () => {
         );
 
         toast.success(response);
-        console.log(response);
 
         // 1. Atnaujinam naudotojo balansa
         await dispatch(fetchUserInfo());

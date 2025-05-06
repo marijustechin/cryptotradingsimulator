@@ -25,6 +25,7 @@ class TradeService {
       const cost =
         ord_type === 'market' ? price * amount : triggerPrice * amount;
 
+
       const fee =
         ord_type === 'market'
           ? cost * systemSettings.market_order_fee
@@ -143,7 +144,7 @@ class TradeService {
       include: [
         {
           model: instrument,
-          attributes: ['name'],
+          attributes: ['name', 'id'],
         },
       ],
     });
@@ -160,6 +161,7 @@ class TradeService {
         triggerPrice: raw.triggerPrice,
         open_date: helperService.formatDate(raw.open_date),
         assetName: raw.instrument.name,
+        assetId: raw.instrument.id,
       };
     });
 
@@ -395,7 +397,7 @@ class TradeService {
         const totalRequired = newOrderValue - oldOrderValue + feeDifference;
 
         if (balance < totalRequired) {
-          throw new Error('Not enough balance to apply order changes');
+          throw new Error(i18n.t('not_enough_balance'));
         }
 
         userWallet.balance = balance - totalRequired;
