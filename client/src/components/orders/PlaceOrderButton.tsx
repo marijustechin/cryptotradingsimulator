@@ -19,8 +19,12 @@ import {
   getUserAssets,
   selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
+import {
+  getSettings,
+  selectLimitFee,
+  selectMarketFee,
+} from '../../store/features/admin/settingsSlice';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
 
 export const PlaceOrderButton = () => {
   const { t } = useTranslation();
@@ -31,9 +35,13 @@ export const PlaceOrderButton = () => {
   const cryptoData = useAppSelector(getSelectedSymbolData);
   const user = useAppSelector(selectUser);
   const userAssets = useAppSelector(selectUserAssets);
+  const limitFee = useAppSelector(selectLimitFee);
+  const marketFee = useAppSelector(selectMarketFee);
 
-  useEffect(() => {
-  }, []);
+  if (limitFee === null || marketFee === null) {
+    return <div>Loading settings...</div>;
+  }
+
   const handlePlaceOrder = async () => {
     // 0. Sistemos testas
     if (user?.balance === undefined || user?.balance === null) {
@@ -47,19 +55,41 @@ export const PlaceOrderButton = () => {
       return;
     }
 
-    // jei vartotojas daro limit orderi
+    // 2.jei vartotojas daro limit orderi
     // tikrina ar triggerPrice uzteks turimo balanso.
     if (
       tradingOptions.orderDirection === 'buy' &&
       tradingOptions.orderType === 'limit' &&
       user?.balance !== undefined &&
-      user?.balance < tradingOptions.amount * tradingOptions.triggerPrice
+      user?.balance <
+        tradingOptions.amount * tradingOptions.triggerPrice * (1 + limitFee)
     ) {
       toast.error(t('error.insufficientFundsLimit'));
       return;
     }
 
-    // 2. Jei sandoris 'limit' ar ivesta trigger kaina?
+    // 3.market order
+    // jei neturi balanso - metam klaida
+    if (
+      tradingOptions.orderDirection === 'buy' &&
+      tradingOptions.orderType === 'market' &&
+      user.balance < tradingOptions.value * (1 + marketFee)
+    ) {
+      toast.error(t(`error.order_balance`));
+      return;
+    }
+    // jei limit order
+    // neturi balanso - metam klaida
+    if (
+      tradingOptions.orderDirection === 'buy' &&
+      tradingOptions.orderType === 'limit' &&
+      user.balance < tradingOptions.value * (1 + limitFee)
+    ) {
+      toast.error(t(`error.order_balance`));
+      return;
+    }
+
+    // 4. Jei sandoris 'limit' ar ivesta trigger kaina?
     // jei kaina neivesta, darom lastPrice
     if (
       tradingOptions.triggerPrice === 0 &&
@@ -69,11 +99,12 @@ export const PlaceOrderButton = () => {
     }
 
     if (tradingOptions.orderDirection === 'sell' && user.id) {
-      // 4. Jei parduoda, ar turi tokia valiuta?
+      // 5. Jei parduoda, ar turi tokia valiuta?
       if (!userAssets) {
         await dispatch(getUserAssets({ userId: user.id }));
       }
 
+      // 6.jei bandoma parduoti daugiau nei turi
       if (userAssets && userAssets.length > 0) {
         const userAsset = userAssets.find((a) => a.asset === selectedCrypto);
         if (userAsset && userAsset.balance < tradingOptions.amount) {

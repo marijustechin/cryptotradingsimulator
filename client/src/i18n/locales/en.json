@@ -356,7 +356,8 @@
     "amountRequired": "Amount cannot be empty",
     "insufficientFundsLimit": "Insufficient funds for limit order",
     "sellMoreThanOwned": "Trying to sell more than you have. Check the amount",
-    "noAsset": "You don't have this asset"
+    "noAsset": "You don't have this asset",
+    "order_balance": "Not enough balance to buy"
   },
 
   "dashboard": {

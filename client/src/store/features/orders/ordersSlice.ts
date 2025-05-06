@@ -114,7 +114,6 @@ export const ordersSlice = createSlice({
         state.status = 'idle';
       })
       .addCase(getUserAssets.rejected, (state, action) => {
-        console.error('getUserAssets ERROR:', action.payload);
         state.error = action.payload as string;
       })
       // orders history //////////////////////

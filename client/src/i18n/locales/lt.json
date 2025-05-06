@@ -356,7 +356,8 @@
     "amountRequired": "Kiekis negali būti tuščias",
     "insufficientFundsLimit": "Nepakanka lėšų ribiniam pavedimui",
     "sellMoreThanOwned": "Bandoma parduoti daugiau nei turite. Patikrinkite kiekį",
-    "noAsset": "Neturite šio turto"
+    "noAsset": "Neturite šio turto",
+    "order_balance": "Nepakankamai lėšų"
   },
 
   "dashboard": {

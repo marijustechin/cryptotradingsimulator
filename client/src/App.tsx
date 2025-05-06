@@ -4,6 +4,7 @@ import { useAppDispatch } from './store/store';
 import { fetchUserInfo, restoreSession } from './store/features/user/authSlice';
 import { Loader } from './components/Loader';
 import { useTranslation } from 'react-i18next';
+import { getSettings } from './store/features/admin/settingsSlice';
 
 // Layouts
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
@@ -54,6 +55,10 @@ function App() {
 
     return () => clearInterval(interval);
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getSettings());
+  });
 
   const { i18n } = useTranslation();
   // atstatom kalbą
