@@ -83,7 +83,7 @@ export const PlaceOrderButton = () => {
     if (
       tradingOptions.orderDirection === 'buy' &&
       tradingOptions.orderType === 'limit' &&
-      user.balance < tradingOptions.value * (1 + limitFee)
+      user.balance < tradingOptions.triggerPrice * (1 + limitFee)
     ) {
       toast.error(t(`error.order_balance`));
       return;
