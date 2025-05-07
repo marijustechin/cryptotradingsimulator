@@ -123,7 +123,7 @@ export const UserAssets = () => {
               <td className="w-1/6">
                 {HelperService.formatCurrency(Number(row.netAssetValue))}
               </td>
-              <td>{row.available.toFixed(6)}</td>
+              <td>{(row.balance - row.reserved).toFixed(6)}</td>
               <td className="w-1/6">
                 {HelperService.formatCurrency(Number(row.spotCost))}
               </td>

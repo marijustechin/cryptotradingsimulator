@@ -62,6 +62,7 @@ export const getUserAssets = createAsyncThunk<
 >('orders/getUserAssets', async ({ userId }, { rejectWithValue }) => {
   try {
     const response = await OrdersService.getUserAssets(userId);
+    console.log(response);
     return response;
   } catch (e) {
     return rejectWithValue(HelperService.errorToString(e));

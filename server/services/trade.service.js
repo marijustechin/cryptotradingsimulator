@@ -25,7 +25,6 @@ class TradeService {
       const cost =
         ord_type === 'market' ? price * amount : triggerPrice * amount;
 
-
       const fee =
         ord_type === 'market'
           ? cost * systemSettings.market_order_fee
@@ -47,9 +46,9 @@ class TradeService {
       if (ord_direct === 'buy') {
         userWallet.balance = parseFloat(userWallet.balance) - cost - fee;
       } else if (ord_direct === 'sell') {
-        userWallet.balance = parseFloat(userWallet.balance) + cost - fee;
-
-        
+        if (ord_type === 'market') {
+          userWallet.balance = parseFloat(userWallet.balance) + cost - fee;
+        }
       }
 
       await userWallet.save({ transaction });
@@ -183,12 +182,12 @@ class TradeService {
       },
       raw: true,
     });
-  
+
     const assets = {};
-  
+
     for (const order of closedOrders) {
       const asset = order.assetId;
-  
+
       if (!assets[asset]) {
         assets[asset] = {
           balance: 0,
@@ -198,10 +197,10 @@ class TradeService {
           reserved: 0,
         };
       }
-  
+
       const amount = parseFloat(order.amount);
       const price = parseFloat(order.price || 0);
-  
+
       if (order.ord_direct === 'buy') {
         assets[asset].balance += amount;
         assets[asset].totalBuyAmount += amount;
@@ -211,7 +210,7 @@ class TradeService {
         assets[asset].totalSellAmount += amount;
       }
     }
-  
+
     const openOrders = await orders.findAll({
       where: {
         userId,
@@ -221,11 +220,11 @@ class TradeService {
       },
       raw: true,
     });
-  
+
     for (const order of openOrders) {
       const asset = order.assetId;
       const amount = parseFloat(order.amount);
-  
+
       if (!assets[asset]) {
         assets[asset] = {
           balance: 0,
@@ -235,31 +234,31 @@ class TradeService {
           reserved: 0,
         };
       }
-  
+
       assets[asset].reserved += amount;
     }
-  
+
     // Final result
-    const result = Object.entries(assets).map(([asset, data]) => {
-      const avgBuyPrice =
-        data.totalBuyAmount > 0
-          ? data.totalBuyCost / data.totalBuyAmount
-          : 0;
-  
-      const available = this.normalizeBalance(
-        data.balance - (data.reserved || 0)
-      );
-  
-      return {
-        asset,
-        balance: this.normalizeBalance(data.balance),
-        reserved: this.normalizeBalance(data.reserved || 0),
-        available,
-        spotCost: data.totalBuyCost,
-        avgBuyPrice: avgBuyPrice.toFixed(2),
-      };
-    });
-  
+    const result = Object.entries(assets)
+      .map(([asset, data]) => {
+        const avgBuyPrice =
+          data.totalBuyAmount > 0 ? data.totalBuyCost / data.totalBuyAmount : 0;
+
+        const available = this.normalizeBalance(
+          data.balance - (data.reserved || 0)
+        );
+
+        return {
+          asset,
+          balance: this.normalizeBalance(data.balance),
+          reserved: this.normalizeBalance(data.reserved || 0),
+          available,
+          spotCost: data.totalBuyCost,
+          avgBuyPrice: avgBuyPrice.toFixed(2),
+        };
+      })
+      .filter((item) => item.balance > 0 || item.reserved > 0);
+
     return result;
   }
 
@@ -320,32 +319,34 @@ class TradeService {
     const systemSettings = await settings.findOne();
     const transaction = await sequelize.transaction();
 
-    // isgauname vartotojo orderi
-    // atnaujiname vartotojo balansa
-    // istriname orderi
-
     const getOrder = await orders.findOne({ where: { id } });
+
     if (!getOrder) {
       throw new Error('Order does not exist');
     }
-    const getOrderPrice = parseFloat(getOrder.triggerPrice);
-    const getOrderedAmount = getOrder.amount;
 
+    const getOrderPrice = parseFloat(getOrder.triggerPrice);
+    const getOrderedAmount = parseFloat(getOrder.amount);
     const orderPrice = getOrderPrice * getOrderedAmount;
 
-    const userWallet = await wallet.findOne({
-      where: { user_id: userId },
-      transaction,
-    });
-    const currentBalance = parseFloat(userWallet.balance);
+    if (getOrder.ord_type === 'limit' && getOrder.ord_direct === 'buy') {
+      const userWallet = await wallet.findOne({
+        where: { user_id: userId },
+        transaction,
+      });
 
-    const refundedBalance =
-      currentBalance + orderPrice + orderPrice * systemSettings.limit_order_fee;
+      const currentBalance = parseFloat(userWallet.balance);
 
-    await userWallet.update(
-      { balance: refundedBalance },
-      { where: { user_id: userId }, transaction }
-    );
+      const refundedBalance =
+        currentBalance +
+        orderPrice +
+        orderPrice * parseFloat(systemSettings.limit_order_fee);
+
+      await userWallet.update(
+        { balance: refundedBalance },
+        { where: { user_id: userId }, transaction }
+      );
+    }
 
     await orders.destroy({ where: { id } });
 
