@@ -20,7 +20,6 @@ import {
   selectUserAssets,
 } from '../../store/features/orders/ordersSlice';
 import {
-  getSettings,
   selectLimitFee,
   selectMarketFee,
 } from '../../store/features/admin/settingsSlice';
